@@ -1,0 +1,11 @@
+.gradient-custom {
+  background: #26441F;
+  background: -webkit-linear-gradient(to right, #26441F, #1F3D1F); 
+ 
+}
+.bdy{
+  background-image: url('/assets/logo.png');
+  background-position: center;
+  background-repeat:no-repeat;
+  background-size: 44em;
+}
