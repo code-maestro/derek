@@ -1,0 +1,41 @@
+.circle{
+    width: 220px;
+    height:220px;
+    border-radius: 40%;
+    padding-top: 5px;
+    box-shadow: 4px 3px 8px 1px #969696;
+    -webkit-box-shadow: 4px 3px 8px 1px #969696;
+}
+#sheep,#cow,#goat,#hen,#calf,#duck{
+    margin: 4px;
+}
+#sheep{
+    background-image: url('/assets/sheep.jpg');
+    background-position:center ;
+    background-size: cover;
+}
+#cow{
+    background-image: url('/assets/cow.jpg');
+    background-position:center ;
+    background-size: cover;  
+}
+#goat{
+    background-image: url('/assets/goat.jpg');
+    background-position:center ;
+    background-size: cover;  
+}
+#hen{
+    background-image: url('/assets/chicken.jpg');
+    background-position:center ;
+    background-size: cover;  
+}
+#calf{
+    background-image: url('/assets/turkey.jpg');
+    background-position:center ;
+    background-size: cover;  
+}
+#duck{
+    background-image: url('/assets/duck.jpg');
+    background-position:center ;
+    background-size: cover;  
+}
