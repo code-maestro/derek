@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>FARMA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="./derek/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <header>
+      <div class="alert alert-primary" role="alert">
+        TABLE SAMPLE
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <div class="row">
+
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                  <th>UPDATE/DELETE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1,001</td>
+                  <td>Lorem</td>
+                  <td>ipsum</td>
+                  <td>dolor</td>
+                  <td>
+                    <span class="badge rounded-pill text-bg-primary" onclick="clicked('UPDATE')"> update </span>
+                    <span class="badge rounded-pill text-bg-danger" onclick="clicked('DELETE')"> delete </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1,008</td>
+                  <td>Fusce</td>
+                  <td>nec</td>
+                  <td>tellus</td>
+                  <td>
+                    <span class="badge rounded-pill text-bg-primary" onclick="clicked('UPDATE')"> update </span>
+                    <span class="badge rounded-pill text-bg-danger" onclick="clicked('DELETE')"> delete </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1,009</td>
+                  <td>augue</td>
+                  <td>semper</td>
+                  <td>porta</td>
+                  <td>
+                    <span class="badge rounded-pill text-bg-primary" onclick="clicked('UPDATE')"> update </span>
+                    <span class="badge rounded-pill text-bg-danger" onclick="clicked('DELETE')"> delete </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1,010</td>
+                  <td>massa</td>
+                  <td>Vestibulum</td>
+                  <td>lacinia</td>
+                  <td>
+                    <span class="badge rounded-pill text-bg-primary" onclick="clicked('UPDATE')"> update </span>
+                    <span class="badge rounded-pill text-bg-danger" onclick="clicked('DELETE')"> delete </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1,011</td>
+                  <td>eget</td>
+                  <td>nulla</td>
+                  <td>Class</td>
+                  <td>
+                    <span class="badge rounded-pill text-bg-primary" onclick="clicked('UPDATE')"> update </span>
+                    <span class="badge rounded-pill text-bg-danger" onclick="clicked('DELETE')"> delete </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1,012</td>
+                  <td>taciti</td>
+                  <td>sociosqu</td>
+                  <td>ad</td>
+                  <td>
+                    <span class="badge rounded-pill text-bg-primary" onclick="clicked('UPDATE')"> update </span>
+                    <span class="badge rounded-pill text-bg-danger" onclick="clicked('DELETE')"> delete </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1,013</td>
+                  <td>torquent</td>
+                  <td>per</td>
+                  <td>conubia</td>
+                  <td>
+                    <span class="badge rounded-pill text-bg-primary" onclick="clicked('UPDATE')"> update </span>
+                    <span class="badge rounded-pill text-bg-danger" onclick="clicked('DELETE')"> delete </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+
+  <script>
+    
+    function clicked(params) {
+      alert(" *** YOU'VE CLICKED " + params + " *** ");
+    }
+
+  </script>
+
+</html>
