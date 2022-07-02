@@ -26,6 +26,10 @@ app.get("/register", (req, res) => {
   res.sendFile(__dirname + "/derek/signup.html");
 });
 
+app.get("/login", (req, res) => {
+  res.sendFile(__dirname + "/derek/login.html");
+});
+
 
 // USER SIGNUP
 app.post("/register", (req, res) => {
@@ -69,6 +73,7 @@ app.post("/register", (req, res) => {
     alert(" ** PASSWORD MISMATCH ** ")
   }
 
+  alert(" ** PASSWORD MISMATCH ** ")
   res.sendFile(path.join(__dirname, 'derek/index.html'));
 
 });
@@ -86,7 +91,7 @@ app.post("/login", (req, res) => {
       
       console.log(" ******** CONNECTED ********** ");
 
-      const text = 'SELECT mail, password FROM farma WHERE mail="$1" AND password="$2";';
+      const text = 'SELECT mail, password FROM farma WHERE mail=$1 AND password=$2;';
       const values = [mail, password]
 
       const {rows} = await client.query(text, values, (err, res) => {
@@ -94,9 +99,15 @@ app.post("/login", (req, res) => {
           console.log(err.stack)
         } else {
           console.log(res.rows)
+          console.log(res.rows.mail)
+          console.log(res.rows.password)
+
+          alert("Zuruck Willkommen ")
+
+          res.sendFile(path.join(__dirname, 'derek/index.html'));
+
         }})
       
-        // const {rows} = await client.query(text)
       console.table(rows)
       await client.end()
 
@@ -108,12 +119,8 @@ app.post("/login", (req, res) => {
     }
   }
 
-  if (password === password2) {
-    connect(client)    
-  }else {
-    alert(" ** PASSWORD MISMATCH ** ")
-  }
+  connect(client);
 
-  res.sendFile(path.join(__dirname, 'derek/index.html'));
+  res.sendFile(path.join(__dirname, 'derek/signup.html'));
 
 });
