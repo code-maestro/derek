@@ -222,84 +222,36 @@ app.get('/add-animal', function (request, response) {
   // Get saved data from sessionStorage
   let data = storage.getItem('email');
   if(data) {
-    response.send(`
-      <!DOCTYPE html>
-        <html lang="en">
+    response.sendFile(path.join(__dirname + '/add_animal.html'));
+    // response.send(``);
+  }});
 
-        <head>
-          <meta charset="UTF-8">
-          <title>FARMA</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-          <!-- CSS only -->
-          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-          <link rel="stylesheet" href="/style.css">
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css" />
-        </head>
 
-        <body>
-          <div class="container-fluid p-5 text-white text-center">
-            <nav class="nav nav-pills nav-justified">
-              <a class="nav-link" href="/logout"> 
-                <button type="button" class="btn btn-primary"> logout </button>
-              </a>
-            </nav>
-          </div>
+app.post('/add_animal', function (request, response) {
+  // Capture the input fields
+  let animal_name = request.body.animal_name;
+  let number = request.body.number;
+  let gender = request.body.gender;
+  let dob = request.body.dob;
+  let description = request.body.description;
 
-          <div class="container mt-5">              
-            <form>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="inputEmail4">Email</label>
-                <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-              </div>
-              <div class="form-group col-md-6">
-                <label for="inputPassword4">Password</label>
-                <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputAddress">Address</label>
-              <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-            </div>
-            <div class="form-group">
-              <label for="inputAddress2">Address 2</label>
-              <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="inputCity">City</label>
-                <input type="text" class="form-control" id="inputCity">
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputState">State</label>
-                <select id="inputState" class="form-control">
-                  <option selected>Choose...</option>
-                  <option>...</option>
-                </select>
-              </div>
-              <div class="form-group col-md-2">
-                <label for="inputZip">Zip</label>
-                <input type="text" class="form-control" id="inputZip">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">
-                  Check me out
-                </label>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-          </form>
-          </div>
-        </body>
-      </html>
-  `);
-  }
+  console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description );
+
+});
+
+app.post('/update_bio', function (request, response) {
+
+  console.log(request.body);
+
+  // Capture the input fields
+  let animal_name = request.body.animal_name;
+  let number = request.body.number;
+  let gender = request.body.gender;
+  let dob = request.body.dob;
+  let description = request.body.description;
+
+  console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description );
+
 });
 
 
