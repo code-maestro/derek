@@ -52,6 +52,13 @@ app.get('/register', function (request, response) {
 });
 
 
+// ui-tests
+app.get('/test', function (request, response) {
+  // Render login template
+  response.sendFile(path.join(__dirname + '/test.html'));
+});
+
+
 // Logout
 app.get('/logout', (req, res) => {
   req.session.destroy();
@@ -166,8 +173,6 @@ app.get('/home', function (request, response) {
         <a class="nav-link" aria-current="page" href="#">
           <h3> Welcome ${data} </h3>
         </a>
-        <a class="nav-link" href="#"></a>
-        <a class="nav-link" href="#"></a>
         <a class="nav-link" href="/logout"> 
           <button type="button" class="btn btn-primary"> logout </button>
         </a>
@@ -229,15 +234,24 @@ app.get('/add-animal', function (request, response) {
 
 app.post('/add_animal', function (request, response) {
   // Capture the input fields
-  let animal_name = request.body.animal_name;
-  let number = request.body.number;
-  let gender = request.body.gender;
-  let dob = request.body.dob;
-  let description = request.body.description;
+  const animal_name = request.body.animal_name;
+  const number = request.body.number;
+  const gender = request.body.gender;
+  const dob = request.body.dob;
+  const description = request.body.description;
 
   console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description );
 
+  connection.query('INSERT INTO animals (animal_type, count) VALUES (?, ?);', [animal_name, number], function (error, results, fields) {
+  // If there is an issue with the query, output the error
+  if (error) throw error;
+  // If the account exists
+  response.redirect('/home');
+  response.end();
+
 });
+})
+
 
 app.post('/update_bio', function (request, response) {
 
