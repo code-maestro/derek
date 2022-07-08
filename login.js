@@ -29,6 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 
+
 // First page
 app.get('/', function (request, response) {
 
@@ -56,6 +57,35 @@ app.get('/register', function (request, response) {
 app.get('/test', function (request, response) {
   // Render login template
   response.sendFile(path.join(__dirname + '/test.html'));
+});
+
+
+// ui-tests
+app.get('/new', function (request, response) {
+
+// html`
+//   <div class="example">
+//     ${(() => {
+//       if (result['color 5']) {
+//         return html`
+//           <div class="color-preview" style="background-color: ${result['color 5']}"></div>
+//           <span> Here's your color #5 </span>
+//         `
+//       } else {
+//         return html`<div>You don't have a 5th color</div>`
+//       }
+//     })()}
+//   </div>
+// `
+
+  // Render login template
+  response.send(
+    `
+
+    
+    `
+  );
+  response.sendFile(path.join(__dirname + '/cards.html'));
 });
 
 

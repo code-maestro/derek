@@ -1,3 +1,27 @@
 const oneDay = 1000 * 60 * 60 * 24;
 
-console.log(oneDay);
+var day1 = new Date("08/22/2021");
+var day2 = new Date("08/22/2022");
+
+var difference= Math.abs(day2-day1);
+days = difference/(1000 * 3600 * 24)
+
+//console.log(days);
+
+if (days < 365) {
+  if (days > 30) {
+    console.log(days/30 + ' MONTHS');
+  }else {
+    console.log(days + ' DAYS');
+  }
+}else {
+  if (days/365 == 1) {
+    
+  }
+  console.log(days/365 + ' YEARS');
+}
+
+// const today = new Date();
+// const dayOfMonth = today.getUTCDate();
+
+// console.log(dayOfMonth)
