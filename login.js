@@ -5,10 +5,10 @@ const path = require('path');
 const storage = require('sessionstorage');
 
 const connection = mysql.createConnection({
-  host: 'db4free.net',
-  user: 'derek_2022',
-  password: '18ba6a01',
-  database: 'farma_2022'
+    host: 'db4free.net',
+    user: 'derek_2022',
+    password: '18ba6a01',
+    database: 'farma_2022'
 });
 
 const app = express();
@@ -19,10 +19,10 @@ let sessions;
 
 
 app.use(session({
-  secret: "session",
-  saveUninitialized: true,
-  cookie: { maxAge: oneDay },
-  resave: true
+    secret: "session",
+    saveUninitialized: true,
+    cookie: { maxAge: oneDay },
+    resave: true
 }));
 
 app.use(express.json());
@@ -33,30 +33,30 @@ app.use(express.static(path.join(__dirname, 'static')));
 // First page
 app.get('/', function (request, response) {
 
-  sessions = request.session;
-  // Get saved data from sessionStorage
-  let data = storage.getItem('email');
+    sessions = request.session;
+    // Get saved data from sessionStorage
+    let data = storage.getItem('email');
 
-  if (data) {
-    response.redirect('/home');
-  } else {
-    console.log("SIRRR");
-    response.sendFile(path.join(__dirname + '/login.html'));
-  }
+    if (data) {
+        response.redirect('/home');
+    } else {
+        console.log("SIRRR");
+        response.sendFile(path.join(__dirname + '/login.html'));
+    }
 });
 
 
 // register
 app.get('/register', function (request, response) {
-  // Render login template
-  response.sendFile(path.join(__dirname + '/register.html'));
+    // Render login template
+    response.sendFile(path.join(__dirname + '/register.html'));
 });
 
 
 // ui-tests
 app.get('/test', function (request, response) {
-  // Render login template
-  response.sendFile(path.join(__dirname + '/test.html'));
+    // Render login template
+    response.sendFile(path.join(__dirname + '/test.html'));
 });
 
 
@@ -64,30 +64,37 @@ app.get('/test', function (request, response) {
 app.get('/table', function (request, response) {
     // Render login template
     response.sendFile(path.join(__dirname + '/tables.html'));
-  });
+});
+
+
+// charts
+app.get('/chart', function (request, response) {
+    // Render login template
+    response.sendFile(path.join(__dirname + '/charts.html'));
+});
 
 
 // ui-tests
 app.get('/new', function (request, response) {
 
-// html`
-//   <div class="example">
-//     ${(() => {
-//       if (result['color 5']) {
-//         return html`
-//           <div class="color-preview" style="background-color: ${result['color 5']}"></div>
-//           <span> Here's your color #5 </span>
-//         `
-//       } else {
-//         return html`<div>You don't have a 5th color</div>`
-//       }
-//     })()}
-//   </div>
-// `
+    // html`
+    //   <div class="example">
+    //     ${(() => {
+    //       if (result['color 5']) {
+    //         return html`
+    //           <div class="color-preview" style="background-color: ${result['color 5']}"></div>
+    //           <span> Here's your color #5 </span>
+    //         `
+    //       } else {
+    //         return html`<div>You don't have a 5th color</div>`
+    //       }
+    //     })()}
+    //   </div>
+    // `
 
-  // Render login template
-  response.send(
-    `
+    // Render login template
+    response.send(
+        `
     <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -699,103 +706,103 @@ app.get('/new', function (request, response) {
 </html>
     
     `
-  );
-  // response.sendFile(path.join(__dirname + '/cards.html'));
+    );
+    // response.sendFile(path.join(__dirname + '/cards.html'));
 });
 
 
 // Logout
 app.get('/logout', (req, res) => {
-  req.session.destroy();
+    req.session.destroy();
 
-  // Remove all saved data from sessionStorage
-  storage.clear();
+    // Remove all saved data from sessionStorage
+    storage.clear();
 
-  res.redirect('/');
+    res.redirect('/');
 });
 
 
 // Registering a user
 app.post('/register', function (request, response) {
-  // Capture the input fields
-  let mail = request.body.mail;
-  let password = request.body.password;
-  let password2 = request.body.password2;
+    // Capture the input fields
+    let mail = request.body.mail;
+    let password = request.body.password;
+    let password2 = request.body.password2;
 
-  // Ensure the passwords match
-  if (password == password2) {
-    // Execute SQL query that'll insert into the farma table
-    connection.query('INSERT INTO farma (mail, password) VALUES (?, ?);', [mail, password2], function (error, results, fields) {
-      // If there is an issue with the query, output the error
-      if (error) throw error;
-      // If the account exists
+    // Ensure the passwords match
+    if (password == password2) {
+        // Execute SQL query that'll insert into the farma table
+        connection.query('INSERT INTO farma (mail, password) VALUES (?, ?);', [mail, password2], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            // If the account exists
 
-      response.redirect('/');
-      response.end();
+            response.redirect('/');
+            response.end();
 
-    });
-  } else {
-    alert(' PASSWORD MISMATCH !');
-    response.end();
-  }
+        });
+    } else {
+        alert(' PASSWORD MISMATCH !');
+        response.end();
+    }
 });
 
 
 // login authentication
 app.post('/auth', function (request, response) {
-  // Capture the input fields
-  let mail = request.body.mail;
-  let password = request.body.password;
+    // Capture the input fields
+    let mail = request.body.mail;
+    let password = request.body.password;
 
-  // Ensure the input fields exists and are not empty
-  if (mail && password) {
-    // Execute SQL query that'll select the account from the database based on the specified username and password
-    connection.query('SELECT mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
-      // If there is an issue with the query, output the error
-      if (error) throw error;
-      // If the account exists
-      if (results.length > 0) {
-        // Authenticate the user
-        request.session.loggedin = true;
-        request.session.mail = mail;
+    // Ensure the input fields exists and are not empty
+    if (mail && password) {
+        // Execute SQL query that'll select the account from the database based on the specified username and password
+        connection.query('SELECT mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            // If the account exists
+            if (results.length > 0) {
+                // Authenticate the user
+                request.session.loggedin = true;
+                request.session.mail = mail;
 
-        session.mail = mail
+                session.mail = mail
 
-        // Save data to sessionStorage
-        storage.setItem('email', mail);
+                // Save data to sessionStorage
+                storage.setItem('email', mail);
 
-        // Remove saved data from sessionStorage
-        // sessionStorage.removeItem('key');
+                // Remove saved data from sessionStorage
+                // sessionStorage.removeItem('key');
 
-        // Redirect to home page
-        response.redirect('/home');
-      } else {
-        response.redirect(`/`);
-      }
-      response.end();
-    });
-  } else {
-    response.send('Please enter email and/or Password!');
-    response.end();
-  }
+                // Redirect to home page
+                response.redirect('/home');
+            } else {
+                response.redirect(`/`);
+            }
+            response.end();
+        });
+    } else {
+        response.send('Please enter email and/or Password!');
+        response.end();
+    }
 });
 
 
 // First page
 app.get('/home', function (request, response) {
-  // Render login template
-  // response.sendFile(path.join(__dirname + '/index.html'));
-  console.log(request.session.loggedin);
-  console.log(request.session.mail);
+    // Render login template
+    // response.sendFile(path.join(__dirname + '/index.html'));
+    console.log(request.session.loggedin);
+    console.log(request.session.mail);
 
-  // Get saved data from sessionStorage
-  let data = storage.getItem('email');
-  console.log("+ session storage data +" + data);
+    // Get saved data from sessionStorage
+    let data = storage.getItem('email');
+    console.log("+ session storage data +" + data);
 
-  if (data) {
+    if (data) {
 
-  // if (request.session.mail) {
-    response.send(`
+        // if (request.session.mail) {
+        response.send(`
   <!DOCTYPE html>
   <html lang="en">
 
@@ -858,58 +865,53 @@ app.get('/home', function (request, response) {
     </div>
   </body>
 </html> 
-`)}
-
-  else {
-    response.redirect('/');
-  }
-
-});
+`)} else { response.redirect('/'); } });
 
 
 // New Animal Modal
 app.get('/add-animal', function (request, response) {
-  // Get saved data from sessionStorage
-  let data = storage.getItem('email');
-  if(data) {
-    response.sendFile(path.join(__dirname + '/add_animal.html'));
-    // response.send(``);
-  }});
+    // Get saved data from sessionStorage
+    let data = storage.getItem('email');
+    if (data) {
+        response.sendFile(path.join(__dirname + '/add_animal.html'));
+        // response.send(``);
+    }
+});
 
 
 app.post('/add_animal', function (request, response) {
-  // Capture the input fields
-  const animal_name = request.body.animal_name;
-  const number = request.body.number;
-  const gender = request.body.gender;
-  const dob = request.body.dob;
-  const description = request.body.description;
+    // Capture the input fields
+    const animal_name = request.body.animal_name;
+    const number = request.body.number;
+    const gender = request.body.gender;
+    const dob = request.body.dob;
+    const description = request.body.description;
 
-  console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description );
+    console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description);
 
-  connection.query('INSERT INTO animals (animal_type, count) VALUES (?, ?);', [animal_name, number], function (error, results, fields) {
-  // If there is an issue with the query, output the error
-  if (error) throw error;
-  // If the account exists
-  response.redirect('/home');
-  response.end();
+    connection.query('INSERT INTO animals (animal_type, count) VALUES (?, ?);', [animal_name, number], function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        response.redirect('/home');
+        response.end();
 
-});
+    });
 })
 
 
 app.post('/update_bio', function (request, response) {
 
-  console.log(request.body);
+    console.log(request.body);
 
-  // Capture the input fields
-  let animal_name = request.body.animal_name;
-  let number = request.body.number;
-  let gender = request.body.gender;
-  let dob = request.body.dob;
-  let description = request.body.description;
+    // Capture the input fields
+    let animal_name = request.body.animal_name;
+    let number = request.body.number;
+    let gender = request.body.gender;
+    let dob = request.body.dob;
+    let description = request.body.description;
 
-  console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description );
+    console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description);
 
 });
 
