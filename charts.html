@@ -59,6 +59,13 @@
                     <span>Dashboard</span></a>
             </li> -->
 
+                <!-- Nav Item - home -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa-solid fa-gauge"></i>
+                        <span> Home </span>
+                    </a>
+                </li>
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
@@ -67,19 +74,20 @@
                     Bio-data
                 </div>
 
-                <!-- Nav Item - Pages Collapse Menu -->
+                <!-- Nav Item - Register -->
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                        aria-expanded="true" aria-controls="collapseTwo">
+                    <a class="nav-link" href="#">
                         <i class="fas fa-fw fa-cog"></i>
-                        <span>Registration</span>
+                        <span> Registration </span>
                     </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="buttons.html"> Animals </a>
-                            <a class="collapse-item" href="cards.html"> Birds </a>
-                        </div>
-                    </div>
+                </li>
+
+                <!-- Nav Item - Register -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa-solid fa-syringe"></i>
+                        <span> Vaccination </span>
+                    </a>
                 </li>
 
                 <!-- Nav Item - Diseases -->
@@ -92,10 +100,10 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="#"> Animals </a>
-                            <a class="collapse-item" href="#"> Birds </a>
-                            <a class="collapse-item" href="#"> Pets </a>
-                            <a class="collapse-item" href="#"> Other </a>
+                            <a class="collapse-item" href="#"> Female </a>
+                            <a class="collapse-item" href="#"> Male </a>
+                            <a class="collapse-item" href="#"> New Borns </a>
+
                         </div>
                     </div>
                 </li>
@@ -109,37 +117,18 @@
                     </a>
                     <div id="symptoms" class="collapse" aria-labelledby="thesymptoms" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="#"> Animals </a>
-                            <a class="collapse-item" href="#"> Birds </a>
-                            <a class="collapse-item" href="#"> Pets </a>
-                            <a class="collapse-item" href="#"> Other </a>
+                            <a class="collapse-item" href="#"> Female </a>
+                            <a class="collapse-item" href="#"> Male </a>
+                            <a class="collapse-item" href="#"> New Borns </a>
                         </div>
                     </div>
                 </li>
 
                 <!-- Nav Item - New Borns -->
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#newBorns"
-                        aria-expanded="true" aria-controls="newBorns">
+                    <a class="nav-link" href="#">
                         <i class="fa-solid fa-cow"></i>
                         <span> New Borns </span>
-                    </a>
-                    <div id="newBorns" class="collapse" aria-labelledby="thenewborns" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="#"> Animals </a>
-                            <a class="collapse-item" href="#"> Birds </a>
-                            <a class="collapse-item" href="#"> Pets </a>
-                            <a class="collapse-item" href="#"> Other </a>
-                        </div>
-                    </div>
-                </li>
-
-
-                <!-- Nav Item - Tables -->
-                <li class="nav-item">
-                    <a class="nav-link" href="tables.html">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span> Tabular Data </span>
                     </a>
                 </li>
 
@@ -147,7 +136,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="charts.html">
                         <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Charts</span></a>
+                        <span>Charts</span>
+                    </a>
                 </li>
 
                 <!-- Divider -->
@@ -162,15 +152,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="tables.html">
                         <i class="fa-solid fa-address-card"></i>
-                        <span>Update data</span>
+                        <span> Profile </span>
                     </a>
-                </li>
-
-                <!-- Nav Item - Tables -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="tables.html">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span>Tables</span></a>
                 </li>
 
                 <!-- Divider -->
@@ -277,7 +260,7 @@
                             <!-- Nav Item - Logout -->
                             <li class="nav-item">
                                 <a class="nav-link" href="#" id="logout" role="button">
-                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    <i class="fa-solid fa-power-off"></i>
                                 </a>
                             </li>
 
@@ -294,21 +277,6 @@
 
                             <div class="col-xl-8 col-lg-7">
 
-                                <!-- Area Chart -->
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart-area">
-                                            <canvas id="myAreaChart"></canvas>
-                                        </div>
-                                        <hr>
-                                        Styling for the area chart can be found in the
-                                        <code>/js/demo/chart-area-demo.js</code> file.
-                                    </div>
-                                </div>
-
                                 <!-- Bar Chart -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
@@ -323,6 +291,21 @@
                                         <code>/js/demo/chart-bar-demo.js</code> file.
                                     </div>
                                 </div>
+
+                                <!-- Area Chart -->
+                                <!-- <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="myAreaChart"></canvas>
+                                        </div>
+                                        <hr>
+                                        Styling for the area chart can be found in the
+                                        <code>/js/demo/chart-area-demo.js</code> file.
+                                    </div>
+                                </div> -->
 
                             </div>
 
