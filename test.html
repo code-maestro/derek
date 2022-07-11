@@ -526,7 +526,7 @@
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2020</span>
+                            <span id="year"></span>
                         </div>
                     </div>
                 </footer>
@@ -562,6 +562,18 @@
                 </div>
             </div>
         </div>
+
+        <!-- UPDATES THE YEAR AUTOMATICALLY -->
+        <script>
+
+            const today = new Date();
+            const yy = today.getFullYear();
+
+            const current_year = document.getElementById('year');
+
+            current_year.innerText = "Copyright © farma " + yy ;
+
+        </script>
 
         <!-- Bootstrap core JavaScript-->
         <script src="vendor/jquery/jquery.min.js"></script>
