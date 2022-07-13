@@ -9800,6 +9800,7 @@ a:focus {
   background-color: #f8f9fc;
   width: 100%;
   overflow-x: hidden;
+  height: 100vh;
 }
 
 #wrapper #content-wrapper #content {
