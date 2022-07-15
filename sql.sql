@@ -1,37 +1,41 @@
-CREATE TABLE farma(
-  farmer_id int NOT NULL AUTO_INCREMENT,
- first_name varchar(50) NULL,
- last_name varchar(50) NULL,
- number_of_animals int,
- mail  varchar(50) NOT NULL,
- phone varchar(20) NULL,
- password varchar(50) NOT NULL,
- PRIMARY KEY (farmer_id),
-);
+INSERT INTO disease_genre (genre)
+VALUES ('Nutrional Defects'),
+('Bacterial Diseases'),
+('Viral Diseases'),
+('fungal Diseases'),
+('Protozoan Diseases')
 
 
-CREATE TABLE symptoms (
- symptom_id int NOT NULL AUTO_INCREMENT,
- name varchar(50) NOT NULL,
- animal_id  int NOT NULL,
- PRIMARY KEY (symptom_id),
- FOREIGN KEY (animal_id) 
- REFERENCES animal (animal_id)
-);
+INSERT INTO disease
+(disease_name, genre_id)
+VALUES 
+('Pneumonia', 2),
+('Tetanus', 2),
+('Atrophic Rhinitis', 2),
+('Anthrax', 2),
+('Blackleg', 2),
+('Brucellosis', 2),
+('pullorum', 2)
 
-CREATE TABLE animals (
- animals_id  int NOT NULL AUTO_INCREMENT,
- animal_type varchar(40) NOT NULL,
- count varchar(20) NULL,
- PRIMARY KEY(animals_id)
-);
 
-CREATE TABLE animal (
- animal_id  int NOT NULL AUTO_INCREMENT,
- animal_name varchar(50) NOT NULL,
- animals_id int NOT NULL,
- is_sick varchar(5),
- PRIMARY KEY (animal_id)
- FOREIGN KEY (animals_id)
- REFERENCES animals (animals_id)
-);
+-- FUNGAL
+INSERT INTO disease
+(disease_name, genre_id)
+VALUES ('Foot Rot', 4), ('Calf Diphtheria', 4)
+
+
+-- ROTOZOAN DISEASE 
+INSERT INTO disease
+(disease_name, genre_id)
+VALUES ('Coccidiosis', 5)
+
+
+-- VIRAL DISEASES
+INSERT INTO disease
+(disease_name, genre_id)
+VALUES
+('Cholera', 3),
+('Equine Encephalomyelitis', 3),
+('Hemorrhagic Septicemia', 3),
+('Newcastle', 3),
+('Warts', 3)
