@@ -785,7 +785,7 @@ app.post('/auth', function (request, response) {
 // Filtering cards to be shown
 app.get('/before-home', function (request, response) {
 
-    const animals = ["lolo","kill","slap"];
+    const animals = ["lolo", "kill", "slap"];
 
     // const user_id = storage.getItem('id');
 
@@ -836,8 +836,8 @@ app.get('/home', function (request, response) {
     // const user_id = storage.getItem('id');
 
     // if (user_email) {
-        response.send(
-            `
+    response.send(
+        `
                     <!DOCTYPE html>
                         <html lang="en">
         
@@ -979,7 +979,7 @@ app.get('/home', function (request, response) {
                                                 </div>
                                             </div>
 
-                                            <ul id="authors"></ul>
+                                            <span id="ddaa"></span>
 
                                         </div>
                                     </div>
@@ -1061,15 +1061,21 @@ app.get('/home', function (request, response) {
 
 
                                 <script>
-                                async function see() {
-                                    
-                                    console.log("😭😭😭😭😭😭😭");
-                            
+                                function see() {
+                                                            
                                         console.log("lalalalal");
                             
-                                        fetch('/before-home')clea
+                                        fetch('/before-home')
                                             .then(response => response.json())
-                                            .then(data => console.log(data));
+                                            .then(data => {
+                                                data.forEach(myFunction);
+
+                                                function myFunction(item) {
+                                                    document.getElementById("ddaa").innerText = "😭🐏🐖🐖"+item;
+                                                    console.log(item);
+                                                }
+                                                
+                                            });
 
                                 }
 
@@ -1132,8 +1138,8 @@ app.get('/home', function (request, response) {
                         </html> 
             `)
     // } else {
-        // console.log(user_id + user_email);
-        // response.redirect('/');
+    // console.log(user_id + user_email);
+    // response.redirect('/');
     // }
 });
 
