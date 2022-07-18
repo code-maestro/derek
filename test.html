@@ -54,37 +54,13 @@
                         <div class="row text-center">
 
                             <!-- COWS -->
-                            <div class="col-auto">
-                                <div class="bg-white rounded shadow-sm py-5 px-4"><img
-                                        src="https://ucarecdn.com/08c56406-391c-495c-b9ee-d0502930e5ba/-/preview/-/quality/smart/"
-                                        alt="" width="100"
-                                        class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                                    <h5 class="mb-0"> CATTLE </h5><span class="small text-uppercase text-muted">CEO -
-                                        Founder</span>
-                                </div>
-                            </div>
-                            <!-- End -->
-
-                            <!-- GOATS -->
-                            <div class="col-auto">
-                                <div class="bg-white rounded shadow-sm py-5 px-4"><img
-                                        src="https://ucarecdn.com/65125d7b-1ac5-4849-9cf4-ff4ed5870a08/-/preview/-/quality/smart/"
-                                        alt="" width="100"
-                                        class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                                    <h5 class="mb-0"> GOATS </h5>
-                                    <span class="small text-uppercase text-muted">CEO - Founder</span>
-                                </div>
-                            </div>
-                            <!-- End -->
-
-                            <!-- SHEEP -->
-                            <div class="col-auto">
-                                <div class="bg-white rounded shadow-sm py-5 px-4"><img
-                                        src="https://ucarecdn.com/0a0d896d-9d43-42f8-b0fd-cb75ecd28afd/-/preview/-/quality/smart/"
+                            <div class="col-auto" onclick="selected('sheep')">
+                                <div class="rounded shadow-sm py-5 px-4" id="sheeps">
+                                    <img src="https://ucarecdn.com/0a0d896d-9d43-42f8-b0fd-cb75ecd28afd/-/preview/-/quality/smart/"
                                         alt="" width="100"
                                         class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                                     <h5 class="mb-0"> SHEEP </h5>
-                                    <span class="small text-uppercase text-muted">CEO - Founder</span>
+                                    <span class="small text-uppercase text-muted" id="sheepss"> </span>
                                 </div>
                             </div>
                             <!-- End -->
@@ -93,38 +69,37 @@
 
                         <div class="row text-center">
 
-
                             <!-- PIGS -->
-                            <div class="col-auto">
-                                <div class="bg-white rounded shadow-sm py-5 px-4"><img
-                                        src="https://ucarecdn.com/d7e3016b-3317-4d83-8260-18124b77605f/-/preview/-/quality/smart/"
+                            <div class="col-auto" onclick="selected('pig')">
+                                <div class="rounded shadow-sm py-5 px-4" id="pigs">
+                                    <img src="https://ucarecdn.com/d7e3016b-3317-4d83-8260-18124b77605f/-/preview/-/quality/smart/"
                                         alt="" width="100"
                                         class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                                    <h5 class="mb-0"> PIGS </h5><span class="small text-uppercase text-muted">CEO -
-                                        Founder</span>
+                                    <h5 class="mb-0"> PIGS </h5>
+                                    <span class="small text-uppercase text-muted" id="pigss"></span>
                                 </div>
                             </div>
                             <!-- End -->
 
                             <!-- RABBITS -->
-                            <div class="col-auto">
-                                <div class="bg-white rounded shadow-sm py-5 px-4">
+                            <div class="col-auto" onclick="selected('rabbit')">
+                                <div class="rounded shadow-sm py-5 px-4" id="rabbits">
                                     <img src="https://ucarecdn.com/cfbb1536-2965-4f70-9070-81526cf90377/-/preview/-/quality/smart/"
                                         alt="" width="100"
                                         class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                                     <h5 class="mb-0"> RABBITS </h5>
-                                    <span class="small text-uppercase text-muted">CEO - Founder</span>
+                                    <span class="small text-uppercase text-muted" id="rabbitss"></span>
                                 </div>
                             </div>
                             <!-- End -->
 
                             <!-- COWS -->
                             <div class="col-auto">
-                                <a data-toggle="modal" data-target="#logoutModal" href="#">
-                                    <div class="bg-white rounded shadow-sm py-5 px-4">
-                                        <i class="fa-solid fa-circle-plus fa-4x  py-4"></i>
-                                        <h5 class="mb-0"> ADD NEW </h5>
-                                        <span class="small text-uppercase text-muted">CEO - Founder</span>
+                                <a data-toggle="modal" data-target="#newAnimalModal" href="#">
+                                    <div class="rounded shadow-sm py-5 px-4" id="rabbits">
+                                        <img src="https://ucarecdn.com/5a04ae09-d92d-4199-8adb-39fdff55f985/" alt=""
+                                            width="100" class="img-fluid rounded-circle mb-3 ">
+                                        <h5 class="mb-0"> add a new <br> animal </h5>
                                     </div>
                                 </a>
                             </div>
@@ -140,7 +115,8 @@
         </div>
 
         <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="newAnimalModal" tabindex="-1" role="dialog" aria-labelledby="newAnimalLabel"
+            aria-hidden="true">
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -161,16 +137,27 @@
         </div>
 
 
+        <script>
+            function selected(params) {
 
+                const clicked = document.getElementById(params + "s");
 
+                clicked.style.backgroundColor = '#cdffcd';
+
+                document.getElementById(params + "ss").innerText = params;
+
+            }
+        </script>
+        <!--
         <script>
 
             console.log("lalalalal");
+
             fetch('/nim')
                 .then(response => response.json())
                 .then(data => console.log(data));
 
-        </script>
+        </script> -->
 
         <!-- Bootstrap core JavaScript-->
         <script src="vendor/jquery/jquery.min.js"></script>

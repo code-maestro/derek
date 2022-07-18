@@ -13,7 +13,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node login.js"
+    "start": "nodemon login.js"
   },
   "author": "code-maestro",
   "license": "ISC"

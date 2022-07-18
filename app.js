@@ -27,12 +27,17 @@
 // console.log(yy)
 
 
-const fruits = ["Banana", "Orange", "Apple", "Mango"];
 
-console.log(fruits.includes("Mango"));
 
-if (fruits.includes("Mango") == true ) {
-  console.log("eeeee");
-}else{
-  console.log("la farge");
-}
+// console.log(fruits.includes("Mango"));
+
+// if (fruits.includes("Mango") == true ) {
+//   console.log("eeeee");
+// }else{
+//   console.log("la farge");
+// }
+
+const word = ' +* we THERE!!!'
+
+console.log(word.replace(/[^\w]/g, ""))
+
