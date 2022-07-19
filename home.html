@@ -40,11 +40,11 @@
         <!-- Main Content -->
         <div id="content">
 
-          <div class="container py-5 d-flex justify-content-evenly">
+          <div class="container py-5 d-flex  justify-content-evenly">
             <nav class="nav nav-pills">
 
               <div class="nav-link">
-                <h3> Select an animal </h3>
+                <strong> <h3> select an animal </h3> </strong>
               </div>
 
               <div class="row text-center nav-link">
@@ -52,7 +52,7 @@
                 <div class="col-auto" id="add-new">
                   <a data-toggle="modal" data-target="#newAnimalModal" href="#">
                     <div class="bg-white rounded shadow-sm">
-                      <button class="btn btn-primary"> add new  &nbsp;  <i class="fa-solid fa-circle-plus"></i> </button>                    
+                      <button class="btn btn-primary"> add new &nbsp; <i class="fa-solid fa-circle-plus"></i> </button>
                     </div>
                   </a>
                 </div>
@@ -65,6 +65,50 @@
           <div class="container d-flex justify-content-center">
 
             <div class="row text-center" id="ddaa">
+
+               <!-- COWS -->
+               <div class="col-auto" onclick="selected('cow')">
+                <div class="rounded shadow-sm py-5 px-4" id="cows">
+                  <img src="https://ucarecdn.com/08c56406-391c-495c-b9ee-d0502930e5ba/-/preview/-/quality/smart/" alt=""
+                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                  <h5 class="mb-0"> CATTLE </h5>
+                  <span class="small text-uppercase text-muted" id="cowss"> </span>
+                </div>
+              </div>
+              <!-- End -->
+
+              <!-- GOATS -->
+              <div class="col-auto" onclick="selected('goat')">
+                <div class="rounded shadow-sm py-5 px-4" id="goats">
+                  <img src="https://ucarecdn.com/65125d7b-1ac5-4849-9cf4-ff4ed5870a08/-/preview/-/quality/smart/" alt=""
+                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                  <h5 class="mb-0"> GOATS </h5>
+                  <span class="small text-uppercase text-muted" id="goatss"> </span>
+                </div>
+              </div>
+              <!-- End -->
+
+              <!-- SHEEP -->
+              <div class="col-auto" onclick="selected('sheep')">
+                <div class="rounded shadow-sm py-5 px-4" id="sheeps">
+                  <img src="https://ucarecdn.com/0a0d896d-9d43-42f8-b0fd-cb75ecd28afd/-/preview/-/quality/smart/" alt=""
+                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                  <h5 class="mb-0"> SHEEP </h5>
+                  <span class="small text-uppercase text-muted" id="sheepss"> </span>
+                </div>
+              </div>
+              <!-- End -->
+
+              <!-- PIGS -->
+              <div class="col-auto" onclick="selected('pig')">
+                <div class="rounded shadow-sm py-5 px-4" id="pigs">
+                  <img src="https://ucarecdn.com/d7e3016b-3317-4d83-8260-18124b77605f/-/preview/-/quality/smart/" alt=""
+                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                  <h5 class="mb-0"> PIGS </h5>
+                  <span class="small text-uppercase text-muted" id="pigss"></span>
+                </div>
+              </div>
+              <!-- End -->
 
             </div>
 
@@ -169,6 +213,8 @@
 
         let htmlSegment = '';
 
+        let container = document.querySelector('#ddaa');
+
         if (![false, 0, "", null, undefined, NaN].includes(users)) {
 
           users.forEach(user => {
@@ -189,60 +235,11 @@
 
           });
 
-        }else{
-          htmlSegment = `
-            <!-- COWS -->
-              <div class="col-auto" onclick="selected('cow')">
-                <div class="rounded shadow-sm py-5 px-4" id="cows">
-                  <img src="https://ucarecdn.com/08c56406-391c-495c-b9ee-d0502930e5ba/-/preview/-/quality/smart/" alt=""
-                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                  <h5 class="mb-0"> CATTLE </h5>
-                  <span class="small text-uppercase text-muted" id="cowss"> </span>
-                </div>
-              </div>
-              <!-- End -->
+          container.innerHTML = html;
 
-
-              <!-- GOATS -->
-              <div class="col-auto" onclick="selected('goat')">
-                <div class="rounded shadow-sm py-5 px-4" id="goats">
-                  <img src="https://ucarecdn.com/65125d7b-1ac5-4849-9cf4-ff4ed5870a08/-/preview/-/quality/smart/" alt=""
-                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                  <h5 class="mb-0"> GOATS </h5>
-                  <span class="small text-uppercase text-muted" id="goatss"> </span>
-                </div>
-              </div>
-              <!-- End -->
-
-              <!-- SHEEP -->
-              <div class="col-auto" onclick="selected('sheep')">
-                <div class="rounded shadow-sm py-5 px-4" id="sheeps">
-                  <img src="https://ucarecdn.com/0a0d896d-9d43-42f8-b0fd-cb75ecd28afd/-/preview/-/quality/smart/" alt=""
-                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                  <h5 class="mb-0"> SHEEP </h5>
-                  <span class="small text-uppercase text-muted" id="sheepss"> </span>
-                </div>
-              </div>
-              <!-- End -->
-
-              <!-- PIGS -->
-              <div class="col-auto" onclick="selected('pig')">
-                <div class="rounded shadow-sm py-5 px-4" id="pigs">
-                  <img src="https://ucarecdn.com/d7e3016b-3317-4d83-8260-18124b77605f/-/preview/-/quality/smart/" alt=""
-                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                  <h5 class="mb-0"> PIGS </h5>
-                  <span class="small text-uppercase text-muted" id="pigss"></span>
-                </div>
-              </div>
-              <!-- End -->
-              `;
-
-              html = htmlSegment;
+        } else {
+            return;
         }
-
-        let container = document.querySelector('#ddaa');
-        container.innerHTML = html;
-
       }
 
       renderUsers();
