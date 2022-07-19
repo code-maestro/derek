@@ -40,27 +40,37 @@
         <!-- Main Content -->
         <div id="content">
 
-          <div class="container py-5 d-flex  justify-content-evenly">
-            <nav class="nav nav-pills">
+          <div class="container py-5">
+            <div class="row justify-content-around text-center">
 
-              <div class="nav-link">
-                <p class="h4" id="select-heading"> <strong> select an animal </strong> </p>
+              <!-- <div class="col-3">
+                <p class="h4" id="user-email"> <strong> <span> Welcome </span> </strong> </p>
+              </div> -->
+
+              <div class="col-3">
+                <p class="h4"> <strong> <span id="select-heading"> Select animals at your farm </span> </strong> </p>
               </div>
 
-              <div class="row text-center nav-link">
-                <!-- ADD NEW ANIMAL -->
-                <div class="col-auto" id="add-new">
-                  <a data-toggle="modal" data-target="#newAnimalModal" href="#">
-                    <div class="bg-white rounded shadow-sm">
-                      <button class="btn btn-primary"> &nbsp;&nbsp; <strong> add new </strong> &nbsp;&nbsp; <i
-                          class="fa-solid fa-circle-plus"></i> </button>
-                    </div>
-                  </a>
-                </div>
-                <!-- End -->
+              <div class="col-3" id="add-new">
+                <a data-toggle=" modal" data-target="#newAnimalModal" href="#">
+                  <div class="rounded">
+                    <button class="btn btn-primary shadow-sm"> &nbsp;&nbsp; <strong> add new </strong> &nbsp;&nbsp; <i
+                        class="fa-solid fa-circle-plus"></i>
+                    </button>
+                  </div>
+                </a>
               </div>
 
-            </nav>
+              <div class="col-3" id="add-new">
+                <a data-toggle=" modal" data-target="#newAnimalModal" href="#">
+                  <div class="rounded">
+                    <button class="btn btn-link shadow-sm"> &nbsp;&nbsp; <strong> add new </strong> &nbsp;&nbsp; <i
+                        class="fa-solid fa-circle-plus"></i>
+                    </button>
+                  </div>
+                </a>
+              </div>
+            </div>
           </div>
 
           <div class="container d-flex justify-content-center">
