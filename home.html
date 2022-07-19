@@ -40,27 +40,37 @@
         <!-- Main Content -->
         <div id="content">
 
-          <div class="container py-5 d-flex  justify-content-evenly">
-            <nav class="nav nav-pills">
+          <div class="container py-5">
+            <div class="row justify-content-around text-center">
 
-              <div class="nav-link">
-                <p class="h4" id="select-heading"> <strong> select an animal </strong> </p>
+              <!-- <div class="col-3">
+                <p class="h4" id="user-email"> <strong> <span> Welcome </span> </strong> </p>
+              </div> -->
+
+              <div class="col-3">
+                <p class="h4"> <strong> <span id="select-heading"> Select animals at your farm </span> </strong> </p>
               </div>
 
-              <div class="row text-center nav-link">
-                <!-- ADD NEW ANIMAL -->
-                <div class="col-auto" id="add-new">
-                  <a data-toggle="modal" data-target="#newAnimalModal" href="#">
-                    <div class="bg-white rounded shadow-sm">
-                      <button class="btn btn-primary"> &nbsp;&nbsp; <strong> add new </strong> &nbsp;&nbsp; <i
-                          class="fa-solid fa-circle-plus"></i> </button>
-                    </div>
-                  </a>
-                </div>
-                <!-- End -->
+              <div class="col-3" id="add-new">
+                <a data-toggle=" modal" data-target="#newAnimalModal" href="#">
+                  <div class="rounded">
+                    <button class="btn btn-primary shadow-sm"> &nbsp;&nbsp; <strong> add new </strong> &nbsp;&nbsp; <i
+                        class="fa-solid fa-circle-plus"></i>
+                    </button>
+                  </div>
+                </a>
               </div>
 
-            </nav>
+              <div class="col-3" id="add-new">
+                <a data-toggle=" modal" data-target="#newAnimalModal" href="#">
+                  <div class="rounded">
+                    <button class="btn btn-link shadow-sm"> &nbsp;&nbsp; <strong> add new </strong> &nbsp;&nbsp; <i
+                        class="fa-solid fa-circle-plus"></i>
+                    </button>
+                  </div>
+                </a>
+              </div>
+            </div>
           </div>
 
           <div class="container d-flex justify-content-center">
@@ -232,7 +242,8 @@
           users.forEach(user => {
             htmlSegment = `
             <!-- animal card -->
-              <div class="col-auto" onclick="selected(${user})">
+            <a class="col-auto" href="/animal/${user}">
+              <div onclick="seeDetails('${user}')">
                 <div class="rounded shadow-sm py-5 px-4" id="${user}s">
                   <img src="https://ucarecdn.com/cfbb1536-2965-4f70-9070-81526cf90377/-/preview/-/quality/smart/" alt=""
                     width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
@@ -240,6 +251,7 @@
                   <span class="small text-uppercase text-muted" id="${user}ss"></span>
                 </div>
               </div>
+              </a
             <!-- End -->
           `;
 
@@ -257,7 +269,11 @@
 
       renderUsers();
 
+      function selected(params) {
+        console.log(params);
+      }
 
+      // Initial Selection Function
       function selected(params) {
         console.log(params + " hell is hot")
         const clicked = document.getElementById(params + "s");
