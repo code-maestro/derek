@@ -713,20 +713,18 @@ app.post('/register', function (request, response) {
     let password = request.body.password;
     let password2 = request.body.password2;
 
-    // Ensure the passwords match
-    if (password == password2) {
-        // Execute SQL query that'll insert into the farma table
+    if (mail !== null && password2 !== null) {
+    // Execute SQL query that'll insert into the farma table
         connection.query('INSERT INTO farma (mail, password) VALUES (?, ?);', [mail, password2], function (error, results, fields) {
-            // If there is an issue with the query, output the error
+        // If there is an issue with the query, output the error
             if (error) throw error;
             // If the account exists
 
             response.redirect('/');
             response.end();
-
         });
     } else {
-        alert(' PASSWORD MISMATCH !');
+        alert(' EMPTY DATA FEILDS !');
         response.end();
     }
 });
