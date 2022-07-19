@@ -44,7 +44,7 @@
             <nav class="nav nav-pills">
 
               <div class="nav-link">
-                <strong> <h3> select an animal </h3> </strong>
+                <p class="h4" id="select-heading"> <strong> select an animal </strong> </p>
               </div>
 
               <div class="row text-center nav-link">
@@ -52,7 +52,8 @@
                 <div class="col-auto" id="add-new">
                   <a data-toggle="modal" data-target="#newAnimalModal" href="#">
                     <div class="bg-white rounded shadow-sm">
-                      <button class="btn btn-primary"> add new &nbsp; <i class="fa-solid fa-circle-plus"></i> </button>
+                      <button class="btn btn-primary"> &nbsp;&nbsp; <strong> add new </strong> &nbsp;&nbsp; <i
+                          class="fa-solid fa-circle-plus"></i> </button>
                     </div>
                   </a>
                 </div>
@@ -66,8 +67,8 @@
 
             <div class="row text-center" id="ddaa">
 
-               <!-- COWS -->
-               <div class="col-auto" onclick="selected('cow')">
+              <!-- COWS -->
+              <div class="col-auto" onclick="selected('cow')">
                 <div class="rounded shadow-sm py-5 px-4" id="cows">
                   <img src="https://ucarecdn.com/08c56406-391c-495c-b9ee-d0502930e5ba/-/preview/-/quality/smart/" alt=""
                     width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
@@ -106,6 +107,17 @@
                     width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                   <h5 class="mb-0"> PIGS </h5>
                   <span class="small text-uppercase text-muted" id="pigss"></span>
+                </div>
+              </div>
+              <!-- End -->
+
+              <!-- RABBITS -->
+              <div class="col-auto" onclick="selected('rabbit')">
+                <div class="rounded shadow-sm py-5 px-4" id="rabbits">
+                  <img src="https://ucarecdn.com/d7e3016b-3317-4d83-8260-18124b77605f/-/preview/-/quality/smart/" alt=""
+                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                  <h5 class="mb-0"> RABBITS </h5>
+                  <span class="small text-uppercase text-muted" id="rabbitss"></span>
                 </div>
               </div>
               <!-- End -->
@@ -236,9 +248,10 @@
           });
 
           container.innerHTML = html;
+          document.getElementById("select-heading").innerText = "select an animal to view the stats";
 
         } else {
-            return;
+          return;
         }
       }
 
