@@ -232,7 +232,8 @@
           users.forEach(user => {
             htmlSegment = `
             <!-- animal card -->
-              <div class="col-auto" onclick="selected(${user})">
+            <a class="col-auto" href="/animal/${user}">
+              <div onclick="seeDetails('${user}')">
                 <div class="rounded shadow-sm py-5 px-4" id="${user}s">
                   <img src="https://ucarecdn.com/cfbb1536-2965-4f70-9070-81526cf90377/-/preview/-/quality/smart/" alt=""
                     width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
@@ -240,6 +241,7 @@
                   <span class="small text-uppercase text-muted" id="${user}ss"></span>
                 </div>
               </div>
+              </a
             <!-- End -->
           `;
 
@@ -257,7 +259,11 @@
 
       renderUsers();
 
+      function selected(params) {
+        console.log(params);
+      }
 
+      // Initial Selection Function
       function selected(params) {
         console.log(params + " hell is hot")
         const clicked = document.getElementById(params + "s");

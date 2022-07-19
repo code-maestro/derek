@@ -858,7 +858,7 @@ app.get('/animal/:id', function (request, response) {
 
     console.log(request.params.id);
 
-    const fruits = ["cows", "goats", "sheep", "pigs"];
+    const fruits = ["cow", "goat", "sheep", "pigs"];
 
     // connection.query('SELECT * FROM farma WHERE farma_id = ?', id, function (error, results, fields) {
     //     // If there is an issue with the query, output the error
@@ -883,37 +883,37 @@ app.get('/animal/:id', function (request, response) {
         <!DOCTYPE html>
             <html lang="en">
 
-                <head>
+            <head>
 
-                    <meta charset="utf-8">
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-                    <meta name="description" content="">
-                    <meta name="author" content="">
-
-                    <title> dashboard </title>
-
-                    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-                    <!-- CSS only -->
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-                        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-                    <link rel="stylesheet" href="/style.css">
-                    <link rel="stylesheet" href="https://fonts.googleapis.com/css" />
-                    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-                    <link href="vendor/fontawesome/css/fontawesome.css" rel="stylesheet">
-                    <link href="vendor/fontawesome/css/brands.css" rel="stylesheet">
-                    <link href="vendor/fontawesome/css/solid.css" rel="stylesheet">
-                    <link
-                        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-                        rel="stylesheet">
-
-                    <!-- Custom styles for this template -->
-                    <link href="css/sb-admin-2.css" rel="stylesheet">
-
-                    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
-
-                </head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="description" content="">
+            <meta name="author" content="">
+    
+            <title> dashboard </title>
+    
+            <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+            <!-- CSS only -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+                integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+            <link rel="stylesheet" href="/style.css">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css" />
+            <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+            <link href="vendor/fontawesome/css/fontawesome.css" rel="stylesheet">
+            <link href="vendor/fontawesome/css/brands.css" rel="stylesheet">
+            <link href="vendor/fontawesome/css/solid.css" rel="stylesheet">
+            <link
+                href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+                rel="stylesheet">
+    
+            <!-- Custom styles for this template -->
+            <link href="css/sb-admin-2.css" rel="stylesheet">
+    
+            <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
+    
+        </head>
 
                 <body id="page-top">
 
@@ -1448,19 +1448,22 @@ app.get('/animal/:id', function (request, response) {
                     <!-- Bootstrap core JavaScript-->
                     <script src="vendor/jquery/jquery.min.js"></script>
                     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+                
                     <!-- Core plugin JavaScript-->
                     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-                    <!-- Custom scripts for all pages-->
-                    <script src="js/sb-admin-2.min.js"></script>
-
+                
                     <!-- Page level plugins -->
-                    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-                    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+                    <script src="vendor/chart.js/Chart.min.js"></script>
+                
                     <!-- Page level custom scripts -->
-                    <script src="js/demo/datatables-demo.js"></script>
+                    <script src="vendor/chart.js/chart-area-demo.js"></script>
+                    <script src="vendor/chart.js/chart-pie-demo.js"></script>
+                
+                    <!-- Page level plugins -->
+                    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+                
+                    <!-- Page level custom scripts -->
+                    <script src="vendor/chart.js/datatables-demo.js"></script>
 
                 </body>
             </html>
