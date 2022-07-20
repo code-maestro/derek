@@ -78,7 +78,7 @@ app.get('/table', function (request, response) {
 // charts
 app.get('/chart', function (request, response) {
     // Render login template
-    response.sendFile(path.join(__dirname + '/home.html'));
+    response.sendFile(path.join(__dirname + '/public/home.html'));
 });
 
 
@@ -206,7 +206,7 @@ app.get('/home', function (request, response) {
 
     if (user_id) {
 
-        response.sendFile(path.join(__dirname + '/home.html'));
+        response.sendFile(path.join(__dirname + '/public/home.html'));
 
     } else {
         
@@ -218,8 +218,8 @@ app.get('/home', function (request, response) {
 // New Animal Modal
 app.get('/add-animal', function (request, response) {
     // Get saved data from sessionStorage
-    let data = storage.getItem('email');
-    if (data) { response.sendFile(path.join(__dirname + '/add_animal.html')); }
+    let data = storage.getItem('id');
+    if (data) { response.sendFile(path.join(__dirname + '/public/add_animal.html')); }
 });
 
 
@@ -227,17 +227,10 @@ app.get('/add-animal', function (request, response) {
 app.get('/animal/:id', function (request, response) {
 
     const animal_name = request.params.id;
-
-    const user_email = storage.getItem('email');
-    const user_id = storage.getItem('id');
-
     const all_animals = storage.getItem('animals_list');
-
     const isSelected = all_animals.includes(animal_name);
 
     if (isSelected == true) {
-
-        console.log(" **** it's in **** ");
 
         // Render login template
         response.send(
@@ -843,6 +836,7 @@ app.get('/animal/:id', function (request, response) {
 });
 
 
+// Add animals at the farm to DB
 app.post('/add_animal', function (request, response) {
     // Capture the input fields
     const animal_name = request.body.animal_name;
@@ -864,6 +858,7 @@ app.post('/add_animal', function (request, response) {
 })
 
 
+// Update farmer's biodata 
 app.post('/update_bio', function (request, response) {
 
     console.log(request.body);
@@ -891,19 +886,10 @@ app.post('/save', function (request, response) {
 
     const fruits = ["cow", "goat", "sheep", "rabbit", "pig", "turkey", "chicken", "duck"];
 
-    console.log(fruits.includes(animal_name));
-
     if (fruits.includes(animal_name)) {
 
-        console.log(" e e e e e " + animal_name + " e e e e e ");
-
         connection.query(`INSERT INTO at_farm (farma_id, animals) VALUES ( ${user_id}, '${animal_name}' )`, function (error, results, fields) {
-
-            // connection.query('INSERT INTO animals_at_farm (farma_id, ' + animal_name + ' ) VALUES (?, ?);', [user_id, 1], function (error, results, fields) {
-            // farma_id, cow, goat sheep rabbit, pig, turkey, chicken,duck
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            // If the account exists
+            if (error) throw error;s
         });
 
     } else {
