@@ -231,12 +231,12 @@ app.get('/animal/:id', function (request, response) {
     // const isSelected = all_animals.includes(animal_name);
     
     if (animal_name == 'cow') {
-    if (isSelected == true) {
+    // if (isSelected == true) {
 
         // response.sendFile(path.join(__dirname + '/../public/dashboard.html'));
 
         // Render login template
-        response.send(
+        // response.send(
         //     `
         //     <!DOCTYPE html>
         //         <html lang="en">
@@ -824,11 +824,8 @@ app.get('/animal/:id', function (request, response) {
         //                 <script src="../vendor/chart.js/datatables-demo.js"></script>
 
         //             </body>
-
         //         </html>
-
         //     `
-
         // );
 
     } else {
