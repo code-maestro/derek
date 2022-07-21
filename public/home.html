@@ -51,6 +51,10 @@
                 <p class="h4"> <strong> <span id="select-heading"> Select animals at your farm </span> </strong> </p>
               </div>
 
+              <div class="col-3">
+                <!-- <p class="h4"> <strong> <span id="select-heading"> Select animals at your farm </span> </strong> </p> -->
+              </div>
+
               <div class="col-3" id="add-new">
                 <a data-toggle="modal" data-target="#newAnimalModal" href="#">
                   <div class="rounded">
@@ -62,21 +66,19 @@
               </div>
 
               <div class="col-3" id="add-new">
-                <a data-toggle="modal" data-target="#newAnimalModal" href="#">
+                <a href="/logout">
                   <div class="rounded">
-                    <button class="btn btn-link shadow-sm"> &nbsp;&nbsp; <strong> add new </strong> &nbsp;&nbsp; <i
-                        class="fa-solid fa-circle-plus"></i>
+                    <button class="btn btn-link shadow-sm"> &nbsp;&nbsp; <strong> log out </strong> &nbsp;&nbsp;
                     </button>
                   </div>
                 </a>
               </div>
+
             </div>
           </div>
 
           <div class="container d-flex justify-content-center">
-
             <div class="row text-center" id="ddaa">
-
               <!-- COWS -->
               <div class="col-auto" onclick="selected('cow')">
                 <div class="rounded shadow-sm py-5 px-4" id="cows">
@@ -141,7 +143,8 @@
     </div>
 
     <!-- New Animal Modal-->
-    <div class="modal fade" id="newAnimalModal" tabindex="-1" role="dialog" aria-labelledby="newAnimalLabel" aria-hidden="true">
+    <div class="modal fade" id="newAnimalModal" tabindex="-1" role="dialog" aria-labelledby="newAnimalLabel"
+      aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <form id="contact-form" role="form" method="POST" action="/add_animal">
@@ -267,10 +270,6 @@
       }
 
       renderUsers();
-
-      function selected(params) {
-        console.log(params);
-      }
 
       // Initial Selection Function
       function selected(params) {
