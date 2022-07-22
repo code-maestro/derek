@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const storage = require('sessionstorage');
+const multer = require('multer');
 
 const connection = mysql.createConnection({
     host: 'db4free.net',
@@ -15,10 +16,6 @@ const app = express();
 
 // Global variables
 const oneDay = 1000 * 60 * 60 * 24;
-let sessions;
-
-const nimals = ["cows", "goats", "sheep", "pigs"];
-
 
 app.use(session({
     secret: "session",
@@ -30,6 +27,45 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
+
+
+// var upload = multer({ dest: "Upload_folder_name" })
+// If you do not want to use diskStorage then uncomment it
+var store = multer.diskStorage({
+    destination: function (req, file, cb) {
+
+        // Uploads is the Upload_folder_name
+        cb(null, "static/images")
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + "-" + Date.now() + ".jpg")
+    }
+})
+
+// Define the maximum size for uploading
+// picture i.e. 1 MB. it is optional
+const maxSize = 1 * 1000 * 1000;
+
+var upload = multer({
+    storage: store,
+    limits: { fileSize: maxSize },
+    fileFilter: function (req, file, cb) {
+
+        // Set the filetypes, it is optional
+        var filetypes = /jpeg|jpg|png/;
+        var mimetype = filetypes.test(file.mimetype);
+
+        var extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+
+        if (mimetype && extname) {
+            return cb(null, true);
+        }
+
+        cb("Error: File upload only supports the " + "following filetypes - " + filetypes);
+    }
+
+    // mypic is the name of file attribute
+}).single("animal_pic");
 
 
 // First page
@@ -101,9 +137,9 @@ app.post('/register', function (request, response) {
     let password2 = request.body.password2;
 
     if (mail !== null && password2 !== null) {
-    // Execute SQL query that'll insert into the farma table
+        // Execute SQL query that'll insert into the farma table
         connection.query('INSERT INTO farma (mail, password) VALUES (?, ?);', [mail, password2], function (error, results, fields) {
-        // If there is an issue with the query, output the error
+            // If there is an issue with the query, output the error
             if (error) throw error;
             // If the account exists
 
@@ -162,7 +198,7 @@ app.get('/before-home', function (request, response) {
 
     if (user_id) {
         connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=${user_id}`, function (error, results, fields) {
-        
+
             // If there is an issue with the query, output the error
             if (error) throw error;
 
@@ -182,7 +218,7 @@ app.get('/before-home', function (request, response) {
                         function lastNested(im) { animals.push(im.replace(/[^\w]/g, "")); }
                     }
                 }
-                
+
                 storage.setItem('animals_list', animals)
 
                 response.send(animals);
@@ -209,7 +245,7 @@ app.get('/home', function (request, response) {
         response.sendFile(path.join(__dirname + '/public/home.html'));
 
     } else {
-        
+
         response.redirect('/');
     }
 });
@@ -223,15 +259,47 @@ app.get('/add-animal', function (request, response) {
 });
 
 
+// TODO test image uploads
+// Add animals at the farm to DB
+app.post('/add_animal', function (request, response) {
+    // Capture the input fields
+    const animal_name = request.body.animal_name;
+    const number = request.body.number;
+    const gender = request.body.gender;
+    const dob = request.body.dob;
+    const description = request.body.description;
+
+    // Error MiddleWare for multer file upload, so if any error occurs, the image would not be uploaded!
+    upload(req, res, function (err) {
+        if (err) {
+            // 1MB or uploading different file type)
+            res.send(err)
+        } else {
+            // SUCCESS, image successfully uploaded
+            res.send("Success, Image uploaded!")
+        }
+    })
+
+    connection.query('INSERT INTO animals (animal_type, count) VALUES (?, ?);', [animal_name, number], function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        response.redirect('/home');
+        response.end();
+
+    });
+})
+
+
 // New Animal Modal
 app.get('/animal/:id', function (request, response) {
 
     const animal_name = request.params.id;
     // const all_animals = storage.getItem('animals_list');
     // const isSelected = all_animals.includes(animal_name);
-    
+
     if (animal_name == 'cow') {
-    // if (isSelected == true) {
+        // if (isSelected == true) {
 
         // response.sendFile(path.join(__dirname + '/../public/dashboard.html'));
 
@@ -806,20 +874,20 @@ app.get('/animal/:id', function (request, response) {
         //                 <!-- Bootstrap core JavaScript-->
         //                 <script src="../vendor/jquery/jquery.min.js"></script>
         //                 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-                    
+
         //                 <!-- Core plugin JavaScript-->
         //                 <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-                    
+
         //                 <!-- Page level plugins -->
         //                 <script src="../vendor/chart.js/Chart.min.js"></script>
-                    
+
         //                 <!-- Page level custom scripts -->
         //                 <script src="../vendor/chart.js/chart-area-demo.js"></script>
         //                 <script src="../vendor/chart.js/chart-pie-demo.js"></script>
-                    
+
         //                 <!-- Page level plugins -->
         //                 <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
-                    
+
         //                 <!-- Page level custom scripts -->
         //                 <script src="../vendor/chart.js/datatables-demo.js"></script>
 
@@ -835,33 +903,8 @@ app.get('/animal/:id', function (request, response) {
 });
 
 
-// Add animals at the farm to DB
-app.post('/add_animal', function (request, response) {
-    // Capture the input fields
-    const animal_name = request.body.animal_name;
-    const number = request.body.number;
-    const gender = request.body.gender;
-    const dob = request.body.dob;
-    const description = request.body.description;
-
-    console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description);
-
-    connection.query('INSERT INTO animals (animal_type, count) VALUES (?, ?);', [animal_name, number], function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        response.redirect('/home');
-        response.end();
-
-    });
-})
-
-
 // Update farmer's biodata 
 app.post('/update_bio', function (request, response) {
-
-    console.log(request.body);
-
     // Capture the input fields
     let animal_name = request.body.animal_name;
     let number = request.body.number;
@@ -869,26 +912,19 @@ app.post('/update_bio', function (request, response) {
     let dob = request.body.dob;
     let description = request.body.description;
 
-    console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description);
-
 });
 
 
 // Save
 app.post('/save', function (request, response) {
-
     const user_id = storage.getItem('id');
-
     const animal_name = request.body.foo;
-
-    console.log(animal_name);
 
     const fruits = ["cow", "goat", "sheep", "rabbit", "pig", "turkey", "chicken", "duck"];
 
     if (fruits.includes(animal_name)) {
-
         connection.query(`INSERT INTO at_farm (farma_id, animals) VALUES ( ${user_id}, '${animal_name}' )`, function (error, results, fields) {
-            if (error) throw error;s
+            if (error) throw error; s
         });
 
     } else {
@@ -897,4 +933,7 @@ app.post('/save', function (request, response) {
 });
 
 
-app.listen(3000);
+app.listen(3000, function (error) {
+    if (error) throw error
+    console.log("Server created Successfully on PORT 8080");
+});
