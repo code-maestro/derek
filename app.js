@@ -132,6 +132,9 @@ app.post('/auth', function (request, response) {
             // If the account exists
             if (results.length > 0) {
                 // Authenticate the user
+
+                const row = Object.values(JSON.parse(JSON.stringify(results)));
+                
                 let id;
                 row.forEach((v) => id = v.farmer_id);
 
