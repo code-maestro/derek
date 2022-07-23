@@ -37,7 +37,24 @@
 //   console.log("la farge");
 // }
 
-const word = ' +* we THERE!!!'
+// const word = ' +* we THERE!!!'
 
-console.log(word.replace(/[^\w]/g, ""))
+// console.log(word.replace(/[^\w]/g, ""))
 
+var myArr = [{x1:0,x2:2000,y:300},{x1:50,x2:250,y:500}];
+
+console.log(myArr);
+console.log(" ");
+console.log("************");
+console.log(" ");
+console.log(" ");
+
+for (const i of myArr) {
+  console.log(i.x1);
+}
+
+console.log(" ");
+
+// myArrString = JSON.stringify(myArr);
+
+// console.log(myArrString);
