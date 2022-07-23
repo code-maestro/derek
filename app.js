@@ -28,23 +28,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 
+let image_name;
 
 // Function to upload the image of animal
 function uploadImage(params) {
     const store = multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, 'static/images/');
-      },
-    
-      filename: function (req, file, cb) {
-        cb(null, file.originalname);
-      }
+        destination: function (req, file, cb) { cb(null, 'static/images/'); },
+
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+            storage.setItem('img_url', file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        }
     });
-    
+
     var upload = multer({ storage: store })
     return upload;
-  }
-  
+}
+
 
 // First page
 app.get('/', function (request, response) {
@@ -814,54 +814,72 @@ app.get('/animal/:id', function (request, response) {
 
 
 // Add animals at the farm to DB
-app.post('/add-animal', uploadImage().single('image'), async (req, res) => {
-    // Capture the input fields
-    // const animal_name = request.body.animal_name;
-    // const number = request.body.number;
-    // const gender = request.body.gender;
-    // const dob = request.body.dob;
-    // const description = request.body.description;
+app.post('/save', uploadImage().single('image'), async (req, res) => {
 
+    console.log(req.file);
 
-    if (!req.file) {
-        console.log("No file received");
-        return res.send({
-            success: false
-        });
-
-    } else {
-        console.log('file received');
-
-        // connection.query('INSERT INTO animals (animal_type, count) VALUES (?, ?);', [animal_name, number], function (error, results, fields) {
-        //     // If there is an issue with the query, output the error
-        //     if (error) throw error;
-        //     // If the account exists
-        //     response.redirect('/home');
-        //     response.end();
-
-        // });
-
-        return res.send({
-            success: true
-        })
+    const animal_at_farm = {
+        type: req.body.animal_type,
+        number: req.body.number,
+        image_url: storage.getItem('img_url'),
+        desc: req.body.description
     }
+
+    console.log([animal_at_farm]);
+
+    res.redirect('/');
+});
+
+
+// Add animals at the farm to DB
+app.post('/add-animal', uploadImage().single('image'), async (request, response) => {
+
+    // Getting the logged in farmer's id
+    let f_id = storage.getItem('id');
+    let image_url = storage.getItem('img_url');
+
+    // Capture the input fields
+    const animal_type = request.body.animal_type;
+    const number = request.body.number;
+    const rdate = request.body.registration_date;
+    const description = request.body.description;
+
+    const animal_at_farm_details = {
+        name: animal_type,
+        image_url: image_url,
+        desc: description
+    }
+
+    // Function to save to DB
+    function animalDetailsToDB(id, array) {
+        console.log(id);
+        console.log(array);
+
+        // Query to save animal details
+        connection.query('INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (?, ?);', [array, id], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            // If the account exists
+            response.send(
+                `<div class="alert alert-success" role="alert">
+                   EVERYTHING WORKS
+                </div>
+            `);
+
+            response.redirect('/home');
+            response.end();
+        });
+    }
+
+    animalDetailsToDB(f_id, [animal_at_farm_details])
+
 });
 
 
 // Update farmer's biodata 
 app.post('/update_bio', function (request, response) {
-
-    console.log(request.body);
-
     // Capture the input fields
     let animal_name = request.body.animal_name;
-    let number = request.body.number;
-    let gender = request.body.gender;
-    let dob = request.body.dob;
-    let description = request.body.description;
-
-    console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description);
-
 });
 
 
