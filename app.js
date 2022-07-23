@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const storage = require('sessionstorage');
+const multer = require('multer')
 
 const connection = mysql.createConnection({
     host: 'db4free.net',
@@ -15,10 +16,6 @@ const app = express();
 
 // Global variables
 const oneDay = 1000 * 60 * 60 * 24;
-let sessions;
-
-const nimals = ["cows", "goats", "sheep", "pigs"];
-
 
 app.use(session({
     secret: "session",
@@ -32,16 +29,30 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 
 
+// Function to upload the image of animal
+function uploadImage(params) {
+    const store = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, 'static/images/');
+      },
+    
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      }
+    });
+    
+    var upload = multer({ storage: store })
+    return upload;
+  }
+  
+
 // First page
 app.get('/', function (request, response) {
-
     // Get saved data from sessionStorage
     let data = storage.getItem('id');
-
     if (data) {
         response.redirect('/home');
     } else {
-        console.log("SIRRR");
         response.sendFile(path.join(__dirname + '/public/login.html'));
     }
 });
@@ -54,41 +65,11 @@ app.get('/register', function (request, response) {
 });
 
 
-// ui-tests
-app.get('/test', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/test.html'));
-});
-
-
-// ui-tests
-app.get('/dashboard', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/dashboard.html'));
-});
-
-
-// tables
-app.get('/table', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/tables.html'));
-});
-
-
-// charts
-app.get('/chart', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/home.html'));
-});
-
-
 // Logout
 app.get('/logout', (req, res) => {
     req.session.destroy();
-
     // Remove all saved data from sessionStorage
     storage.clear();
-
     res.redirect('/');
 });
 
@@ -101,9 +82,9 @@ app.post('/register', function (request, response) {
     let password2 = request.body.password2;
 
     if (mail !== null && password2 !== null) {
-    // Execute SQL query that'll insert into the farma table
+        // Execute SQL query that'll insert into the farma table
         connection.query('INSERT INTO farma (mail, password) VALUES (?, ?);', [mail, password2], function (error, results, fields) {
-        // If there is an issue with the query, output the error
+            // If there is an issue with the query, output the error
             if (error) throw error;
             // If the account exists
 
@@ -132,9 +113,8 @@ app.post('/auth', function (request, response) {
             // If the account exists
             if (results.length > 0) {
                 // Authenticate the user
-
                 const row = Object.values(JSON.parse(JSON.stringify(results)));
-                
+
                 let id;
                 row.forEach((v) => id = v.farmer_id);
 
@@ -160,12 +140,11 @@ app.post('/auth', function (request, response) {
 app.get('/before-home', function (request, response) {
 
     const user_id = storage.getItem('id');
-
     let animals = []
 
     if (user_id) {
         connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=${user_id}`, function (error, results, fields) {
-        
+
             // If there is an issue with the query, output the error
             if (error) throw error;
 
@@ -185,7 +164,7 @@ app.get('/before-home', function (request, response) {
                         function lastNested(im) { animals.push(im.replace(/[^\w]/g, "")); }
                     }
                 }
-                
+
                 storage.setItem('animals_list', animals)
 
                 response.send(animals);
@@ -202,17 +181,13 @@ app.get('/before-home', function (request, response) {
 
 // First page
 app.get('/home', function (request, response) {
-
     // Get saved data from sessionStorage
     // const user_email = storage.getItem('email');
     const user_id = storage.getItem('id');
 
     if (user_id) {
-
         response.sendFile(path.join(__dirname + '/public/home.html'));
-
     } else {
-        
         response.redirect('/');
     }
 });
@@ -232,9 +207,9 @@ app.get('/animal/:id', function (request, response) {
     const animal_name = request.params.id;
     // const all_animals = storage.getItem('animals_list');
     // const isSelected = all_animals.includes(animal_name);
-    
+
     if (animal_name == 'cow') {
-    // if (isSelected == true) {
+        // if (isSelected == true) {
 
         // response.sendFile(path.join(__dirname + '/../public/dashboard.html'));
 
@@ -809,20 +784,20 @@ app.get('/animal/:id', function (request, response) {
         //                 <!-- Bootstrap core JavaScript-->
         //                 <script src="../vendor/jquery/jquery.min.js"></script>
         //                 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-                    
+
         //                 <!-- Core plugin JavaScript-->
         //                 <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-                    
+
         //                 <!-- Page level plugins -->
         //                 <script src="../vendor/chart.js/Chart.min.js"></script>
-                    
+
         //                 <!-- Page level custom scripts -->
         //                 <script src="../vendor/chart.js/chart-area-demo.js"></script>
         //                 <script src="../vendor/chart.js/chart-pie-demo.js"></script>
-                    
+
         //                 <!-- Page level plugins -->
         //                 <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
-                    
+
         //                 <!-- Page level custom scripts -->
         //                 <script src="../vendor/chart.js/datatables-demo.js"></script>
 
@@ -839,25 +814,38 @@ app.get('/animal/:id', function (request, response) {
 
 
 // Add animals at the farm to DB
-app.post('/add_animal', function (request, response) {
+app.post('/add-animal', uploadImage().single('image'), async (req, res) => {
     // Capture the input fields
-    const animal_name = request.body.animal_name;
-    const number = request.body.number;
-    const gender = request.body.gender;
-    const dob = request.body.dob;
-    const description = request.body.description;
+    // const animal_name = request.body.animal_name;
+    // const number = request.body.number;
+    // const gender = request.body.gender;
+    // const dob = request.body.dob;
+    // const description = request.body.description;
 
-    console.log(animal_name + ' ' + number + ' ' + gender + ' ' + dob + ' ' + description);
 
-    connection.query('INSERT INTO animals (animal_type, count) VALUES (?, ?);', [animal_name, number], function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        response.redirect('/home');
-        response.end();
+    if (!req.file) {
+        console.log("No file received");
+        return res.send({
+            success: false
+        });
 
-    });
-})
+    } else {
+        console.log('file received');
+
+        // connection.query('INSERT INTO animals (animal_type, count) VALUES (?, ?);', [animal_name, number], function (error, results, fields) {
+        //     // If there is an issue with the query, output the error
+        //     if (error) throw error;
+        //     // If the account exists
+        //     response.redirect('/home');
+        //     response.end();
+
+        // });
+
+        return res.send({
+            success: true
+        })
+    }
+});
 
 
 // Update farmer's biodata 
@@ -879,25 +867,55 @@ app.post('/update_bio', function (request, response) {
 
 // Save
 app.post('/save', function (request, response) {
-
     const user_id = storage.getItem('id');
-
     const animal_name = request.body.foo;
-
-    console.log(animal_name);
-
     const fruits = ["cow", "goat", "sheep", "rabbit", "pig", "turkey", "chicken", "duck"];
-
     if (fruits.includes(animal_name)) {
-
         connection.query(`INSERT INTO at_farm (farma_id, animals) VALUES ( ${user_id}, '${animal_name}' )`, function (error, results, fields) {
-            if (error) throw error;s
+            if (error) throw error; s
         });
-
     } else {
         console.log("la farge failure");
     }
 });
+
+
+
+
+
+// TESTING STUFF
+// TODO Delete after
+
+// ui-tests
+app.get('/test', function (request, response) {
+    // Render login template
+    response.sendFile(path.join(__dirname + '/public/test.html'));
+});
+
+
+// ui-tests
+app.get('/dashboard', function (request, response) {
+    // Render login template
+    response.sendFile(path.join(__dirname + '/public/dashboard.html'));
+});
+
+
+// tables
+app.get('/table', function (request, response) {
+    // Render login template
+    response.sendFile(path.join(__dirname + '/public/tables.html'));
+});
+
+
+// charts
+app.get('/chart', function (request, response) {
+    // Render login template
+    response.sendFile(path.join(__dirname + '/public/home.html'));
+});
+
+
+
+
 
 
 app.listen(3000);
