@@ -838,16 +838,10 @@ app.post('/add-animal', uploadImage().single('image'), async (request, response)
     let f_id = storage.getItem('id');
     let image_url = storage.getItem('img_url');
 
-    // Capture the input fields
-    const animal_type = request.body.animal_type;
-    const number = request.body.number;
-    const rdate = request.body.registration_date;
-    const description = request.body.description;
-
     const animal_at_farm_details = {
-        name: animal_type,
+        name: request.body.animal_type,
         image_url: image_url,
-        desc: description
+        desc: request.body.description
     }
 
     // Function to save to DB
