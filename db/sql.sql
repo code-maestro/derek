@@ -47,4 +47,8 @@ VALUES
 
 SELECT id, list_of_animals FROM at_farm WHERE list_of_animals IS NOT NULL;
 
+UPDATE Customers
+SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'
+WHERE CustomerID = 1;
+
 UPDATE y SET x=JSON_ARRAY_APPEND(x,"$","#");

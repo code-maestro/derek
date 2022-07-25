@@ -240,7 +240,6 @@
         let container = document.querySelector('#ddaa');
 
         if (![false, 0, "", null, undefined, NaN].includes(users)) {
-
           users.forEach(user => {
             htmlSegment = `
             <!-- animal card -->
@@ -273,7 +272,7 @@
 
       // Initial Selection Function
       function selected(params) {
-        console.log(params + " hell is hot")
+        console.log(params + " Hell is hot")
         const clicked = document.getElementById(params + "s");
         clicked.style.backgroundColor = '#cdffcd';
         document.getElementById(params + "ss").innerText = 'SELECTED';

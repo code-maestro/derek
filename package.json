@@ -11,7 +11,8 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.18",
     "sessionstorage": "^0.1.0",
-    "sharp": "^0.30.7"
+    "sharp": "^0.30.7",
+    "uuid": "^8.3.2"
   },
   "name": "auth",
   "version": "1.0.0",

@@ -3,7 +3,8 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const storage = require('sessionstorage');
-const multer = require('multer')
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 
 const connection = mysql.createConnection({
     host: 'db4free.net',
@@ -30,20 +31,20 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 let image_name;
 
-// Function to upload the image of animal
+// Function to upload the image
 function uploadImage(params) {
     const store = multer.diskStorage({
-        destination: function (req, file, cb) { cb(null, 'static/images/'); },
-
-        filename: function (req, file, cb) {
-            cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-            storage.setItem('img_url', file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-        }
+      destination: function (req, file, cb) { cb(null, 'static/images/'); },
+  
+      filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        storage.setItem('img_url', file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+      }
     });
-
+  
     var upload = multer({ storage: store })
     return upload;
-}
+  }
 
 
 // First page
@@ -77,13 +78,22 @@ app.get('/logout', (req, res) => {
 // Registering a user
 app.post('/register', function (request, response) {
     // Capture the input fields
-    let mail = request.body.mail;
-    let password = request.body.password;
-    let password2 = request.body.password2;
+    const f_id = uuidv4();
+    const mail = request.body.mail;
+    const password = request.body.password;
+    const password2 = request.body.password2;
 
     if (mail !== null && password2 !== null) {
         // Execute SQL query that'll insert into the farma table
-        connection.query('INSERT INTO farma (mail, password) VALUES (?, ?);', [mail, password2], function (error, results, fields) {
+        connection.query(`INSERT INTO farma (farma_id, mail, password) VALUES (?, ?, ?);`, [f_id, mail, password], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            // If the account exists
+            response.redirect('/');
+            response.end();
+        });
+
+        connection.query('INSERT INTO animals_at_farm (farma_id) VALUES (?);', [f_id], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
             // If the account exists
@@ -91,6 +101,7 @@ app.post('/register', function (request, response) {
             response.redirect('/');
             response.end();
         });
+
     } else {
         alert(' EMPTY DATA FEILDS !');
         response.end();
@@ -107,7 +118,7 @@ app.post('/auth', function (request, response) {
     // Ensure the input fields exists and are not empty
     if (mail && password) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
-        connection.query('SELECT farmer_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
+        connection.query('SELECT farma_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
             // If the account exists
@@ -116,7 +127,7 @@ app.post('/auth', function (request, response) {
                 const row = Object.values(JSON.parse(JSON.stringify(results)));
 
                 let id;
-                row.forEach((v) => id = v.farmer_id);
+                row.forEach((v) => id = v.farma_id);
 
                 // Save data to sessionStorage
                 storage.setItem('email', mail);
@@ -138,7 +149,6 @@ app.post('/auth', function (request, response) {
 
 // Filtering cards to be shown
 app.get('/before-home', function (request, response) {
-
     const user_id = storage.getItem('id');
     let animals = []
 
@@ -814,9 +824,7 @@ app.get('/animal/:id', function (request, response) {
 
 
 // Add animals at the farm to DB
-app.post('/save', uploadImage().single('image'), async (req, res) => {
-
-    console.log(req.file);
+app.post('/save', async (req, res) => {
 
     const animal_at_farm = {
         type: req.body.animal_type,
@@ -825,7 +833,18 @@ app.post('/save', uploadImage().single('image'), async (req, res) => {
         desc: req.body.description
     }
 
-    console.log([animal_at_farm]);
+    const toDB = JSON.stringify(animal_at_farm_details);
+    
+    // Query to update the list of animals for all the farmer
+    connection.query(`UPDATE animals_at_farm SET list_of_animals =  WHERE CustomerID = 1;`, [f_id], function (error, results, fields) {
+    // connection.query('UPDATE INTO animals_at_farm (farma_id) VALUES (?);', [f_id], function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+
+        response.redirect('/');
+        response.end();
+    });
 
     res.redirect('/');
 });
@@ -838,35 +857,32 @@ app.post('/add-animal', uploadImage().single('image'), async (request, response)
     let f_id = storage.getItem('id');
     let image_url = storage.getItem('img_url');
 
-    const animal_at_farm_details = {
+    console.log("*****" + image_url);
+
+    const animal_at_farm_details = [{
         name: request.body.animal_type,
         image_url: image_url,
         desc: request.body.description
-    }
+    }];
 
-    // Function to save to DB
-    function animalDetailsToDB(id, array) {
-        console.log(id);
-        console.log(array);
+    const toDB = JSON.stringify(animal_at_farm_details);
 
-        // Query to save animal details
-        connection.query('INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (?, ?);', [array, id], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            // If the account exists
-            response.send(
-                `<div class="alert alert-success" role="alert">
+    console.log(toDB);
+
+    // Query to save animal details
+    connection.query('INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (?, ?);', [toDB, f_id] , function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        response.send(
+            `<div class="alert alert-success" role="alert">
                    EVERYTHING WORKS
                 </div>
             `);
 
-            response.redirect('/home');
-            response.end();
-        });
-    }
-
-    animalDetailsToDB(f_id, [animal_at_farm_details])
-
+        // response.redirect('/home');
+        response.end();
+    });
 });
 
 
@@ -878,7 +894,7 @@ app.post('/update_bio', function (request, response) {
 
 
 // Save
-app.post('/save', function (request, response) {
+app.post('/checked', function (request, response) {
     const user_id = storage.getItem('id');
     const animal_name = request.body.foo;
     const fruits = ["cow", "goat", "sheep", "rabbit", "pig", "turkey", "chicken", "duck"];
