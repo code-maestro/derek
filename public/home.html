@@ -82,7 +82,8 @@
               <!-- COWS -->
               <div class="col-auto" onclick="selected('cow')">
                 <div class="rounded shadow-sm py-5 px-4" id="cows">
-                  <img src="https://ucarecdn.com/08c56406-391c-495c-b9ee-d0502930e5ba/-/preview/-/quality/smart/" alt=""
+                  <img id="cow-img"
+                    src="https://ucarecdn.com/08c56406-391c-495c-b9ee-d0502930e5ba/-/preview/-/quality/smart/" alt=""
                     width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                   <h5 class="mb-0"> CATTLE </h5>
                   <span class="small text-uppercase text-muted" id="cowss"> </span>
@@ -93,7 +94,8 @@
               <!-- GOATS -->
               <div class="col-auto" onclick="selected('goat')">
                 <div class="rounded shadow-sm py-5 px-4" id="goats">
-                  <img src="https://ucarecdn.com/65125d7b-1ac5-4849-9cf4-ff4ed5870a08/-/preview/-/quality/smart/" alt=""
+                  <img id="goat-img"
+                    src="https://ucarecdn.com/65125d7b-1ac5-4849-9cf4-ff4ed5870a08/-/preview/-/quality/smart/" alt=""
                     width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                   <h5 class="mb-0"> GOATS </h5>
                   <span class="small text-uppercase text-muted" id="goatss"> </span>
@@ -104,7 +106,8 @@
               <!-- SHEEP -->
               <div class="col-auto" onclick="selected('sheep')">
                 <div class="rounded shadow-sm py-5 px-4" id="sheeps">
-                  <img src="https://ucarecdn.com/0a0d896d-9d43-42f8-b0fd-cb75ecd28afd/-/preview/-/quality/smart/" alt=""
+                  <img id="sheep-img"
+                    src="https://ucarecdn.com/0a0d896d-9d43-42f8-b0fd-cb75ecd28afd/-/preview/-/quality/smart/" alt=""
                     width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                   <h5 class="mb-0"> SHEEP </h5>
                   <span class="small text-uppercase text-muted" id="sheepss"> </span>
@@ -115,7 +118,8 @@
               <!-- PIGS -->
               <div class="col-auto" onclick="selected('pig')">
                 <div class="rounded shadow-sm py-5 px-4" id="pigs">
-                  <img src="https://ucarecdn.com/d7e3016b-3317-4d83-8260-18124b77605f/-/preview/-/quality/smart/" alt=""
+                  <img id="pig-img"
+                    src="https://ucarecdn.com/d7e3016b-3317-4d83-8260-18124b77605f/-/preview/-/quality/smart/" alt=""
                     width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                   <h5 class="mb-0"> PIGS </h5>
                   <span class="small text-uppercase text-muted" id="pigss"></span>
@@ -126,7 +130,8 @@
               <!-- RABBITS -->
               <div class="col-auto" onclick="selected('rabbit')">
                 <div class="rounded shadow-sm py-5 px-4" id="rabbits">
-                  <img src="https://ucarecdn.com/d7e3016b-3317-4d83-8260-18124b77605f/-/preview/-/quality/smart/" alt=""
+                  <img id="rabbit-img"
+                    src="https://ucarecdn.com/d7e3016b-3317-4d83-8260-18124b77605f/-/preview/-/quality/smart/" alt=""
                     width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                   <h5 class="mb-0"> RABBITS </h5>
                   <span class="small text-uppercase text-muted" id="rabbitss"></span>
@@ -230,13 +235,9 @@
       }
 
       async function renderUsers() {
-
         let users = await getUsers();
-
         let html = '';
-
         let htmlSegment = '';
-
         let container = document.querySelector('#ddaa');
 
         if (![false, 0, "", null, undefined, NaN].includes(users)) {
@@ -272,29 +273,40 @@
 
       // Initial Selection Function
       function selected(params) {
-        console.log(params + " Hell is hot")
         const clicked = document.getElementById(params + "s");
         clicked.style.backgroundColor = '#cdffcd';
         document.getElementById(params + "ss").innerText = 'SELECTED';
 
-        // data to be sent to the POST request
-        fetch('/save', {
-          method: 'POST',
+        const animal_img = document.getElementById(`${params}` + "-img").src;
+
+        console.log(params + "animal_img " + animal_img);
+
+        const animal_at_farm_details = [{
+          name: params,
+          image_url: animal_img
+        }];
+
+        const toDB = JSON.stringify(animal_at_farm_details);
+
+        // POST request using fetch()
+        fetch("/save", {
+          // Adding method type
+          method: "POST",
+          // Adding body or contents to send
+          body: JSON.stringify({
+            name: params,
+            image_url: animal_img
+          }),
+          // Adding headers to the request
           headers: {
-            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-          },
-          credentials: 'include',
-          body: 'foo=' + params
+            "Content-type": "application/json; charset=UTF-8"
+          }
         })
-          .then(res.json())
-          .then(res => {
-            // Handle response
-            console.log('Response: ', res);
-          })
-          .catch(err => {
-            // Handle error
-            console.log('Error message: ', error);
-          });
+          // Converting to JSON
+          .then(response => response.json())
+          // Displaying results to console
+          .then(json => console.log(json));
+
       }
 
     </script>
