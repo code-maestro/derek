@@ -97,27 +97,22 @@ app.post('/register', function (request, response) {
             if (error) throw error;
             // If the account exists
             console.log("RESULTS" + results);
-            console.log("FIELDS " + fields );
-
-            
-            response.redirect('/');
-            response.end();
-
-            // return;
+            console.log("FIELDS " + fields);
+            return;
         });
 
-        // // connection.query(`INSERT INTO animals_at_farm (farma_id) VALUES (?);`, [f_id], function (error, results, fields) {
-        //     connection.query(`INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (JSON_ARRAY(), '${f_id}');`, function (error, results, fields) {
-        //     // connection.query(`INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (?,?);`, [JSON.stringify(animals), f_id], function (error, results, fields) {
-        //     // If there is an issue with the query, output the error
-        //     if (error) throw error;
-        //     // If the account exists
-        //     console.log("RESULTS" + results);
-        //     console.log("FIELDS " + fields );
+        connection.query(`INSERT INTO animals_at_farm (farma_id) VALUES (?);`, [f_id], function (error, results, fields) {
+            // connection.query(`INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (JSON_ARRAY(), '${f_id}');`, function (error, results, fields) {
+            // connection.query(`INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (?,?);`, [JSON.stringify(animals), f_id], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            // If the account exists
+            console.log("RESULTS" + results);
+            console.log("FIELDS " + fields);
 
-        //     response.redirect('/');
-        //     response.end();
-        // });
+            response.redirect('/');
+            response.end();
+        });
 
         // // Creating registered farma animals' table
         // connection.query(`CREATE TABLE ${from_mail} ( id INT NOT NULL AUTO_INCREMENT, animal VARCHAR(100) NULL, image_url VARCHAR(120) NULL DEFAULT NULL, count INT NULL, farma_id VARCHAR(50) NULL, PRIMARY KEY ( id ) );`, function (error, results, fields) {
@@ -185,7 +180,7 @@ app.get('/before-home', function (request, response) {
             // If there is an issue with the query, output the error
             if (error) throw error;
 
-            console.log( " BEFORE-HOME RESULTS " + results);
+            console.log(" BEFORE-HOME RESULTS " + results);
 
             results.forEach(element => {
                 if (element.list_of_animals == null) {
@@ -200,7 +195,7 @@ app.get('/before-home', function (request, response) {
 
                     const json_row = JSON.parse(JSON.stringify(results));
 
-                    console.log("JSON ROW" + json_row );
+                    console.log("JSON ROW" + json_row);
 
                     console.log("ROW" + row);
 
@@ -863,53 +858,47 @@ app.get('/animal/:id', function (request, response) {
 // Add animals at the farm to DB
 app.post('/save', async (req, res) => {
     const getDetails = JSON.parse(JSON.stringify(req.body))
-    
+
     console.log("NAME FROM FRONTEND  " + getDetails.name);
-    console.log(" URL "+getDetails.image_url);
+    console.log(" URL " + getDetails.image_url);
 
-    
     const f_id = storage.getItem('id');
-    connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}"))  WHERE farma_id = '${f_id}';`, 
-    function (error, results, fields) {
-    // connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', JSON_OBJECT("${f_id}" , "${f_id}", "${f_id}" , "${f_id}"))  WHERE farma_id = '${f_id}';`, function (error, results, fields) {
-    // connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', ?}); WHERE farma_id = ${f_id};`, [[lala]], function (error, results, fields) {
-        // connection.query('UPDATE INTO animals_at_farm (farma_id) VALUES (?);', [f_id], function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        return;
-    });
 
-    // connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id = '${f_id}';`, function (error, results, fields) {
-    //     // If there is an issue with the query, output the error
-    //     if (error) throw error;
-    //     // If the account exists
+    connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id = '${f_id}';`,
+        function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            // If the account exists
 
-    //     console.log("RESULTS" + results);
+            results.forEach(element => {
+                if (element.list_of_animals == null) {
+                    // Query to update the list of animals for the farmer with no animals
+                    connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY(JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}")) WHERE farma_id = '${f_id}';`,
+                        function (error, results, fields) {
+                            // If there is an issue with the query, output the error
+                            if (error) throw error;
+                            // If the account exists
+                            return;
+                        }
+                    );
+                } else {
+                    // Query to update the list of animals for all the farmer
+                    connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}")) WHERE farma_id = '${f_id}';`,
+                        function (error, results, fields) {
+                            // If there is an issue with the query, output the error
+                            if (error) throw error;
+                            // If the account exists
+                            return;
+                        }
+                    );
+                }
+            });
 
-    //     if (results.length > 0) {
-    //         // // Query to update the list of animals for all the farmer
-    //         connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', ?}); WHERE farma_id = ${f_id};`, [[todb]], function (error, results, fields) {
-    //             // connection.query('UPDATE INTO animals_at_farm (farma_id) VALUES (?);', [f_id], function (error, results, fields) {
-    //             // If there is an issue with the query, output the error
-    //             if (error) throw error;
-    //             // If the account exists
-    //             return;
-    //         });
-    //     } else {
-    //         // // Query to update the list of animals for all the farmer
-    //         connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY(?); WHERE farma_id = '${f_id}';`, [[todb]], function (error, results, fields) {
-    //             // connection.query('UPDATE INTO animals_at_farm (farma_id) VALUES (?);', [f_id], function (error, results, fields) {
-    //             // If there is an issue with the query, output the error
-    //             if (error) throw error;
-    //             // If the account exists
-    //             return;
-    //         });
-    //     }
+            res.redirect('/');
+            res.end();
 
-    //     res.redirect('/');
-    //     response.end();
-    // });
+        }
+    );
 });
 
 
