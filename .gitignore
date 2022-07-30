@@ -1,3 +1,7 @@
 node_modules
 
-tests
+test_dir
+
+.env
+
+equiweb.sql

@@ -8,7 +8,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title> farma - select an animal </title>
+        <title> testing </title>
 
         <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
@@ -38,6 +38,42 @@
             <div id="content-wrapper" class="d-flex flex-column">
                 <!-- Main Content -->
                 <div id="content">
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form id="contact-form" role="form" method="POST" action="/uploadPicture">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel"> Add a new animal </h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"> x </span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+
+                                        <div class="controls">
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div>
+                                                        <label for="formFileLg" class="form-label"> Upload animal
+                                                            image </label>
+                                                        <input class="form-control form-control-lg" id="animal_image"
+                                                            name="animal_image" type="file">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary btn-md btn-block"> ADD </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
 
                 </div>
             </div>
