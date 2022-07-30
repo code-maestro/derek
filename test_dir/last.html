@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>Node js Resize Image Before Upload using Multer Example - Tutsmake
+      .com</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+
+  <body>
+    <h1>Node js Resize Image Before Upload using Multer Example - tutsmake.com</h1>
+    <form action="/save" enctype="multipart/form-data" method="post">
+      <input type="text" name="animal_type" placeholder="Please enter the animal name *" required="required" data-error=" animal name is required.">
+      <input type="number" name="number" placeholder="Please enter the number of the animals  *" required="required" data-error="number of animals is required.">
+      <textarea id="form_message" name="description"  placeholder="Write animal Description." rows="4" required="required" data-error="Please, leave us a message."></textarea>
+      <input type="file" name="image" accept='image/*'>
+      <input type="submit" value="Upload">
+    </form>
+  </body>
+
+</html>

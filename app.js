@@ -4,6 +4,7 @@ const session = require('express-session');
 const path = require('path');
 const storage = require('sessionstorage');
 const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 
 const connection = mysql.createConnection({
     host: 'db4free.net',
@@ -28,56 +29,29 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 
+// Function to upload the image
+function uploadImage(params) {
+    const store = multer.diskStorage({
+        destination: function (req, file, cb) { cb(null, 'static/images/'); },
 
-// var upload = multer({ dest: "Upload_folder_name" })
-// If you do not want to use diskStorage then uncomment it
-var store = multer.diskStorage({
-    destination: function (req, file, cb) {
-
-        // Uploads is the Upload_folder_name
-        cb(null, "static/images")
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + "-" + Date.now() + ".jpg")
-    }
-})
-
-// Define the maximum size for uploading
-// picture i.e. 1 MB. it is optional
-const maxSize = 1 * 1000 * 1000;
-
-var upload = multer({
-    storage: store,
-    limits: { fileSize: maxSize },
-    fileFilter: function (req, file, cb) {
-
-        // Set the filetypes, it is optional
-        var filetypes = /jpeg|jpg|png/;
-        var mimetype = filetypes.test(file.mimetype);
-
-        var extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-
-        if (mimetype && extname) {
-            return cb(null, true);
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+            storage.setItem('img_url', file.fieldname + '-' + Date.now() + path.extname(file.originalname));
         }
+    });
 
-        cb("Error: File upload only supports the " + "following filetypes - " + filetypes);
-    }
-
-    // mypic is the name of file attribute
-}).single("animal_pic");
+    var upload = multer({ storage: store })
+    return upload;
+}
 
 
 // First page
 app.get('/', function (request, response) {
-
     // Get saved data from sessionStorage
     let data = storage.getItem('id');
-
     if (data) {
         response.redirect('/home');
     } else {
-        console.log("SIRRR");
         response.sendFile(path.join(__dirname + '/public/login.html'));
     }
 });
@@ -90,41 +64,11 @@ app.get('/register', function (request, response) {
 });
 
 
-// ui-tests
-app.get('/test', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/test.html'));
-});
-
-
-// ui-tests
-app.get('/dashboard', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/dashboard.html'));
-});
-
-
-// tables
-app.get('/table', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/tables.html'));
-});
-
-
-// charts
-app.get('/chart', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/home.html'));
-});
-
-
 // Logout
 app.get('/logout', (req, res) => {
-    req.session.destroy();
-
+    // req.session.destroy();
     // Remove all saved data from sessionStorage
     storage.clear();
-
     res.redirect('/');
 });
 
@@ -132,20 +76,49 @@ app.get('/logout', (req, res) => {
 // Registering a user
 app.post('/register', function (request, response) {
     // Capture the input fields
-    let mail = request.body.mail;
-    let password = request.body.password;
-    let password2 = request.body.password2;
+    const f_id = uuidv4();
+
+    const mail = request.body.mail;
+    const password = request.body.password;
+    const password2 = request.body.password2;
+
+    // // Regex to name a table to store the registered farmer
+    // const re = /(?<=@).*$/
+    // const from_mail = mail.replace(re, "").replace('@', '');
 
     if (mail !== null && password2 !== null) {
         // Execute SQL query that'll insert into the farma table
-        connection.query('INSERT INTO farma (mail, password) VALUES (?, ?);', [mail, password2], function (error, results, fields) {
+        connection.query(`INSERT INTO farma (farma_id, mail, password) VALUES (?, ?, ?);`, [f_id, mail, password], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
             // If the account exists
+            console.log("RESULTS" + results);
+            console.log("FIELDS " + fields);
+            return;
+        });
+
+        connection.query(`INSERT INTO animals_at_farm (farma_id) VALUES (?);`, [f_id], function (error, results, fields) {
+            // connection.query(`INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (JSON_ARRAY(), '${f_id}');`, function (error, results, fields) {
+            // connection.query(`INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (?,?);`, [JSON.stringify(animals), f_id], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            // If the account exists
+            console.log("RESULTS" + results);
+            console.log("FIELDS " + fields);
 
             response.redirect('/');
             response.end();
         });
+
+        // // Creating registered farma animals' table
+        // connection.query(`CREATE TABLE ${from_mail} ( id INT NOT NULL AUTO_INCREMENT, animal VARCHAR(100) NULL, image_url VARCHAR(120) NULL DEFAULT NULL, count INT NULL, farma_id VARCHAR(50) NULL, PRIMARY KEY ( id ) );`, function (error, results, fields) {
+        //     // If there is an issue with the query, output the error
+        //     if (error) throw error;
+        //     // If the account exists
+        //     response.redirect('/');
+        //     response.end();
+        // });
+
     } else {
         alert(' EMPTY DATA FEILDS !');
         response.end();
@@ -162,24 +135,30 @@ app.post('/auth', function (request, response) {
     // Ensure the input fields exists and are not empty
     if (mail && password) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
-        connection.query('SELECT farmer_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
+        connection.query(`SELECT a.farma_id, a.mail, a.password, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${mail}' AND a.password = '${password}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
+        // connection.query('SELECT farma_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
             // If the account exists
             if (results.length > 0) {
                 // Authenticate the user
-
                 const row = Object.values(JSON.parse(JSON.stringify(results)));
-                
+
                 let id;
-                row.forEach((v) => id = v.farmer_id);
+                row.forEach((v) => id = v.farma_id);
+
+                row.forEach(element => {
+                    if (element.list_of_animals == null) {
+                        response.redirect('/selection');
+                    } else {
+                        response.redirect('/home');
+                    }
+                });
 
                 // Save data to sessionStorage
                 storage.setItem('email', mail);
                 storage.setItem('id', id);
 
-                // Redirect to home page
-                response.redirect('/home');
             } else {
                 response.redirect(`/`);
             }
@@ -187,48 +166,26 @@ app.post('/auth', function (request, response) {
         });
     } else {
         response.send('Please enter email and/or Password!');
-        response.end();
     }
 });
 
 
 // Filtering cards to be shown
 app.get('/before-home', function (request, response) {
-
     const user_id = storage.getItem('id');
-
-    let animals = []
-
     if (user_id) {
-        connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=${user_id}`, function (error, results, fields) {
+        connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
 
             // If there is an issue with the query, output the error
             if (error) throw error;
 
-            // If the account exists
-            if (results.length > 0) {
-
-                const row = Object.values(JSON.parse(JSON.stringify(results)));
-
-                row.forEach(myFunction);
-
-                function myFunction(item) {
-                    Object.values(item).forEach(nested);
-                    function nested(item) {
-                        const words = item.split(',');
-                        words.forEach(lastNested);
-
-                        function lastNested(im) { animals.push(im.replace(/[^\w]/g, "")); }
-                    }
+            results.forEach(element => {
+                if (element.list_of_animals == null) {
+                    console.log("😒😒😒😒😒");
+                } else {
+                    response.send(JSON.parse(JSON.stringify(element.list_of_animals)));
                 }
-
-                storage.setItem('animals_list', animals)
-
-                response.send(animals);
-            }
-            else {
-                console.log("NO ANIMALS");
-            }
+            });
         })
     } else {
         console.log("PLEASE LOGIN");
@@ -238,17 +195,23 @@ app.get('/before-home', function (request, response) {
 
 // First page
 app.get('/home', function (request, response) {
-
     // Get saved data from sessionStorage
-    // const user_email = storage.getItem('email');
     const user_id = storage.getItem('id');
-
     if (user_id) {
-
         response.sendFile(path.join(__dirname + '/public/home.html'));
-
     } else {
+        response.redirect('/');
+    }
+});
 
+
+// First page
+app.get('/selection', function (request, response) {
+    // Get saved data from sessionStorage
+    const user_id = storage.getItem('id');
+    if (user_id) {
+        response.sendFile(path.join(__dirname + '/public/nohome.html'));
+    } else {
         response.redirect('/');
     }
 });
@@ -262,41 +225,8 @@ app.get('/add-animal', function (request, response) {
 });
 
 
-// TODO test image uploads
-// Add animals at the farm to DB
-app.post('/add_animal', function (request, response) {
-    // Capture the input fields
-    const animal_name = request.body.animal_name;
-    const number = request.body.number;
-    const gender = request.body.gender;
-    const dob = request.body.dob;
-    const description = request.body.description;
-
-    // Error MiddleWare for multer file upload, so if any error occurs, the image would not be uploaded!
-    upload(req, res, function (err) {
-        if (err) {
-            // 1MB or uploading different file type)
-            res.send(err)
-        } else {
-            // SUCCESS, image successfully uploaded
-            res.send("Success, Image uploaded!")
-        }
-    })
-
-    connection.query('INSERT INTO animals (animal_type, count) VALUES (?, ?);', [animal_name, number], function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        response.redirect('/home');
-        response.end();
-
-    });
-})
-
-
 // New Animal Modal
 app.get('/animal/:id', function (request, response) {
-
     const animal_name = request.params.id;
     // const all_animals = storage.getItem('animals_list');
     // const isSelected = all_animals.includes(animal_name);
@@ -902,7 +832,88 @@ app.get('/animal/:id', function (request, response) {
     } else {
         console.log("animal not at the farm ");
     }
+});
 
+
+// Add animals at the farm to DB
+app.post('/save', async (req, res) => {
+    const getDetails = JSON.parse(JSON.stringify(req.body))
+
+    console.log("NAME FROM FRONTEND  " + getDetails.name);
+    console.log(" URL " + getDetails.image_url);
+
+    const f_id = storage.getItem('id');
+
+    connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id = '${f_id}';`,
+        function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            // If the account exists
+
+            results.forEach(element => {
+                if (element.list_of_animals == null) {
+                    // Query to update the list of animals for the farmer with no animals
+                    connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY(JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}")) WHERE farma_id = '${f_id}';`,
+                        function (error, results, fields) {
+                            // If there is an issue with the query, output the error
+                            if (error) throw error;
+                            // If the account exists
+                            return;
+                        }
+                    );
+                } else {
+                    // Query to update the list of animals for all the farmer
+                    connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}")) WHERE farma_id = '${f_id}';`,
+                        function (error, results, fields) {
+                            // If there is an issue with the query, output the error
+                            if (error) throw error;
+                            // If the account exists
+                            return;
+                        }
+                    );
+                }
+            });
+
+            res.redirect('/');
+            res.end();
+
+        }
+    );
+});
+
+
+// Add animals at the farm to DB
+app.post('/add-animal', uploadImage().single('image'), async (request, response) => {
+    // Getting the logged in farmer's id
+    let f_id = storage.getItem('id');
+    let image_url = storage.getItem('img_url');
+
+    const animal_at_farm_details = [{
+        name: request.body.animal_type,
+        image_url: image_url,
+        desc: request.body.description
+    }];
+
+    const toDB = JSON.stringify(animal_at_farm_details);
+
+    console.log(toDB);
+
+    // Query to save animal details
+    connection.query(`UPDATE animals_at_farm SET list_of_animals = ${toDB} WHERE CustomerID = ${f_id};`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        response.send(
+            `   
+            <div class="alert alert-success" role="alert">
+               EVERYTHING WORKS
+            </div>
+    
+            `);
+
+        // response.redirect('/home');
+        response.end();
+    });
 });
 
 
@@ -910,33 +921,60 @@ app.get('/animal/:id', function (request, response) {
 app.post('/update_bio', function (request, response) {
     // Capture the input fields
     let animal_name = request.body.animal_name;
-    let number = request.body.number;
-    let gender = request.body.gender;
-    let dob = request.body.dob;
-    let description = request.body.description;
-
 });
 
 
 // Save
-app.post('/save', function (request, response) {
+app.post('/checked', function (request, response) {
     const user_id = storage.getItem('id');
     const animal_name = request.body.foo;
-
     const fruits = ["cow", "goat", "sheep", "rabbit", "pig", "turkey", "chicken", "duck"];
-
     if (fruits.includes(animal_name)) {
         connection.query(`INSERT INTO at_farm (farma_id, animals) VALUES ( ${user_id}, '${animal_name}' )`, function (error, results, fields) {
             if (error) throw error; s
         });
-
     } else {
         console.log("la farge failure");
     }
 });
 
 
-app.listen(3000, function (error) {
-    if (error) throw error
-    console.log("Server created Successfully on PORT 8080");
+
+
+
+// TESTING STUFF
+// TODO Delete after
+
+// ui-tests
+app.get('/test', function (request, response) {
+    // Render login template
+    response.sendFile(path.join(__dirname + '/public/test.html'));
 });
+
+
+// ui-tests
+app.get('/dashboard', function (request, response) {
+    // Render login template
+    response.sendFile(path.join(__dirname + '/public/dashboard.html'));
+});
+
+
+// tables
+app.get('/table', function (request, response) {
+    // Render login template
+    response.sendFile(path.join(__dirname + '/public/tables.html'));
+});
+
+
+// charts
+app.get('/chart', function (request, response) {
+    // Render login template
+    response.sendFile(path.join(__dirname + '/public/home.html'));
+});
+
+
+
+
+
+
+app.listen(3000);
