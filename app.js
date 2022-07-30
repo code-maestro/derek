@@ -29,8 +29,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 
-let image_name;
-
 // Function to upload the image
 function uploadImage(params) {
     const store = multer.diskStorage({
@@ -79,8 +77,6 @@ app.get('/logout', (req, res) => {
 app.post('/register', function (request, response) {
     // Capture the input fields
     const f_id = uuidv4();
-
-    const animals = [];
 
     const mail = request.body.mail;
     const password = request.body.password;
@@ -139,7 +135,8 @@ app.post('/auth', function (request, response) {
     // Ensure the input fields exists and are not empty
     if (mail && password) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
-        connection.query('SELECT farma_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
+        connection.query(`SELECT a.farma_id, a.mail, a.password, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${mail}' AND a.password = '${password}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
+        // connection.query('SELECT farma_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
             // If the account exists
@@ -150,12 +147,18 @@ app.post('/auth', function (request, response) {
                 let id;
                 row.forEach((v) => id = v.farma_id);
 
+                row.forEach(element => {
+                    if (element.list_of_animals == null) {
+                        response.redirect('/selection');
+                    } else {
+                        response.redirect('/home');
+                    }
+                });
+
                 // Save data to sessionStorage
                 storage.setItem('email', mail);
                 storage.setItem('id', id);
 
-                // Redirect to home page
-                response.redirect('/home');
             } else {
                 response.redirect(`/`);
             }
@@ -163,57 +166,24 @@ app.post('/auth', function (request, response) {
         });
     } else {
         response.send('Please enter email and/or Password!');
-        response.end();
     }
 });
 
 
-//  TODO Select the items from list_of_animals array and check if they have data, if not render the defualt values
 // Filtering cards to be shown
 app.get('/before-home', function (request, response) {
     const user_id = storage.getItem('id');
-    let animals = []
-
     if (user_id) {
         connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
 
             // If there is an issue with the query, output the error
             if (error) throw error;
 
-            console.log(" BEFORE-HOME RESULTS " + results);
-
             results.forEach(element => {
                 if (element.list_of_animals == null) {
                     console.log("😒😒😒😒😒");
                 } else {
-
-                    const theJSON = JSON.parse(JSON.stringify(element.list_of_animals))
-
-                    console.log("THE JSON ROW" + theJSON);
-
-                    const row = Object.values(JSON.parse(JSON.stringify(results)));
-
-                    const json_row = JSON.parse(JSON.stringify(results));
-
-                    console.log("JSON ROW" + json_row);
-
-                    console.log("ROW" + row);
-
-                    row.forEach(myFunction);
-
-                    function myFunction(item) {
-                        Object.values(item).forEach(nested);
-                        function nested(item) {
-                            const words = item.split(',');
-                            words.forEach(lastNested);
-
-                            function lastNested(im) { animals.push(im.replace(/[^\w]/g, "")); }
-                        }
-                    }
-
-                    storage.setItem('animals_list', animals)
-                    console.log(storage.getItem('animals_list'));
-                    response.send(animals);
+                    response.send(JSON.parse(JSON.stringify(element.list_of_animals)));
                 }
             });
         })
@@ -226,11 +196,21 @@ app.get('/before-home', function (request, response) {
 // First page
 app.get('/home', function (request, response) {
     // Get saved data from sessionStorage
-    // const user_email = storage.getItem('email');
     const user_id = storage.getItem('id');
-
     if (user_id) {
         response.sendFile(path.join(__dirname + '/public/home.html'));
+    } else {
+        response.redirect('/');
+    }
+});
+
+
+// First page
+app.get('/selection', function (request, response) {
+    // Get saved data from sessionStorage
+    const user_id = storage.getItem('id');
+    if (user_id) {
+        response.sendFile(path.join(__dirname + '/public/nohome.html'));
     } else {
         response.redirect('/');
     }

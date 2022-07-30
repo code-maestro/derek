@@ -38,6 +38,7 @@
 
         <!-- Main Content -->
         <div id="content">
+          <!-- Header buttons -->
           <div class="container py-5">
             <div class="row justify-content-around">
               <!-- description -->
@@ -52,15 +53,15 @@
               </div>
 
               <div class="col-3">
-                <p class="h4"> <strong> <span id="select-heading"> Select animals at your farm </span> </strong> </p>
+                <p class="h4"> <strong> <span id="select-heading"> Select animals at your farm to continue </span>
+                  </strong> </p>
               </div>
 
               <div class="col-2" id="add-new">
                 <a data-toggle="modal" data-target="#newAnimalModal" href="#">
                   <div class="rounded">
-                    <button class="btn btn-primary shadow-sm"> &nbsp;&nbsp; 
-                      <strong> add new </strong> &nbsp;&nbsp; 
-                      <i class="fa-solid fa-circle-plus"></i>
+                    <button class="btn btn-primary shadow-sm"> &nbsp;&nbsp; <strong> add new </strong> &nbsp;&nbsp; <i
+                        class="fa-solid fa-circle-plus"></i>
                     </button>
                   </div>
                 </a>
@@ -77,12 +78,93 @@
 
             </div>
           </div>
+          <!-- End of the header buttons -->
 
+          <!-- The Default animals listing -->
           <div class="container d-flex justify-content-center">
             <div class="row text-center" id="ddaa">
-              
+              <!-- COWS -->
+              <div class="col-auto" onclick="selected('cow')">
+                <div class="rounded shadow-sm py-5 px-4" id="cows">
+                  <img id="cow-img" src="images/C.jpg" alt=""
+                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                  <h5 class="mb-0"> CATTLE </h5>
+                  <span class="small text-uppercase text-muted" id="cowss"> </span>
+                </div>
+              </div>
+              <!-- End -->
+
+              <!-- GOATS -->
+              <div class="col-auto" onclick="selected('goat')">
+                <div class="rounded shadow-sm py-5 px-4" id="goats">
+                  <img id="goat-img" src="images/goat.jpg" alt=""
+                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                  <h5 class="mb-0"> GOATS </h5>
+                  <span class="small text-uppercase text-muted" id="goatss"> </span>
+                </div>
+              </div>
+              <!-- End -->
+
+              <!-- SHEEP -->
+              <div class="col-auto" onclick="selected('sheep')">
+                <div class="rounded shadow-sm py-5 px-4" id="sheeps">
+                  <img id="sheep-img" src="images/sheep.jpg" alt=""
+                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                  <h5 class="mb-0"> SHEEP </h5>
+                  <span class="small text-uppercase text-muted" id="sheepss"> </span>
+                </div>
+              </div>
+              <!-- End -->
+
+              <!-- PIGS -->
+              <div class="col-auto" onclick="selected('pig')">
+                <div class="rounded shadow-sm py-5 px-4" id="pigs">
+                  <img id="pig-img" src="images/pig.webp" alt=""
+                    width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                  <h5 class="mb-0"> PIGS </h5>
+                  <span class="small text-uppercase text-muted" id="pigss"></span>
+                </div>
+              </div>
+              <!-- End -->
+
+              <!-- RABBITS -->
+              <div class="col-auto" onclick="selected('rabbit')">
+                <div class="rounded shadow-sm py-5 px-4" id="rabbits">
+                  <img id="rabbit-img" src="images/bunny.jpg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                  <h5 class="mb-0"> RABBITS </h5>
+                  <span class="small text-uppercase text-muted" id="rabbitss"></span>
+                </div>
+              </div>
+              <!-- End -->
+
             </div>
           </div>
+          <!-- End of the default animals listing -->
+
+          <!-- The Continue Button Container -->
+          <div class="container d-flex justify-content-between py-10" id="proceed">
+            <div class="row text-center">
+              <!-- description -->
+              <div class="col-auto">
+                <div class="rounded px-5">
+                  <p class="h4">
+                    <strong>
+                      <!-- <span id="select-heading"> Select animals at your farm </span>  -->
+                    </strong>
+                  </p>
+                </div>
+              </div>
+              <!-- procede button -->
+              <div class="col-auto">
+                <div class="rounded py-5 px-2" id="after_click">
+
+                </div>
+              </div>
+              <!-- End -->
+            </div>
+          </div>
+          <!-- End of the continue button -->
+
         </div>
 
         <!-- New Animal Modal-->
@@ -161,54 +243,52 @@
         </div>
 
         <script>
+          // Initial Selection Function
+          function selected(params) {
+            const clicked = document.getElementById(params + "s");
+            clicked.style.backgroundColor = '#cdffcd';
+            document.getElementById(params + "ss").innerText = 'SELECTED';
 
-          // Get data from backend endpoint
-          async function getUsers() {
-            let url = '/before-home';
-            try {
-              let res = await fetch(url);
-              return await res.json();
-            } catch (error) {
-              console.log(error);
-            }
+            document.getElementById('after_click').innerHTML = `
+            <a href="/home">
+              <button class="btn btn-primary shadow-sm"> &nbsp;&nbsp; 
+                <strong> CONTINUE </strong> &nbsp;&nbsp; 
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+              </a>
+            `;
+
+            const animal_img = document.getElementById(`${params}` + "-img").src;
+
+            console.log(params + "animal_img " + animal_img);
+
+            const animal_at_farm_details = [{
+              name: params,
+              image_url: animal_img
+            }];
+
+            const toDB = JSON.stringify(animal_at_farm_details);
+
+            // POST request using fetch()
+            fetch("/save", {
+              // Adding method type
+              method: "POST",
+              // Adding body or contents to send
+              body: JSON.stringify({
+                name: params,
+                image_url: animal_img
+              }),
+              // Adding headers to the request
+              headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+            })
+              // Converting to JSON
+              .then(response => response.json())
+              // Displaying results to console
+              .then(json => console.log(json));
+
           }
-
-          async function renderUsers() {
-            let users = await getUsers();
-            let html = '';
-            let htmlSegment = '';
-            let container = document.querySelector('#ddaa');
-
-            if (![false, 0, "", null, undefined, NaN].includes(users)) {
-              const animals_at_farm = JSON.parse(JSON.stringify(users));
-              animals_at_farm.forEach(animal => {
-                htmlSegment = `
-                  <!-- animal card -->
-                    <a class="col-auto" href="/animal/${animal.name}">
-                      <div onclick="seeDetails('${animal.name}')">
-                        <div class="rounded shadow-sm py-5 px-4" id="${animal.name}s">
-                          <img src="${animal.image_url}" alt="${animal.name}'s image" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                          <h5 class="mb-0"> ${animal.name} </h5>
-                          <span class="small text-uppercase text-muted" id="${animal.name}ss"></span>
-                        </div>
-                      </div>
-                    </a
-                  <!-- End -->
-                `;
-
-                html += htmlSegment;
-
-              });
-
-              container.innerHTML = html;
-              document.getElementById("select-heading").innerText = "select an animal to view the stats";
-
-            } else {
-              return null;
-            }
-          }
-
-          renderUsers()        
 
         </script>
 
