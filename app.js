@@ -231,7 +231,6 @@ app.get('/add-animal', function (request, response) {
 
 // New Animal Modal
 app.get('/animal/:id', function (request, response) {
-
     const animal_name = request.params.id;
     const all_animals = storage('all-animals');
 
@@ -839,6 +838,20 @@ app.get('/animal/:id', function (request, response) {
     // } else {
     //     console.log("animal not at the farm ");
     // }
+});
+
+
+// First page
+app.post('/to/:param', function (request, response) {
+    // Get saved data from sessionStorage
+    const user_id = storage('farma_id');
+    console.log(user_id + 'USER ID');
+
+    const animal_name = request.params.param;
+    console.log(animal_name + 'ANIMAL NAME');
+
+    storage('selected_animal', animal_name)
+
 });
 
 
