@@ -180,9 +180,7 @@
             let container = document.querySelector('#ddaa');
 
             if (![false, 0, "", null, undefined, NaN].includes(users)) {
-              
               const animals_at_farm = JSON.parse(JSON.stringify(users));
-              
               animals_at_farm.forEach(animal => {
                 htmlSegment = `
                   <!-- animal card -->
