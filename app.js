@@ -36,7 +36,7 @@ function uploadImage(params) {
 
         filename: function (req, file, cb) {
             cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-            storage.setItem('img_url', file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+            storage('img_url', file.fieldname + '-' + Date.now() + path.extname(file.originalname));
         }
     });
 
@@ -48,7 +48,7 @@ function uploadImage(params) {
 // First page
 app.get('/', function (request, response) {
     // Get saved data from sessionStorage
-    let data = storage.getItem('id');
+    let data = storage('farma_id');
     if (data) {
         response.redirect('/home');
     } else {
@@ -156,9 +156,9 @@ app.post('/auth', function (request, response) {
                 });
 
                 // Save data to sessionStorage
-                storage.setItem('email', mail);
-                storage.setItem('id', id);
-                store('farma_id', id)
+                // storage.setItem('email', mail);
+                // storage.setItem('id', id);
+                storage('farma_id', id)
 
             } else {
                 response.redirect(`/`);
@@ -175,7 +175,7 @@ app.post('/auth', function (request, response) {
 
 // Filtering cards to be shown
 app.get('/before-home', function (request, response) {
-    const user_id = storage.getItem('id');
+    const user_id = storage('farma_id');
     if (user_id) {
         connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
 
@@ -186,7 +186,7 @@ app.get('/before-home', function (request, response) {
                 if (element.list_of_animals == null) {
                     console.log("😒😒😒😒😒");
                 } else {
-                    storage.setItem('all-animals', JSON.parse(JSON.stringify(element.list_of_animals)));
+                    storage('all-animals', JSON.parse(JSON.stringify(element.list_of_animals)));
                     response.send(JSON.parse(JSON.stringify(element.list_of_animals)));
                 }
             });
@@ -200,7 +200,7 @@ app.get('/before-home', function (request, response) {
 // First page
 app.get('/home', function (request, response) {
     // Get saved data from sessionStorage
-    const user_id = storage.getItem('id');
+    const user_id = storage('farma_id');
     if (user_id) {
         response.sendFile(path.join(__dirname + '/public/home.html'));
     } else {
@@ -212,7 +212,7 @@ app.get('/home', function (request, response) {
 // First page
 app.get('/selection', function (request, response) {
     // Get saved data from sessionStorage
-    const user_id = storage.getItem('id');
+    const user_id = storage('farma_id');
     if (user_id) {
         response.sendFile(path.join(__dirname + '/public/nohome.html'));
     } else {
@@ -224,7 +224,7 @@ app.get('/selection', function (request, response) {
 // New Animal Modal
 app.get('/add-animal', function (request, response) {
     // Get saved data from sessionStorage
-    let data = storage.getItem('id');
+    let data = storage('farma_id');
     if (data) { response.sendFile(path.join(__dirname + '/public/add_animal.html')); }
 });
 
@@ -233,7 +233,7 @@ app.get('/add-animal', function (request, response) {
 app.get('/animal/:id', function (request, response) {
 
     const animal_name = request.params.id;
-    const all_animals = storage.getItem('animals_list');
+    const all_animals = storage('all-animals');
 
     console.log(" ALL ANIMALS : " + all_animals);
     // const isSelected = all_animals.includes(animal_name);
@@ -855,7 +855,7 @@ app.post('/save', async (req, res) => {
     console.log("NAME FROM FRONTEND  " + getDetails.name);
     console.log(" URL " + getDetails.image_url);
 
-    const f_id = storage.getItem('id');
+    const f_id = storage('farma_id');
 
     connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id = '${f_id}';`,
         function (error, results, fields) {
@@ -898,8 +898,8 @@ app.post('/save', async (req, res) => {
 // Add animals at the farm to DB
 app.post('/add-animal', uploadImage().single('image'), async (request, response) => {
     // Getting the logged in farmer's id
-    let f_id = storage.getItem('id');
-    let image_url = storage.getItem('img_url');
+    let f_id = storage('farma_id');
+    let image_url = storage('img_url');
 
     const animal_at_farm_details = [{
         name: request.body.animal_type,
@@ -938,7 +938,7 @@ app.post('/update_bio', function (request, response) {
 
 // Save
 app.post('/checked', function (request, response) {
-    const user_id = storage.getItem('id');
+    const user_id = storage('farma_id');
     const animal_name = request.body.foo;
     const fruits = ["cow", "goat", "sheep", "rabbit", "pig", "turkey", "chicken", "duck"];
     if (fruits.includes(animal_name)) {
