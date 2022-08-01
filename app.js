@@ -2,7 +2,7 @@ const mysql = require('mysql');
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const storage = require('sessionstorage');
+const storage = require("store2");
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 
@@ -158,13 +158,14 @@ app.post('/auth', function (request, response) {
                 // Save data to sessionStorage
                 storage.setItem('email', mail);
                 storage.setItem('id', id);
+                store('farma_id', id)
 
             } else {
                 response.redirect(`/`);
             }
             
             response.end();
-            
+
         });
     } else {
         response.send('Please enter email and/or Password!');

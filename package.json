@@ -11,7 +11,9 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.18",
     "sessionstorage": "^0.1.0",
+    "sessionstorage-for-nodejs": "^1.0.2",
     "sharp": "^0.30.7",
+    "store2": "^2.14.2",
     "uuid": "^8.3.2"
   },
   "name": "auth",
@@ -23,5 +25,8 @@
     "start": "nodemon app.js"
   },
   "author": "code-maestro",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "localStorage": "^1.0.4"
+  }
 }
