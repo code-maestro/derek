@@ -183,6 +183,7 @@ app.get('/before-home', function (request, response) {
                 if (element.list_of_animals == null) {
                     console.log("😒😒😒😒😒");
                 } else {
+                    storage.setItem('all-animals', JSON.parse(JSON.stringify(element.list_of_animals)));
                     response.send(JSON.parse(JSON.stringify(element.list_of_animals)));
                 }
             });
@@ -227,14 +228,17 @@ app.get('/add-animal', function (request, response) {
 
 // New Animal Modal
 app.get('/animal/:id', function (request, response) {
+
     const animal_name = request.params.id;
-    // const all_animals = storage.getItem('animals_list');
+    const all_animals = storage.getItem('animals_list');
+
+    console.log(" ALL ANIMALS : " + all_animals);
     // const isSelected = all_animals.includes(animal_name);
 
-    if (animal_name == 'cow') {
+    // if (animal_name == 'cow') {
         // if (isSelected == true) {
 
-        // response.sendFile(path.join(__dirname + '/../public/dashboard.html'));
+        response.sendFile(path.join(__dirname + '/public/dashboard.html'));
 
         // Render login template
         // response.send(
@@ -829,9 +833,15 @@ app.get('/animal/:id', function (request, response) {
         //     `
         // );
 
-    } else {
-        console.log("animal not at the farm ");
-    }
+    // } else {
+    //     console.log("animal not at the farm ");
+    // }
+});
+
+
+// Getting daata for specific animal
+app.get('/animal/:id/data', function (request, response) {
+
 });
 
 
@@ -905,10 +915,9 @@ app.post('/add-animal', uploadImage().single('image'), async (request, response)
         // If the account exists
         response.send(
             `   
-            <div class="alert alert-success" role="alert">
-               EVERYTHING WORKS
-            </div>
-    
+                <div class="alert alert-success" role="alert">
+                EVERYTHING WORKS
+                </div>
             `);
 
         // response.redirect('/home');
