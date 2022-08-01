@@ -58,8 +58,8 @@
               <div class="col-2" id="add-new">
                 <a data-toggle="modal" data-target="#newAnimalModal" href="#">
                   <div class="rounded">
-                    <button class="btn btn-primary shadow-sm"> &nbsp;&nbsp; 
-                      <strong> add new </strong> &nbsp;&nbsp; 
+                    <button class="btn btn-primary shadow-sm"> &nbsp;&nbsp;
+                      <strong> add new </strong> &nbsp;&nbsp;
                       <i class="fa-solid fa-circle-plus"></i>
                     </button>
                   </div>
@@ -80,7 +80,7 @@
 
           <div class="container d-flex justify-content-center">
             <div class="row text-center" id="ddaa">
-              
+
             </div>
           </div>
         </div>
@@ -180,7 +180,9 @@
             let container = document.querySelector('#ddaa');
 
             if (![false, 0, "", null, undefined, NaN].includes(users)) {
+              
               const animals_at_farm = JSON.parse(JSON.stringify(users));
+              
               animals_at_farm.forEach(animal => {
                 htmlSegment = `
                   <!-- animal card -->
@@ -208,7 +210,7 @@
             }
           }
 
-          renderUsers()        
+          renderUsers()
 
         </script>
 

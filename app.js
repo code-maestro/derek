@@ -162,7 +162,9 @@ app.post('/auth', function (request, response) {
             } else {
                 response.redirect(`/`);
             }
+            
             response.end();
+            
         });
     } else {
         response.send('Please enter email and/or Password!');
