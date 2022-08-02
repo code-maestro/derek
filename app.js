@@ -68,7 +68,7 @@ app.get('/register', function (request, response) {
 app.get('/logout', (req, res) => {
     // req.session.destroy();
     // Remove all saved data from sessionStorage
-    storage.clear();
+    storage.clearAll();
     res.redirect('/');
 });
 
@@ -136,7 +136,7 @@ app.post('/auth', function (request, response) {
     if (mail && password) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
         connection.query(`SELECT a.farma_id, a.mail, a.password, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${mail}' AND a.password = '${password}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
-        // connection.query('SELECT farma_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
+            // connection.query('SELECT farma_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
             // If the account exists
@@ -163,7 +163,7 @@ app.post('/auth', function (request, response) {
             } else {
                 response.redirect(`/`);
             }
-            
+
             response.end();
 
         });
@@ -178,7 +178,6 @@ app.get('/before-home', function (request, response) {
     const user_id = storage('farma_id');
     if (user_id) {
         connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
-
             // If there is an issue with the query, output the error
             if (error) throw error;
 
@@ -231,12 +230,28 @@ app.get('/add-animal', function (request, response) {
 
 // New Animal Modal
 app.get('/animal/:id', function (request, response) {
+    const user_id = storage('farma_id');
     const animal_name = request.params.id;
     const all_animals = storage('all-animals');
 
     console.log(" ALL ANIMALS : " + all_animals);
     const isSelected = all_animals.includes(animal_name);
-    
+
+    connection.query(`SELECT count FROM animals WHERE farma_id='${user_id}' AND animal_type='${animal_name}'`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+
+        console.log(results);
+
+        results.forEach(element => {
+            if (element.list_of_animals == null) {
+                console.log("😒😒😒😒😒");
+            } else {
+                console.log(element);
+            }
+        });
+    })
+
     if (isSelected == true) {
         // response.sendFile(path.join(__dirname + '/public/dashboard.html'));
         // Render login template
@@ -244,9 +259,7 @@ app.get('/animal/:id', function (request, response) {
             `
             <!DOCTYPE html>
                 <html lang="en">
-
                     <head>
-
                         <meta charset="utf-8">
                         <meta http-equiv="X-UA-Compatible" content="IE=edge">
                         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -258,17 +271,14 @@ app.get('/animal/:id', function (request, response) {
                         <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
                         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
                         <!-- CSS only -->
-                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-                            integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
                         <link rel="stylesheet" href="/style.css">
                         <link rel="stylesheet" href="https://fonts.googleapis.com/css" />
                         <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
                         <link href="../vendor/fontawesome/css/fontawesome.css" rel="stylesheet">
                         <link href="../vendor/fontawesome/css/brands.css" rel="stylesheet">
                         <link href="../vendor/fontawesome/css/solid.css" rel="stylesheet">
-                        <link
-                            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-                            rel="stylesheet">
+                        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
                         <!-- Custom styles for this template -->
                         <link href="../css/sb-admin-2.css" rel="stylesheet">
@@ -277,7 +287,7 @@ app.get('/animal/:id', function (request, response) {
 
                     </head>
 
-                    <body id="page-top" onload="alert('You have selected a ${animal_name}')">
+                    <body id="page-top" onload="show_prompt()">
 
                         <!-- Page Wrapper -->
                         <div id="wrapper">
@@ -298,9 +308,8 @@ app.get('/animal/:id', function (request, response) {
 
                                 <!-- Nav Item - Dashboard -->
                                 <!-- <li class="nav-item">
-                                <a class="nav-link" href="">
                                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                                    <span>Dashboard</span></a>
+                                    <span>Dashboard</span>
                                 </li> -->
 
                                 <!-- Nav Item - home -->
@@ -320,7 +329,7 @@ app.get('/animal/:id', function (request, response) {
 
                                 <!-- Nav Item - Register -->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
+                                    <a data-toggle="modal" class="nav-link" data-target="#registrationModal" href="#">
                                         <i class="fas fa-fw fa-cog"></i>
                                         <span> Registration </span>
                                     </a>
@@ -331,6 +340,14 @@ app.get('/animal/:id', function (request, response) {
                                     <a class="nav-link" href="#">
                                         <i class="fa-solid fa-syringe"></i>
                                         <span> Vaccination </span>
+                                    </a>
+                                </li>
+
+                                <!-- Nav Item - Tests -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="fa-solid fa-syringe"></i>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
                                     </a>
                                 </li>
 
@@ -503,7 +520,7 @@ app.get('/animal/:id', function (request, response) {
 
                                             <!-- Nav Item - Logout -->
                                             <li class="nav-item">
-                                                <a class="nav-link" href="/logout" id="logout" role="button">
+                                                <a data-toggle="modal" class="nav-link" data-target="#logoutModal" href="#">
                                                     <i class="fa-solid fa-power-off"></i>
                                                 </a>
                                             </li>
@@ -783,9 +800,8 @@ app.get('/animal/:id', function (request, response) {
                             <i class="fas fa-angle-up"></i>
                         </a>
 
-                        <!-- Logout Modal-->
-                        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
+                        <!-- Registraion Modal-->
+                        <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -802,6 +818,35 @@ app.get('/animal/:id', function (request, response) {
                                 </div>
                             </div>
                         </div>
+
+
+                        <!-- Logout Modal-->
+                        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                        <a class="btn btn-primary" href="login.html">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script type="text/javascript">
+                            function show_prompt() {
+                                var name = prompt('Please enter your name','Poppy');
+                                if (name != null && name != "") {
+                                    alert(name);
+                                }
+                            }
+                        </script>
 
                         <!-- Bootstrap core JavaScript-->
                         <script src="../vendor/jquery/jquery.min.js"></script>
@@ -834,21 +879,32 @@ app.get('/animal/:id', function (request, response) {
 });
 
 
+app.post('/insertData', function (req, res) {
+    // Execute SQL query that'll insert into the farma table
+    connection.query(`INSERT INTO farma (farma_id, mail, password) VALUES (?, ?, ?);`, [f_id, mail, password], function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        console.log("RESULTS" + results);
+        console.log("FIELDS " + fields);
+        return;
+    });
+})
+
+
 // First page
 app.post('/to/:param', function (request, response) {
     // Get saved data from sessionStorage
     const user_id = storage('farma_id');
-    console.log(user_id + 'USER ID');
-
+    
     const animal_name = request.params.param;
-    console.log(animal_name + 'ANIMAL NAME');
 
     storage('selected_animal', animal_name)
 
 });
 
 
-// Getting daata for specific animal
+// Getting data for specific animal
 app.get('/animal/:id/data', function (request, response) {
 
 });
