@@ -166,7 +166,7 @@
                         <!-- Nav Item - User Information -->
                         <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
                             <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="animal-details"> </span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="animal-details"> ll </span>
                         </div>
 
                         <!-- Topbar Search -->
@@ -245,7 +245,7 @@
 
                             <!-- Nav Item - Logout -->
                             <li class="nav-item">
-                                <a class="nav-link" href="#" id="logout" role="button">
+                                <a data-toggle="modal" data-target="#logoutModal" href="#">
                                     <i class="fa-solid fa-power-off"></i>
                                 </a>
                             </li>
@@ -264,8 +264,9 @@
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    Total Number of Animals </div>
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"> Total Number of 
+                                                    <span>Animals </span>
+                                                </div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800"> 40 </div>
                                             </div>
                                             <div class="col-auto">
@@ -540,6 +541,46 @@
                 </div>
             </div>
         </div>
+
+        <script>
+
+          // Get data from backend endpoint
+          function getUsers() {
+            let url = '/getData';
+            try {
+              let res = fetch(url);
+              return await res.json();
+            } catch (error) {
+              console.log(error.json());
+            }
+          }
+
+          function renderUsers() {
+            let users = getUsers();
+            let html = '';
+            let htmlSegment = '';
+            let container = document.querySelector('#ddaa');
+
+            if (![false, 0, "", null, undefined, NaN].includes(users)) {
+              const animals_at_farm = JSON.parse(JSON.stringify(users));
+              animals_at_farm.forEach(animal => {
+                htmlSegment = `  `;
+
+                html += htmlSegment;
+
+              });
+
+              container.innerHTML = html;
+              document.getElementById("select-heading").innerText = "select an animal to view the stats";
+
+            } else {
+              return null;
+            }
+          }
+
+          renderUsers()
+
+        </script>
 
         <!-- Bootstrap core JavaScript-->
         <script src="../vendor/jquery/jquery.min.js"></script>
