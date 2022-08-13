@@ -219,17 +219,47 @@ app.get('/selection', function (request, response) {
     }
 });
 
+// Function to retrieve dashboard data
+app.get('/getData', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        connection.query(`SELECT count FROM animals WHERE farma_id='${user_id}' AND animal_type='${animal_name}'`, function (error, results, fields) {
+            // connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
 
-// New Animal Modal
-app.get('/add-animal', function (request, response) {
-    // Get saved data from sessionStorage
-    let data = storage('farma_id');
-    if (data) { response.sendFile(path.join(__dirname + '/public/add_animal.html')); }
+            results.forEach(element => {
+                if (element.count == null) {
+                    console.log("😒😒😒😒😒");
+                } else {
+                    response.send(JSON.parse(JSON.stringify(element.count)));
+                }
+            });
+        })
+    } else {
+        console.log("PLEASE LOGIN");
+    }
 });
 
-
-// New Animal Modal
 app.get('/animal/:id', function (request, response) {
+    const user_id = storage('farma_id');
+    
+    if (user_id) {
+        const animal_name = request.params.id;
+        const all_animals = storage('all-animals');
+        const isSelected = all_animals.includes(animal_name);
+
+        if (isSelected == true) {
+            response.sendFile(path.join(__dirname + '/public/dashboard.html'));
+        }
+    }
+})
+
+
+
+// TODO LOOK THROUGH AND POSSIBLY DELETE
+// Old Dashboard
+app.get('/old/:id', function (request, response) {
     const user_id = storage('farma_id');
     const animal_name = request.params.id;
     const all_animals = storage('all-animals');
@@ -876,7 +906,6 @@ app.post('/insertData', function (req, res) {
     });
 })
 
-
 // Add animals at the farm to DB
 app.post('/save', async (req, res) => {
     const getDetails = JSON.parse(JSON.stringify(req.body))
@@ -978,40 +1007,5 @@ app.post('/checked', function (request, response) {
         console.log("la farge failure");
     }
 });
-
-
-
-
-
-// TESTING STUFF
-// TODO Delete after
-
-// ui-tests
-app.get('/test', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/test.html'));
-});
-
-
-// ui-tests
-app.get('/dashboard', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/dashboard.html'));
-});
-
-
-// tables
-app.get('/table', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/tables.html'));
-});
-
-
-// charts
-app.get('/chart', function (request, response) {
-    // Render login template
-    response.sendFile(path.join(__dirname + '/public/home.html'));
-});
-
 
 app.listen(3000);
