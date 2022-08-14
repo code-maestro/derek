@@ -5,7 +5,7 @@ async function getUsers() {
     let res = await fetch(url);
     return await res.json();
   } catch (error) {
-    console.log(error.json());
+    console.log(error);
   }
 }
 
