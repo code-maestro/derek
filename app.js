@@ -244,7 +244,7 @@ app.get('/get-count/:animal', function (request, response) {
     const user_id = storage('farma_id');
     if (user_id) {
         const animal_name = request.params.animal;
-        connection.query(`SELECT a.count, COUNT(b.disease_id) FROM animals a, animal b WHERE a.farma_id = b.farma_id AND a.farma_id='${user_id}' AND a.animal_type='${animal_name}';`, function (error, results, fields) {
+        connection.query(`SELECT a.count, COUNT(b.disease_id) AS sickCount FROM animals a, animal b WHERE a.farma_id='${user_id}' AND a.farma_id = b.farma_id AND a.animal_type = b.animal_type AND a.animal_type='${animal_name}' GROUP BY a.animals_id;;`, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
             results.forEach(element => {

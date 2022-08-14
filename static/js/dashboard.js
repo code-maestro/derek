@@ -27,17 +27,17 @@ async function getSickAnimalCount() {
 async function renderAnimals() {
 
   const all = await getAnimalCount();
-  const allSick = await getSickAnimalCount();
+  // const allSick = await getSickAnimalCount();
 
   const sk = JSON.parse(JSON.stringify(all));
 
-  document.getElementById('babyCount').innerText = element || 0;
-  document.getElementById('pendingVcount').innerText = element.count || 0;
-  document.getElementById('vCount').innerText = element.farma_id || 0;
   document.getElementById('allCount').innerText = sk.count || 0;
-  document.getElementById('sickCount').innerText = allSick || 0;
+  document.getElementById('sickCount').innerText = sk.sickCount || 0;
+  document.getElementById('babyCount').innerText = sk.count || 0;
+  document.getElementById('pendingVcount').innerText = sk.count || 0;
+  document.getElementById('vCount').innerText = sk.disease_id || 0;
   document.getElementById('newCount').innerText = allSick || 0;
-  document.getElementById('heavyCount').innerText = all || 0;
+  document.getElementById('heavyCount').innerText = sk.count || 0;
 
 
 
