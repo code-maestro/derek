@@ -238,22 +238,21 @@ app.get('/animal/:id', function (request, response) {
     }
 })
 
+
 // Function to retrieve dashboard data
-app.get('/get-data/:animal', function (request, response) {
+app.get('/get-count/:animal', function (request, response) {
     const user_id = storage('farma_id');
     if (user_id) {
         const animal_name = request.params.animal;
-        console.log(animal_name);
-        connection.query(`SELECT count FROM animals WHERE farma_id='${user_id}' AND animal_type='${animal_name}';`, function (error, results, fields) {
+        connection.query(`SELECT a.count, COUNT(b.disease_id) FROM animals a, animal b WHERE a.farma_id = b.farma_id AND a.farma_id='${user_id}' AND a.animal_type='${animal_name}';`, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
-            console.log("RES"+results);
             results.forEach(element => {
+                console.log(element);
                 if (element.count == null) {
                     console.log("😒😒😒😒😒");
                 } else {
-                    console.log(element.count + 'ANIMAL COUNT');
-                    response.send(JSON.parse(JSON.stringify(element.count)));
+                    response.send(JSON.parse(JSON.stringify(element)));
                 }
             });
         })
@@ -263,6 +262,30 @@ app.get('/get-data/:animal', function (request, response) {
     }
 });
 
+
+// Function to retrieve dashboard data
+app.get('/get-sick/:animal', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        const animal_name = request.params.animal;
+        connection.query(`SELECT COUNT(*) AS sick_count FROM animal WHERE farma_id='${user_id}' AND animal_type='${animal_name}';`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            results.forEach(element => {
+                console.log(element.sick_count + 'one');
+                if (element.sick_count == null) {
+                    console.log("😒😒😒😒😒");
+                } else {
+                    console.log(element.sick_count + 'two');
+                    response.send(JSON.parse(JSON.stringify(element.sick_count)));
+                }
+            });
+        })
+    } else {
+        console.log("PLEASE LOGIN");
+        response.redirect('/');
+    }
+});
 
 
 // TODO LOOK THROUGH AND POSSIBLY DELETE

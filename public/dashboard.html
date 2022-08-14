@@ -59,7 +59,7 @@
 
                 <!-- Nav Item - home -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <span class="nav-link">
                         <i class="fa-solid fa-gauge"></i>
                         <span> Home </span>
                     </a>
@@ -74,18 +74,18 @@
 
                 <!-- Nav Item - Register -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <span class="nav-link">
                         <i class="fas fa-fw fa-cog"></i>
                         <span> Registration </span>
-                    </a>
+                    </span>
                 </li>
 
                 <!-- Nav Item - Register -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <span class="nav-link">
                         <i class="fa-solid fa-syringe"></i>
                         <span> Vaccination </span>
-                    </a>
+                    </span>
                 </li>
 
                 <!-- Nav Item - Diseases -->
@@ -98,9 +98,9 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="#"> Female </a>
-                            <a class="collapse-item" href="#"> Male </a>
-                            <a class="collapse-item" href="#"> New Borns </a>
+                            <span class="collapse-item" href="#"> Female </span>
+                            <span class="collapse-item" href="#"> Male </span>
+                            <span class="collapse-item" href="#"> New Borns </span>
                         </div>
                     </div>
                 </li>
@@ -114,27 +114,27 @@
                     </a>
                     <div id="symptoms" class="collapse" aria-labelledby="thesymptoms" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="#"> Female </a>
-                            <a class="collapse-item" href="#"> Male </a>
-                            <a class="collapse-item" href="#"> New Borns </a>
+                            <span class="collapse-item" href="#"> Female </span>
+                            <span class="collapse-item" href="#"> Male </span>
+                            <span class="collapse-item" href="#"> New Borns </span>
                         </div>
                     </div>
                 </li>
 
                 <!-- Nav Item - New Borns -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <span class="nav-link">
                         <i class="fa-solid fa-cow"></i>
                         <span> New Borns </span>
-                    </a>
+                    </span>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="charts.html">
+                    <span class="nav-link">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Charts</span>
-                    </a>
+                    </span>
                 </li>
 
                 <!-- Divider -->
@@ -269,13 +269,13 @@
                         <div class="row">
                             <!-- Total Number of  Card -->
                             <div class="col-xl-3 col-md-6 mb-4" id="total" onclick="clicked('total')">
-                                <div class="card border-left-primary shadow h-100">
+                                <div class="card border-left-info shadow h-100">
                                     <div class="card-body" id="totals">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                     Total Number </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="allCount"> 40
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="allCount">
                                                 </div>
                                             </div>
                                             <div class="col-auto">
@@ -288,13 +288,13 @@
 
                             <!-- Sick  -->
                             <div class="col-xl-3 col-md-6 mb-4" id="sick" onclick="clicked('sick')">
-                                <div class="card border-left-success shadow h-100">
+                                <div class="card border-left-danger shadow h-100">
                                     <div class="card-body" id="sicks">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                     Sick </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="sickCount"> 15
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="sickCount"> 
                                                 </div>
                                             </div>
                                             <div class="col-auto">
@@ -307,7 +307,7 @@
 
                             <!-- Expecting  -->
                             <div class="col-xl-3 col-md-6 mb-4" id="heavy" onclick="clicked('heavy')">
-                                <div class="card border-left-info shadow h-100">
+                                <div class="card border-left-warning shadow h-100">
                                     <div class="card-body" id="heavys">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -316,7 +316,7 @@
                                                 <div class="row no-gutters align-items-center">
                                                     <div class="col-auto">
                                                         <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
-                                                            id="heavyCount"> 50 </div>
+                                                            id="heavyCount">  </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -330,13 +330,13 @@
 
                             <!-- Vaccinated -->
                             <div class="col-xl-3 col-md-6 mb-4" id="vaxed" onclick="clicked('vaxed')">
-                                <div class="card border-left-warning shadow h-100">
+                                <div class="card border-left-success shadow h-100">
                                     <div class="card-body" id="vaxeds">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                     Vaccinated </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="vCount"> 18
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="vCount"> 
                                                 </div>
                                             </div>
                                             <div class="col-auto">
@@ -351,13 +351,13 @@
                         <div class="row">
                             <!-- Earnings (Monthly) Card Example -->
                             <div class="col-xl-3 col-md-6 mb-4" id="new-born" onclick="clicked('new-born')">
-                                <div class="card border-left-primary shadow h-100">
+                                <div class="card border-left-success shadow h-100">
                                     <div class="card-body" id="new-borns">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                     New Born </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="babyCount"> 20
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="babyCount"> 
                                                 </div>
                                             </div>
                                             <div class="col-auto">
@@ -389,7 +389,7 @@
 
                             <!-- Tasks Card Example -->
                             <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-info shadow h-100" id="pending" onclick="clicked('pending')">
+                                <div class="card border-left-primary shadow h-100" id="pending" onclick="clicked('pending')">
                                     <div class="card-body" id="pendings">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -419,7 +419,7 @@
 
                             <!-- Pending Requests Card Example -->
                             <div class="col-xl-3 col-md-6 mb-4" id="prod" onclick="clicked('prod')">
-                                <div class="card border-left-warning shadow h-100">
+                                <div class="card border-left-primary shadow h-100">
                                     <div class="card-body" id="prods">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">

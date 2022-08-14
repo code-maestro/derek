@@ -2,9 +2,20 @@ const container = document.querySelector('#dynamic');
 
 const browserUrl = window.location.href;
 
-// Get data from backend endpoint
-async function getAnimals() {
-  let url = `/get-data/${browserUrl.replace('http://localhost:3000/animal/', '')}`;
+// Get Total Count of the animals from backend endpoint
+async function getAnimalCount() {
+  let url = `/get-count/${browserUrl.replace('http://localhost:3000/animal/', '')}`;
+  try {
+    let res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get number of sick of the animals from backend endpoint
+async function getSickAnimalCount() {
+  let url = `/get-sick/${browserUrl.replace('http://localhost:3000/animal/', '')}`;
   try {
     let res = await fetch(url);
     return res.json();
@@ -14,20 +25,34 @@ async function getAnimals() {
 }
 
 async function renderAnimals() {
-  let animals = await getAnimals();
-  console.log(animals);
-  document.getElementById('allCount').innerText = animals;
+
+  const all = await getAnimalCount();
+  const allSick = await getSickAnimalCount();
+
+  const sk = JSON.parse(JSON.stringify(all));
+
+  document.getElementById('babyCount').innerText = element || 0;
+  document.getElementById('pendingVcount').innerText = element.count || 0;
+  document.getElementById('vCount').innerText = element.farma_id || 0;
+  document.getElementById('allCount').innerText = sk.count || 0;
+  document.getElementById('sickCount').innerText = allSick || 0;
+  document.getElementById('newCount').innerText = allSick || 0;
+  document.getElementById('heavyCount').innerText = all || 0;
+
+
+
+
   // if (![false, 0, "", null, undefined, NaN].includes(animals)) {
   //   const animals_at_farm = JSON.parse(JSON.stringify(animals));
   //   animals_at_farm.forEach(animal => {
   //     console.log(animal);
   //     // document.getElementById('allCount').innerText = animals;
-  //     document.getElementById('sickCount').innerText = animal.count;
-  //     document.getElementById('babyCount').innerText = animal.count;
-  //     document.getElementById('pendingVcount').innerText = animal.count;
-  //     document.getElementById('vCount').innerText = animal.count;
-  //     document.getElementById('newCount').innerText = animal.count;
-  //     document.getElementById('heavyCount').innerText = animal.count;
+  //     
+  //     
+  //     
+  //     
+  //     
+  //     
   //   });
   // } else {
   //   return null;
@@ -88,8 +113,8 @@ function clicked(param) {
 
 // Removes the tabke card
 function deleteFromDom(param) {
-  document.getElementById(param+'s').style.backgroundColor = '#fff';
-  const element = document.getElementById(param+'ss');
+  document.getElementById(param + 's').style.backgroundColor = '#fff';
+  const element = document.getElementById(param + 'ss');
   element.remove();
   document.querySelector('#dynamic').innerHTML = `
   <div class="col-lg-6">
