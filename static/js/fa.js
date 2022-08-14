@@ -1,0 +1,1 @@
+console.log('http://localhost:3000/animal/cow'.replace('http://localhost:3000/animal/', ''));

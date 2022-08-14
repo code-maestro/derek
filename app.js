@@ -192,6 +192,7 @@ app.get('/before-home', function (request, response) {
         })
     } else {
         console.log("PLEASE LOGIN");
+        response.redirect('/');
     }
 });
 
@@ -219,31 +220,10 @@ app.get('/selection', function (request, response) {
     }
 });
 
-// Function to retrieve dashboard data
-app.get('/getData', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        connection.query(`SELECT count FROM animals WHERE farma_id='${user_id}' AND animal_type='${animal_name}'`, function (error, results, fields) {
-            // connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
 
-            results.forEach(element => {
-                if (element.count == null) {
-                    console.log("😒😒😒😒😒");
-                } else {
-                    response.send(JSON.parse(JSON.stringify(element.count)));
-                }
-            });
-        })
-    } else {
-        console.log("PLEASE LOGIN");
-    }
-});
-
+// Selected animal from listing end point 
 app.get('/animal/:id', function (request, response) {
     const user_id = storage('farma_id');
-    
     if (user_id) {
         const animal_name = request.params.id;
         const all_animals = storage('all-animals');
@@ -252,8 +232,36 @@ app.get('/animal/:id', function (request, response) {
         if (isSelected == true) {
             response.sendFile(path.join(__dirname + '/public/dashboard.html'));
         }
+
+    }else{
+        response.redirect('/home');
     }
 })
+
+// Function to retrieve dashboard data
+app.get('/get-data/:animal', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        const animal_name = request.params.animal;
+        console.log(animal_name);
+        connection.query(`SELECT count FROM animals WHERE farma_id='${user_id}' AND animal_type='${animal_name}';`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            console.log("RES"+results);
+            results.forEach(element => {
+                if (element.count == null) {
+                    console.log("😒😒😒😒😒");
+                } else {
+                    console.log(element.count + 'ANIMAL COUNT');
+                    response.send(JSON.parse(JSON.stringify(element.count)));
+                }
+            });
+        })
+    } else {
+        console.log("PLEASE LOGIN");
+        response.redirect('/');
+    }
+});
 
 
 
@@ -1007,5 +1015,6 @@ app.post('/checked', function (request, response) {
         console.log("la farge failure");
     }
 });
+
 
 app.listen(3000);

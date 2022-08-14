@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,11 +21,20 @@
         <link href="../vendor/fontawesome/css/fontawesome.css" rel="stylesheet">
         <link href="../vendor/fontawesome/css/brands.css" rel="stylesheet">
         <link href="../vendor/fontawesome/css/solid.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
 
         <!-- Custom styles for this template -->
         <link href="../css/sb-admin-2.css" rel="stylesheet">
         <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
+
+
+        <!-- List of animals that belong to the farmer that has signed in -->
+        <script src="../js/dashboard.js" defer></script>
+        <!-- <script src="../js/fa.js" defer></script> -->
+
+
     </head>
 
     <body id="page-top">
@@ -157,7 +167,6 @@
 
                     <!-- Topbar -->
                     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                         <!-- Sidebar Toggle (Topbar) -->
                         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                             <i class="fa fa-bars"></i>
@@ -170,7 +179,8 @@
                         </div>
 
                         <!-- Topbar Search -->
-                        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <form
+                            class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
                                 <input type="text" class="form-control bg-light border-0 small"
                                     placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
@@ -186,7 +196,6 @@
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
-
                             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                             <li class="nav-item dropdown no-arrow d-sm-none">
                                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -210,6 +219,7 @@
                                     </form>
                                 </div>
                             </li>
+
 
                             <!-- Nav Item - Alerts -->
                             <li class="nav-item dropdown no-arrow mx-1">
@@ -238,14 +248,13 @@
                                         </div>
                                     </a>
 
-                                    <a class="dropdown-item text-center small text-gray-500" href="#">Show All
-                                        Alerts</a>
+                                    <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                                 </div>
                             </li>
 
                             <!-- Nav Item - Logout -->
                             <li class="nav-item">
-                                <a data-toggle="modal" data-target="#logoutModal" href="#">
+                                <a class="nav-link" data-toggle="modal" data-target="#logoutModal" href="#">
                                     <i class="fa-solid fa-power-off"></i>
                                 </a>
                             </li>
@@ -258,16 +267,16 @@
                     <!-- Begin Page Content -->
                     <div class="container-fluid" id="landing">
                         <div class="row">
-                            <!-- Total Number of Animals Card -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
+                            <!-- Total Number of  Card -->
+                            <div class="col-xl-3 col-md-6 mb-4" id="total" onclick="clicked('total')">
+                                <div class="card border-left-primary shadow h-100">
+                                    <div class="card-body" id="totals">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"> Total Number of 
-                                                    <span>Animals </span>
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    Total Number </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="allCount"> 40
                                                 </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="allCount"> 40 </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fa-solid fa-baby-carriage fa-2x"></i>
@@ -277,15 +286,16 @@
                                 </div>
                             </div>
 
-                            <!-- Sick Animals -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-success shadow h-100 py-2">
-                                    <div class="card-body">
+                            <!-- Sick  -->
+                            <div class="col-xl-3 col-md-6 mb-4" id="sick" onclick="clicked('sick')">
+                                <div class="card border-left-success shadow h-100">
+                                    <div class="card-body" id="sicks">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                    Sick Animals </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800"> 15 </div>
+                                                    Sick </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="sickCount"> 15
+                                                </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fa-solid fa-bugs fa-2x"></i>
@@ -295,19 +305,18 @@
                                 </div>
                             </div>
 
-                            <!-- Expecting Animals -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-info shadow h-100 py-2">
-                                    <div class="card-body">
+                            <!-- Expecting  -->
+                            <div class="col-xl-3 col-md-6 mb-4" id="heavy" onclick="clicked('heavy')">
+                                <div class="card border-left-info shadow h-100">
+                                    <div class="card-body" id="heavys">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                    Expecting animals
-                                                </div>
+                                                    Expecting </div>
                                                 <div class="row no-gutters align-items-center">
                                                     <div class="col-auto">
-                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%
-                                                        </div>
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
+                                                            id="heavyCount"> 50 </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -320,14 +329,15 @@
                             </div>
 
                             <!-- Vaccinated -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-warning shadow h-100 py-2">
-                                    <div class="card-body">
+                            <div class="col-xl-3 col-md-6 mb-4" id="vaxed" onclick="clicked('vaxed')">
+                                <div class="card border-left-warning shadow h-100">
+                                    <div class="card-body" id="vaxeds">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                    Vaccinated Animals </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                    Vaccinated </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="vCount"> 18
+                                                </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -340,14 +350,15 @@
 
                         <div class="row">
                             <!-- Earnings (Monthly) Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
+                            <div class="col-xl-3 col-md-6 mb-4" id="new-born" onclick="clicked('new-born')">
+                                <div class="card border-left-primary shadow h-100">
+                                    <div class="card-body" id="new-borns">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    New Born Animals </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800"> 20 </div>
+                                                    New Born </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="babyCount"> 20
+                                                </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -358,14 +369,15 @@
                             </div>
 
                             <!-- Earnings (Annual) Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-success shadow h-100 py-2">
-                                    <div class="card-body">
+                            <div class="col-xl-3 col-md-6 mb-4" id="new-at-farm" onclick="clicked('new-at-farm')">
+                                <div class="card border-left-success shadow h-100">
+                                    <div class="card-body" id="new-at-farms">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                    Newly Registrated Animals </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                                    Newly Registrated </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="newCount">
+                                                    $215,000 </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -377,17 +389,16 @@
 
                             <!-- Tasks Card Example -->
                             <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-info shadow h-100 py-2">
-                                    <div class="card-body">
+                                <div class="card border-left-info shadow h-100" id="pending" onclick="clicked('pending')">
+                                    <div class="card-body" id="pendings">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                    Pending Vaccination Animals
-                                                </div>
+                                                    Pending Vaccination </div>
                                                 <div class="row no-gutters align-items-center">
                                                     <div class="col-auto">
-                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%
-                                                        </div>
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
+                                                            id="pendingVcount"> 50% </div>
                                                     </div>
                                                     <div class="col">
                                                         <div class="progress progress-sm mr-2">
@@ -407,14 +418,15 @@
                             </div>
 
                             <!-- Pending Requests Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-warning shadow h-100 py-2">
-                                    <div class="card-body">
+                            <div class="col-xl-3 col-md-6 mb-4" id="prod" onclick="clicked('prod')">
+                                <div class="card border-left-warning shadow h-100">
+                                    <div class="card-body" id="prods">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                     Total Products </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="productsCount">
+                                                    18 </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -425,25 +437,23 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row" id="dynamic">
                             <div class="col-lg-6">
                                 <!-- Communication -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Basic Card Example</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary"> Doctor Information </h6>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body" id="docInfo">
                                         The styling for this basic card example is created by using default Bootstrap
                                         utility classes. By using utility classes, the style of the card component can
-                                        be
-                                        easily modified with no need for any custom CSS!
+                                        be easily modified with no need for any custom CSS!
                                     </div>
                                 </div>
 
                             </div>
 
                             <div class="col-lg-6">
-
                                 <!-- Dropdown Card Example -->
                                 <div class="card shadow mb-4">
                                     <!-- Card Header - Dropdown -->
@@ -468,10 +478,10 @@
                                     <!-- Card Body -->
                                     <div class="card-body">
                                         Dropdown menus can be placed in the card header in order to extend the
-                                        functionality
-                                        of a basic card. In this dropdown card example, the Font Awesome vertical
-                                        ellipsis
-                                        icon in the card header can be clicked on in order to toggle a dropdown menu.
+                                        functionality of a basic card. In this dropdown card example, the Font Awesome
+                                        vertical
+                                        ellipsis icon in the card header can be clicked on in order to toggle a dropdown
+                                        menu.
                                     </div>
                                 </div>
 
@@ -488,8 +498,7 @@
                                         <div class="card-body">
                                             This is a collapsable card example using Bootstrap's built in collapse
                                             functionality. <strong>Click on the card header</strong> to see the card
-                                            body
-                                            collapse and expand!
+                                            body collapse and expand!
                                         </div>
                                     </div>
                                 </div>
@@ -505,7 +514,7 @@
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2020</span>
+                            <span id="autoYear"> </span>
                         </div>
                     </div>
                 </footer>
@@ -528,15 +537,15 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"> Ready to Leave? </h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-body"> Select "Logout" below if you are ready to end your current session. </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal"> Cancel </button>
+                        <a class="btn btn-primary" href="/logout"> Logout </a>
                     </div>
                 </div>
             </div>
