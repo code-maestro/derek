@@ -185,3 +185,7 @@ function deleteFromDom(param) {
   `;
 }
 
+// Method to show appriorate modal for the selected gender
+function showModal(params) {
+  return console.log("🤣😂😂" + params);
+}
