@@ -94,7 +94,7 @@
           aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <form id="contact-form" role="form" method="POST" action="/add-animal">
+              <form id="contact-form" role="form" method="POST" action="/addAnimal" enctype="multipart/form-data">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel"> Add a new animal </h5>
                   <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -120,7 +120,7 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="form_lastname"> Number of animals * </label>
-                            <input id="form_lastname" type="number" name="number" class="form-control"
+                            <input id="form_lastname" type="number" name="count" class="form-control"
                               placeholder="Please enter the number of the animals  *" required="required"
                               data-error="number of animals is required.">
                           </div>
@@ -131,7 +131,7 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="form_message">Animal Description *</label>
-                            <textarea id="form_message" name="description" class="form-control"
+                            <textarea id="form_message" name="desc" class="form-control"
                               placeholder="Write animal Description." rows="4" required="required"
                               data-error="Please, leave us a message."></textarea>
                           </div>

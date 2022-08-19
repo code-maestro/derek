@@ -12,7 +12,8 @@ function uploadImage(params) {
     destination: function (req, file, cb) { cb(null, '../static/images/'); },
 
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+      cb(null, file.fieldname);
+      // cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
       storage.setItem('img_url', file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
   });
@@ -48,3 +49,26 @@ app.post('/save', uploadImage().single('image'), async (req, res) => {
 });
 
 app.listen(4400);
+
+[
+  {
+      "name": "goat",
+      "image_url": "http://localhost:3000/images/goat.jpg"
+  },
+  {
+      "name": "sheep",
+      "image_url": "http://localhost:3000/images/sheep.jpg"
+  },
+  {
+      "name": "pig",
+      "image_url": "http://localhost:3000/images/pig.webp"
+  },
+  {
+      "name": "rabbit",
+      "image_url": "http://localhost:3000/images/bunny.jpg"
+  },
+  {
+      "name": "cow",
+      "image_url": "http://localhost:3000/images/C.jpg"
+  }
+]
