@@ -27,7 +27,7 @@ npm run start
 
 ## __AOB__
 
-Always Run ↓ to your local version up to date
+Always Run ↓ to keep your local version up to date
 ```
 git pull
 ```
