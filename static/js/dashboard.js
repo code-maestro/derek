@@ -40,19 +40,12 @@ async function renderAnimals() {
   document.getElementById('heavyCount').innerText = sk.count || 0;
 
 
-
-
   // if (![false, 0, "", null, undefined, NaN].includes(animals)) {
   //   const animals_at_farm = JSON.parse(JSON.stringify(animals));
   //   animals_at_farm.forEach(animal => {
   //     console.log(animal);
   //     // document.getElementById('allCount').innerText = animals;
-  //     
-  //     
-  //     
-  //     
-  //     
-  //     
+  //      
   //   });
   // } else {
   //   return null;

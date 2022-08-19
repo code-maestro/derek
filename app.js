@@ -925,6 +925,7 @@ app.get('/old/:id', function (request, response) {
 });
 
 
+// Inserting Vaccination Data into the DB
 app.post('/insertData', function (req, res) {
     // Execute SQL query that'll insert into the farma table
     connection.query(`INSERT INTO farma (farma_id, mail, password) VALUES (?, ?, ?);`, [f_id, mail, password], function (error, results, fields) {
@@ -936,6 +937,22 @@ app.post('/insertData', function (req, res) {
         return;
     });
 })
+
+// Updating Farma Profile Data
+app.post('/updateFarmaProfile', function (req, res) {
+    console.log(req.body);
+    const data = req.body;
+    // Execute SQL query that'll insert into the farma table
+    connection.query(`UPDATE farma SET first_name = ${data.fname}, last_name = ${data.lname}, phone = ${data.phone} WHERE farma_id = ${f_id});`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        console.log("RESULTS" + results);
+        console.log("FIELDS " + fields);
+        return;
+    });
+})
+
 
 // Add animals at the farm to DB
 app.post('/save', async (req, res) => {
