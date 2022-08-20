@@ -539,21 +539,25 @@
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
                 <h5 id="offcanvasRightLabel"> Update Farmer Data </h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col align-self-center"> 
-                            <form class="row g-4 needs-validation" novalidate method="POST" action="/updateFarmaProfile">
+                        <div class="col align-self-center">
+                            <form class="row g-4 needs-validation" id="updateFarmaProfileForm" novalidate method="POST"
+                                action="/updateFarmaProfile">
                                 <div class="col-md-12">
                                     <div class="Neon Neon-theme-dragdropbox">
-                                        <input style="z-index: 999; opacity: 0; height: 200px; position: absolute; right: 0px; left: 0px; margin-right: auto; margin-left: auto;" name="files[]" id="filer_input2" multiple="multiple" type="file">
+                                        <input
+                                            style="z-index: 9; opacity: 0; height: 200px; position: absolute; right: 0px; left: 0px; margin-right: auto; margin-left: auto;"
+                                            name="files[]" id="filer_input2" multiple="multiple" type="file">
                                         <div class="Neon-input-dragDrop">
                                             <div class="Neon-input-inner">
                                                 <div class="Neon-input-icon"><i class="fa fa-file-image-o"></i></div>
                                                 <div class="Neon-input-text">
-                                                    <h3>Drag&amp;Drop files here</h3> 
+                                                    <h3>Drag&amp;Drop files here</h3>
                                                     <span style="display:inline-block; margin: 15px 0">or</span>
                                                 </div>
                                                 <a class="Neon-input-choose-btn blue">Browse Files</a>
@@ -561,11 +565,21 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-12">
-                                    <label for="validationCustom01" class="form-label">First name</label>
-                                    <input type="text" class="form-control" name="fname" id="validationCustom01" required>
+                                    <label for="validationCustom04" class="form-label"> Email </label>
+                                    <input type="email" class="form-control" name="email" id="validationCustom04"
+                                        required>
                                     <div class="valid-feedback"> Looks good! </div>
                                 </div>
+
+                                <div class="col-md-12">
+                                    <label for="validationCustom01" class="form-label">First name</label>
+                                    <input type="text" class="form-control" name="fname" id="validationCustom01"
+                                        required>
+                                    <div class="valid-feedback"> Looks good! </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <label for="validationCustom02" class="form-label">Last name</label>
                                     <input type="text" class="form-control" name="lname" id="validationCustom02" required>
@@ -574,9 +588,26 @@
 
                                 <div class="col-md-12">
                                     <label for="validationCustom03" class="form-label"> Phone Number </label>
-                                    <input type="text" class="form-control" name="phone" id="validationCustom03" required>
+                                    <input type="phone" class="form-control" name="phone" id="validationCustom03" required>
                                     <div class="valid-feedback"> Looks good! </div>
                                 </div>
+
+                                <!-- Password Change -->
+                                <div class="col-md-12">
+                                    <span class="nav-link collapsed" data-toggle="collapse"
+                                        data-target="#collapseUtilities" aria-expanded="true"
+                                        aria-controls="collapseUtilities">
+                                        <span> Change Password </span>
+                                    </span>
+                                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                                        data-parent="#accordionSidebar">
+                                        <div class="bg-white py-2 collapse-inner rounded">
+                                            <span class="collapse-item" href="#"> Female </span>
+                                            <span class="collapse-item" href="#"> Male </span>
+                                            <span class="collapse-item" href="#"> New Borns </span>
+                                        </div>
+                                    </div>
+                                </li>
 
                                 <div class="col-12">
                                     <div class="d-grid gap-2">
@@ -611,7 +642,8 @@
         </div>
 
         <!-- Registration modal -->
-        <div class="modal fade" id="registrationModalToggle" aria-hidden="true" aria-labelledby="registrationModalToggleLabel" tabindex="-1">
+        <div class="modal fade" id="registrationModalToggle" aria-hidden="true"
+            aria-labelledby="registrationModalToggleLabel" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -629,7 +661,8 @@
         </div>
 
         <!-- Vaccination modal -->
-        <div class="modal fade" id="vaccinationModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal fade" id="vaccinationModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+            tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -647,7 +680,8 @@
         </div>
 
         <!-- New Born Modal  -->
-        <div class="modal fade" id="newBornModalToggle" aria-hidden="true" aria-labelledby="newBornModalToggleLabel" tabindex="-1">
+        <div class="modal fade" id="newBornModalToggle" aria-hidden="true" aria-labelledby="newBornModalToggleLabel"
+            tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header"> params </h5>

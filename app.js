@@ -36,7 +36,7 @@ const upload = multer.diskStorage({
     filename: function (req, file, cb) {
         console.log(Date.now() + path.extname(file.originalname));
         storage('img_url', Date.now() + path.extname(file.originalname));
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 
@@ -314,6 +314,32 @@ app.get('/get-sick/:animal', function (request, response) {
 });
 
 
+// Function to retrieve farma data
+app.get('/getFarmaData', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        connection.query(`SELECT * FROM farma WHERE farma_id='${user_id}';`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            console.log('results');
+            console.log(results);
+            results.forEach(element => {
+                console.log('element');
+                console.log(element);
+                if (element == null) {
+                    console.log("😒😒😒😒😒");
+                } else {
+                    response.send(JSON.parse(JSON.stringify(element)));
+                }
+            });
+        })
+    } else {
+        console.log("PLEASE LOGIN");
+        response.redirect('/');
+    }
+});
+
+
 // Inserting Vaccination Data into the DB
 app.post('/insertData', function (req, res) {
     // Execute SQL query that'll insert into the farma table
@@ -330,8 +356,8 @@ app.post('/insertData', function (req, res) {
 
 // Updating Farma Profile Data
 app.post('/updateFarmaProfile', function (req, res) {
-    console.log(req.body);
     const data = req.body;
+    console.log(data);
     // Execute SQL query that'll insert into the farma table
     connection.query(`UPDATE farma SET first_name = ${data.fname}, last_name = ${data.lname}, phone = ${data.phone} WHERE farma_id = ${f_id});`, function (error, results, fields) {
         // If there is an issue with the query, output the error
