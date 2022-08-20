@@ -452,7 +452,7 @@ app.post('/addAnimal', (request, response) => {
                     });
 
                 // Query to update the list of animals for all the farmer
-                connection.query(`UPDATE animals SET count = ${animal_count} WHERE farma_id = '${f_id}';`,
+                connection.query(`INSERT INTO animals (animal_type, count, farma_id) VALUES ('${animal_name}', ${animal_count}, '${f_id}';`,
                     function (error, results, fields) {
                         // If there is an issue with the query, output the error
                         if (error) throw error;
