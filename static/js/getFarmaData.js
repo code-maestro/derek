@@ -11,19 +11,11 @@ async function getFarmaData() {
 
 async function renderFarmaData() {
   let farma = await getFarmaData();
-  
-  if (![false, 0, "", null, undefined, NaN].includes(farma)) {
-    const details = JSON.parse(JSON.stringify(farma));
-    details.forEach(detail => {
-      document.getElementById("validationCustom01").value = detail.first_name;
-      document.getElementById("validationCustom02").value = detail.last_name;
-      document.getElementById("validationCustom03").value = detail.email;
-      document.getElementById("validationCustom04").value = detail.password;
-      document.getElementById("validationCustom02").value = detail.last_name;
-    });
-  } else {
-    return null;
-  }
+  console.log(farma);
+  document.getElementById("validationCustom01").value = farma.first_name;
+  document.getElementById("validationCustom02").value = farma.last_name;
+  document.getElementById("validationCustom03").setAttribute('value', farma.mail);
+  document.getElementById("validationCustom04").value = farma.mail;
 }
 
-renderFarmaData();
+// renderFarmaData();

@@ -5,39 +5,41 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta name="description" content="FARMA WEB APP">
+        <meta name="author" content="code-maestro">
 
         <title> dashboard </title>
 
-        <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css' />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+            type="text/css" />
         <!-- CSS only -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-        <link rel="stylesheet" href="../style.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css" />
-        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-        <link href="../vendor/fontawesome/css/fontawesome.css" rel="stylesheet">
-        <link href="../vendor/fontawesome/css/brands.css" rel="stylesheet">
-        <link href="../vendor/fontawesome/css/solid.css" rel="stylesheet">
+            integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"
+            type="text/css" />
+        <link rel="stylesheet" href="../style.css" type="text/css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css" type="text/css" />
+        <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+        <link href="../vendor/fontawesome/css/fontawesome.css" rel="stylesheet" type="text/css" />
+        <link href="../vendor/fontawesome/css/brands.css" rel="stylesheet" type="text/css" />
+        <link href="../vendor/fontawesome/css/solid.css" rel="stylesheet" type="text/css" />
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
+            rel="stylesheet" type="text/css" />
 
         <!-- Custom styles for this template -->
-        <link href="../css/sb-admin-2.css" rel="stylesheet">
-        <link href="../css/custom.css" rel="stylesheet">
-        <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
+        <link href="../css/sb-admin-2.css" rel="stylesheet" type="text/css" />
+        <link href="../css/custom.css" rel="stylesheet" type="text/css" />
+        <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
 
 
         <!-- List of animals that belong to the farmer that has signed in -->
         <script src="../js/dashboard.js" defer></script>
         <script src="../js/main.js" defer></script>
+        <script src="../js/getFarmaData.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-
 
     </head>
 
@@ -151,7 +153,7 @@
 
                 <!-- Nav Item -Profile Update -->
                 <li class="nav-item">
-                    <span class="nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                    <span onclick="renderFarmaData()" class="nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
                         aria-controls="offcanvasRight">
                         <i class="fa-solid fa-address-card"></i>
                         <span> Profile </span>
@@ -257,9 +259,9 @@
 
                             <!-- Nav Item - Logout -->
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="modal" data-target="#logoutModal" href="#">
+                                <span class="nav-link" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fa-solid fa-power-off"></i>
-                                </a>
+                                </span>
                             </li>
 
                         </ul>
@@ -530,104 +532,12 @@
         </div>
         <!-- End of Page Wrapper -->
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-
-        <!-- Update Offcanvas -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-                <h5 id="offcanvasRightLabel"> Update Farmer Data </h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                    aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col align-self-center">
-                            <form class="row g-4 needs-validation" id="updateFarmaProfileForm" novalidate method="POST"
-                                action="/updateFarmaProfile">
-                                <div class="col-md-12">
-                                    <div class="Neon Neon-theme-dragdropbox">
-                                        <input
-                                            style="z-index: 9; opacity: 0; height: 200px; position: absolute; right: 0px; left: 0px; margin-right: auto; margin-left: auto;"
-                                            name="files[]" id="filer_input2" multiple="multiple" type="file">
-                                        <div class="Neon-input-dragDrop">
-                                            <div class="Neon-input-inner">
-                                                <div class="Neon-input-icon"><i class="fa fa-file-image-o"></i></div>
-                                                <div class="Neon-input-text">
-                                                    <h3>Drag&amp;Drop files here</h3>
-                                                    <span style="display:inline-block; margin: 15px 0">or</span>
-                                                </div>
-                                                <a class="Neon-input-choose-btn blue">Browse Files</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="validationCustom04" class="form-label"> Email </label>
-                                    <input type="email" class="form-control" name="email" id="validationCustom04"
-                                        required>
-                                    <div class="valid-feedback"> Looks good! </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="validationCustom01" class="form-label">First name</label>
-                                    <input type="text" class="form-control" name="fname" id="validationCustom01"
-                                        required>
-                                    <div class="valid-feedback"> Looks good! </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="validationCustom02" class="form-label">Last name</label>
-                                    <input type="text" class="form-control" name="lname" id="validationCustom02" required>
-                                    <div class="valid-feedback"> Looks good! </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="validationCustom03" class="form-label"> Phone Number </label>
-                                    <input type="phone" class="form-control" name="phone" id="validationCustom03" required>
-                                    <div class="valid-feedback"> Looks good! </div>
-                                </div>
-
-                                <!-- Password Change -->
-                                <div class="col-md-12">
-                                    <span class="nav-link collapsed" data-toggle="collapse"
-                                        data-target="#collapseUtilities" aria-expanded="true"
-                                        aria-controls="collapseUtilities">
-                                        <span> Change Password </span>
-                                    </span>
-                                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                                        data-parent="#accordionSidebar">
-                                        <div class="bg-white py-2 collapse-inner rounded">
-                                            <span class="collapse-item" href="#"> Female </span>
-                                            <span class="collapse-item" href="#"> Male </span>
-                                            <span class="collapse-item" href="#"> New Borns </span>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <div class="col-12">
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-primary" type="submit">Submit form</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"> Ready to Leave? </h5>
+                        <h5 class="modal-title" id="logoutModalLabel"> Ready to Leave? </h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -644,14 +554,56 @@
         <!-- Registration modal -->
         <div class="modal fade" id="registrationModalToggle" aria-hidden="true"
             aria-labelledby="registrationModalToggleLabel" tabindex="-1">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="registrationModalToggleLabel">Modal 1</h5>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="modal-title fw-bold" id="registrationModalToggleLabel"> REGISTER A COW </h5>
+                                </div>
+                            </div>
+                        </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Show a second modal and hide this one with the button below.
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <h6 class="fw-bold"> List of users </h6> 
+                                    <table class="table table-bordered table-striped table-sm">
+                                        
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">First</th>
+                                                <th scope="col">Last</th>
+                                                <th scope="col">Handle</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">3</th>
+                                                <td colspan="2">Larry the Bird</td>
+                                                <td>@twitter</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
 
@@ -663,17 +615,71 @@
         <!-- Vaccination modal -->
         <div class="modal fade" id="vaccinationModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
             tabindex="-1">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="vaccinationModalToggleLabel">Modal 1</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Show a second modal and hide this one with the button below.
+                        <div class="container">
+                            <div class="row align-items-start">
+                                <div class="col">
+                                    One of three columns 
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">First</th>
+                                                <th scope="col">Last</th>
+                                                <th scope="col">Handle</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <table class="table mb-0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">1</th>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">2</th>
+                                                                <td>Jacob</td>
+                                                                <td>Thornton</td>
+                                                                <td>@fat</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">3</th>
+                                                                <td colspan="2">Larry the Bird</td>
+                                                                <td>@twitter</td>
+                                                            </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-
+                   
                     </div>
                 </div>
             </div>
@@ -696,6 +702,95 @@
                 </div>
             </div>
         </div>
+
+        <!-- Update Offcanvas -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+                <h5 id="offcanvasRightLabel"> Update Farmer Data </h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="offcanvas-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <form class="row g-4 needs-validation" id="updateFarmaProfileForm" novalidate method="POST"
+                                action="/updateFarmaProfile">
+                                <div class="col-md-12">
+                                    <div class="Neon Neon-theme-dragdropbox">
+                                        <input
+                                            style="z-index: 999; opacity: 0; height: 200px; position: absolute; right: 0px; left: 0px; margin-right: auto; margin-left: auto;"
+                                            name="files[]" id="filer_input2" multiple="multiple" type="file">
+                                        <div class="Neon-input-dragDrop">
+                                            <div class="Neon-input-inner">
+                                                <div class="Neon-input-icon"><i class="fa fa-file-image-o"></i></div>
+                                                <div class="Neon-input-text">
+                                                    <h3>Drag&amp;Drop files here</h3>
+                                                    <span style="display:inline-block; margin: 15px 0">or</span>
+                                                </div>
+                                                <a class="Neon-input-choose-btn blue">Browse Files</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="validationCustom04" id="" class="form-label"> Email </label>
+                                    <input type="email" class="form-control" name="email" id="validationCustom04" value="" required>
+                                    <div class="valid-feedback"> Looks good! </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="validationCustom01" class="form-label">First name</label>
+                                    <input type="text" class="form-control" name="fname" id="validationCustom01"
+                                        required>
+                                    <div class="valid-feedback"> Looks good! </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="validationCustom02" class="form-label">Last name</label>
+                                    <input type="text" class="form-control" name="lname" id="validationCustom02"
+                                        required>
+                                    <div class="valid-feedback"> Looks good! </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="validationCustom03" class="form-label"> Phone Number </label>
+                                    <input type="phone" class="form-control" name="phone" id="validationCustom03"
+                                        required>
+                                    <div class="valid-feedback"> Looks good! </div>
+                                </div>
+
+                                <!-- Password Change -->
+                                <div class="col-md-12">
+                                    <span class="nav-link collapsed" data-toggle="collapse"
+                                        data-target="#collapseUtilities" aria-expanded="true"
+                                        aria-controls="collapseUtilities">
+                                        <span> Change Password </span>
+                                    </span>
+                                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                                        data-parent="#accordionSidebar">
+                                        <div class="bg-white py-2 collapse-inner rounded">
+                                            <span class="collapse-item" href="#"> Female </span>
+                                            <span class="collapse-item" href="#"> Male </span>
+                                            <span class="collapse-item" href="#"> New Borns </span>
+                                        </div>
+                                    </div>
+                                    </li>
+
+                                    <div class="col-12">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-primary" type="submit">Submit form</button>
+                                        </div>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Bootstrap core JavaScript-->
         <script src="../vendor/jquery/jquery.min.js"></script>

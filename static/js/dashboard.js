@@ -36,6 +36,7 @@ async function renderAnimals() {
   document.getElementById('babyCount').innerText = sk.count || 0;
   document.getElementById('pendingVcount').innerText = sk.count || 0;
   document.getElementById('vCount').innerText = sk.disease_id || 0;
+  document.getElementById("registrationModalToggleLabel").innerText = `${sk.animal_type.toUpperCase()}'S TABULAR DATA `;
   document.getElementById('newCount').innerText = allSick || 0;
   document.getElementById('heavyCount').innerText = sk.count || 0;
 

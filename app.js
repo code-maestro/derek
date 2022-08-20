@@ -5,6 +5,7 @@ const path = require('path');
 const storage = require("store2");
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
+const { default: store } = require('store2');
 
 const connection = mysql.createConnection({
     host: 'db4free.net',
@@ -96,6 +97,8 @@ app.get('/register', function (request, response) {
 app.get('/logout', (req, res) => {
     // req.session.destroy();
     // Remove all saved data from sessionStorage
+    storage.remove('farma_id');
+    storage.clear();
     storage.clearAll();
     res.redirect('/');
 });
@@ -270,7 +273,7 @@ app.get('/get-count/:animal', function (request, response) {
     const user_id = storage('farma_id');
     if (user_id) {
         const animal_name = request.params.animal;
-        connection.query(`SELECT a.count, COUNT(b.disease_id) AS sickCount FROM animals a, animal b WHERE a.farma_id='${user_id}' AND a.farma_id = b.farma_id AND a.animal_type = b.animal_type AND a.animal_type='${animal_name}' GROUP BY a.animals_id;;`, function (error, results, fields) {
+        connection.query(`SELECT a.animal_type, a.count, COUNT(b.disease_id) AS sickCount FROM animals a, animal b WHERE a.farma_id='${user_id}' AND a.farma_id = b.farma_id AND a.animal_type = b.animal_type AND a.animal_type='${animal_name}' GROUP BY a.animals_id;;`, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
             results.forEach(element => {
@@ -321,11 +324,8 @@ app.get('/getFarmaData', function (request, response) {
         connection.query(`SELECT * FROM farma WHERE farma_id='${user_id}';`, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
-            console.log('results');
-            console.log(results);
+
             results.forEach(element => {
-                console.log('element');
-                console.log(element);
                 if (element == null) {
                     console.log("😒😒😒😒😒");
                 } else {
