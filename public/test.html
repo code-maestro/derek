@@ -9,27 +9,6 @@
         <meta name="author" content="">
 
         <title> testing </title>
-
-        <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-        <!-- CSS only -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-        <link rel="stylesheet" href="/style.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css" />
-        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-        <link href="vendor/fontawesome/css/fontawesome.css" rel="stylesheet">
-        <link href="vendor/fontawesome/css/brands.css" rel="stylesheet">
-        <link href="vendor/fontawesome/css/solid.css" rel="stylesheet">
-        <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
-
-        <!-- Custom styles for this template -->
-        <link href="css/sb-admin-2.css" rel="stylesheet">
-
-        <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
-
     </head>
 
     <body>
@@ -39,71 +18,64 @@
                 <!-- Main Content -->
                 <div id="content">
 
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <form id="contact-form" role="form" method="POST" action="/uploadPicture">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel"> Add a new animal </h5>
-                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true"> x </span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container">
-
-                                        <div class="controls">
-
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div>
-                                                        <label for="formFileLg" class="form-label"> Upload animal
-                                                            image </label>
-                                                        <input class="form-control form-control-lg" id="animal_image"
-                                                            name="animal_image" type="file">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary btn-md btn-block"> ADD </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
 
-
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
-
-        <!-- Page level plugins -->
-        <script src="vendor/chart.js/Chart.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="js/demo/chart-area-demo.js"></script>
-        <script src="js/demo/chart-pie-demo.js"></script>
-
-        <!-- Page level plugins -->
-        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="vendor/chart.js/datatables-demo.js"></script>
-
     </body>
+
+    <script>
+
+        async function getListing() {
+            let url = '/getListing';
+            console.log('URL' + url);
+            try {
+                let res = await fetch(url);
+                return await res.json();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        async function getTableData() {
+            let list = await getListing();
+
+            console.log('list');
+            console.log(JSON.parse(JSON.stringify(list)));
+
+            let container = document.querySelector('#content');
+
+            const animals = JSON.parse(JSON.stringify(list));
+
+            console.log('animals[2]');
+            console.log(animals[2]);
+
+            container.innerHTML = `<p> ${animals[1]} </p>`;
+
+            //     // animals_at_farm.forEach(animal => {
+            //     list.forEach(animal => {
+
+            //     //         <tr class="justify-content-centerS">
+            //     //             <th scope="row">${animal.id}</th>
+            //     //             <td scope="row"></td>
+            //     //             <td>Otto</td>
+            //     //             <td>@mdo</td>
+            //     //             <td>Otto</td>
+            //     //             <td>@mdo</td>
+            //     //             <td scope="row">
+            //     //             <div class="btn-group btn-group-sm" role="group" aria-label="Basic mixed styles example">
+            //     //                 <button type="button" class="btn btn-secondary"> EDIT </button>
+            //     //                 <button type="button" class="btn btn-danger"> DELETE </button>
+            //     //             </div>
+            //     //             </td>
+            //     //         </tr>
+            //     //    
+            //     // });
+            // });
+        }
+
+        getTableData();
+
+    </script>
 
 </html>

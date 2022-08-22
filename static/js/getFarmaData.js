@@ -11,11 +11,11 @@ async function getFarmaData() {
 
 async function renderFarmaData() {
   let farma = await getFarmaData();
-  console.log(farma);
-  document.getElementById("validationCustom01").value = farma.first_name;
-  document.getElementById("validationCustom02").value = farma.last_name;
-  document.getElementById("validationCustom03").setAttribute('value', farma.mail);
-  document.getElementById("validationCustom04").value = farma.mail;
+  document.getElementById("validationCustom01").setAttribute('value', farma.mail);
+  document.getElementById("validationCustom02").setAttribute('value', farma.first_name);
+  document.getElementById("validationCustom03").setAttribute('value', farma.last_name);
+  document.getElementById("validationCustom04").setAttribute('value', farma.phone);
+  document.getElementById("validationCustom05").setAttribute('value', farma.password);
 }
 
 // renderFarmaData();

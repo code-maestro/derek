@@ -9,6 +9,7 @@ async function getUsers() {
   }
 }
 
+
 async function renderUsers() {
   let users = await getUsers();
   let html = '';

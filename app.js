@@ -75,6 +75,21 @@ function checkFileType(file, cb) {
 
 
 // First page
+app.get('/test', function (request, response) {
+    // Get saved data from sessionStorage
+    response.sendFile(path.join(__dirname + '/public/test.html'));
+});
+
+
+// Function to retrieve animal data for table
+app.get('/getListing', function (request, response) {
+    const arr = ['element.id', 'element.animal_type', 'element.gender', 'element.dob', 'element.reg_date'];
+    console.log(JSON.parse(JSON.stringify(arr)));
+    response.send(JSON.parse(JSON.stringify(arr)));
+});
+
+
+// First page
 app.get('/', function (request, response) {
     // Get saved data from sessionStorage
     let data = storage('farma_id');
@@ -86,7 +101,7 @@ app.get('/', function (request, response) {
 });
 
 
-// register
+// Register
 app.get('/register', function (request, response) {
     // Render login template
     response.sendFile(path.join(__dirname + '/public/register.html'));
@@ -108,7 +123,6 @@ app.get('/logout', (req, res) => {
 app.post('/register', function (request, response) {
     // Capture the input fields
     const f_id = uuidv4();
-
     const mail = request.body.mail;
     const password = request.body.password;
     const password2 = request.body.password2;
@@ -140,15 +154,6 @@ app.post('/register', function (request, response) {
             response.redirect('/');
             response.end();
         });
-
-        // // Creating registered farma animals' table
-        // connection.query(`CREATE TABLE ${from_mail} ( id INT NOT NULL AUTO_INCREMENT, animal VARCHAR(100) NULL, image_url VARCHAR(120) NULL DEFAULT NULL, count INT NULL, farma_id VARCHAR(50) NULL, PRIMARY KEY ( id ) );`, function (error, results, fields) {
-        //     // If there is an issue with the query, output the error
-        //     if (error) throw error;
-        //     // If the account exists
-        //     response.redirect('/');
-        //     response.end();
-        // });
 
     } else {
         alert(' EMPTY DATA FEILDS !');
@@ -255,6 +260,7 @@ app.get('/animal/:id', function (request, response) {
     const user_id = storage('farma_id');
     if (user_id) {
         const animal_name = request.params.id;
+        storage('animal', animal_name);
         const all_animals = storage('all-animals');
         const isSelected = all_animals.includes(animal_name);
 
@@ -340,6 +346,40 @@ app.get('/getFarmaData', function (request, response) {
 });
 
 
+// Function to retrieve animal data for table
+app.get('/getAnimalListing', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+        
+            response.send({animalListing: results});
+
+        })
+    } else {
+        response.redirect('/');
+    }
+
+});
+
+
+// Registering a new animal
+app.post('/newAnimal', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the farma table
+    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        res.redirect(`/animal/${animal}`);
+        return;
+    });
+})
+
 // Inserting Vaccination Data into the DB
 app.post('/insertData', function (req, res) {
     // Execute SQL query that'll insert into the farma table
@@ -367,7 +407,7 @@ app.post('/updateFarmaProfile', function (req, res) {
         console.log("FIELDS " + fields);
         return;
     });
-    
+
     response.redirect('/home');
 
 })

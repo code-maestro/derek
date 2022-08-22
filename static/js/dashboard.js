@@ -36,21 +36,11 @@ async function renderAnimals() {
   document.getElementById('babyCount').innerText = sk.count || 0;
   document.getElementById('pendingVcount').innerText = sk.count || 0;
   document.getElementById('vCount').innerText = sk.disease_id || 0;
-  document.getElementById("registrationModalToggleLabel").innerText = `${sk.animal_type.toUpperCase()}'S TABULAR DATA `;
-  document.getElementById('newCount').innerText = allSick || 0;
+  document.getElementById("registrationModalLabel").innerText = `${sk.animal_type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
+  document.getElementById("register-animal").innerText = `REGISTER A NEW ${sk.animal_type.toUpperCase()}`;
+  document.getElementById('newCount').innerText = sk.count || 0;
   document.getElementById('heavyCount').innerText = sk.count || 0;
 
-
-  // if (![false, 0, "", null, undefined, NaN].includes(animals)) {
-  //   const animals_at_farm = JSON.parse(JSON.stringify(animals));
-  //   animals_at_farm.forEach(animal => {
-  //     console.log(animal);
-  //     // document.getElementById('allCount').innerText = animals;
-  //      
-  //   });
-  // } else {
-  //   return null;
-  // }
 }
 
 renderAnimals()
@@ -123,7 +113,6 @@ function deleteFromDom(param) {
           be easily modified with no need for any custom CSS!
       </div>
   </div>
-
 </div>
 
 <div class="col-lg-6">
@@ -179,7 +168,54 @@ function deleteFromDom(param) {
   `;
 }
 
-// Method to show appriorate modal for the selected gender
-function showModal(params) {
-  return console.log("🤣😂😂" + params);
+
+async function getListing() {
+  let url = '/getAnimalListing';
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getTableData() {
+  let list = await getListing();
+
+  let html = '';
+  let htmlSegment = '';
+
+  const con = document.getElementById('animalListing');
+
+  list.animalListing.forEach(animal => {
+    const dobYear = new Date(Date.parse(animal.dob));
+    const today = new Date(Date.now());
+
+    console.log(today.getDate());
+    console.log(today.getFullYear() - dobYear.getFullYear());
+
+    htmlSegment = `
+        <tr class="justify-content-centerS">
+          <th scope="row">${animal.id}</th>
+          <td> ${animal.animal_tag} </td>
+          <td> ${animal.gender} </td>
+          <td> ${animal.reg_date} </td>
+          <td> ${animal.dob} </td>
+          <td> ${today.getFullYear() - dobYear.getFullYear()} </td>
+          <td scope="row">
+            <div class="btn-group btn-group-sm" role="group"
+                aria-label="Basic mixed styles example">
+                <button type="button" class="btn btn-secondary"> EDIT </button>
+                <button type="button" class="btn btn-danger"> DELETE </button>
+            </div>
+          </td>
+        </tr>
+    `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
+
 }

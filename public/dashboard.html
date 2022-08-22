@@ -79,7 +79,7 @@
                 </div>
 
                 <!-- Nav Item - Register -->
-                <li class="nav-item">
+                <li class="nav-item" onclick="getTableData()">
                     <span class="nav-link" data-bs-toggle="modal" href="#registrationModalToggle" role="button">
                         <i class="fa-solid fa-address-card"></i>
                         <span> Registration </span>
@@ -153,8 +153,8 @@
 
                 <!-- Nav Item -Profile Update -->
                 <li class="nav-item">
-                    <span onclick="renderFarmaData()" class="nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                        aria-controls="offcanvasRight">
+                    <span onclick="renderFarmaData()" class="nav-link" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                         <i class="fa-solid fa-address-card"></i>
                         <span> Profile </span>
                     </span>
@@ -552,64 +552,154 @@
         </div>
 
         <!-- Registration modal -->
-        <div class="modal fade" id="registrationModalToggle" aria-hidden="true"
-            aria-labelledby="registrationModalToggleLabel" tabindex="-1">
+        <div class="modal fade" id="registrationModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="registrationModalToggleLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="modal-title fw-bold" id="registrationModalToggleLabel"> REGISTER A COW </h5>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
                     <div class="modal-body">
                         <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <h6 class="fw-bold"> List of users </h6> 
-                                    <table class="table table-bordered table-striped table-sm">
-                                        
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">First</th>
-                                                <th scope="col">Last</th>
-                                                <th scope="col">Handle</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                                <td>@fat</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td colspan="2">Larry the Bird</td>
-                                                <td>@twitter</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+
+                            <div class="row px-2">
+                                <div class="col-auto me-auto fw-bold" id="registrationModalLabel"> </div>
+                                <div class="col-auto">
+                                    <p class="py-2">
+                                        <a class="text-decoration-none" data-bs-dismiss="modal" aria-label="Close">
+                                            CLOSE
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z">
+                                                </path>
+                                            </svg>
+                                        </a>
+                                    </p>
+
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
 
+                            
+                            <div class="row ">
+                                <div class="col">
+                                    <div class="card">
+                                        <!-- Card Header - Accordion -->
+                                        <a href="#collapseRegistrationFormCard"
+                                            class="d-block card-header py-3 collapsed" data-toggle="collapse"
+                                            role="button" aria-expanded="false"
+                                            aria-controls="collapseRegistrationFormCard">
+                                            <h6 class="m-0 font-weight-bold text-primary" id="register-animal">  </h6>
+                                        </a>
+                                        <!-- Card Content - Collapse -->
+                                        <div class="collapse" id="collapseRegistrationFormCard" style="">
+                                            <div class="card-body">
+                                                <!-- Registration Form -->
+                                                <form class="row g-3 needs-validation" novalidate method="POST" action="/newAnimal">
+                                                    <div class="col-md-6">
+                                                        <label for="validationCustom01" class="form-label"> ANIMAL TAG </label>
+                                                        <input type="text" class="form-control" name="animalTag" id="validationCustom01"
+                                                            value="Mark" required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6">
+                                                        <label for="validationCustom04" class="form-label"> GENDER </label>
+                                                        <select class="form-select" id="gender" name="gender" required>
+                                                            <option selected disabled value="">Choose...</option>
+                                                            <option value="Male"> Male </option>
+                                                            <option value="Female"> Female </option>
+                                                        </select>
+                                                        <div class="invalid-feedback"> Please select a valid state. </div>
+                                                        <div class="valid-feedback"> Looks Good. </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6">
+                                                        <label for="validationCustom03" class="form-label"> DATE OF BIRTH </label>
+                                                        <input type="date" class="form-control" name="dob" id="validationCustom03" >
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="validationCustomUsername"
+                                                            class="form-label"> REGISTRATION DATE </label>
+                                                        <div class="input-group has-validation">
+                                                            <input type="date" class="form-control" name="regDate" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                                                            <div class="invalid-feedback"> Please choose a Date. </div>
+                                                            <div class="valid-feedback"> Looks Good </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="validationCustom02" class="form-label"> AGE </label>
+                                                        <input type="text" class="form-control" id="validationCustom02" name="age" required>
+                                                        <div class="invalid-feedback"> Enter Age </div>
+                                                        <div class="valid-feedback"> Looks good! </div>
+                                                    </div>
+
+                                                    <div class="d-grid gap-2">
+                                                        <button class="btn btn-primary" type="submit">  SUBMIT FORM </button>
+                                                      </div>
+
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row px-4">
+                                                <!-- Registration Form -->
+                                                <h6 class="fw-bold px-0"> List of users </h6>
+                                                <table class="table table-bordered table-hover table-sm">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col"> ANIMAL TAG </th>
+                                                            <th scope="col"> GENDER </th>
+                                                            <th scope="col"> REGISTRATION DATE </th>
+                                                            <th scope="col"> DATE OF BIRTH </th>
+                                                            <th scope="col"> AGE </th>
+                                                            <th scope="col"> ACTIONS </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="animalListing">
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="row px-4 py-4">
+                                                <div class="col-auto me-auto">
+                                                    <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                                </div>
+                                                <div class="col-auto me-auto">
+                                                    <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                                </div>
+                                                <div class="col-auto">
+                                                    <h6 class="fw-bold py-2"> Export your data to </h6>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="button" class="btn btn-primary btn-sm"> EXCEL </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"> CSV </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"> JSON </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
 
         <!-- Vaccination modal -->
@@ -625,7 +715,7 @@
                         <div class="container">
                             <div class="row align-items-start">
                                 <div class="col">
-                                    One of three columns 
+                                    One of three columns
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
@@ -679,7 +769,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                   
+
                     </div>
                 </div>
             </div>
@@ -737,7 +827,8 @@
 
                                 <div class="col-md-12">
                                     <label for="validationCustom04" id="" class="form-label"> Email </label>
-                                    <input type="email" class="form-control" name="email" id="validationCustom04" value="" required>
+                                    <input type="email" class="form-control" name="email" id="validationCustom04"
+                                        value="" required>
                                     <div class="valid-feedback"> Looks good! </div>
                                 </div>
 
