@@ -507,4 +507,20 @@ app.post('/addAnimal', (request, response) => {
 });
 
 
+// Function to delete data from animal
+app.post('/remove-animal/:id', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        const animal_id = request.params.id;
+        connection.query(`DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${animal_id}';`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+        })
+    } else {
+        console.log("PLEASE LOGIN");
+        response.redirect('/');
+    }
+});
+
+
 app.listen(3000);
