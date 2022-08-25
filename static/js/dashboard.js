@@ -106,29 +106,27 @@ function deleteFromDom(param) {
   element.remove();
   document.querySelector('#dynamic').innerHTML = `
   <div class="col-lg-6">
-  <!-- Communication -->
-  <div class="card shadow mb-4">
+    <!-- Communication -->
+    <div class="card shadow mb-4">
       <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary"> Doctor Information </h6>
+        <h6 class="m-0 font-weight-bold text-primary"> Doctor Information </h6>
       </div>
       <div class="card-body" id="docInfo">
-          The styling for this basic card example is created by using default Bootstrap
-          utility classes. By using utility classes, the style of the card component can
-          be easily modified with no need for any custom CSS!
+        The styling for this basic card example is created by using default Bootstrap
+        utility classes. By using utility classes, the style of the card component can
+        be easily modified with no need for any custom CSS!
       </div>
+    </div>
   </div>
-</div>
 
 <div class="col-lg-6">
   <!-- Dropdown Card Example -->
   <div class="card shadow mb-4">
       <!-- Card Header - Dropdown -->
-      <div
-          class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">Dropdown Card Example</h6>
           <div class="dropdown no-arrow">
-              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
@@ -195,15 +193,21 @@ async function getTableData() {
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
     const today = new Date(Date.now());
+    // AGE CALCULATION
+    const ageYears = today.getFullYear() - dobYear.getFullYear();
+    const ageMonths = today.getMonth() - dobYear.getMonth();
+    const ageDays = today.getDay() - dobYear.getDay();
 
     htmlSegment = `
-        <tr class="justify-content-centerS">
-          <th scope="row">${animal.id}</th>
+        <tr class="justify-content-center" id="${animal.id}">
+          <th scope="row" class="text-center"> ${animal.id} </th>
           <td class="text-center"> ${animal.animal_tag} </td>
           <td class="text-center"> ${animal.gender} </td>
           <td class="text-center"> ${regDate.toDateString()} </td>
           <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${today.getFullYear() - dobYear.getFullYear()} </td>
+          <td class="text-center"> ${ageYears < 0 ? 0 : ageYears} </td>
+          <td class="text-center"> ${ageMonths < 0 ? 0 : ageMonths} </td>
+          <td class="text-center"> ${ageDays < 0 ? 0 : ageDays} </td>
           
           <td class="text-center">
             <button type="button" class="btn btn-sm btn-success">
@@ -233,13 +237,38 @@ async function getTableData() {
 }
 
 
-// function deleteAnimal(param) {
-//   console.log(param);
-//   let url = `/remove-animal/${param}`;
-//   try {
-//     let res = await fetch(url);
-//     return res.json();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+function deleteAnimal(param) {
+  console.log(param);
+
+  const url = `/remove-animal`;
+
+  // post body data 
+  const user = {
+    id: param
+  };
+
+  // request options
+  const options = {
+    method: 'POST',
+    body: JSON.stringify(user),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  fetch(url, options)
+    .then(function (response) {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response;
+    }).then(function (response) {
+      console.log("ok");
+      console.log(response);
+      const element = document.getElementById(`${param}`);
+      console.log(element);
+      element.remove();
+    }).catch(function (error) {
+      console.log(error);
+    });
+}

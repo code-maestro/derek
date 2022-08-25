@@ -225,7 +225,7 @@ app.get('/before-home', function (request, response) {
             });
         })
     } else {
-        console.log("PLEASE LOGIN");
+        console.log("BEFORE-HOME animals listing retrieval oder keine farma_id ");
         response.redirect('/');
     }
 });
@@ -292,7 +292,7 @@ app.get('/get-count/:animal', function (request, response) {
             });
         })
     } else {
-        console.log("PLEASE LOGIN");
+        console.log(" GET-ANIMAL no farma_id  ");
         response.redirect('/');
     }
 });
@@ -317,7 +317,7 @@ app.get('/get-sick/:animal', function (request, response) {
             });
         })
     } else {
-        console.log("PLEASE LOGIN");
+        console.log(" GET-SICK ANIMALs no farma_id ");
         response.redirect('/');
     }
 });
@@ -340,7 +340,7 @@ app.get('/getFarmaData', function (request, response) {
             });
         })
     } else {
-        console.log("PLEASE LOGIN");
+        console.log("FARMA DATA no farma_id");
         response.redirect('/');
     }
 });
@@ -508,16 +508,16 @@ app.post('/addAnimal', (request, response) => {
 
 
 // Function to delete data from animal
-app.post('/remove-animal/:id', function (request, response) {
+app.post('/remove-animal', function (request, response) {
     const user_id = storage('farma_id');
     if (user_id) {
-        const animal_id = request.params.id;
+        const animal_id = request.body.id;
         connection.query(`DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${animal_id}';`, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
         })
     } else {
-        console.log("PLEASE LOGIN");
+        console.log(" trying to delete with no farma_id 🤣😂 ");
         response.redirect('/');
     }
 });
