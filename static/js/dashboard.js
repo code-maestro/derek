@@ -1,7 +1,5 @@
 const container = document.querySelector('#dynamic');
-
 const browserUrl = window.location.href;
-
 
 // Get Total Count of the animals from backend endpoint
 async function getAnimalCount() {
@@ -27,10 +25,7 @@ async function getSickAnimalCount() {
 }
 
 async function renderAnimals() {
-
   const all = await getAnimalCount();
-  // const allSick = await getSickAnimalCount();
-
   const sk = JSON.parse(JSON.stringify(all));
 
   document.getElementById('allCount').innerText = sk.count || 0;

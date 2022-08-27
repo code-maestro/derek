@@ -330,7 +330,6 @@ app.get('/getFarmaData', function (request, response) {
         connection.query(`SELECT * FROM farma WHERE farma_id='${user_id}';`, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
-
             results.forEach(element => {
                 if (element == null) {
                     console.log("😒😒😒😒😒");
