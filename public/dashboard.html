@@ -274,8 +274,8 @@
                     <div class="container-fluid" id="landing">
                         <div class="row">
                             <!-- Total Number of  Card -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="total" onclick="clicked('total')">
-                                <div class="card border-left-info shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="total" onclick="clicked('total')" class="card shadow h-100">
                                     <div class="card-body" id="totals">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -293,8 +293,8 @@
                             </div>
 
                             <!-- Sick  -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="sick" onclick="clicked('sick')">
-                                <div class="card border-left-danger shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="sick" class="card shadow h-100" onclick="clicked('sick')">
                                     <div class="card-body" id="sicks">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -312,8 +312,8 @@
                             </div>
 
                             <!-- Expecting  -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="heavy" onclick="clicked('heavy')">
-                                <div class="card border-left-warning shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="heavy" onclick="clicked('heavy')" class="card shadow h-100">
                                     <div class="card-body" id="heavys">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -335,8 +335,8 @@
                             </div>
 
                             <!-- Vaccinated -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="vaxed" onclick="clicked('vaxed')">
-                                <div class="card border-left-success shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="vaxed" onclick="clicked('vaxed')" class="card shadow h-100">
                                     <div class="card-body" id="vaxeds">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -356,8 +356,8 @@
 
                         <div class="row">
                             <!-- New Borns -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="new-born" onclick="clicked('new-born')">
-                                <div class="card border-left-success shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="new-born" onclick="clicked('new-born')" class="card shadow h-100">
                                     <div class="card-body" id="new-borns">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -375,8 +375,8 @@
                             </div>
 
                             <!-- New registrated -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="new-at-farm" onclick="clicked('new-at-farm')">
-                                <div class="card border-left-success shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="new-at-farm" onclick="clicked('new-at-farm')" class="card shadow h-100">
                                     <div class="card-body" id="new-at-farms">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -395,8 +395,7 @@
 
                             <!-- Pending vaccinations -->
                             <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100" id="pending"
-                                    onclick="clicked('pending')">
+                                <div class="card shadow h-100" id="pending" onclick="clicked('pending')">
                                     <div class="card-body" id="pendings">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -425,8 +424,8 @@
                             </div>
 
                             <!-- Products -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="prod" onclick="clicked('prod')">
-                                <div class="card border-left-primary shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="prod" onclick="clicked('prod')" class="card shadow h-100">
                                     <div class="card-body" id="prods">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -593,7 +592,7 @@
                     <div class="modal-body">
                         <div class="container">
 
-                            <div class="row px-2">
+                            <div class="row px-2 py-4">
                                 <div class="col-auto me-auto fw-bold" id="registrationModalLabel"> </div>
                             </div>
 
@@ -611,81 +610,63 @@
                                         <div class="collapse" id="collapseRegistrationFormCard" style="">
                                             <div class="card-body">
                                                 <!-- Registration Form -->
-                                                <form class="row g-3 needs-validation" novalidate method="POST"
-                                                    action="/newAnimal">
+                                                <form id="registrationForm" class="row g-3 needs-validation" novalidate>
+                                                    <!-- <form id="registrationForm" class="row g-3 needs-validation" novalidate method="POST" action="/newAnimal"> -->
                                                     <div class="col-md-6">
-                                                        <label for="validationCustom01" class="form-label"> ANIMAL TAG
-                                                        </label>
-                                                        <input type="text" class="form-control" name="animalTag"
-                                                            id="validationCustom01" value="Mark" required>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
+                                                        <label for="animal-tag" class="form-label fw-bold"> ANIMAL TAG </label>
+                                                        <input id="animal-tag" type="text" placeholder="Disabled input" class="form-control" name="animalTag" id="animal-tag">
+                                                        <div class="valid-feedback"> Looks good! </div> 
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="validationCustom04" class="form-label"> GENDER
-                                                        </label>
+                                                        <label for="gender" class="form-label fw-bold"> GENDER </label>
                                                         <select class="form-select" id="gender" name="gender" required>
                                                             <option selected disabled value="">Choose...</option>
                                                             <option value="Male"> Male </option>
                                                             <option value="Female"> Female </option>
                                                         </select>
-                                                        <div class="invalid-feedback"> Please select a valid state.
+                                                        <div class="invalid-feedback fw-bold"> Please select a valid state.
                                                         </div>
-                                                        <div class="valid-feedback"> Looks Good. </div>
+                                                        <div class="valid-feedback fw-bold"> Looks Good. </div>
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="validationCustom03" class="form-label"> DATE OF
-                                                            BIRTH </label>
-                                                        <input type="date" class="form-control" name="dob"
-                                                            id="validationCustom03">
+                                                        <label for="dob" class="form-label fw-bold"> DATE OF BIRTH </label>
+                                                        <input onchange="calculateAge()" type="date" class="form-control" name="dob" id="dob" required>
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="validationCustomUsername" class="form-label">
-                                                            REGISTRATION DATE </label>
+                                                        <label for="registration-date" class="form-label fw-bold"> REGISTRATION DATE </label>
                                                         <div class="input-group has-validation">
-                                                            <input type="date" class="form-control" name="regDate"
-                                                                id="validationCustomUsername"
-                                                                aria-describedby="inputGroupPrepend" required>
+                                                            <input type="date" class="form-control" name="regDate" id="registration-date" aria-describedby="inputGroupPrepend" required>
                                                             <div class="invalid-feedback"> Please choose a Date. </div>
                                                             <div class="valid-feedback"> Looks Good </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4">
-                                                        <label for="validationCustom02" class="form-label"> AGE (Years)
-                                                        </label>
-                                                        <input type="text" class="form-control" id="validationCustom02"
-                                                            name="age" required>
+                                                        <label for="age-years" class="form-label fw-bold"> AGE (Years) </label>
+                                                        <input type="text" class="form-control" id="age-years" name="ageYears" readonly>
                                                         <div class="invalid-feedback"> Enter Age </div>
                                                         <div class="valid-feedback"> Looks good! </div>
                                                     </div>
 
                                                     <div class="col-md-4">
-                                                        <label for="validationCustom05" class="form-label"> AGE (Months)
-                                                        </label>
-                                                        <input type="text" class="form-control" id="validationCustom05"
-                                                            name="age" required>
-                                                        <div class="invalid-feedback"> Enter Age </div>
-                                                        <div class="valid-feedback"> Looks good! </div>
+                                                        <label for="age-months" class="form-label fw-bold"> AGE (Months) </label>
+                                                        <input type="text" class="form-control" id="age-months" name="ageMonths" readonly>
+                                                        <div class="invalid-feedback fw-bold"> Enter Age </div>
+                                                        <div class="valid-feedback fw-bold"> Looks good! </div>
                                                     </div>
 
                                                     <div class="col-md-4">
-                                                        <label for="validationCustom06" class="form-label"> AGE (Days)
-                                                        </label>
-                                                        <input type="text" class="form-control" id="validationCustom06"
-                                                            name="age" required>
+                                                        <label for="age-days" class="form-label fw-bold"> AGE (Days) </label>
+                                                        <input type="text" class="form-control" id="age-days" name="ageDays" readonly>
                                                         <div class="invalid-feedback"> Enter Age </div>
                                                         <div class="valid-feedback"> Looks good! </div>
                                                     </div>
 
-
-                                                    <div class="d-grid gap-2">
-                                                        <button class="btn btn-primary" type="submit"> SUBMIT
-                                                            FORM</button>
+                                                    <div class="d-grid gap-2 col-6">
+                                                        <button id="submit-btn" class="btn btn-sm btn-primary fw-bold font-monospace" type="submit"> REGISTER </button>
                                                     </div>
 
                                                 </form>
@@ -703,7 +684,8 @@
                                             <div class="row px-4">
                                                 <!-- Registration Form -->
                                                 <h6 class="fw-bold px-0"> List of users </h6>
-                                                <table class="table table-bordered table-hover table-sm">
+                                                <table id="registrationTable"
+                                                    class="table table-bordered table-hover table-sm">
                                                     <thead class="table-dark">
                                                         <tr>
                                                             <th scope="col" class="text-center"> ID </th>
@@ -714,8 +696,8 @@
                                                             <th scope="col" class="text-center"> AGE(Years) </th>
                                                             <th scope="col" class="text-center"> AGE(Months) </th>
                                                             <th scope="col" class="text-center"> AGE(Days) </th>
-                                                            <th scope="col" class="text-center"> EDIT </th>
-                                                            <th scope="col" class="text-center"> DELETE </th>
+                                                            <th scope="col" class="text-center noprint"> EDIT </th>
+                                                            <th scope="col" class="text-center noprint"> DELETE </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="animalListing">
@@ -735,10 +717,10 @@
                                                     <h6 class="fw-bold py-2"> Export your data to </h6>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <button type="button" class="btn btn-primary btn-sm"> EXCEL
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary btn-sm"> CSV </button>
-                                                    <button type="button" class="btn btn-primary btn-sm"> JSON </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="toExcel('registrationTable')"> EXCEL </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="printReport('registrationTable')"> PRINT </button>
                                                 </div>
                                             </div>
 
@@ -751,8 +733,7 @@
                                 <div class="col-auto me-auto fw-bold" id="test"> </div>
 
                                 <div class="col-auto">
-                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
-                                        aria-label="Close">
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal" aria-label="Close">
                                         CLOSE
                                     </button>
                                 </div>
@@ -764,15 +745,16 @@
             </div>
         </div>
 
+
         <!-- Vaccination modal -->
         <div class="modal fade" id="vaccinationModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="registrationModalToggleLabel" aria-hidden="true">
+            tabindex="-1" aria-labelledby="vaccinationModalToggleLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="container">
 
-                            <div class="row px-2">
+                            <div class="row px-2 py-4">
                                 <div class="col-auto me-auto fw-bold" id="vaccinationModalLabel"> </div>
                             </div>
 
@@ -850,17 +832,21 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="row px-4">
-                                                <!-- Vacccination Form -->
-                                                <h6 class="fw-bold px-0"> List of users </h6>
-                                                <table class="table table-bordered table-hover table-sm">
+                                                <!-- Vaccination Form -->
+                                                <h6 class="fw-bold px-0"> List of animals </h6>
+                                                <table id="vaccinationTable" class="table table-bordered table-hover table-sm">
                                                     <thead class="table-dark">
                                                         <tr>
                                                             <th scope="col" class="text-center"> ID </th>
                                                             <th scope="col" class="text-center"> ANIMAL TAG </th>
-                                                            <th scope="col" class="text-center"> No OF VACCINATIONS </th>
-                                                            <th scope="col" class="text-center"> FIRST VACCINATION DATE </th>
-                                                            <th scope="col" class="text-center"> NEXT VACCINATION DATE </th>
-                                                            <th scope="col" class="text-center"> No OF PENDING VACCINATIONS </th>
+                                                            <th scope="col" class="text-center"> No OF VACCINATIONS
+                                                            </th>
+                                                            <th scope="col" class="text-center"> FIRST VACCINATION DATE
+                                                            </th>
+                                                            <th scope="col" class="text-center"> NEXT VACCINATION DATE
+                                                            </th>
+                                                            <th scope="col" class="text-center"> No OF PENDING
+                                                                VACCINATIONS </th>
                                                             <th scope="col" class="text-center"> EDIT </th>
                                                             <th scope="col" class="text-center"> DELETE </th>
                                                         </tr>
@@ -882,10 +868,10 @@
                                                     <h6 class="fw-bold py-2"> Export your data to </h6>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <button type="button" class="btn btn-primary btn-sm"> EXCEL
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary btn-sm"> CSV </button>
-                                                    <button type="button" class="btn btn-primary btn-sm"> JSON </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="printReport('vaccinationTable')"> PRINT </button>
                                                 </div>
                                             </div>
 
