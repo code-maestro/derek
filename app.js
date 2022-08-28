@@ -399,7 +399,7 @@ app.post('/insertData', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.tag}', '${req.body.gender}', ${req.body.dob}, ${req.body.regDate}, '${animal}', '${farma_id}');`, function (error, results, fields) {
+    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.tag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
         if (error) throw error;
     });
 })

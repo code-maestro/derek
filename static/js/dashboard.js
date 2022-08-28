@@ -395,7 +395,6 @@ function calculateAge(params) {
 function toDB(e) {
   e.preventDefault();
 
-  // post body data 
   const user = {
     tag: form.animalTag.value,
     gender: form.gender.value,
@@ -403,32 +402,48 @@ function toDB(e) {
     regDate: form.regDate.value
   };
 
-  // request options
-  const options = {
-    method: 'POST',
-    body: JSON.stringify(user),
-    headers: {
-      'Content-Type': 'application/json'
-    }
+  // // request options
+  // const options = {
+  //   method: 'POST',
+  //   body: JSON.stringify(user),
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   }
+  // }
+
+  // fetch('/insertData', options)
+  //   .then(function (response) {
+  //     if (!response.ok) {
+  //       throw Error(response.statusText);
+  //     } else {
+  //       console.log("😎😎😎😜");
+  //       form.reset();
+  //     }
+  //     return response;
+  //   }).then((response) => {
+  //     console.log("ok");
+  //     console.log(response);
+
+  //   }).catch(function (error) {
+  //     console.log(error);
+  //   });
+
+
+  function handleErr(params) {
+    console.log("fgsdgs");
+    console.log(params);
   }
 
-  fetch('/insertData', options)
-    .then(function (response) {
-      if (!response.ok) {
-        throw Error(response.statusText);
-      } else {
-        console.log("😎😎😎😜");
-        form.reset();
-      }
-      return response;
-    }).then((response) => {
-      console.log("ok");
-      console.log(response);
-
-    }).catch(function (error) {
-      console.log(error);
-    });
+fetch('/insertData', {
+  method: "POST",
+  body: JSON.stringify(user),
+  headers: {"Content-type": "application/json; charset=UTF-8"}
+})
+.then(response => response.json()) 
+.then(json => handleErr(json))
+.catch(err => console.log(err));
 
 }
+
 
 form.addEventListener('submit', toDB);
