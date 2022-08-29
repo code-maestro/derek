@@ -77,7 +77,7 @@ function checkFileType(file, cb) {
 // First page
 app.get('/test', function (request, response) {
     // Get saved data from sessionStorage
-    response.sendFile(path.join(__dirname + '/public/test.html'));
+    response.sendFile(path.join(__dirname + '/test_dir/last.html'));
 });
 
 
@@ -225,7 +225,7 @@ app.get('/before-home', function (request, response) {
             });
         })
     } else {
-        console.log("PLEASE LOGIN");
+        console.log("BEFORE-HOME animals listing retrieval oder keine farma_id ");
         response.redirect('/');
     }
 });
@@ -292,7 +292,7 @@ app.get('/get-count/:animal', function (request, response) {
             });
         })
     } else {
-        console.log("PLEASE LOGIN");
+        console.log(" GET-ANIMAL no farma_id  ");
         response.redirect('/');
     }
 });
@@ -317,7 +317,7 @@ app.get('/get-sick/:animal', function (request, response) {
             });
         })
     } else {
-        console.log("PLEASE LOGIN");
+        console.log(" GET-SICK ANIMALs no farma_id ");
         response.redirect('/');
     }
 });
@@ -330,7 +330,6 @@ app.get('/getFarmaData', function (request, response) {
         connection.query(`SELECT * FROM farma WHERE farma_id='${user_id}';`, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
-
             results.forEach(element => {
                 if (element == null) {
                     console.log("😒😒😒😒😒");
@@ -340,7 +339,7 @@ app.get('/getFarmaData', function (request, response) {
             });
         })
     } else {
-        console.log("PLEASE LOGIN");
+        console.log("FARMA DATA no farma_id");
         response.redirect('/');
     }
 });
@@ -355,9 +354,24 @@ app.get('/getAnimalListing', function (request, response) {
         connection.query(`SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
-        
             response.send({animalListing: results});
+        })
+    } else {
+        response.redirect('/');
+    }
 
+});
+
+// Function to retrieve animal data for table
+app.get('/getAnimalMaxId', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT MAX(id) AS LAST, animal_type FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({animalMaxId: results});
         })
     } else {
         response.redirect('/');
@@ -382,14 +396,11 @@ app.post('/newAnimal', function (req, res) {
 
 // Inserting Vaccination Data into the DB
 app.post('/insertData', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO farma (farma_id, mail, password) VALUES (?, ?, ?);`, [f_id, mail, password], function (error, results, fields) {
-        // If there is an issue with the query, output the error
+    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.tag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
         if (error) throw error;
-        // If the account exists
-        console.log("RESULTS" + results);
-        console.log("FIELDS " + fields);
-        return;
     });
 })
 
@@ -504,6 +515,22 @@ app.post('/addAnimal', (request, response) => {
             }
         }
     });
+});
+
+
+// Function to delete data from animal
+app.post('/remove-animal', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        const animal_id = request.body.id;
+        connection.query(`DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${animal_id}';`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+        })
+    } else {
+        console.log(" trying to delete with no farma_id 🤣😂 ");
+        response.redirect('/');
+    }
 });
 
 

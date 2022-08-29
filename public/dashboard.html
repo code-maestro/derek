@@ -162,6 +162,7 @@
 
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
+
             </ul>
             <!-- End of Sidebar -->
 
@@ -273,8 +274,8 @@
                     <div class="container-fluid" id="landing">
                         <div class="row">
                             <!-- Total Number of  Card -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="total" onclick="clicked('total')">
-                                <div class="card border-left-info shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="total" onclick="clicked('total')" class="card shadow h-100">
                                     <div class="card-body" id="totals">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -292,8 +293,8 @@
                             </div>
 
                             <!-- Sick  -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="sick" onclick="clicked('sick')">
-                                <div class="card border-left-danger shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="sick" class="card shadow h-100" onclick="clicked('sick')">
                                     <div class="card-body" id="sicks">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -311,8 +312,8 @@
                             </div>
 
                             <!-- Expecting  -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="heavy" onclick="clicked('heavy')">
-                                <div class="card border-left-warning shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="heavy" onclick="clicked('heavy')" class="card shadow h-100">
                                     <div class="card-body" id="heavys">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -334,8 +335,8 @@
                             </div>
 
                             <!-- Vaccinated -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="vaxed" onclick="clicked('vaxed')">
-                                <div class="card border-left-success shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="vaxed" onclick="clicked('vaxed')" class="card shadow h-100">
                                     <div class="card-body" id="vaxeds">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -355,8 +356,8 @@
 
                         <div class="row">
                             <!-- New Borns -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="new-born" onclick="clicked('new-born')">
-                                <div class="card border-left-success shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="new-born" onclick="clicked('new-born')" class="card shadow h-100">
                                     <div class="card-body" id="new-borns">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -374,8 +375,8 @@
                             </div>
 
                             <!-- New registrated -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="new-at-farm" onclick="clicked('new-at-farm')">
-                                <div class="card border-left-success shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="new-at-farm" onclick="clicked('new-at-farm')" class="card shadow h-100">
                                     <div class="card-body" id="new-at-farms">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -394,8 +395,7 @@
 
                             <!-- Pending vaccinations -->
                             <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100" id="pending"
-                                    onclick="clicked('pending')">
+                                <div class="card shadow h-100" id="pending" onclick="clicked('pending')">
                                     <div class="card-body" id="pendings">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -424,8 +424,8 @@
                             </div>
 
                             <!-- Products -->
-                            <div class="col-xl-3 col-md-6 mb-4" id="prod" onclick="clicked('prod')">
-                                <div class="card border-left-primary shadow h-100">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div id="prod" onclick="clicked('prod')" class="card shadow h-100">
                                     <div class="card-body" id="prods">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -444,20 +444,6 @@
                         </div>
 
                         <div class="row" id="dynamic">
-                            <div class="col-lg-6">
-                                <!-- Communication -->
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary"> Doctor Information </h6>
-                                    </div>
-                                    <div class="card-body" id="docInfo">
-                                        The styling for this basic card example is created by using default Bootstrap
-                                        utility classes. By using utility classes, the style of the card component can
-                                        be easily modified with no need for any custom CSS!
-                                    </div>
-                                </div>
-
-                            </div>
 
                             <div class="col-lg-6">
                                 <!-- Dropdown Card Example -->
@@ -465,7 +451,7 @@
                                     <!-- Card Header - Dropdown -->
                                     <div
                                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">Dropdown Card Example</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary"> DOCTOR </h6>
                                         <div class="dropdown no-arrow">
                                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -490,25 +476,72 @@
                                         menu.
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Collapsable Card Example -->
+                            <div class="col-lg-6">
+                                <!-- Dropdown Card Example -->
                                 <div class="card shadow mb-4">
-                                    <!-- Card Header - Accordion -->
-                                    <a href="#collapseCardExample" class="d-block card-header py-3"
-                                        data-toggle="collapse" role="button" aria-expanded="true"
-                                        aria-controls="collapseCardExample">
-                                        <h6 class="m-0 font-weight-bold text-primary">Collapsable Card Example</h6>
-                                    </a>
-                                    <!-- Card Content - Collapse -->
-                                    <div class="collapse show" id="collapseCardExample">
-                                        <div class="card-body">
-                                            This is a collapsable card example using Bootstrap's built in collapse
-                                            functionality. <strong>Click on the card header</strong> to see the card
-                                            body collapse and expand!
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary"> DOCTOR </h6>
+                                        <div class="dropdown no-arrow">
+                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                aria-labelledby="dropdownMenuLink">
+                                                <div class="dropdown-header">Dropdown Header:</div>
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        Dropdown menus can be placed in the card header in order to extend the
+                                        functionality of a basic card. In this dropdown card example, the Font Awesome
+                                        vertical
+                                        ellipsis icon in the card header can be clicked on in order to toggle a dropdown
+                                        menu.
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-lg-6">
+                                <!-- Dropdown Card Example -->
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary"> DOCTOR </h6>
+                                        <div class="dropdown no-arrow">
+                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                aria-labelledby="dropdownMenuLink">
+                                                <div class="dropdown-header">Dropdown Header:</div>
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        Dropdown menus can be placed in the card header in order to extend the
+                                        functionality of a basic card. In this dropdown card example, the Font Awesome
+                                        vertical
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <!-- /.container-fluid -->
@@ -559,25 +592,10 @@
                     <div class="modal-body">
                         <div class="container">
 
-                            <div class="row px-2">
+                            <div class="row px-2 py-4">
                                 <div class="col-auto me-auto fw-bold" id="registrationModalLabel"> </div>
-                                <div class="col-auto">
-                                    <p class="py-2">
-                                        <a class="text-decoration-none" data-bs-dismiss="modal" aria-label="Close">
-                                            CLOSE
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z">
-                                                </path>
-                                            </svg>
-                                        </a>
-                                    </p>
-
-                                </div>
                             </div>
 
-                            
                             <div class="row ">
                                 <div class="col">
                                     <div class="card">
@@ -586,58 +604,87 @@
                                             class="d-block card-header py-3 collapsed" data-toggle="collapse"
                                             role="button" aria-expanded="false"
                                             aria-controls="collapseRegistrationFormCard">
-                                            <h6 class="m-0 font-weight-bold text-primary" id="register-animal">  </h6>
+                                            <h6 class="m-0 font-weight-bold text-primary" id="register-animal"> </h6>
                                         </a>
                                         <!-- Card Content - Collapse -->
                                         <div class="collapse" id="collapseRegistrationFormCard" style="">
                                             <div class="card-body">
                                                 <!-- Registration Form -->
-                                                <form class="row g-3 needs-validation" novalidate method="POST" action="/newAnimal">
+                                                <form id="registrationForm" class="row g-3 needs-validation" validate>
+                                                <!-- <form id="registrationForm" class="row g-3 needs-validation" novalidate
+                                                    method="POST" action="/newAnimal"> -->
                                                     <div class="col-md-6">
-                                                        <label for="validationCustom01" class="form-label"> ANIMAL TAG </label>
-                                                        <input type="text" class="form-control" name="animalTag" id="validationCustom01"
-                                                            value="Mark" required>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
+                                                        <label for="animal-tag" class="form-label fw-bold"> ANIMAL TAG
+                                                        </label>
+                                                        <input id="animal-tag" type="text" placeholder="Disabled input"
+                                                            class="form-control" name="animalTag" id="animal-tag">
+                                                        <div class="valid-feedback"> Looks good! </div>
                                                     </div>
-                                                    
+
                                                     <div class="col-md-6">
-                                                        <label for="validationCustom04" class="form-label"> GENDER </label>
+                                                        <label for="gender" class="form-label fw-bold"> GENDER </label>
                                                         <select class="form-select" id="gender" name="gender" required>
                                                             <option selected disabled value="">Choose...</option>
                                                             <option value="Male"> Male </option>
                                                             <option value="Female"> Female </option>
                                                         </select>
-                                                        <div class="invalid-feedback"> Please select a valid state. </div>
-                                                        <div class="valid-feedback"> Looks Good. </div>
-                                                    </div>
-                                                    
-                                                    <div class="col-md-6">
-                                                        <label for="validationCustom03" class="form-label"> DATE OF BIRTH </label>
-                                                        <input type="date" class="form-control" name="dob" id="validationCustom03" >
+                                                        <div class="invalid-feedback fw-bold"> Please select a valid
+                                                            state.
+                                                        </div>
+                                                        <div class="valid-feedback fw-bold"> Looks Good. </div>
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="validationCustomUsername"
-                                                            class="form-label"> REGISTRATION DATE </label>
+                                                        <label for="dob" class="form-label fw-bold"> DATE OF BIRTH
+                                                        </label>
+                                                        <input onchange="calculateAge()" type="date"
+                                                            class="form-control" name="dob" id="dob" required>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="registration-date" class="form-label fw-bold">
+                                                            REGISTRATION DATE </label>
                                                         <div class="input-group has-validation">
-                                                            <input type="date" class="form-control" name="regDate" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                                                            <input type="date" class="form-control" name="regDate"
+                                                                id="registration-date"
+                                                                aria-describedby="inputGroupPrepend" required>
                                                             <div class="invalid-feedback"> Please choose a Date. </div>
                                                             <div class="valid-feedback"> Looks Good </div>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-6">
-                                                        <label for="validationCustom02" class="form-label"> AGE </label>
-                                                        <input type="text" class="form-control" id="validationCustom02" name="age" required>
+                                                    <div class="col-md-4">
+                                                        <label for="age-years" class="form-label fw-bold"> AGE (Years)
+                                                        </label>
+                                                        <input type="text" class="form-control" id="age-years"
+                                                            name="ageYears" readonly>
                                                         <div class="invalid-feedback"> Enter Age </div>
                                                         <div class="valid-feedback"> Looks good! </div>
                                                     </div>
 
-                                                    <div class="d-grid gap-2">
-                                                        <button class="btn btn-primary" type="submit">  SUBMIT FORM </button>
-                                                      </div>
+                                                    <div class="col-md-4">
+                                                        <label for="age-months" class="form-label fw-bold"> AGE (Months)
+                                                        </label>
+                                                        <input type="text" class="form-control" id="age-months"
+                                                            name="ageMonths" readonly>
+                                                        <div class="invalid-feedback fw-bold"> Enter Age </div>
+                                                        <div class="valid-feedback fw-bold"> Looks good! </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <label for="age-days" class="form-label fw-bold"> AGE (Days)
+                                                        </label>
+                                                        <input type="text" class="form-control" id="age-days"
+                                                            name="ageDays" readonly>
+                                                        <div class="invalid-feedback"> Enter Age </div>
+                                                        <div class="valid-feedback"> Looks good! </div>
+                                                    </div>
+
+                                                    <div class="d-grid gap-2 col-6">
+                                                        <button id="submit-btn"
+                                                            class="btn btn-sm btn-primary fw-bold font-monospace"
+                                                            type="submit"> REGISTER </button>
+                                                    </div>
 
                                                 </form>
 
@@ -647,7 +694,6 @@
                                 </div>
                             </div>
 
-
                             <div class="row mt-4">
                                 <div class="col">
                                     <div class="card">
@@ -655,20 +701,24 @@
                                             <div class="row px-4">
                                                 <!-- Registration Form -->
                                                 <h6 class="fw-bold px-0"> List of users </h6>
-                                                <table class="table table-bordered table-hover table-sm">
+                                                <table id="registrationTable"
+                                                    class="table table-bordered table-hover table-sm">
                                                     <thead class="table-dark">
                                                         <tr>
-                                                            <th scope="col">#</th>
-                                                            <th scope="col"> ANIMAL TAG </th>
-                                                            <th scope="col"> GENDER </th>
-                                                            <th scope="col"> REGISTRATION DATE </th>
-                                                            <th scope="col"> DATE OF BIRTH </th>
-                                                            <th scope="col"> AGE </th>
-                                                            <th scope="col"> ACTIONS </th>
+                                                            <th scope="col" class="text-center"> ID </th>
+                                                            <th scope="col" class="text-center"> ANIMAL TAG </th>
+                                                            <th scope="col" class="text-center"> GENDER </th>
+                                                            <th scope="col" class="text-center"> REGISTRATION DATE </th>
+                                                            <th scope="col" class="text-center"> DATE OF BIRTH </th>
+                                                            <th scope="col" class="text-center"> AGE(Years) </th>
+                                                            <th scope="col" class="text-center"> AGE(Months) </th>
+                                                            <th scope="col" class="text-center"> AGE(Days) </th>
+                                                            <th scope="col" class="text-center noprint"> EDIT </th>
+                                                            <th scope="col" class="text-center noprint"> DELETE </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="animalListing">
-                                                        
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -684,9 +734,10 @@
                                                     <h6 class="fw-bold py-2"> Export your data to </h6>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <button type="button" class="btn btn-primary btn-sm"> EXCEL </button>
-                                                    <button type="button" class="btn btn-primary btn-sm"> CSV </button>
-                                                    <button type="button" class="btn btn-primary btn-sm"> JSON </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="toExcel('registrationTable')"> EXCEL </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="printReport('registrationTable')"> PRINT </button>
                                                 </div>
                                             </div>
 
@@ -695,81 +746,171 @@
                                 </div>
                             </div>
 
+                            <div class="row pt-4">
+                                <div class="col-auto me-auto fw-bold" id="test"> </div>
+
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                        CLOSE
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
+
 
         <!-- Vaccination modal -->
-        <div class="modal fade" id="vaccinationModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-            tabindex="-1">
+        <div class="modal fade" id="vaccinationModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="vaccinationModalToggleLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="vaccinationModalToggleLabel">Modal 1</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
                     <div class="modal-body">
                         <div class="container">
-                            <div class="row align-items-start">
+
+                            <div class="row px-2 py-4">
+                                <div class="col-auto me-auto fw-bold" id="vaccinationModalLabel"> </div>
+                            </div>
+
+                            <div class="row ">
                                 <div class="col">
-                                    One of three columns
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">First</th>
-                                                <th scope="col">Last</th>
-                                                <th scope="col">Handle</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4">
-                                                    <table class="table mb-0">
-                                                        <tbody>
-                                                            <tr>
-                                                                <th scope="row">1</th>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>@fat</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">3</th>
-                                                                <td colspan="2">Larry the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                                <td>@fat</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="card">
+                                        <!-- Card Header - Accordion -->
+                                        <a href="#collapseVaccinationFormCard"
+                                            class="d-block card-header py-3 collapsed" data-toggle="collapse"
+                                            role="button" aria-expanded="false"
+                                            aria-controls="collapseVaccinationFormCard">
+                                            <h6 class="m-0 font-weight-bold text-primary" id="register-animal"> </h6>
+                                        </a>
+                                        <!-- Card Content - Collapse -->
+                                        <div class="collapse" id="collapseVaccinationFormCard" style="">
+                                            <div class="card-body">
+                                                <!-- Vaccination Form -->
+                                                <form class="row g-3 needs-validation" novalidate method="POST"
+                                                    action="">
+                                                    <div class="col-md-6">
+                                                        <label for="validationCustom01" class="form-label"> ANIMAL TAG
+                                                        </label>
+                                                        <input type="text" class="form-control" name="animalTag"
+                                                            id="validationCustom01" value="Mark" required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="validationCustom04" class="form-label"> No OF
+                                                            VACCINATIONS </label>
+                                                        <input type="text" class="form-control" name="animalTag"
+                                                            id="validationCustom04" value="Mark" required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                        <div class="invalid-feedback"> Enter a number. </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="validationCustom03" class="form-label"> FIRST
+                                                            VACCINATION DATE </label>
+                                                        <input type="date" class="form-control" name="dob"
+                                                            id="validationCustom03">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="validationCustomUsername" class="form-label"> NEXT
+                                                            VACCINATION DATE </label>
+                                                        <div class="input-group has-validation">
+                                                            <input type="date" class="form-control" name="regDate"
+                                                                id="validationCustomUsername"
+                                                                aria-describedby="inputGroupPrepend" required>
+                                                            <div class="invalid-feedback"> Please choose a Date. </div>
+                                                            <div class="valid-feedback"> Looks Good </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="d-grid gap-2">
+                                                        <button class="btn btn-primary" type="submit"> SUBMIT FORM
+                                                        </button>
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
 
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row px-4">
+                                                <!-- Vaccination Form -->
+                                                <h6 class="fw-bold px-0"> List of animals </h6>
+                                                <table id="vaccinationTable"
+                                                    class="table table-bordered table-hover table-sm">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col" class="text-center"> ID </th>
+                                                            <th scope="col" class="text-center"> ANIMAL TAG </th>
+                                                            <th scope="col" class="text-center"> No OF VACCINATIONS
+                                                            </th>
+                                                            <th scope="col" class="text-center"> FIRST VACCINATION DATE
+                                                            </th>
+                                                            <th scope="col" class="text-center"> NEXT VACCINATION DATE
+                                                            </th>
+                                                            <th scope="col" class="text-center"> No OF PENDING
+                                                                VACCINATIONS </th>
+                                                            <th scope="col" class="text-center"> EDIT </th>
+                                                            <th scope="col" class="text-center"> DELETE </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="vaccinationListing">
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="row px-4 py-4">
+                                                <div class="col-auto me-auto">
+                                                    <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                                </div>
+                                                <div class="col-auto me-auto">
+                                                    <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                                </div>
+                                                <div class="col-auto">
+                                                    <h6 class="fw-bold py-2"> Export your data to </h6>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="printReport('vaccinationTable')"> PRINT </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-4">
+                                <div class="col-auto me-auto fw-bold" id="test"> </div>
+
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                        CLOSE
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -826,55 +967,37 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label for="validationCustom04" id="" class="form-label"> Email </label>
-                                    <input type="email" class="form-control" name="email" id="validationCustom04"
-                                        value="" required>
-                                    <div class="valid-feedback"> Looks good! </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="validationCustom01" class="form-label">First name</label>
-                                    <input type="text" class="form-control" name="fname" id="validationCustom01"
+                                    <label for="validation04" id="mail" class="form-label"> Email </label>
+                                    <input type="email" class="form-control" name="email" id="validation04" value=""
                                         required>
                                     <div class="valid-feedback"> Looks good! </div>
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label for="validationCustom02" class="form-label">Last name</label>
-                                    <input type="text" class="form-control" name="lname" id="validationCustom02"
+                                    <label for="validation01" class="form-label"> First name </label>
+                                    <input type="text" class="form-control" name="fname" id="validation01" value=""
                                         required>
                                     <div class="valid-feedback"> Looks good! </div>
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label for="validationCustom03" class="form-label"> Phone Number </label>
-                                    <input type="phone" class="form-control" name="phone" id="validationCustom03"
+                                    <label for="validation02" class="form-label">Last name</label>
+                                    <input type="text" class="form-control" name="lname" id="validation02" value=""
                                         required>
                                     <div class="valid-feedback"> Looks good! </div>
                                 </div>
 
-                                <!-- Password Change -->
                                 <div class="col-md-12">
-                                    <span class="nav-link collapsed" data-toggle="collapse"
-                                        data-target="#collapseUtilities" aria-expanded="true"
-                                        aria-controls="collapseUtilities">
-                                        <span> Change Password </span>
-                                    </span>
-                                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                                        data-parent="#accordionSidebar">
-                                        <div class="bg-white py-2 collapse-inner rounded">
-                                            <span class="collapse-item" href="#"> Female </span>
-                                            <span class="collapse-item" href="#"> Male </span>
-                                            <span class="collapse-item" href="#"> New Borns </span>
-                                        </div>
+                                    <label for="validation03" class="form-label"> Phone Number </label>
+                                    <input type="phone" class="form-control" name="phone" id="validation03" value=""
+                                        required>
+                                    <div class="valid-feedback"> Looks good! </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary" type="submit">Submit form</button>
                                     </div>
-                                    </li>
-
-                                    <div class="col-12">
-                                        <div class="d-grid gap-2">
-                                            <button class="btn btn-primary" type="submit">Submit form</button>
-                                        </div>
-                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
