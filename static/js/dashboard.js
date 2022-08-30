@@ -60,35 +60,102 @@ function clicked(param) {
         <div class="card-body">
           <h5 class="card-title">Special title treatment</h5>
           <p class="card-text">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
-                </tbody>
-              </table>
+          <table id="registrationTable" class="table table-bordered table-hover table-sm">
+          <thead class="table-dark">
+              <tr>
+                  <th scope="col" class="text-center"> ID </th>
+                  <th scope="col" class="text-center"> ANIMAL TAG </th>
+                  <th scope="col" class="text-center"> GENDER </th>
+                  <th scope="col" class="text-center"> REGISTRATION DATE </th>
+                  <th scope="col" class="text-center"> DATE OF BIRTH </th>
+                  <th scope="col" class="text-center"> AGE(Years) </th>
+                  <th scope="col" class="text-center"> AGE(Months) </th>
+                  <th scope="col" class="text-center"> AGE(Days) </th>
+              </tr>
+          </thead>
+          <tbody id="animalListing">
+<tr class="justify-content-center" id="34">
+<th scope="row" class="text-center"> 34 </th>
+<td class="text-center"> COW-00034 </td>
+<td class="text-center"> Male </td>
+<td class="text-center"> Mon Aug 08 2022 </td>
+<td class="text-center"> Fri Aug 12 2022 </td>
+<td class="text-center"> 0 </td>
+<td class="text-center"> 0 </td>
+<td class="text-center"> 0 </td>
+
+</tr>
+
+<tr class="justify-content-center" id="39">
+<th scope="row" class="text-center"> 39 </th>
+<td class="text-center"> COW-00039 </td>
+<td class="text-center"> Female </td>
+<td class="text-center"> Mon Aug 15 2022 </td>
+<td class="text-center"> Mon Aug 08 2022 </td>
+<td class="text-center"> 0 </td>
+<td class="text-center"> 0 </td>
+<td class="text-center"> 1 </td
+
+</tr>
+
+
+<tr class="justify-content-center" id="42">
+<th scope="row" class="text-center"> 42 </th>
+<td class="text-center"> COW-00040 </td>
+<td class="text-center"> Female </td>
+<td class="text-center"> Sun Aug 21 2022 </td>
+<td class="text-center"> Sat Aug 20 2022 </td>
+<td class="text-center"> 0 </td>
+<td class="text-center"> 0 </td>
+<td class="text-center"> 0 </td>
+
+<td class="text-center noprint">
+<button type="button" class="btn btn-sm btn-success">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
+</svg>
+</button>
+</td>
+
+<td class="text-center noprint">
+<button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteAnimal('42')">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+<path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
+</svg>
+</button>
+</td>
+
+</tr>
+
+<tr class="justify-content-center" id="49">
+<th scope="row" class="text-center"> 49 </th>
+<td class="text-center"> COW-00045 </td>
+<td class="text-center"> Female </td>
+<td class="text-center"> Sat Aug 13 2022 </td>
+<td class="text-center"> Wed Feb 09 2022 </td>
+<td class="text-center"> 0 </td>
+<td class="text-center"> 6 </td>
+<td class="text-center"> 0 </td>
+
+<td class="text-center noprint">
+<button type="button" class="btn btn-sm btn-success">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
+</svg>
+</button>
+</td>
+
+<td class="text-center noprint">
+<button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteAnimal('49')">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+<path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
+</svg>
+</button>
+</td>
+
+</tr>
+</tbody>
+      </table>
             </p>
   
             <button class="btn btn-primary" onclick='deleteFromDom("${param}")'> close </button>
@@ -201,7 +268,7 @@ async function getMaxId() {
 }
 
 
-
+// Table data for all animals
 async function getTableData() {
   let list = await getListing();
   let last = await getMaxId();
@@ -222,14 +289,18 @@ async function getTableData() {
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 
+    console.log(dobYear);
+    console.log(dobYear.toDateString().slice(8, 10));
+
     // AGE CALCULATION
     const ageYears = today.getFullYear() - dobYear.getFullYear();
     const ageMonths = today.getMonth() - dobYear.getMonth();
-    const ageDays = today.getDay() - dobYear.getDay();
+    // const ageDays = today.getDay() - dobYear.getDay();
+    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
 
     htmlSegment = `
         <tr class="justify-content-center" id="${animal.id}">
-          <th scope="row" class="text-center"> ${animal.id} </th>
+          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
           <td class="text-center"> ${animal.animal_tag} </td>
           <td class="text-center"> ${animal.gender} </td>
           <td class="text-center"> ${regDate.toDateString()} </td>
@@ -238,20 +309,16 @@ async function getTableData() {
           <td class="text-center"> ${ageMonths < 0 ? 0 : ageMonths} </td>
           <td class="text-center"> ${ageDays < 0 ? 0 : ageDays} </td>
           
-          <td class="text-center noprint">
-            <button type="button" class="btn btn-sm btn-success">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
-              </svg>
-            </button>
+          <td class="text-center noprint" onclick="alert('${animal.id}')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+              <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+            </svg>
           </td>
 
-          <td class="text-center noprint">
-            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteAnimal('${animal.id}')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
-              </svg>
-            </button>
+          <td class="text-center noprint" onclick="deleteAnimal('${animal.id}')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+              <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
+            </svg>
           </td>
 
         </tr>
@@ -368,9 +435,7 @@ function printReport(param) {
 
 // Function to auto-calculate age
 function calculateAge(params) {
-  console.log("mikael");
   const dobVal = document.getElementById('dob').value;
-  const regDateVal = document.getElementById('registration-date').value;
   const dobYr = new Date(Date.parse(dobVal));
 
   // AGE CALCULATION
@@ -383,67 +448,71 @@ function calculateAge(params) {
     const ageMonths = today.getMonth() - dobYr.getMonth();
     const ageDays = today.getDate() - parseInt(dobVal.slice(8));
 
-    document.getElementById('age-years').value = ageYrs;
-    document.getElementById('age-months').value = ageMonths;
-    document.getElementById('age-days').value = ageDays;
+    if ((today.getFullYear() - dobYr.getFullYear()) > 0) {
+      document.getElementById('age-years').value = ageYrs + ' Years';
+    } else {
+      if (ageMonths > 0) {
+        document.getElementById('age-years').value = ageMonths + ' Months';
+      } else {
+        document.getElementById('age-years').value = ageDays + ' Days';
+      }
+    }
   }
-
 }
 
 
-// test save to db
-function toDB(e) {
-  e.preventDefault();
+// // test save to db
+// function toDB(e) {
+//   e.preventDefault();
 
-  const user = {
-    tag: form.animalTag.value,
-    gender: form.gender.value,
-    dob: form.dob.value,
-    regDate: form.regDate.value
-  };
+//   const user = {
+//     tag: form.animalTag.value,
+//     gender: form.gender.value,
+//     dob: form.dob.value,
+//     regDate: form.regDate.value
+//   };
 
-  // // request options
-  // const options = {
-  //   method: 'POST',
-  //   body: JSON.stringify(user),
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   }
-  // }
+//   // // request options
+//   // const options = {
+//   //   method: 'POST',
+//   //   body: JSON.stringify(user),
+//   //   headers: {
+//   //     'Content-Type': 'application/json'
+//   //   }
+//   // }
 
-  // fetch('/insertData', options)
-  //   .then(function (response) {
-  //     if (!response.ok) {
-  //       throw Error(response.statusText);
-  //     } else {
-  //       console.log("😎😎😎😜");
-  //       form.reset();
-  //     }
-  //     return response;
-  //   }).then((response) => {
-  //     console.log("ok");
-  //     console.log(response);
+//   // fetch('/insertData', options)
+//   //   .then(function (response) {
+//   //     if (!response.ok) {
+//   //       throw Error(response.statusText);
+//   //     } else {
+//   //       console.log("😎😎😎😜");
+//   //       form.reset();
+//   //     }
+//   //     return response;
+//   //   }).then((response) => {
+//   //     console.log("ok");
+//   //     console.log(response);
 
-  //   }).catch(function (error) {
-  //     console.log(error);
-  //   });
-
-
-  function handleErr(params) {
-    console.log("fgsdgs");
-    console.log(params);
-  }
-
-fetch('/insertData', {
-  method: "POST",
-  body: JSON.stringify(user),
-  headers: {"Content-type": "application/json; charset=UTF-8"}
-})
-.then(response => response.json()) 
-.then(json => handleErr(json))
-.catch(err => console.log(err));
-
-}
+//   //   }).catch(function (error) {
+//   //     console.log(error);
+//   //   });
 
 
-form.addEventListener('submit', toDB);
+//   function handleErr(params) {
+//     console.log("fgsdgs");
+//     console.log(params);
+//   }
+
+//   fetch('/insertData', {
+//     method: "POST",
+//     body: JSON.stringify(user),
+//     headers: { "Content-type": "application/json; charset=UTF-8" }
+//   })
+//     .then(response => response.json())
+//     .then(json => handleErr(json))
+//     .catch(err => console.log(err));
+
+// }
+
+// form.addEventListener('submit', toDB);
