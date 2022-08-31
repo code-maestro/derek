@@ -81,14 +81,6 @@ app.get('/test', function (request, response) {
 });
 
 
-// Function to retrieve animal data for table
-app.get('/getListing', function (request, response) {
-    const arr = ['element.id', 'element.animal_type', 'element.gender', 'element.dob', 'element.reg_date'];
-    console.log(JSON.parse(JSON.stringify(arr)));
-    response.send(JSON.parse(JSON.stringify(arr)));
-});
-
-
 // First page
 app.get('/', function (request, response) {
     // Get saved data from sessionStorage
@@ -362,6 +354,24 @@ app.get('/getAnimalListing', function (request, response) {
 
 });
 
+
+// Function to retrieve animal data for table
+app.get('/getVaccinationRecords', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({animalListing: results});
+        })
+    } else {
+        response.redirect('/');
+    }
+
+});
+
 // Function to retrieve animal data for table
 app.get('/getAnimalMaxId', function (request, response) {
     const user_id = storage('farma_id');
@@ -376,7 +386,6 @@ app.get('/getAnimalMaxId', function (request, response) {
     } else {
         response.redirect('/');
     }
-
 });
 
 

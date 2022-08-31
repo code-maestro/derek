@@ -245,7 +245,7 @@ function deleteFromDom(param) {
 
 
 // Getting all animals listings from backend
-async function getListing() {
+async function getAnimalListing() {
   let url = '/getAnimalListing';
   try {
     let res = await fetch(url);
@@ -255,6 +255,29 @@ async function getListing() {
   }
 }
 
+
+// Getting all vaccination data from backend
+async function getVaccinationRecords() {
+  let url = '/getVaccinationRecords';
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+// Getting feeds data from backend
+async function getFeedsData() {
+  let url = '/getFeedsData';
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // Getting all animals listings from backend
 async function getMaxId() {
@@ -269,8 +292,8 @@ async function getMaxId() {
 
 
 // Table data for all animals
-async function getTableData() {
-  let list = await getListing();
+async function getAnimalTableData() {
+  let list = await getAnimalListing();
   let last = await getMaxId();
 
   console.log(last);
@@ -289,9 +312,6 @@ async function getTableData() {
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 
-    console.log(dobYear);
-    console.log(dobYear.toDateString().slice(8, 10));
-
     // AGE CALCULATION
     const ageYears = today.getFullYear() - dobYear.getFullYear();
     const ageMonths = today.getMonth() - dobYear.getMonth();
@@ -309,7 +329,7 @@ async function getTableData() {
           <td class="text-center"> ${ageMonths < 0 ? 0 : ageMonths} </td>
           <td class="text-center"> ${ageDays < 0 ? 0 : ageDays} </td>
           
-          <td class="text-center noprint" onclick="alert('${animal.id}')">
+          <td class="text-center noprint" data-bs-target="#editAnimalModal" data-bs-toggle="modal"  onclick="editAnimal(${animal.id})">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
               <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
             </svg>
@@ -448,71 +468,56 @@ function calculateAge(params) {
     const ageMonths = today.getMonth() - dobYr.getMonth();
     const ageDays = today.getDate() - parseInt(dobVal.slice(8));
 
-    if ((today.getFullYear() - dobYr.getFullYear()) > 0) {
-      document.getElementById('age-years').value = ageYrs + ' Years';
-    } else {
-      if (ageMonths > 0) {
-        document.getElementById('age-years').value = ageMonths + ' Months';
-      } else {
-        document.getElementById('age-years').value = ageDays + ' Days';
-      }
-    }
+    document.getElementById('age-years').value = `${ageYrs > 0 ? ageYrs + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Months' : ''} ${ageDays > 0 ? ageDays + ' Days' : ''}`;
+
   }
 }
 
+// Table data for all animals
+async function getVaccinationTableData() {
+  let list = await getVaccinationRecords();
 
-// // test save to db
-// function toDB(e) {
-//   e.preventDefault();
+  let html = '';
+  let htmlSegment = '';
 
-//   const user = {
-//     tag: form.animalTag.value,
-//     gender: form.gender.value,
-//     dob: form.dob.value,
-//     regDate: form.regDate.value
-//   };
+  const con = document.getElementById('animalListing');
 
-//   // // request options
-//   // const options = {
-//   //   method: 'POST',
-//   //   body: JSON.stringify(user),
-//   //   headers: {
-//   //     'Content-Type': 'application/json'
-//   //   }
-//   // }
+  list.animalListing.forEach(animal => {
+    const dobYear = new Date(Date.parse(animal.dob));
+    const regDate = new Date(Date.parse(animal.reg_date));
 
-//   // fetch('/insertData', options)
-//   //   .then(function (response) {
-//   //     if (!response.ok) {
-//   //       throw Error(response.statusText);
-//   //     } else {
-//   //       console.log("😎😎😎😜");
-//   //       form.reset();
-//   //     }
-//   //     return response;
-//   //   }).then((response) => {
-//   //     console.log("ok");
-//   //     console.log(response);
+    console.log(dobYear);
+    console.log(dobYear.toDateString().slice(8, 10));
 
-//   //   }).catch(function (error) {
-//   //     console.log(error);
-//   //   });
+    // AGE CALCULATION
+    const ageYears = today.getFullYear() - dobYear.getFullYear();
+    const ageMonths = today.getMonth() - dobYear.getMonth();
+    // const ageDays = today.getDay() - dobYear.getDay();
+    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
+
+    htmlSegment = `
+        <tr class="justify-content-center" id="${animal.id}">
+          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
+          <td class="text-center"> ${animal.animal_tag} </td>
+          <td class="text-center"> ${animal.gender} </td>
+          <td class="text-center"> ${regDate.toDateString()} </td>
+          <td class="text-center"> ${dobYear.toDateString()} </td>
+          <td class="text-center"> ${ageYears < 0 ? 0 : ageYears} </td>
+          <td class="text-center"> ${ageMonths < 0 ? 0 : ageMonths} </td>
+          <td class="text-center"> ${ageYrs > 0 ? ageYrs + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Months' : ''} ${ageDays > 0 ? ageDays + ' Days' : ''} </td>
+        </tr>
+      `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
+
+}
 
 
-//   function handleErr(params) {
-//     console.log("fgsdgs");
-//     console.log(params);
-//   }
-
-//   fetch('/insertData', {
-//     method: "POST",
-//     body: JSON.stringify(user),
-//     headers: { "Content-type": "application/json; charset=UTF-8" }
-//   })
-//     .then(response => response.json())
-//     .then(json => handleErr(json))
-//     .catch(err => console.log(err));
-
-// }
-
-// form.addEventListener('submit', toDB);
+// Editing animal and  setting vaccination records
+function editAnimal(params) {
+  alert(params);
+}

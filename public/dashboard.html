@@ -17,6 +17,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"
             type="text/css" />
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
         <link rel="stylesheet" href="../style.css" type="text/css" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css" type="text/css" />
         <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
@@ -33,7 +35,6 @@
         <link href="../css/sb-admin-2.css" rel="stylesheet" type="text/css" />
         <link href="../css/custom.css" rel="stylesheet" type="text/css" />
         <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-
 
         <!-- List of animals that belong to the farmer that has signed in -->
         <script src="../js/dashboard.js" defer></script>
@@ -81,7 +82,7 @@
                 </div>
 
                 <!-- Nav Item - Register -->
-                <li class="nav-item" onclick="getTableData()">
+                <li class="nav-item" onclick="getAnimalTableData()">
                     <span class="nav-link" data-bs-toggle="modal" href="#registrationModalToggle" role="button">
                         <i class="fa-solid fa-address-card"></i>
                         <span> Registration </span>
@@ -89,7 +90,7 @@
                 </li>
 
                 <!-- Nav Item - Register -->
-                <li class="nav-item">
+                <li class="nav-item" onclick="getVaccinationData()">
                     <span class="nav-link" data-bs-toggle="modal" href="#vaccinationModalToggle" role="button">
                         <i class="fa-solid fa-address-card"></i>
                         <span> Vaccination </span>
@@ -383,7 +384,7 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                  Feeds </div>
+                                                    Feeds </div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800" id="newCount">
                                                     $215,000 </div>
                                             </div>
@@ -609,12 +610,14 @@
                                             <h6 class="m-0 font-weight-bold text-primary" id="register-animal"> </h6>
                                         </a>
                                         <!-- Card Content - Collapse -->
-                                        <div class="collapse" id="collapseRegistrationFormCard" style="">
+                                        <div class="collapse" id="collapseRegistrationFormCard">
                                             <div class="card-body">
                                                 <!-- Registration Form -->
-                                                <form id="registrationForm" class="row g-3 needs-validation" novalidate method="POST" action="/newAnimal">
+                                                <form id="registrationForm" class="row g-3 needs-validation" novalidate
+                                                    method="POST" action="/newAnimal">
                                                     <div class="col-md-6">
-                                                        <label for="animal-tag" class="form-label fw-bold"> ANIMAL TAG </label>
+                                                        <label for="animal-tag" class="form-label fw-bold"> ANIMAL TAG
+                                                        </label>
                                                         <input id="animal-tag" type="text" placeholder="Disabled input"
                                                             class="form-control" name="animalTag" id="animal-tag">
                                                         <div class="valid-feedback"> Looks good! </div>
@@ -660,16 +663,7 @@
                                                         <div class="valid-feedback"> Looks good! </div>
                                                     </div>
 
-                                                    <div class="col-md-4">
-                                                        <!-- <label for="age-months" class="form-label fw-bold"> AGE (Months)
-                                                        </label>
-                                                        <input type="text" class="form-control" id="age-months"
-                                                            name="ageMonths" readonly>
-                                                        <div class="invalid-feedback fw-bold"> Enter Age </div>
-                                                        <div class="valid-feedback fw-bold"> Looks good! </div> -->
-                                                    </div>
-
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-12">
                                                         <!-- <label for="age-days" class="form-label fw-bold"> AGE (Days)
                                                         </label>
                                                         <input type="text" class="form-control" id="age-days"
@@ -678,14 +672,9 @@
                                                         <div class="valid-feedback"> Looks good! </div> -->
                                                     </div>
 
-                                                    <div class="d-grid gap-2 col-md-6">
-                                                        <!-- <button id="submit-btn"
-                                                            class="btn btn-sm btn-primary fw-bold font-monospace"
-                                                            type="submit"> REGISTER </button> -->
-                                                    </div>
-
                                                     <div class="d-grid gap-2">
-                                                        <button class="btn btn-primary fw-bold font-monospace" type="submit"> REGISTER </button>
+                                                        <button class="btn btn-primary fw-bold font-monospace"
+                                                            type="submit"> REGISTER </button>
                                                     </div>
 
                                                 </form>
@@ -788,7 +777,7 @@
                                             <h6 class="m-0 font-weight-bold text-primary" id="register-animal"> </h6>
                                         </a>
                                         <!-- Card Content - Collapse -->
-                                        <div class="collapse" id="collapseVaccinationFormCard" style="">
+                                        <div class="collapse" id="collapseVaccinationFormCard">
                                             <div class="card-body">
                                                 <!-- Vaccination Form -->
                                                 <form class="row g-3 needs-validation" novalidate method="POST"
@@ -1006,10 +995,30 @@
             </div>
         </div>
 
+        <!-- Edit Animal Modal -->
+        <div class="modal fade" id="editAnimalModal" aria-hidden="true" aria-labelledby="editAnimalModalToggleLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editAnimalModalToggleLabel">Modal 2</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Hide this modal and show the first with the button below.
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Back to first</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>
 
         <!-- Bootstrap core JavaScript-->
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 
         <!-- Core plugin JavaScript-->
         <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
