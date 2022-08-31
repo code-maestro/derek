@@ -37,6 +37,7 @@ async function renderAnimals() {
   document.getElementById('pendingVcount').innerText = sk.count || 0;
   document.getElementById('vCount').innerText = sk.disease_id || 0;
   document.getElementById("registrationModalLabel").innerText = `${sk.animal_type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
+  document.getElementById("editAnimalModalLabel").innerText = ` UPDATE ${sk.animal_type.toUpperCase()} `;
   document.getElementById("register-animal").innerText = `REGISTER A NEW ${sk.animal_type.toUpperCase()}`;
   document.getElementById('newCount').innerText = sk.count || 0;
   document.getElementById('heavyCount').innerText = sk.count || 0;
@@ -309,8 +310,11 @@ async function getAnimalTableData() {
   const con = document.getElementById('animalListing');
 
   list.animalListing.forEach(animal => {
+
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
+
+    const sendArray = [animal.id, animal.animal_tag, animal.gender, regDate.toDateString(), dobYear.toDateString()]
 
     // AGE CALCULATION
     const ageYears = today.getFullYear() - dobYear.getFullYear();
@@ -319,15 +323,13 @@ async function getAnimalTableData() {
     const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
+        <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
           <th scope="row" class="text-center" id="id"> ${animal.id} </th>
           <td class="text-center"> ${animal.animal_tag} </td>
           <td class="text-center"> ${animal.gender} </td>
           <td class="text-center"> ${regDate.toDateString()} </td>
           <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears < 0 ? 0 : ageYears} </td>
-          <td class="text-center"> ${ageMonths < 0 ? 0 : ageMonths} </td>
-          <td class="text-center"> ${ageDays < 0 ? 0 : ageDays} </td>
+          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Months' : ''} ${ageDays > 0 ? ageDays + ' Days' : ''} </td>
           
           <td class="text-center noprint" data-bs-target="#editAnimalModal" data-bs-toggle="modal"  onclick="editAnimal(${animal.id})">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
@@ -502,9 +504,7 @@ async function getVaccinationTableData() {
           <td class="text-center"> ${animal.gender} </td>
           <td class="text-center"> ${regDate.toDateString()} </td>
           <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears < 0 ? 0 : ageYears} </td>
-          <td class="text-center"> ${ageMonths < 0 ? 0 : ageMonths} </td>
-          <td class="text-center"> ${ageYrs > 0 ? ageYrs + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Months' : ''} ${ageDays > 0 ? ageDays + ' Days' : ''} </td>
+          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Months' : ''} ${ageDays > 0 ? ageDays + ' Days' : ''} </td>
         </tr>
       `;
 
@@ -518,6 +518,16 @@ async function getVaccinationTableData() {
 
 
 // Editing animal and  setting vaccination records
-function editAnimal(params) {
-  alert(params);
+async function editAnimal(param) {
+  console.log(param);
+  let list = await getAnimalListing();
+  list.animalListing.forEach(animal => {
+    if (animal.id == param) {
+      console.log(animal.id + "animal.id");
+      console.log(param + "param");
+      break;
+    } else {
+      console.log("NOT THAT GUY");
+    }
+  });
 }
