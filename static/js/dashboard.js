@@ -4,6 +4,8 @@ const today = new Date(Date.now());
 const form = document.getElementById('registrationForm');
 const container = document.querySelector('#dynamic');
 
+const listing = '';
+
 
 // Get Total Count of the animals from backend endpoint
 async function getAnimalCount() {
@@ -294,11 +296,8 @@ async function getMaxId() {
 
 // Table data for all animals
 async function getAnimalTableData() {
-  let list = await getAnimalListing();
   let last = await getMaxId();
-
-  console.log(last);
-  console.log(list);
+  let list = await getAnimalListing();
 
   last.animalMaxId.forEach(id => {
     document.getElementById("animal-tag").setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-000${id.LAST + 1}`);
@@ -313,8 +312,6 @@ async function getAnimalTableData() {
 
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
-
-    const sendArray = [animal.id, animal.animal_tag, animal.gender, regDate.toDateString(), dobYear.toDateString()]
 
     // AGE CALCULATION
     const ageYears = today.getFullYear() - dobYear.getFullYear();
@@ -519,15 +516,18 @@ async function getVaccinationTableData() {
 
 // Editing animal and  setting vaccination records
 async function editAnimal(param) {
-  console.log(param);
   let list = await getAnimalListing();
-  list.animalListing.forEach(animal => {
-    if (animal.id == param) {
-      console.log(animal.id + "animal.id");
-      console.log(param + "param");
-      break;
-    } else {
-      console.log("NOT THAT GUY");
+  list.animalListing.every(v => {
+    // const ddate = v.dob;
+    // console.log(ddate.toDateString());
+    if (v.id == param) {
+      document.getElementById("edit-animal-tag").setAttribute('value', v.animal_tag);
+      document.getElementById("edit-gender").innerText = v.gender;
+      document.getElementById("edit-dob").setAttribute('value', new Date(v.dob).toISOString().slice(0, 10));
+      document.getElementById("edit-registration-date").setAttribute('value', new Date(v.reg_date).toISOString().slice(0, 10));
+      return false;
     }
+    // Make sure you return true. If you don't return a value, `every()` will stop.
+    return true;
   });
 }

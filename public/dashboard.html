@@ -1050,8 +1050,8 @@
 
                             <div class="col-md-6">
                                 <label for="edit-gender" class="form-label fw-bold"> Gender </label>
-                                <select class="form-select" id="edit-gender" name="editGender" required>
-                                    <option selected disabled value="">Choose...</option>
+                                <select class="form-select" name="editGender" required>
+                                    <option selected disabled id="edit-gender" value="">Choose...</option>
                                     <option value="Male"> Male </option>
                                     <option value="Female"> Female </option>
                                 </select>
@@ -1070,11 +1070,6 @@
                                     <input type="date" class="form-control" name="editRegDate"
                                         id="edit-registration-date" aria-describedby="inputGroupPrepend" required="">
                                 </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="age-years" class="form-label fw-bold"> Age </label>
-                                <input type="text" class="form-control" id="age-years" name="ageYears" readonly="">
                             </div>
 
                             <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
