@@ -13,3 +13,6 @@ function daysIntoYear(date){
 console.log(daysIntoYear(date, date2));
 
 console.log(2022-2000);
+
+console.log(new Intl.DateTimeFormat('en-CA').format(new Date()));
+console.log(formatYmd);
