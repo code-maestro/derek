@@ -4,9 +4,6 @@ const today = new Date(Date.now());
 const form = document.getElementById('registrationForm');
 const container = document.querySelector('#dynamic');
 
-const listing = '';
-
-
 // Get Total Count of the animals from backend endpoint
 async function getAnimalCount() {
   let url = `/get-count/${browserUrl.replace('http://localhost:3000/animal/', '')}`;
@@ -36,143 +33,17 @@ async function renderAnimals() {
   document.getElementById('allCount').innerText = sk.count || 0;
   document.getElementById('sickCount').innerText = sk.sickCount || 0;
   document.getElementById('babyCount').innerText = sk.count || 0;
-  document.getElementById('pendingVcount').innerText = sk.count || 0;
-  document.getElementById('vCount').innerText = sk.disease_id || 0;
+  document.getElementById('pendingCount').innerText = sk.count || 0;
+  document.getElementById('vaccinatedCount').innerText = sk.disease_id || 0;
+  document.getElementById('feedsCount').innerText = sk.count || 0;
+  document.getElementById('heavyCount').innerText = sk.count || 0;
+  
   document.getElementById("registrationModalLabel").innerText = `${sk.animal_type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
   document.getElementById("editAnimalModalLabel").innerText = ` UPDATE ${sk.animal_type.toUpperCase()} `;
   document.getElementById("register-animal").innerText = `REGISTER A NEW ${sk.animal_type.toUpperCase()}`;
-  document.getElementById('newCount').innerText = sk.count || 0;
-  document.getElementById('heavyCount').innerText = sk.count || 0;
-
 }
 
-renderAnimals()
-
-
-function clicked(param) {
-  cards = ['total', 'sick', 'heavy', 'vaxed', 'prod', 'new-at-farm', 'new-born', 'pending'];
-  cards.forEach(element => {
-    if (element == param) {
-      console.log("passed");
-      document.getElementById(param).classList.add('border-left-info');
-      document.getElementById(param).style.backgroundColor = "#caeaff";
-
-      container.innerHTML = `
-      <div class="card ${param}" id="${param}ss">
-        <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">
-          <table id="registrationTable" class="table table-bordered table-hover table-sm">
-          <thead class="table-dark">
-              <tr>
-                  <th scope="col" class="text-center"> ID </th>
-                  <th scope="col" class="text-center"> ANIMAL TAG </th>
-                  <th scope="col" class="text-center"> GENDER </th>
-                  <th scope="col" class="text-center"> REGISTRATION DATE </th>
-                  <th scope="col" class="text-center"> DATE OF BIRTH </th>
-                  <th scope="col" class="text-center"> AGE(Years) </th>
-                  <th scope="col" class="text-center"> AGE(Months) </th>
-                  <th scope="col" class="text-center"> AGE(Days) </th>
-              </tr>
-          </thead>
-          <tbody id="animalListing">
-<tr class="justify-content-center" id="34">
-<th scope="row" class="text-center"> 34 </th>
-<td class="text-center"> COW-00034 </td>
-<td class="text-center"> Male </td>
-<td class="text-center"> Mon Aug 08 2022 </td>
-<td class="text-center"> Fri Aug 12 2022 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 0 </td>
-
-</tr>
-
-<tr class="justify-content-center" id="39">
-<th scope="row" class="text-center"> 39 </th>
-<td class="text-center"> COW-00039 </td>
-<td class="text-center"> Female </td>
-<td class="text-center"> Mon Aug 15 2022 </td>
-<td class="text-center"> Mon Aug 08 2022 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 1 </td
-
-</tr>
-
-
-<tr class="justify-content-center" id="42">
-<th scope="row" class="text-center"> 42 </th>
-<td class="text-center"> COW-00040 </td>
-<td class="text-center"> Female </td>
-<td class="text-center"> Sun Aug 21 2022 </td>
-<td class="text-center"> Sat Aug 20 2022 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 0 </td>
-
-<td class="text-center noprint">
-<button type="button" class="btn btn-sm btn-success">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
-</svg>
-</button>
-</td>
-
-<td class="text-center noprint">
-<button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteAnimal('42')">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-<path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
-</svg>
-</button>
-</td>
-
-</tr>
-
-<tr class="justify-content-center" id="49">
-<th scope="row" class="text-center"> 49 </th>
-<td class="text-center"> COW-00045 </td>
-<td class="text-center"> Female </td>
-<td class="text-center"> Sat Aug 13 2022 </td>
-<td class="text-center"> Wed Feb 09 2022 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 6 </td>
-<td class="text-center"> 0 </td>
-
-<td class="text-center noprint">
-<button type="button" class="btn btn-sm btn-success">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
-</svg>
-</button>
-</td>
-
-<td class="text-center noprint">
-<button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteAnimal('49')">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-<path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
-</svg>
-</button>
-</td>
-
-</tr>
-</tbody>
-      </table>
-            </p>
-  
-            <button class="btn btn-primary" onclick='deleteFromDom("${param}")'> close </button>
-  
-          </div>
-        </div>
-      `;
-    } else {
-      console.log(element);
-      document.getElementById(element).classList.remove('border-left-info');
-      document.getElementById(element).style.backgroundColor = "WHITE";
-    }
-  });
-}
+renderAnimals();
 
 
 // Removes the table card
@@ -326,7 +197,7 @@ async function getAnimalTableData() {
           <td class="text-center"> ${animal.gender} </td>
           <td class="text-center"> ${regDate.toDateString()} </td>
           <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Months' : ''} ${ageDays > 0 ? ageDays + ' Days' : ''} </td>
+          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Month(s)' : ''} ${ageDays > 0 ? ageDays + ' Day(s)' : ''} </td>
           
           <td class="text-center noprint" data-bs-target="#editAnimalModal" data-bs-toggle="modal"  onclick="editAnimal(${animal.id})">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
@@ -516,18 +387,25 @@ async function getVaccinationTableData() {
 
 // Editing animal and  setting vaccination records
 async function editAnimal(param) {
+  const editid = document.getElementById("editid");
+  const tag = document.getElementById("edit-animal-tag");
+  const gender = document.getElementById("edit-gender");
+  const dob = document.getElementById("edit-dob");
+  const regDate = document.getElementById("edit-registration-date");
+
   let list = await getAnimalListing();
   list.animalListing.every(v => {
     // const ddate = v.dob;
     // console.log(ddate.toDateString());
     if (v.id == param) {
-      document.getElementById("edit-animal-tag").setAttribute('value', v.animal_tag);
-      document.getElementById("edit-gender").innerText = v.gender;
-      document.getElementById("edit-dob").setAttribute('value', new Date(v.dob).toISOString().slice(0, 10));
-      document.getElementById("edit-registration-date").setAttribute('value', new Date(v.reg_date).toISOString().slice(0, 10));
+      editid.setAttribute("value", param)
+      tag.setAttribute('value', v.animal_tag);
+      gender.innerText = v.gender;
+      dob.setAttribute('value', new Date(v.dob).toISOString().slice(0, 10));
+      regDate.setAttribute('value', new Date(v.reg_date).toISOString().slice(0, 10));
+
       return false;
     }
-    // Make sure you return true. If you don't return a value, `every()` will stop.
     return true;
   });
 }

@@ -1,5 +1,6 @@
 -- INSERT INTO disease_genre (genre)
--- VALUES ('Nutrional Defects'),
+-- VALUES 
+-- ('Nutrional Defects'),
 -- ('Bacterial Diseases'),
 -- ('Viral Diseases'),
 -- ('fungal Diseases'),
@@ -49,3 +50,6 @@
 --  WHERE list_of_animals IS NOT NULL;
 
 -- UPDATE y SET x=JSON_ARRAY_APPEND(x,"$","#");
+
+
+-- DEREK DATA

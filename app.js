@@ -403,6 +403,22 @@ app.post('/newAnimal', function (req, res) {
     });
 })
 
+
+// Updating animal data
+app.post('/updateAnimalData', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the farma table
+    connection.query(`UPDATE animal SET animal_tag = '${req.body.editAnimalTag}', gender = '${req.body.editGender}', dob = '${req.body.editDob}', reg_date = '${req.body.editRegDate}' WHERE animal_type ='${animal}' AND farma_id = '${farma_id}' AND id='${req.body.editid}';`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        res.redirect(`/animal/${animal}`);
+        return;
+    });
+})
+
+
 // Inserting Vaccination Data into the DB
 app.post('/insertData', function (req, res) {
     const farma_id = storage('farma_id');
