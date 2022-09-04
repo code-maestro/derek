@@ -355,8 +355,8 @@ app.get('/getAnimalListing', function (request, response) {
 });
 
 
-// Function to retrieve animal data for table
-app.get('/getVaccinationRecords', function (request, response) {
+// Function to retrieve animal's vaccination data
+app.get('/getVaccinationData', function (request, response) {
     const user_id = storage('farma_id');
     const animal = storage('animal');
 
@@ -371,6 +371,18 @@ app.get('/getVaccinationRecords', function (request, response) {
     }
 
 });
+
+
+// Function to retrieve animal data for table
+app.get('/getVaccinesData', function (request, response) {
+    const animal = storage('animal');
+    connection.query(`SELECT * FROM vaccines WHERE animal_type=(?)`, [animal], function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ vaccines: results });
+    })
+});
+
 
 // Function to retrieve animal data for table
 app.get('/getAnimalMaxId', function (request, response) {

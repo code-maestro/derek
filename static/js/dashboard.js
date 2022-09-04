@@ -131,8 +131,8 @@ async function getAnimalListing() {
 
 
 // Getting all vaccination data from backend
-async function getVaccinationRecords() {
-  let url = '/getVaccinationRecords';
+async function getVaccinationData() {
+  let url = '/getVaccinationData';
   try {
     let res = await fetch(url);
     return await res.json();
@@ -152,6 +152,7 @@ async function getFeedsData() {
     console.log(error);
   }
 }
+
 
 // Getting all animals listings from backend
 async function getMaxId() {
@@ -342,6 +343,7 @@ function calculateAge(params) {
 
   }
 }
+
 
 // Table data for all animals
 async function getVaccinationTableData() {

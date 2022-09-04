@@ -241,9 +241,8 @@ function clicked(param) {
           break;
 
         default:
-          console.log(`Sorry, we are out of ${expr}.`);
+          console.log(`Sorry`);
       }
-
 
     } else {
       document.getElementById(element).classList.remove('border-left-info');
