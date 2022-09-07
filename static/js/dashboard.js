@@ -193,7 +193,7 @@ async function getAnimalTableData() {
     const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
+        <tr class="justify-content-center" id="${animal.id}">
           <th scope="row" class="text-center" id="id"> ${animal.id} </th>
           <td class="text-center"> ${animal.animal_tag} </td>
           <td class="text-center"> ${animal.gender} </td>
@@ -207,7 +207,7 @@ async function getAnimalTableData() {
             </svg>
           </td>
 
-          <td class="text-center noprint" onclick="deleteAnimal('${animal.id}')">
+          <td class="text-center noprint" onclick="deleteFromList('animal', '${animal.id}')">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
               <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
             </svg>
@@ -226,7 +226,10 @@ async function getAnimalTableData() {
 
 
 function deleteFromList(param1, param2) {
-  const url = `/deletes/${param1}`;
+
+  console.log(param1 + " " + param2 );
+  
+  const url = `/delete/${param1}`;
 
   // post body data 
   const user = {
@@ -371,7 +374,7 @@ async function getVaccinesTableData() {
           </svg>
         </td>
 
-        <td class="text-center noprint" onclick="deleteAnimal('vaccine', '${animal.id}')">
+        <td class="text-center noprint" onclick="deleteFromList('vaccine', '${animal.id}')">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
           </svg>

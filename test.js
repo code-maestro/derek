@@ -19,17 +19,9 @@
 
 const aran = 'vaccine'
 
-const lala = [`DELETE FROM vaccine`, `DELETE FROM animal `]
-
 const queries = {
   vaccine: `DELETE FROM vaccine`,
   animal: `DELETE FROM animal `
 }
 
-if (aran == 'vaccine') {
-  console.log(lala[1]);
-}
-
-if (Object.keys(queries).includes(aran)) {
-  console.log(Object.keys(queries));
-}
+console.log(); // John

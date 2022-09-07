@@ -569,9 +569,9 @@ app.post('/addAnimal', (request, response) => {
     });
 });
 
-
+// TODO FIX THE QUERIES BASED ON PARAMETER LOGIC
 // Function to delete data from animal
-app.post('/delete:/param', function (request, response) {
+app.post('/delete/:param', function (request, response) {
     const param = request.params.param;
     const user_id = storage('farma_id');
     const param_id = request.body.id;
@@ -580,9 +580,9 @@ app.post('/delete:/param', function (request, response) {
         vaccine: `DELETE FROM vaccine WHERE farma_id='${user_id}' AND id = '${param_id}';`,
         animal: `DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${param_id}';`
     }
-    
+
     if (user_id) {
-        connection.query(, function (error, results, fields) {
+        connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
         })
