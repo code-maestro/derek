@@ -4,7 +4,6 @@ const today = new Date(Date.now());
 const form = document.getElementById('registrationForm');
 const container = document.querySelector('#dynamic');
 
-
 // Get Total Count of the animals from backend endpoint
 async function getAnimalCount() {
   let url = `/get-count/${browserUrl.replace('http://localhost:3000/animal/', '')}`;
@@ -34,143 +33,18 @@ async function renderAnimals() {
   document.getElementById('allCount').innerText = sk.count || 0;
   document.getElementById('sickCount').innerText = sk.sickCount || 0;
   document.getElementById('babyCount').innerText = sk.count || 0;
-  document.getElementById('pendingVcount').innerText = sk.count || 0;
-  document.getElementById('vCount').innerText = sk.disease_id || 0;
+  document.getElementById('pendingCount').innerText = sk.count || 0;
+  document.getElementById('vaccinatedCount').innerText = sk.disease_id || 0;
+  document.getElementById('feedsCount').innerText = sk.count || 0;
+  document.getElementById('heavyCount').innerText = sk.count || 0;
+
+  document.getElementById("registrationModalLabel").innerText = `${sk.animal_type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
   document.getElementById("registrationModalLabel").innerText = `${sk.animal_type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
   document.getElementById("editAnimalModalLabel").innerText = ` UPDATE ${sk.animal_type.toUpperCase()} `;
   document.getElementById("register-animal").innerText = `REGISTER A NEW ${sk.animal_type.toUpperCase()}`;
-  document.getElementById('newCount').innerText = sk.count || 0;
-  document.getElementById('heavyCount').innerText = sk.count || 0;
-
 }
 
-renderAnimals()
-
-
-function clicked(param) {
-  cards = ['total', 'sick', 'heavy', 'vaxed', 'prod', 'new-at-farm', 'new-born', 'pending'];
-  cards.forEach(element => {
-    if (element == param) {
-      console.log("passed");
-      document.getElementById(param).classList.add('border-left-info');
-      document.getElementById(param).style.backgroundColor = "#caeaff";
-
-      container.innerHTML = `
-      <div class="card ${param}" id="${param}ss">
-        <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">
-          <table id="registrationTable" class="table table-bordered table-hover table-sm">
-          <thead class="table-dark">
-              <tr>
-                  <th scope="col" class="text-center"> ID </th>
-                  <th scope="col" class="text-center"> ANIMAL TAG </th>
-                  <th scope="col" class="text-center"> GENDER </th>
-                  <th scope="col" class="text-center"> REGISTRATION DATE </th>
-                  <th scope="col" class="text-center"> DATE OF BIRTH </th>
-                  <th scope="col" class="text-center"> AGE(Years) </th>
-                  <th scope="col" class="text-center"> AGE(Months) </th>
-                  <th scope="col" class="text-center"> AGE(Days) </th>
-              </tr>
-          </thead>
-          <tbody id="animalListing">
-<tr class="justify-content-center" id="34">
-<th scope="row" class="text-center"> 34 </th>
-<td class="text-center"> COW-00034 </td>
-<td class="text-center"> Male </td>
-<td class="text-center"> Mon Aug 08 2022 </td>
-<td class="text-center"> Fri Aug 12 2022 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 0 </td>
-
-</tr>
-
-<tr class="justify-content-center" id="39">
-<th scope="row" class="text-center"> 39 </th>
-<td class="text-center"> COW-00039 </td>
-<td class="text-center"> Female </td>
-<td class="text-center"> Mon Aug 15 2022 </td>
-<td class="text-center"> Mon Aug 08 2022 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 1 </td
-
-</tr>
-
-
-<tr class="justify-content-center" id="42">
-<th scope="row" class="text-center"> 42 </th>
-<td class="text-center"> COW-00040 </td>
-<td class="text-center"> Female </td>
-<td class="text-center"> Sun Aug 21 2022 </td>
-<td class="text-center"> Sat Aug 20 2022 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 0 </td>
-
-<td class="text-center noprint">
-<button type="button" class="btn btn-sm btn-success">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
-</svg>
-</button>
-</td>
-
-<td class="text-center noprint">
-<button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteAnimal('42')">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-<path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
-</svg>
-</button>
-</td>
-
-</tr>
-
-<tr class="justify-content-center" id="49">
-<th scope="row" class="text-center"> 49 </th>
-<td class="text-center"> COW-00045 </td>
-<td class="text-center"> Female </td>
-<td class="text-center"> Sat Aug 13 2022 </td>
-<td class="text-center"> Wed Feb 09 2022 </td>
-<td class="text-center"> 0 </td>
-<td class="text-center"> 6 </td>
-<td class="text-center"> 0 </td>
-
-<td class="text-center noprint">
-<button type="button" class="btn btn-sm btn-success">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
-</svg>
-</button>
-</td>
-
-<td class="text-center noprint">
-<button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteAnimal('49')">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-<path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
-</svg>
-</button>
-</td>
-
-</tr>
-</tbody>
-      </table>
-            </p>
-  
-            <button class="btn btn-primary" onclick='deleteFromDom("${param}")'> close </button>
-  
-          </div>
-        </div>
-      `;
-    } else {
-      console.log(element);
-      document.getElementById(element).classList.remove('border-left-info');
-      document.getElementById(element).style.backgroundColor = "WHITE";
-    }
-  });
-}
+renderAnimals();
 
 
 // Removes the table card
@@ -258,8 +132,8 @@ async function getAnimalListing() {
 
 
 // Getting all vaccination data from backend
-async function getVaccinationRecords() {
-  let url = '/getVaccinationRecords';
+async function getVaccines() {
+  let url = '/getAvailableVaccines';
   try {
     let res = await fetch(url);
     return await res.json();
@@ -280,6 +154,7 @@ async function getFeedsData() {
   }
 }
 
+
 // Getting all animals listings from backend
 async function getMaxId() {
   let url = '/getAnimalMaxId';
@@ -294,11 +169,8 @@ async function getMaxId() {
 
 // Table data for all animals
 async function getAnimalTableData() {
-  let list = await getAnimalListing();
   let last = await getMaxId();
-
-  console.log(last);
-  console.log(list);
+  let list = await getAnimalListing();
 
   last.animalMaxId.forEach(id => {
     document.getElementById("animal-tag").setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-000${id.LAST + 1}`);
@@ -314,8 +186,6 @@ async function getAnimalTableData() {
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 
-    const sendArray = [animal.id, animal.animal_tag, animal.gender, regDate.toDateString(), dobYear.toDateString()]
-
     // AGE CALCULATION
     const ageYears = today.getFullYear() - dobYear.getFullYear();
     const ageMonths = today.getMonth() - dobYear.getMonth();
@@ -323,13 +193,13 @@ async function getAnimalTableData() {
     const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
+        <tr class="justify-content-center" id="${animal.id}">
           <th scope="row" class="text-center" id="id"> ${animal.id} </th>
           <td class="text-center"> ${animal.animal_tag} </td>
           <td class="text-center"> ${animal.gender} </td>
           <td class="text-center"> ${regDate.toDateString()} </td>
           <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Months' : ''} ${ageDays > 0 ? ageDays + ' Days' : ''} </td>
+          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Month(s)' : ''} ${ageDays > 0 ? ageDays + ' Day(s)' : ''} </td>
           
           <td class="text-center noprint" data-bs-target="#editAnimalModal" data-bs-toggle="modal"  onclick="editAnimal(${animal.id})">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
@@ -337,7 +207,7 @@ async function getAnimalTableData() {
             </svg>
           </td>
 
-          <td class="text-center noprint" onclick="deleteAnimal('${animal.id}')">
+          <td class="text-center noprint" onclick="deleteFromList('animal', '${animal.id}')">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
               <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
             </svg>
@@ -355,14 +225,15 @@ async function getAnimalTableData() {
 }
 
 
-function deleteAnimal(param) {
-  console.log(param);
+function deleteFromList(param1, param2) {
 
-  const url = `/remove-animal`;
+  console.log(param1 + " " + param2 );
+  
+  const url = `/delete/${param1}`;
 
   // post body data 
   const user = {
-    id: param
+    id: param2
   };
 
   // request options
@@ -390,7 +261,7 @@ function deleteAnimal(param) {
       console.log(error);
     });
 
-  const element = document.getElementById(`${param}`);
+  const element = document.getElementById(`${param2}`);
   console.log(element);
   element.remove();
 
@@ -475,37 +346,69 @@ function calculateAge(params) {
   }
 }
 
+
 // Table data for all animals
-async function getVaccinationTableData() {
-  let list = await getVaccinationRecords();
+async function getVaccinesTableData() {
+  let list = await getVaccines();
 
   let html = '';
   let htmlSegment = '';
 
-  const con = document.getElementById('animalListing');
+  const con = document.getElementById('vaccinesListing');
 
-  list.animalListing.forEach(animal => {
-    const dobYear = new Date(Date.parse(animal.dob));
-    const regDate = new Date(Date.parse(animal.reg_date));
-
-    console.log(dobYear);
-    console.log(dobYear.toDateString().slice(8, 10));
-
-    // AGE CALCULATION
-    const ageYears = today.getFullYear() - dobYear.getFullYear();
-    const ageMonths = today.getMonth() - dobYear.getMonth();
-    // const ageDays = today.getDay() - dobYear.getDay();
-    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
-
+  list.vaccines.forEach(animal => {
     htmlSegment = `
         <tr class="justify-content-center" id="${animal.id}">
           <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${animal.gender} </td>
-          <td class="text-center"> ${regDate.toDateString()} </td>
-          <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Months' : ''} ${ageDays > 0 ? ageDays + ' Days' : ''} </td>
+          <td class="text-center"> ${animal.name} </td>
+          <td class="text-center vaccineDesc" id="vaccineDescription"> ${animal.description} </td>
+          <td class="text-center"> ${animal.quantity + animal.quantity_measure} </td>
+          <td class="text-center"> ${animal.number_of_vaccinations} </td>
+          <td class="text-center"> ${animal.cycle} </td>
+          <td class="text-center"> ${animal.period} </td>
+          <td class="text-center"> ${animal.injection_area} </td>
+
+          <td class="text-center noprint" data-bs-target="#editVaccineModal" data-bs-toggle="modal"  onclick="editAnimal(${animal.id})">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+          </svg>
+        </td>
+
+        <td class="text-center noprint" onclick="deleteFromList('vaccine', '${animal.id}')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
+          </svg>
+        </td>
+
         </tr>
+
+
+        <script type="text/javascript">
+
+        var len = 15;
+        var p = document.getElementById('vaccineDescription');
+        if (p) {
+        
+          var trunc = p.innerHTML;
+          if (trunc.length > len) {
+        
+            /* Truncate the content of the P, then go back to the end of the
+               previous word to ensure that we don't truncate in the middle of
+               a word */
+            trunc = trunc.substring(0, len);
+            trunc = trunc.replace(/\w+$/, '');
+        
+            /* Add an ellipses to the end and make it a link that expands
+               the paragraph back to its original size */
+            trunc += '<a href="#" ' +
+              'onclick="this.parentNode.innerHTML=' +
+              'unescape(\''+escape(p.innerHTML)+'\');return false;">' +
+              '...<\/a>';
+            p.innerHTML = trunc;
+          }
+        }
+        
+        </script>
       `;
 
     html += htmlSegment;
@@ -519,15 +422,25 @@ async function getVaccinationTableData() {
 
 // Editing animal and  setting vaccination records
 async function editAnimal(param) {
-  console.log(param);
+  const editid = document.getElementById("editid");
+  const tag = document.getElementById("edit-animal-tag");
+  const gender = document.getElementById("edit-gender");
+  const dob = document.getElementById("edit-dob");
+  const regDate = document.getElementById("edit-registration-date");
+
   let list = await getAnimalListing();
-  list.animalListing.forEach(animal => {
-    if (animal.id == param) {
-      console.log(animal.id + "animal.id");
-      console.log(param + "param");
-      break;
-    } else {
-      console.log("NOT THAT GUY");
+  list.animalListing.every(v => {
+    // const ddate = v.dob;
+    // console.log(ddate.toDateString());
+    if (v.id == param) {
+      editid.setAttribute("value", param)
+      tag.setAttribute('value', v.animal_tag);
+      gender.innerText = v.gender;
+      dob.setAttribute('value', new Date(v.dob).toISOString().slice(0, 10));
+      regDate.setAttribute('value', new Date(v.reg_date).toISOString().slice(0, 10));
+
+      return false;
     }
+    return true;
   });
 }

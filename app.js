@@ -355,8 +355,8 @@ app.get('/getAnimalListing', function (request, response) {
 });
 
 
-// Function to retrieve animal data for table
-app.get('/getVaccinationRecords', function (request, response) {
+// Function to retrieve animal's vaccination data
+app.get('/getVaccinationData', function (request, response) {
     const user_id = storage('farma_id');
     const animal = storage('animal');
 
@@ -371,6 +371,18 @@ app.get('/getVaccinationRecords', function (request, response) {
     }
 
 });
+
+
+// Function to retrieve animal data for table
+app.get('/getAvailableVaccines', function (request, response) {
+    const animal = storage('animal');
+    connection.query(`SELECT * FROM vaccines WHERE animal_type=(?)`, [animal], function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ vaccines: results });
+    })
+});
+
 
 // Function to retrieve animal data for table
 app.get('/getAnimalMaxId', function (request, response) {
@@ -403,6 +415,22 @@ app.post('/newAnimal', function (req, res) {
     });
 })
 
+
+// Updating animal data
+app.post('/updateAnimalData', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the farma table
+    connection.query(`UPDATE animal SET animal_tag = '${req.body.editAnimalTag}', gender = '${req.body.editGender}', dob = '${req.body.editDob}', reg_date = '${req.body.editRegDate}' WHERE animal_type ='${animal}' AND farma_id = '${farma_id}' AND id='${req.body.editid}';`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        res.redirect(`/animal/${animal}`);
+        return;
+    });
+})
+
+
 // Inserting Vaccination Data into the DB
 app.post('/insertData', function (req, res) {
     const farma_id = storage('farma_id');
@@ -411,6 +439,21 @@ app.post('/insertData', function (req, res) {
     connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.tag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
         if (error) throw error;
     });
+})
+
+
+// Inserting Vaccines into the DB
+app.post('/newVaccine', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, number_of_vaccinations, cycle, period, injection_area, animal_type) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.noVaccinations}, ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${animal}');`, 
+    function (error, results, fields) {
+        if (error) throw error;
+    });
+
+    res.redirect(`/animal/${animal}`);
+    return;
 })
 
 
@@ -526,13 +569,21 @@ app.post('/addAnimal', (request, response) => {
     });
 });
 
-
+// TODO FIX THE QUERIES BASED ON PARAMETER LOGIC
 // Function to delete data from animal
-app.post('/remove-animal', function (request, response) {
+app.post('/delete/:param', function (request, response) {
+    const param = request.params.param;
     const user_id = storage('farma_id');
+    const param_id = request.body.id;
+    const animal = storage('animal');
+
+    const queries = {
+        vaccine: `DELETE FROM vaccines WHERE animal_type='${animal}' AND id = '${param_id}';`,
+        animal: `DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${param_id}';`
+    }
+
     if (user_id) {
-        const animal_id = request.body.id;
-        connection.query(`DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${animal_id}';`, function (error, results, fields) {
+        connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
         })

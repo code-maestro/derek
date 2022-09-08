@@ -1,5 +1,6 @@
 -- INSERT INTO disease_genre (genre)
--- VALUES ('Nutrional Defects'),
+-- VALUES 
+-- ('Nutrional Defects'),
 -- ('Bacterial Diseases'),
 -- ('Viral Diseases'),
 -- ('fungal Diseases'),
@@ -49,3 +50,13 @@
 --  WHERE list_of_animals IS NOT NULL;
 
 -- UPDATE y SET x=JSON_ARRAY_APPEND(x,"$","#");
+
+-- DEREK DATA
+INSERT INTO vaccines
+(name, description, number_of_vaccinations, cycle, period, injection_area, animal_type)
+VALUES
+('One Shot Ultra 7', 'contains leukotoxoid to neutralize lung-damaging leukotoxins. Give 2 ml subcutaneous', 3, 1, 4, 'behind left ear', 'cow'),
+('One Shot Ultra 8', 'contains leukotoxoid to neutralize lung-damaging leukotoxins. Give 2 ml subcutaneous', 2, 1, 4, 'behind left ear', 'cow'),
+('Piliguard Pinkeye + 7', 'contains leukotoxoid to neutralize lung-damaging leukotoxins. Give 2 ml subcutaneous', 1, 2, 4, 'behind left ear', 'cow'),
+('Alpha-7/MB-1', 'contains leukotoxoid to neutralize lung-damaging leukotoxins. Give 2 ml subcutaneous', 4, 4, 4, 'behind left ear', 'cow'),
+('SolidBac Pinkeye IR/PR Implants', 'contains leukotoxoid to neutralize lung-damaging leukotoxins. Give 2 ml subcutaneous',1, 1, 1, 'behind left ear', 'cow')
