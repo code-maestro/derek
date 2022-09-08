@@ -575,9 +575,10 @@ app.post('/delete/:param', function (request, response) {
     const param = request.params.param;
     const user_id = storage('farma_id');
     const param_id = request.body.id;
+    const animal = storage('animal');
 
     const queries = {
-        vaccine: `DELETE FROM vaccine WHERE farma_id='${user_id}' AND id = '${param_id}';`,
+        vaccine: `DELETE FROM vaccines WHERE animal_type='${animal}' AND id = '${param_id}';`,
         animal: `DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${param_id}';`
     }
 
