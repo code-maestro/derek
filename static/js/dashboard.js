@@ -39,9 +39,13 @@ async function renderAnimals() {
   document.getElementById('heavyCount').innerText = sk.count || 0;
 
   document.getElementById("registrationModalLabel").innerText = `${sk.animal_type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
-  document.getElementById("registrationModalLabel").innerText = `${sk.animal_type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
   document.getElementById("editAnimalModalLabel").innerText = ` UPDATE ${sk.animal_type.toUpperCase()} `;
   document.getElementById("register-animal").innerText = `REGISTER A NEW ${sk.animal_type.toUpperCase()}`;
+
+  document.getElementById("vaccinesModalLabel").innerText = `AVAILABLE ${sk.animal_type.toUpperCase()} VACCINES`;
+  document.getElementById("editVaccineModalLabel").innerText = `UPDATE ${sk.animal_type.toUpperCase()} `;
+  document.getElementById("available-vaccines").innerText = `ADD A NEW ${sk.animal_type.toUpperCase()} VACCINE`;
+
 }
 
 renderAnimals();
@@ -130,6 +134,17 @@ async function getAnimalListing() {
   }
 }
 
+
+// Getting all animals listings from backend
+async function getSickAnimalListing() {
+  let url = '/getSickAnimalListing';
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // Getting all vaccination data from backend
 async function getVaccines() {
@@ -226,11 +241,7 @@ async function getAnimalTableData() {
 
 
 function deleteFromList(param1, param2) {
-
-  console.log(param1 + " " + param2 );
-  
   const url = `/delete/${param1}`;
-
   // post body data 
   const user = {
     id: param2

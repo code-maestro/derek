@@ -315,6 +315,24 @@ app.get('/get-sick/:animal', function (request, response) {
 });
 
 
+// Fn to get sick animal listing
+app.get('/getSickAnimalListing', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date, disease_id FROM animal WHERE farma_id=(?) AND animal_type=(?) AND disease_id IS NOT NULL`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({sickAnimalListing: results});
+        })
+    } else {
+        response.redirect('/');
+    }
+
+});
+
+
 // Function to retrieve farma data
 app.get('/getFarmaData', function (request, response) {
     const user_id = storage('farma_id');

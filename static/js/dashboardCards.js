@@ -295,7 +295,7 @@ async function getAllAnimals() {
 
 //Sick animals
 async function getSickAnimals() {
-  let list = await getAnimalListing();
+  let list = await getSickAnimalListing();
 
   let html = '';
   let htmlSegment = '';
