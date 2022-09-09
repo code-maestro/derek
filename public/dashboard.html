@@ -965,25 +965,25 @@
                         <div class="container">
 
                             <div class="row px-2 py-4">
-                                <div class="col-auto me-auto fw-bold" id="vaccinationModalLabel"> </div>
+                                <div class="col-auto me-auto fw-bold" id="pendingVaccinationModalLabel"> </div>
                             </div>
 
                             <div class="row ">
                                 <div class="col">
                                     <div class="card">
                                         <!-- Card Header - Accordion -->
-                                        <a href="#collapseVaccinationFormCard"
+                                        <a href="#collapsePendingVaccinationFormCard"
                                             class="d-block card-header py-3 collapsed" data-toggle="collapse"
                                             role="button" aria-expanded="false"
-                                            aria-controls="collapseVaccinationFormCard">
+                                            aria-controls="collapsePendingVaccinationFormCard">
                                             <h6 class="m-0 font-weight-bold text-primary" id="register-animal"> </h6>
                                         </a>
                                         <!-- Card Content - Collapse -->
-                                        <div class="collapse" id="collapseVaccinationFormCard">
+                                        <div class="collapse" id="collapsePendingVaccinationFormCard">
                                             <div class="card-body">
                                                 <!-- Vaccination Form -->
                                                 <form class="row g-3 needs-validation" novalidate method="POST"
-                                                    action="">
+                                                    action="/addPending">
                                                     <!-- Vaccination Records -->
                                                     <div class="col-md-12">
                                                         <label for="age-years" class="form-label fw-bold"> VACCINATION
@@ -991,49 +991,54 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="vaccine-name" class="form-label fw-bold"> Vaccine
+                                                        <label for="pending-vaccine-name" class="form-label fw-bold">
+                                                            Vaccine
                                                             Name </label>
-                                                        <input id="vaccine-name" type="text" class="form-control"
-                                                            name="vaccineName" spellcheck="false" data-ms-editor="true"
-                                                            value="">
+                                                        <input id="pending-vaccine-name" type="text"
+                                                            class="form-control" name="pendingVaccineName"
+                                                            spellcheck="false" data-ms-editor="true" value="">
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="vet-name" class="form-label fw-bold"> Vet Name
+                                                        <label for="pending-vet-name" class="form-label fw-bold"> Vet
+                                                            Name
                                                         </label>
-                                                        <input id="vet-name" type="text" class="form-control"
-                                                            name="vetName" spellcheck="false" data-ms-editor="true"
-                                                            value="">
+                                                        <input id="pending-vet-name" type="text" class="form-control"
+                                                            name="pendingVetName" spellcheck="false"
+                                                            data-ms-editor="true" value="">
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="no-vaccinations" class="form-label fw-bold"> Number
+                                                        <label for="pending-no-vaccinations" class="form-label fw-bold">
+                                                            Number
                                                             of Vaccinations </label>
-                                                        <input id="no-vaccinations" type="text" class="form-control"
-                                                            name="noVaccinations" spellcheck="false"
-                                                            data-ms-editor="true" value="">
+                                                        <input id="pending-no-vaccinations" type="text"
+                                                            class="form-control" name="pendingNoVaccinations"
+                                                            spellcheck="false" data-ms-editor="true" value="">
                                                     </div>
 
                                                     <div class="col-md-6">
                                                         <label for="first_vaccination" class="form-label fw-bold"> First
                                                             Vaccination Date </label>
-                                                        <input id="first_vaccination" type="text" class="form-control"
-                                                            name="firstVaccination" spellcheck="false"
+                                                        <input id="p-first_vaccination" type="text" class="form-control"
+                                                            name="pendingFirstVaccination" spellcheck="false"
                                                             data-ms-editor="true" value="">
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="vaccination-cycle" class="form-label fw-bold"> Cycle
+                                                        <label for="p-vaccination-cycle" class="form-label fw-bold">
+                                                            Cycle
                                                         </label>
-                                                        <input id="vaccination-cycle" type="number" class="form-control"
-                                                            name="vaccinationCycle" spellcheck="false"
-                                                            data-ms-editor="true" value="">
+                                                        <input id="p-vaccination-cycle" type="number"
+                                                            class="form-control" name="pendingVaccinationCycle"
+                                                            spellcheck="false" data-ms-editor="true" value="">
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="period" class="form-label fw-bold"> Every </label>
-                                                        <select class="form-select" id="period" name="period"
-                                                            required="">
+                                                        <label for="pending-period" class="form-label fw-bold"> Every
+                                                        </label>
+                                                        <select class="form-select" id="pending-period"
+                                                            name="pending-period" required="">
                                                             <option selected="" disabled="" value=""> Choose a period
                                                                 ...</option>
                                                             <option value="1"> Day(s) </option>
@@ -1043,19 +1048,21 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="next-vaccination" class="form-label fw-bold"> Next
+                                                        <label for="pending-next-vaccination"
+                                                            class="form-label fw-bold"> Next
                                                             Vaccination Date </label>
-                                                        <input id="next-vaccination" type="text" class="form-control"
-                                                            name="nextVaccination" spellcheck="false"
-                                                            data-ms-editor="true" value="">
+                                                        <input id="pending-next-vaccination" type="text"
+                                                            class="form-control" name="pendingNextVaccination"
+                                                            spellcheck="false" data-ms-editor="true" value="">
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="last-vaccination" class="form-label fw-bold"> Last
+                                                        <label for="pending-last-vaccination"
+                                                            class="form-label fw-bold"> Last
                                                             Vaccination Date </label>
-                                                        <input id="last-vaccination" type="text" class="form-control"
-                                                            name="lastVaccination" spellcheck="false"
-                                                            data-ms-editor="true" value="">
+                                                        <input id="pending-last-vaccination" type="text"
+                                                            class="form-control" name="pendingLastVaccination"
+                                                            spellcheck="false" data-ms-editor="true" value="">
                                                     </div>
 
                                                     <div class="d-grid gap-2">
@@ -1078,7 +1085,7 @@
                                             <div class="row px-4">
                                                 <!-- Vaccination Form -->
                                                 <h6 class="fw-bold px-0"> List of animals </h6>
-                                                <table id="vaccinationTable"
+                                                <table id="pendingVaccinationTable"
                                                     class="table table-bordered table-hover table-sm">
                                                     <thead class="table-dark">
                                                         <tr>
@@ -1096,7 +1103,7 @@
                                                             <th scope="col" class="text-center"> DELETE </th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody id="vaccinationListing">
+                                                    <tbody id="pendingVaccinationListing">
 
                                                     </tbody>
                                                 </table>
@@ -1114,9 +1121,10 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <button type="button" class="btn btn-primary btn-sm"
-                                                        onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                                        onclick="toExcel('pendingVaccinationTable')"> EXCEL </button>
                                                     <button type="button" class="btn btn-primary btn-sm"
-                                                        onclick="printReport('vaccinationTable')"> PRINT </button>
+                                                        onclick="printReport('pendingVaccinationTable')"> PRINT
+                                                    </button>
                                                 </div>
                                             </div>
 
@@ -1142,30 +1150,31 @@
             </div>
         </div>
 
-        <!-- Vaccination modal -->
+        <!-- Fully Vaccinated modal -->
         <div class="modal fade" id="fullyVaccinatedModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="vaccinationModalToggleLabel" aria-hidden="true">
+            tabindex="-1" aria-labelledby="fullyVaccinatedModalToggleLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="container">
 
                             <div class="row px-2 py-4">
-                                <div class="col-auto me-auto fw-bold" id="vaccinationModalLabel"> </div>
+                                <div class="col-auto me-auto fw-bold" id="fullyVaccinatedModalToggleLabel"> </div>
                             </div>
 
-                            <div class="row ">
+                            <div class="row">
                                 <div class="col">
                                     <div class="card">
                                         <!-- Card Header - Accordion -->
-                                        <a href="#collapseVaccinationFormCard"
+                                        <a href="#collapsefullyVaccinatedFormCard"
                                             class="d-block card-header py-3 collapsed" data-toggle="collapse"
                                             role="button" aria-expanded="false"
-                                            aria-controls="collapseVaccinationFormCard">
-                                            <h6 class="m-0 font-weight-bold text-primary" id="register-animal"> </h6>
+                                            aria-controls="collapsefullyVaccinatedFormCard">
+                                            <h6 class="m-0 font-weight-bold text-primary" id="fully-vaccinated-animals">
+                                            </h6>
                                         </a>
                                         <!-- Card Content - Collapse -->
-                                        <div class="collapse" id="collapseVaccinationFormCard">
+                                        <div class="collapse" id="collapsefullyVaccinatedFormCard">
                                             <div class="card-body">
                                                 <!-- Vaccination Form -->
                                                 <form class="row g-3 needs-validation" novalidate method="POST"
@@ -1264,7 +1273,7 @@
                                             <div class="row px-4">
                                                 <!-- Vaccination Form -->
                                                 <h6 class="fw-bold px-0"> List of animals </h6>
-                                                <table id="vaccinationTable"
+                                                <table id="fullyVaccinatedTable"
                                                     class="table table-bordered table-hover table-sm">
                                                     <thead class="table-dark">
                                                         <tr>
@@ -1274,15 +1283,11 @@
                                                             </th>
                                                             <th scope="col" class="text-center"> FIRST VACCINATION DATE
                                                             </th>
-                                                            <th scope="col" class="text-center"> NEXT VACCINATION DATE
+                                                            <th scope="col" class="text-center"> LAST VACCINATION DATE
                                                             </th>
-                                                            <th scope="col" class="text-center"> No OF PENDING
-                                                                VACCINATIONS </th>
-                                                            <th scope="col" class="text-center"> EDIT </th>
-                                                            <th scope="col" class="text-center"> DELETE </th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody id="vaccinationListing">
+                                                    <tbody id="fullyVaccinatedListing">
 
                                                     </tbody>
                                                 </table>
@@ -1300,9 +1305,9 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <button type="button" class="btn btn-primary btn-sm"
-                                                        onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                                        onclick="toExcel('fullyVaccinatedTable')"> EXCEL </button>
                                                     <button type="button" class="btn btn-primary btn-sm"
-                                                        onclick="printReport('vaccinationTable')"> PRINT </button>
+                                                        onclick="printReport('fullyVaccinatedTable')"> PRINT </button>
                                                 </div>
                                             </div>
 
@@ -1329,7 +1334,7 @@
         </div>
 
         <!-- New Born Modal  -->
-        <div class="modal fade" id="newBornModalToggle" aria-hidden="true" aria-labelledby="newBornModalToggleLabel"
+        <div class="modal fade"aria-hidden="true" 
             tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -1341,6 +1346,210 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary">Open second modal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Fully Vaccinated modal -->
+        <div class="modal fade"  id="newBornModalToggle"  data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aaria-labelledby="newBornModalToggleLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="container">
+
+                            <div class="row px-2 py-4">
+                                <div class="col-auto me-auto fw-bold" id="newBornModalToggleLabel"> </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row px-4">
+                                                <!-- Vaccination Form -->
+                                                <h6 class="fw-bold px-0"> List of new born animals </h6>
+                                                <table id="fullyVaccinatedTable"
+                                                    class="table table-bordered table-hover table-sm">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col" class="text-center"> ID </th>
+                                                            <th scope="col" class="text-center"> NEW BORN TAG </th>
+                                                            <th scope="col" class="text-center"> PARENT TAG </th>
+                                                            <th scope="col" class="text-center"> DATE OF BIRTH </th>
+                                                            <th scope="col" class="text-center"> REGISTRATION DATE </th>
+                                                            <th scope="col" class="text-center"> EDIT </th>
+                                                            <th scope="col" class="text-center"> DELETE </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="newBornsListing">
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="row px-4 py-4">
+                                                <div class="col-auto me-auto">
+                                                    <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                                </div>
+                                                <div class="col-auto me-auto">
+                                                    <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                                </div>
+                                                <div class="col-auto">
+                                                    <h6 class="fw-bold py-2"> Export your data to </h6>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="toExcel('fullyVaccinatedTable')"> EXCEL </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="printReport('fullyVaccinatedTable')"> PRINT </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card">
+                                        <!-- Card Header - Accordion -->
+                                        <a href="#collapseNewBornFormCard"
+                                            class="d-block card-header py-3 collapsed" data-toggle="collapse"
+                                            role="button" aria-expanded="false"
+                                            aria-controls="collapseNewBornFormCard">
+                                            <h6 class="m-0 font-weight-bold text-primary" id="new-born-animals">
+                                            </h6>
+                                        </a>
+                                        <!-- Card Content - Collapse -->
+                                        <div class="collapse" id="collapseNewBornFormCard">
+                                            <div class="card-body">
+                                                <!-- Vaccination Form -->
+                                                <form class="row g-3 needs-validation" novalidate method="POST"
+                                                    action="">
+                                                    <!-- Vaccination Records -->
+                                                    <div class="col-md-12">
+                                                        <label for="age-years" class="form-label fw-bold"> NEW BORN REGISTRATION FORM </label>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="new-born-tag" class="form-label fw-bold"> New Born Tag </label>
+                                                        <input id="new-born-tag" type="text" class="form-control"
+                                                            name="newBornTag" spellcheck="false" data-ms-editor="true"
+                                                            value="">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="parent-tag" class="form-label fw-bold"> Parent Tag </label>
+                                                        <input id="parent-tag" type="text" class="form-control"
+                                                            name="parentTag" spellcheck="false"
+                                                            data-ms-editor="true" value="">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="new-born-gender" class="form-label fw-bold"> Gender </label>
+                                                        <select class="form-select" id="new-born-gender" name="newBornGender"
+                                                            required="">
+                                                            <option selected="" disabled="" value=""> Choose a period
+                                                                ...</option>
+                                                            <option value="1"> Day(s) </option>
+                                                            <option value="30"> Month(s) </option>
+                                                            <option value="360"> Year(s) </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="new-born-dob" class="form-label fw-bold"> Date of Birth </label>
+                                                        <input id="new-born-dob" type="date" class="form-control"
+                                                            name="newBornDOB" spellcheck="false"
+                                                            data-ms-editor="true" value="">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="new-born-reg-date" class="form-label fw-bold"> Registration Date </label>
+                                                        <input id="new-born-dob-reg-date" type="date" class="form-control"
+                                                            name="newBornRegDate" spellcheck="false"
+                                                            data-ms-editor="true" value="">
+                                                    </div>
+
+
+                                                    <div class="d-grid gap-2">
+                                                        <button class="btn btn-primary" type="submit"> SUBMIT FORM
+                                                        </button>
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row px-4">
+                                                <!-- TODO ADD APPROPRIATE TITLE -->
+                                                <h6 class="fw-bold px-0"> List of new born animals </h6>
+                                                <table id="fullyVaccinatedTable"
+                                                    class="table table-bordered table-hover table-sm">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col" class="text-center"> ID </th>
+                                                            <th scope="col" class="text-center"> NEW BORN TAG </th>
+                                                            <th scope="col" class="text-center"> PARENT TAG </th>
+                                                            <th scope="col" class="text-center"> DATE OF BIRTH </th>
+                                                            <th scope="col" class="text-center"> REGISTRATION DATE </th>
+                                                            <th scope="col" class="text-center"> EDIT </th>
+                                                            <th scope="col" class="text-center"> DELETE </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="newBornsListing">
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="row px-4 py-4">
+                                                <div class="col-auto me-auto">
+                                                    <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                                </div>
+                                                <div class="col-auto me-auto">
+                                                    <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                                </div>
+                                                <div class="col-auto">
+                                                    <h6 class="fw-bold py-2"> Export your data to </h6>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="toExcel('fullyVaccinatedTable')"> EXCEL </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="printReport('fullyVaccinatedTable')"> PRINT </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-4">
+                                <div class="col-auto me-auto fw-bold" id="test"> </div>
+
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                        CLOSE
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1512,15 +1721,16 @@
                             <div class="col-md-6">
                                 <label for="edit-vaccine-quantity" class="form-label fw-bold">
                                     Quantity </label>
-                                <input id="edit-vaccine-quantity" type="number" class="form-control" name="editVaccineQuantity"
-                                    spellcheck="false" data-ms-editor="true" value="">
+                                <input id="edit-vaccine-quantity" type="number" class="form-control"
+                                    name="editVaccineQuantity" spellcheck="false" data-ms-editor="true" value="">
                             </div>
 
 
                             <div class="col-md-6">
                                 <label for="period" class="form-label fw-bold"> Quantity Measure
                                 </label>
-                                <select class="form-select" id="edit-quantity-measure" name="editQuantityMeasure" required="">
+                                <select class="form-select" id="edit-quantity-measure" name="editQuantityMeasure"
+                                    required="">
                                     <option selected="" disabled="" value=""> Choose a measure
                                         ...</option>
                                     <option value="ml"> milli litre(s) </option>
@@ -1538,15 +1748,15 @@
                             <div class="col-md-6">
                                 <label for="edit-no-vaccinations" class="form-label fw-bold"> Number
                                     of Vaccinations </label>
-                                <input id="edit-no-vaccinations" type="text" class="form-control" name="editNoVaccinations"
-                                    spellcheck="false" data-ms-editor="true" value="">
+                                <input id="edit-no-vaccinations" type="text" class="form-control"
+                                    name="editNoVaccinations" spellcheck="false" data-ms-editor="true" value="">
                             </div>
 
                             <div class="col-md-6">
                                 <label for="edit-vaccination-cycle" class="form-label fw-bold"> Cycle
                                 </label>
-                                <input id="edit-vaccination-cycle" type="number" class="form-control" name="editVaccineCycle"
-                                    spellcheck="false" data-ms-editor="true" value="">
+                                <input id="edit-vaccination-cycle" type="number" class="form-control"
+                                    name="editVaccineCycle" spellcheck="false" data-ms-editor="true" value="">
                             </div>
 
                             <div class="col-md-6">
@@ -1563,8 +1773,8 @@
                             <div class="col-md-6">
                                 <label for="edit-injection-area" class="form-label fw-bold">
                                     Injection Area </label>
-                                <input id="edit-injection-area" type="text" class="form-control" name="editInjectionArea"
-                                    spellcheck="false" data-ms-editor="true" value="">
+                                <input id="edit-injection-area" type="text" class="form-control"
+                                    name="editInjectionArea" spellcheck="false" data-ms-editor="true" value="">
                             </div>
 
                             <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
