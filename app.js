@@ -419,6 +419,23 @@ app.get('/getAnimalMaxId', function (request, response) {
 });
 
 
+// Function to retrieve expecting animals
+app.get('/getExpectingAnimals', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date FROM due_dates a, animal b, first_dates c WHERE b.farma_id=(?) AND b.animal_type=(?) AND a.animal_id=b.id AND a.animal_id=c.animal_id AND c.animal_id=b.id AND a.animal_id=b.id AND a.farma_id = b.farma_id AND a.delivery_date IS NOT NULL`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({heavyAnimals: results});
+        })
+    } else {
+        response.redirect('/');
+    }
+});
+
+
 // Registering a new animal
 app.post('/newAnimal', function (req, res) {
     const farma_id = storage('farma_id');

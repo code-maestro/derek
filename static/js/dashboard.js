@@ -146,6 +146,19 @@ async function getSickAnimalListing() {
   }
 }
 
+
+// Getting all animals listings from backend
+async function getHeavyAnimalListing() {
+  let url = '/getExpectingAnimals';
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 // Getting all vaccination data from backend
 async function getVaccines() {
   let url = '/getAvailableVaccines';

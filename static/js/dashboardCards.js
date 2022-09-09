@@ -78,7 +78,9 @@ function clicked(param) {
                     <tr>
                       <th scope="col" class="text-center"> ID </th>
                       <th scope="col" class="text-center"> ANIMAL TAG </th>
-                      <th scope="col" class="text-center"> DUE DATE </th>
+                      <th scope="col" class="text-center"> INSERMINATION DATE </th>
+                      <th scope="col" class="text-center"> EXPECTED DUE DATE </th>
+                      <th scope="col" class="text-center"> REMAINING PERIOD </th>
                     </tr>
                   </thead>
                   <tbody id="heavyAnimalsListing">
@@ -336,34 +338,30 @@ async function getSickAnimals() {
 
 // Get Pregant animals
 async function getHeavyAnimals() {
-  let list = await getAnimalListing();
+  let list = await getHeavyAnimalListing();
 
   let html = '';
   let htmlSegment = '';
 
-  const con = document.getElementById('dashboardAnimalListing');
+  const con = document.getElementById('heavyAnimalsListing');
 
-  list.animalListing.forEach(animal => {
-
-    console.log(animal);
-
-    const dobYear = new Date(Date.parse(animal.dob));
-    const regDate = new Date(Date.parse(animal.reg_date));
+  list.heavyAnimals.forEach(animal => {
+    const in_date = new Date(Date.parse(animal.insemination_date));
+    const d_date = new Date(Date.parse(animal.delivery_date));
 
     // AGE CALCULATION
-    const ageYears = today.getFullYear() - dobYear.getFullYear();
-    const ageMonths = today.getMonth() - dobYear.getMonth();
+    const theYears = d_date.getFullYear() - in_date.getFullYear();
+    const theMonths = d_date.getMonth() - in_date.getMonth();
     // const ageDays = today.getDay() - dobYear.getDay();
-    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
+    const theDays = d_date.getDate() - parseInt(in_date.toDateString().slice(8, 10));
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
+        <tr class="justify-content-center" id="${animal.id}">
           <th scope="row" class="text-center" id="id"> ${animal.id} </th>
           <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${animal.gender} </td>
-          <td class="text-center"> ${regDate.toDateString()} </td>
-          <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Month(s)' : ''} ${ageDays > 0 ? ageDays + ' Day(s)' : ''} </td>
+          <td class="text-center"> ${in_date.toDateString()} </td>
+          <td class="text-center"> ${d_date.toDateString()} </td>
+          <td class="text-center"> ${theYears > 0 ? theYears + ' Year(s)' : ''} ${theMonths > 0 ? theMonths + ' Month(s)' : ''} ${theDays > 0 ? theDays + ' Day(s)' : ''} </td>
         </tr>
       `;
 
