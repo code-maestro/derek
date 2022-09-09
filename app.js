@@ -314,9 +314,9 @@ app.get('/get-sick/:animal', function (request, response) {
     }
 });
 
-
+// FIXME  Clean that query
 // Fn to get sick animal listing
-app.get('/getSickAnimalListing', function (request, response) {
+app.get('/getSickAnimals', function (request, response) {
     const user_id = storage('farma_id');
     const animal = storage('animal');
 
@@ -604,7 +604,7 @@ app.post('/addAnimal', (request, response) => {
     });
 });
 
-// TODO FIX THE QUERIES BASED ON PARAMETER LOGIC
+
 // Function to delete data from animal
 app.post('/delete/:param', function (request, response) {
     const param = request.params.param;

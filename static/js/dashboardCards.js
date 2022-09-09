@@ -37,6 +37,7 @@ function clicked(param) {
           `;
           break;
 
+          // TODO RETURN ALL THE SICK ANIMALS
         case 'sick':
           getSickAnimals();
           container.innerHTML = `
@@ -94,6 +95,7 @@ function clicked(param) {
           `;
           break;
 
+          // TODO  RETURN FULLY VACCINATED ANIMAKS
         case 'vaccinated':
           getVaccinatedAnimals();
           container.innerHTML = `
@@ -124,6 +126,7 @@ function clicked(param) {
           `;
           break;
 
+        // TODO return products from animals
         case 'prod':
           getAnimalProducts();
           container.innerHTML = `
@@ -182,6 +185,7 @@ function clicked(param) {
           `;
           break;
 
+        // TODO return newborn animals
         case 'new-born':
           getNewBornAnimals();
           container.innerHTML = `
@@ -212,6 +216,7 @@ function clicked(param) {
           `;
           break;
 
+        // TODO return all animals pending vaccinations
         case 'pending':
           getPendingAnimalVaccinations();
           container.innerHTML = `
@@ -295,9 +300,10 @@ async function getAllAnimals() {
 
 }
 
+// TODO IMPLEMENT THIS FUNCTION
 //Sick animals
 async function getSickAnimals() {
-  let list = await getSickAnimalListing();
+  let list = await getSickAnimalsListing();
 
   let html = '';
   let htmlSegment = '';

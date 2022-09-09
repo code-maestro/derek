@@ -136,8 +136,8 @@ async function getAnimalListing() {
 
 
 // Getting all animals listings from backend
-async function getSickAnimalListing() {
-  let url = '/getSickAnimalListing';
+async function getSickAnimalsListing() {
+  let url = '/getSickAnimals';
   try {
     let res = await fetch(url);
     return await res.json();
