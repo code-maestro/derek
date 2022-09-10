@@ -152,13 +152,24 @@
                     </div>
                 </li>
 
+                
+                <!-- TODO implement function - populateGraphs() -->
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <span class="nav-link">
+                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#charts"
+                        aria-expanded="true" aria-controls="charts">
                         <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Charts</span>
+                        <span> Charts </span>
                     </span>
+                    <div id="charts" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <span class="collapse-item" onclick="viewGraphs('expected')"> Expectations </span>
+                            <span class="collapse-item" onclick="viewGraphs('actual')"> Actual Data </span>
+                        </div>
+                    </div>
                 </li>
+
 
                 <!-- TODO implement function - viewDiseases() to handle the click event -->
                 <!-- Nav Item - Diseases -->
