@@ -1,3 +1,4 @@
+// GLOBAL CONFIGURATIONS/variables
 const mysql = require('mysql');
 const express = require('express');
 const session = require('express-session');
@@ -7,6 +8,7 @@ const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const { default: store } = require('store2');
 
+// DATABASE CONNECTIONS
 const connection = mysql.createConnection({
     host: 'db4free.net',
     user: 'derek_2022',
@@ -14,6 +16,7 @@ const connection = mysql.createConnection({
     database: 'farma_2022'
 });
 
+// EXPRESS HOUSEKEEPING
 const app = express();
 
 // Global variables
@@ -30,7 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 
-
+// FILE (image) uploads
 // Set The Storage Engine
 const upload = multer.diskStorage({
     destination: 'static/images/',
@@ -73,6 +76,11 @@ function checkFileType(file, cb) {
     }
 }
 
+/* 
+
+    [x] UI END POINTS PAGES (routes) 
+
+*/
 
 // First page
 app.get('/', function (request, response) {
@@ -85,13 +93,51 @@ app.get('/', function (request, response) {
     }
 });
 
-
-// Register
+// Register Page
 app.get('/register', function (request, response) {
     // Render login template
     response.sendFile(path.join(__dirname + '/public/register.html'));
 });
 
+// NEW FARMA ANIMAL SELECTION PAGE
+app.get('/selection', function (request, response) {
+    // Get saved data from sessionStorage
+    const user_id = storage('farma_id');
+    if (user_id) {
+        response.sendFile(path.join(__dirname + '/public/nohome.html'));
+    } else {
+        response.redirect('/');
+    }
+});
+
+// HOME PAGE
+app.get('/home', function (request, response) {
+    // Get saved data from sessionStorage
+    const user_id = storage('farma_id');
+    if (user_id) {
+        response.sendFile(path.join(__dirname + '/public/home.html'));
+    } else {
+        response.redirect('/');
+    }
+});
+
+// DASHBOARD PAGE FOR SELECTED ANIMAL FROM HOME PAGE
+app.get('/animal/:id', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        const animal_name = request.params.id;
+        storage('animal', animal_name);
+        const all_animals = storage('all-animals');
+        const isSelected = all_animals.includes(animal_name);
+
+        if (isSelected == true) {
+            response.sendFile(path.join(__dirname + '/public/dashboard.html'));
+        }
+
+    } else {
+        response.redirect('/home');
+    }
+})
 
 // Logout
 app.get('/logout', (req, res) => {
@@ -103,6 +149,372 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
+
+/* 
+
+    [x] END POINTS THAT READ FROM THE DATABASE
+
+*/
+
+
+// Filtering cards to be shown
+app.get('/before-home', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+
+            results.forEach(element => {
+                if (element.list_of_animals == null) {
+                    console.log("😒😒😒😒😒");
+                } else {
+                    storage('all-animals', JSON.parse(JSON.stringify(element.list_of_animals)));
+                    response.send(JSON.parse(JSON.stringify(element.list_of_animals)));
+                }
+            });
+        })
+    } else {
+        console.log("BEFORE-HOME animals listing retrieval oder keine farma_id ");
+        response.redirect('/');
+    }
+});
+
+// Function to retrieve dashboard data
+app.get('/get-count/:animal', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+
+        const animal_name = request.params.animal;
+
+        connection.query(`SELECT a.animal_type, a.count, COUNT(b.disease_id) AS sickCount FROM animals a, animal b WHERE a.farma_id='${user_id}' AND a.farma_id = b.farma_id AND a.animal_type = b.animal_type AND a.animal_type='${animal_name}' GROUP BY a.animals_id;;`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            results.forEach(element => {
+                console.log(element);
+                if (element.count == null) {
+                    console.log("😒😒😒😒😒");
+                } else {
+                    response.send(JSON.parse(JSON.stringify(element)));
+                }
+            });
+        })
+    } else {
+        console.log(" GET-ANIMAL no farma_id  ");
+        response.redirect('/');
+    }
+});
+
+// Function to retrieve dashboard data
+app.get('/get-sick/:animal', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        const animal_name = request.params.animal;
+        connection.query(`SELECT COUNT(*) AS sick_count FROM animal WHERE farma_id='${user_id}' AND animal_type='${animal_name}';`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            results.forEach(element => {
+                console.log(element.sick_count + 'one');
+                if (element.sick_count == null) {
+                    console.log("😒😒😒😒😒");
+                } else {
+                    console.log(element.sick_count + 'two');
+                    response.send(JSON.parse(JSON.stringify(element.sick_count)));
+                }
+            });
+        })
+    } else {
+        console.log(" GET-SICK ANIMALs no farma_id ");
+        response.redirect('/');
+    }
+});
+
+// TODO test the statistics from multiple queries
+// Function to retrieve dashboard data
+app.get('/getStatistics/:animal', function (request, response) {
+    const animal_name = request.params.animal;
+
+    // TODO derive a query to get count of all animals
+    connection.query(``, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ animalCount: results });
+    })
+
+    // TODO derive a query to get count of all sick animals
+    connection.query(``, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ sickAnimalCount: results });
+    })
+
+    // TODO derive a query to get count of all expecting animals
+    connection.query(``, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ expectingAnimalCount: results });
+    })
+
+    // TODO derive a query to get count of all new born animals
+    connection.query(``, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ newBornAnimalCount: results });
+    })
+
+    // TODO derive a query to get count of all fully vaccinated animals
+    connection.query(``, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ fullyVaccinatedAnimalCount: results });
+    })
+
+    // TODO derive a query to get count of all animals with pending vaccinations
+    connection.query(``, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ pendingVaccincationsAnimalCount: results });
+    })
+
+    // TODO derive a query to get count of all animal feeds
+    connection.query(``, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ feedsCount: results });
+    })
+
+    // TODO derive a query to get count of all animals
+    connection.query(``, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ animalProductsCount: results });
+    })
+
+    connection.end();
+
+});
+
+// TODO get diseases based on gender
+// Function to retrieve diseases data
+app.get('/getDiseases/:gender', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        const gender = request.params.gender;
+        switch (gender) {
+            case 'male':
+                console.log('male');
+                // Get Data from DB 
+                connection.query(``, function (error, results, fields) {
+                    // If there is an issue with the query, output the error
+                    if (error) throw error;
+                    response.send({ maleDiseases: results });
+                })
+                // end connection after response
+                connection.end();
+                break;
+
+            case 'female':
+                console.log('female');
+                // Get Data from DB 
+                connection.query(``, function (error, results, fields) {
+                    // If there is an issue with the query, output the error
+                    if (error) throw error;
+                    response.send({ femaleDiseases: results });
+                })
+                // end connection after response
+                connection.end();
+                break;
+
+            default:
+                console.log(`Sorry`);
+        }
+
+    } else {
+        console.log(" GETTING DISEASES FAILED no farma_id ");
+        response.redirect('/');
+    }
+
+});
+
+// TODO get symptoms based on gender
+// Function to retrieve symptoms data
+app.get('/getSymptoms/:gender', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        const gender = request.params.gender;
+        switch (gender) {
+            case 'male':
+                console.log('male');
+                // Get Data from DB 
+                connection.query(``, function (error, results, fields) {
+                    // If there is an issue with the query, output the error
+                    if (error) throw error;
+                    response.send({ maleSymptoms: results });
+                })
+                // end connection after response
+                connection.end();
+                break;
+
+            case 'female':
+                console.log('female');
+                // Get Data from DB 
+                connection.query(``, function (error, results, fields) {
+                    // If there is an issue with the query, output the error
+                    if (error) throw error;
+                    response.send({ femaleSymptoms: results });
+                })
+                // end connection after response
+                connection.end();
+                break;
+
+            default:
+                console.log(`Sorry`);
+        }
+
+    } else {
+        console.log(" GETTING SYMPTOMS FAILED no farma_id ");
+        response.redirect('/');
+    }
+
+});
+
+// FIXME  Clean that query
+// Fn to get sick animal listing
+app.get('/getSickAnimals', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date, disease_id FROM animal WHERE farma_id=(?) AND animal_type=(?) AND disease_id IS NOT NULL`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ sickAnimalListing: results });
+        })
+    } else {
+        response.redirect('/');
+    }
+
+});
+
+// Function to retrieve farma data
+app.get('/getFarmaData', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        connection.query(`SELECT * FROM farma WHERE farma_id='${user_id}';`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            results.forEach(element => {
+                if (element == null) {
+                    console.log("😒😒😒😒😒");
+                } else {
+                    response.send(JSON.parse(JSON.stringify(element)));
+                }
+            });
+        })
+    } else {
+        console.log("FARMA DATA no farma_id");
+        response.redirect('/');
+    }
+});
+
+// Function to retrieve animal data for table
+app.get('/getAnimalListing', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ animalListing: results });
+        })
+    } else {
+        response.redirect('/');
+    }
+
+});
+
+// Function to retrieve animal's vaccination data
+app.get('/getVaccinationData', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ animalListing: results });
+        })
+    } else {
+        response.redirect('/');
+    }
+
+});
+
+// Function to retrieve animal data for table
+app.get('/getAvailableVaccines', function (request, response) {
+    const animal = storage('animal');
+    connection.query(`SELECT * FROM vaccines WHERE animal_type=(?)`, [animal], function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ vaccines: results });
+    })
+});
+
+// Function to retrieve animal data for table
+app.get('/getAnimalMaxId', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT MAX(id) AS LAST, animal_type FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ animalMaxId: results });
+        })
+    } else {
+        response.redirect('/');
+    }
+});
+
+
+// Function to retrieve expecting animals
+app.get('/getExpectingAnimals', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date FROM due_dates a, animal b, first_dates c WHERE b.farma_id=(?) AND b.animal_type=(?) AND a.animal_id=b.id AND a.animal_id=c.animal_id AND c.animal_id=b.id AND a.animal_id=b.id AND a.farma_id = b.farma_id AND a.delivery_date IS NOT NULL`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ heavyAnimals: results });
+        })
+    } else {
+        response.redirect('/');
+    }
+});
+
+
+// Registering a new animal
+app.post('/newAnimal', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the farma table
+    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        res.redirect(`/animal/${animal}`);
+        return;
+    });
+})
+
+
+/*
+    
+    [x] ENDPOINTS THAT WRITE TO DATABASE 
+
+*/
 
 // Registering a user
 app.post('/register', function (request, response) {
@@ -145,7 +557,6 @@ app.post('/register', function (request, response) {
         response.end();
     }
 });
-
 
 // login authentication
 app.post('/auth', function (request, response) {
@@ -190,345 +601,6 @@ app.post('/auth', function (request, response) {
         response.send('Please enter email and/or Password!');
     }
 });
-
-
-// Filtering cards to be shown
-app.get('/before-home', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-
-            results.forEach(element => {
-                if (element.list_of_animals == null) {
-                    console.log("😒😒😒😒😒");
-                } else {
-                    storage('all-animals', JSON.parse(JSON.stringify(element.list_of_animals)));
-                    response.send(JSON.parse(JSON.stringify(element.list_of_animals)));
-                }
-            });
-        })
-    } else {
-        console.log("BEFORE-HOME animals listing retrieval oder keine farma_id ");
-        response.redirect('/');
-    }
-});
-
-
-// First page
-app.get('/home', function (request, response) {
-    // Get saved data from sessionStorage
-    const user_id = storage('farma_id');
-    if (user_id) {
-        response.sendFile(path.join(__dirname + '/public/home.html'));
-    } else {
-        response.redirect('/');
-    }
-});
-
-
-// First page
-app.get('/selection', function (request, response) {
-    // Get saved data from sessionStorage
-    const user_id = storage('farma_id');
-    if (user_id) {
-        response.sendFile(path.join(__dirname + '/public/nohome.html'));
-    } else {
-        response.redirect('/');
-    }
-});
-
-
-// Selected animal from listing end point 
-app.get('/animal/:id', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        const animal_name = request.params.id;
-        storage('animal', animal_name);
-        const all_animals = storage('all-animals');
-        const isSelected = all_animals.includes(animal_name);
-
-        if (isSelected == true) {
-            response.sendFile(path.join(__dirname + '/public/dashboard.html'));
-        }
-
-    } else {
-        response.redirect('/home');
-    }
-})
-
-
-// Function to retrieve dashboard data
-app.get('/get-count/:animal', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        const animal_name = request.params.animal;
-        connection.query(`SELECT a.animal_type, a.count, COUNT(b.disease_id) AS sickCount FROM animals a, animal b WHERE a.farma_id='${user_id}' AND a.farma_id = b.farma_id AND a.animal_type = b.animal_type AND a.animal_type='${animal_name}' GROUP BY a.animals_id;;`, function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            results.forEach(element => {
-                console.log(element);
-                if (element.count == null) {
-                    console.log("😒😒😒😒😒");
-                } else {
-                    response.send(JSON.parse(JSON.stringify(element)));
-                }
-            });
-        })
-    } else {
-        console.log(" GET-ANIMAL no farma_id  ");
-        response.redirect('/');
-    }
-});
-
-
-// Function to retrieve dashboard data
-app.get('/get-sick/:animal', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        const animal_name = request.params.animal;
-        connection.query(`SELECT COUNT(*) AS sick_count FROM animal WHERE farma_id='${user_id}' AND animal_type='${animal_name}';`, function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            results.forEach(element => {
-                console.log(element.sick_count + 'one');
-                if (element.sick_count == null) {
-                    console.log("😒😒😒😒😒");
-                } else {
-                    console.log(element.sick_count + 'two');
-                    response.send(JSON.parse(JSON.stringify(element.sick_count)));
-                }
-            });
-        })
-    } else {
-        console.log(" GET-SICK ANIMALs no farma_id ");
-        response.redirect('/');
-    }
-});
-
-
-// TODO get diseases based on gender
-// Function to retrieve diseases data
-app.get('/getDiseases/:gender', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        const gender = request.params.gender;
-        switch (gender) {
-            case 'male':
-                console.log('male');
-                // Get Data from DB 
-                connection.query(``, function (error, results, fields) {
-                    // If there is an issue with the query, output the error
-                    if (error) throw error;
-                    response.send({ maleDiseases: results });
-                })
-                // end connection after response
-                connection.end();
-                break;
-
-            case 'female':
-                console.log('female');
-                // Get Data from DB 
-                connection.query(``, function (error, results, fields) {
-                    // If there is an issue with the query, output the error
-                    if (error) throw error;
-                    response.send({ femaleDiseases: results });
-                })
-                // end connection after response
-                connection.end();
-                break;
-
-            default:
-                console.log(`Sorry`);
-        }
-
-    } else {
-        console.log(" GETTING DISEASES FAILED no farma_id ");
-        response.redirect('/');
-    }
-    
-});
-
-
-// TODO get symptoms based on gender
-// Function to retrieve symptoms data
-app.get('/getSymptoms/:gender', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        const gender = request.params.gender;
-        switch (gender) {
-            case 'male':
-                console.log('male');
-                // Get Data from DB 
-                connection.query(``, function (error, results, fields) {
-                    // If there is an issue with the query, output the error
-                    if (error) throw error;
-                    response.send({ maleSymptoms: results });
-                })
-                // end connection after response
-                connection.end();
-                break;
-
-            case 'female':
-                console.log('female');
-                // Get Data from DB 
-                connection.query(``, function (error, results, fields) {
-                    // If there is an issue with the query, output the error
-                    if (error) throw error;
-                    response.send({ femaleSymptoms: results });
-                })
-                // end connection after response
-                connection.end();
-                break;
-
-            default:
-                console.log(`Sorry`);
-        }
-
-    } else {
-        console.log(" GETTING SYMPTOMS FAILED no farma_id ");
-        response.redirect('/');
-    }
-
-});
-
-
-// FIXME  Clean that query
-// Fn to get sick animal listing
-app.get('/getSickAnimals', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date, disease_id FROM animal WHERE farma_id=(?) AND animal_type=(?) AND disease_id IS NOT NULL`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({sickAnimalListing: results});
-        })
-    } else {
-        response.redirect('/');
-    }
-
-});
-
-
-// Function to retrieve farma data
-app.get('/getFarmaData', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        connection.query(`SELECT * FROM farma WHERE farma_id='${user_id}';`, function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            results.forEach(element => {
-                if (element == null) {
-                    console.log("😒😒😒😒😒");
-                } else {
-                    response.send(JSON.parse(JSON.stringify(element)));
-                }
-            });
-        })
-    } else {
-        console.log("FARMA DATA no farma_id");
-        response.redirect('/');
-    }
-});
-
-
-// Function to retrieve animal data for table
-app.get('/getAnimalListing', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({animalListing: results});
-        })
-    } else {
-        response.redirect('/');
-    }
-
-});
-
-
-// Function to retrieve animal's vaccination data
-app.get('/getVaccinationData', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({animalListing: results});
-        })
-    } else {
-        response.redirect('/');
-    }
-
-});
-
-
-// Function to retrieve animal data for table
-app.get('/getAvailableVaccines', function (request, response) {
-    const animal = storage('animal');
-    connection.query(`SELECT * FROM vaccines WHERE animal_type=(?)`, [animal], function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ vaccines: results });
-    })
-});
-
-
-// Function to retrieve animal data for table
-app.get('/getAnimalMaxId', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT MAX(id) AS LAST, animal_type FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({animalMaxId: results});
-        })
-    } else {
-        response.redirect('/');
-    }
-});
-
-
-// Function to retrieve expecting animals
-app.get('/getExpectingAnimals', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date FROM due_dates a, animal b, first_dates c WHERE b.farma_id=(?) AND b.animal_type=(?) AND a.animal_id=b.id AND a.animal_id=c.animal_id AND c.animal_id=b.id AND a.animal_id=b.id AND a.farma_id = b.farma_id AND a.delivery_date IS NOT NULL`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({heavyAnimals: results});
-        })
-    } else {
-        response.redirect('/');
-    }
-});
-
-
-// Registering a new animal
-app.post('/newAnimal', function (req, res) {
-    const farma_id = storage('farma_id');
-    const animal = storage('animal');
-    // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        res.redirect(`/animal/${animal}`);
-        return;
-    });
-})
 
 
 // TODO test new born registration
@@ -579,10 +651,10 @@ app.post('/newVaccine', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, number_of_vaccinations, cycle, period, injection_area, animal_type) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.noVaccinations}, ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${animal}');`, 
-    function (error, results, fields) {
-        if (error) throw error;
-    });
+    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, number_of_vaccinations, cycle, period, injection_area, animal_type) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.noVaccinations}, ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${animal}');`,
+        function (error, results, fields) {
+            if (error) throw error;
+        });
 
     res.redirect(`/animal/${animal}`);
     return;
