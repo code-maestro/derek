@@ -255,6 +255,7 @@ function clicked(param) {
   });
 }
 
+// [x]  WORKS
 // Table data for all animals
 async function getAllAnimals() {
   let list = await getAnimalListing();
@@ -265,9 +266,6 @@ async function getAllAnimals() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-
-    console.log(animal);
-
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 
@@ -307,26 +305,9 @@ async function getSickAnimals() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-
-    console.log(animal);
-
-    const dobYear = new Date(Date.parse(animal.dob));
-    const regDate = new Date(Date.parse(animal.reg_date));
-
-    // AGE CALCULATION
-    const ageYears = today.getFullYear() - dobYear.getFullYear();
-    const ageMonths = today.getMonth() - dobYear.getMonth();
-    // const ageDays = today.getDay() - dobYear.getDay();
-    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
-
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${animal.gender} </td>
-          <td class="text-center"> ${regDate.toDateString()} </td>
-          <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Month(s)' : ''} ${ageDays > 0 ? ageDays + ' Day(s)' : ''} </td>
+        <tr class="justify-content-center" id="${animal.id}">
+        
         </tr>
       `;
 
@@ -338,6 +319,7 @@ async function getSickAnimals() {
 
 }
 
+// [x]  WORKS
 // Get Pregant animals
 async function getHeavyAnimals() {
   let list = await getHeavyAnimalListing();
@@ -375,6 +357,8 @@ async function getHeavyAnimals() {
 
 }
 
+// TODO implement this function
+// [ ]  implement this function
 // Vaccinated Animals
 async function getVaccinatedAnimals() {
   let list = await getAnimalListing();
@@ -385,23 +369,9 @@ async function getVaccinatedAnimals() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-    const dobYear = new Date(Date.parse(animal.dob));
-    const regDate = new Date(Date.parse(animal.reg_date));
-
-    // AGE CALCULATION
-    const ageYears = today.getFullYear() - dobYear.getFullYear();
-    const ageMonths = today.getMonth() - dobYear.getMonth();
-    // const ageDays = today.getDay() - dobYear.getDay();
-    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
-
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${animal.gender} </td>
-          <td class="text-center"> ${regDate.toDateString()} </td>
-          <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Month(s)' : ''} ${ageDays > 0 ? ageDays + ' Day(s)' : ''} </td>
+        <tr class="justify-content-center" id="${animal.id}">
+          
         </tr>
       `;
 
@@ -413,6 +383,8 @@ async function getVaccinatedAnimals() {
 
 }
 
+// TODO implement this function
+// [ ]  implement this function
 // Animal products
 async function getAnimalProducts() {
   let list = await getAnimalListing();
@@ -423,23 +395,9 @@ async function getAnimalProducts() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-    const dobYear = new Date(Date.parse(animal.dob));
-    const regDate = new Date(Date.parse(animal.reg_date));
-
-    // AGE CALCULATION
-    const ageYears = today.getFullYear() - dobYear.getFullYear();
-    const ageMonths = today.getMonth() - dobYear.getMonth();
-    // const ageDays = today.getDay() - dobYear.getDay();
-    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
-
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${animal.gender} </td>
-          <td class="text-center"> ${regDate.toDateString()} </td>
-          <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Month(s)' : ''} ${ageDays > 0 ? ageDays + ' Day(s)' : ''} </td>
+        <tr class="justify-content-center" id="${animal.id}">
+      
         </tr>
       `;
 
@@ -451,6 +409,8 @@ async function getAnimalProducts() {
 
 }
 
+// TODO implement this function
+// [ ]  implement this function
 // Animal Feeds
 async function getAnimalFeeds() {
   let list = await getAnimalListing();
@@ -461,23 +421,10 @@ async function getAnimalFeeds() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-    const dobYear = new Date(Date.parse(animal.dob));
-    const regDate = new Date(Date.parse(animal.reg_date));
-
-    // AGE CALCULATION
-    const ageYears = today.getFullYear() - dobYear.getFullYear();
-    const ageMonths = today.getMonth() - dobYear.getMonth();
-    // const ageDays = today.getDay() - dobYear.getDay();
-    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${animal.gender} </td>
-          <td class="text-center"> ${regDate.toDateString()} </td>
-          <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Month(s)' : ''} ${ageDays > 0 ? ageDays + ' Day(s)' : ''} </td>
+        <tr class="justify-content-center" id="${animal.id}">
+
         </tr>
       `;
 
@@ -489,6 +436,8 @@ async function getAnimalFeeds() {
 
 }
 
+// TODO implement this function
+// [ ]  implement this function
 // New borns
 async function getNewBornAnimals() {
   let list = await getAnimalListing();
@@ -499,23 +448,10 @@ async function getNewBornAnimals() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-    const dobYear = new Date(Date.parse(animal.dob));
-    const regDate = new Date(Date.parse(animal.reg_date));
-
-    // AGE CALCULATION
-    const ageYears = today.getFullYear() - dobYear.getFullYear();
-    const ageMonths = today.getMonth() - dobYear.getMonth();
-    // const ageDays = today.getDay() - dobYear.getDay();
-    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${animal.gender} </td>
-          <td class="text-center"> ${regDate.toDateString()} </td>
-          <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Month(s)' : ''} ${ageDays > 0 ? ageDays + ' Day(s)' : ''} </td>
+        <tr class="justify-content-center" id="${animal.id}">
+
         </tr>
       `;
 
@@ -527,6 +463,8 @@ async function getNewBornAnimals() {
 
 }
 
+// TODO implement this function
+// [ ]  implement this function
 // Pending vaccinations
 async function getPendingAnimalVaccinations() {
   let list = await getAnimalListing();
@@ -537,23 +475,9 @@ async function getPendingAnimalVaccinations() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-    const dobYear = new Date(Date.parse(animal.dob));
-    const regDate = new Date(Date.parse(animal.reg_date));
-
-    // AGE CALCULATION
-    const ageYears = today.getFullYear() - dobYear.getFullYear();
-    const ageMonths = today.getMonth() - dobYear.getMonth();
-    // const ageDays = today.getDay() - dobYear.getDay();
-    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
-
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${animal.gender} </td>
-          <td class="text-center"> ${regDate.toDateString()} </td>
-          <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Month(s)' : ''} ${ageDays > 0 ? ageDays + ' Day(s)' : ''} </td>
+        <tr class="justify-content-center" id="${animal.id}">
+         
         </tr>
       `;
 

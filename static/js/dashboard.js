@@ -223,7 +223,7 @@ async function getMaxId() {
   }
 }
 
-
+// [x] FOR REGISTERED ANIMALS MODAL
 // Table data for all animals
 async function getAnimalTableData() {
   let last = await getMaxId();
