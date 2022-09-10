@@ -10,6 +10,7 @@ async function getDiseases(params) {
 }
 
 // TODO run tests on the conditional data return based on gender
+// TODO test table in table for symptoms
 async function getDiseasesListing(params) {
   let html = '';
   let htmlSegment = '';
@@ -17,28 +18,20 @@ async function getDiseasesListing(params) {
 
   if (params === '♂️') {
     let list = await getDiseases('male');
-    list.heavyAnimals.forEach(animal => {
+    list.diseases.forEach(disease => {
       htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${in_date.toDateString()} </td>
-          <td class="text-center"> ${d_date.toDateString()} </td>
-          <td class="text-center"> ${theYears > 0 ? theYears + ' Year(s)' : ''} ${theMonths > 0 ? theMonths + ' Month(s)' : ''} ${theDays > 0 ? theDays + ' Day(s)' : ''} </td>
+        <tr class="justify-content-center" id="${disease.id}">
+         
         </tr>
       `;
       html += htmlSegment;
     });
   } else {
     let list = await getDiseases('female');
-    list.heavyAnimals.forEach(animal => {
+    list.disease.forEach(animal => {
       htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${in_date.toDateString()} </td>
-          <td class="text-center"> ${d_date.toDateString()} </td>
-          <td class="text-center"> ${theYears > 0 ? theYears + ' Year(s)' : ''} ${theMonths > 0 ? theMonths + ' Month(s)' : ''} ${theDays > 0 ? theDays + ' Day(s)' : ''} </td>
+        <tr class="justify-content-center" id="${disease.id}">
+          
         </tr>
       `;
       html += htmlSegment;
@@ -93,11 +86,12 @@ function viewDiseases(param) {
                   <thead class="table-dark">
                     <tr>
                       <th scope="col" class="text-center"> ID </th>
-                      <th scope="col" class="text-center"> ANIMAL TAG </th>
-                      <th scope="col" class="text-center"> GENDER </th>
-                      <th scope="col" class="text-center"> No OF VACCINATIONS </th>
-                      <th scope="col" class="text-center"> REMAINING VACCINATIONS </th>
-                      <th scope="col" class="text-center"> NEXT VACCINAION DATE </th>
+                      <th scope="col" class="text-center"> Disease Name </th>
+                      <th scope="col" class="text-center"> Type </th>
+                      <th scope="col" class="text-center"> Signs </th>
+                      <th scope="col" class="text-center"> Symptoms </th>
+                      <th scope="col" class="text-center"> Cause </th>
+                      <th scope="col" class="text-center"> Infection Area </th>
                     </tr>
                   </thead>
                   <tbody id="diseasesListing"> </tbody>

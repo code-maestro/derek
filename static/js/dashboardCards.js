@@ -255,7 +255,6 @@ function clicked(param) {
   });
 }
 
-
 // Table data for all animals
 async function getAllAnimals() {
   let list = await getAnimalListing();
@@ -424,9 +423,6 @@ async function getAnimalProducts() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-
-    console.log(animal);
-
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 
@@ -465,9 +461,6 @@ async function getAnimalFeeds() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-
-    console.log(animal);
-
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 
@@ -506,9 +499,6 @@ async function getNewBornAnimals() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-
-    console.log(animal);
-
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 
@@ -547,9 +537,6 @@ async function getPendingAnimalVaccinations() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-
-    console.log(animal);
-
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 

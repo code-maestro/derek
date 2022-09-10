@@ -17,28 +17,20 @@ async function getSymptomsListing(params) {
 
   if (params === '♂️') {
     let list = await getSymptoms('male');
-    list.symptoms.forEach(animal => {
+    list.symptoms.forEach(symptom => {
       htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${in_date.toDateString()} </td>
-          <td class="text-center"> ${d_date.toDateString()} </td>
-          <td class="text-center"> ${theYears > 0 ? theYears + ' Year(s)' : ''} ${theMonths > 0 ? theMonths + ' Month(s)' : ''} ${theDays > 0 ? theDays + ' Day(s)' : ''} </td>
+        <tr class="justify-content-center" id="${symptom.id}">
+          
         </tr>
       `;
       html += htmlSegment;
     });
   } else {
     let list = await getSymptoms('female');
-    list.symptoms.forEach(animal => {
+    list.symptoms.forEach(symptom => {
       htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
-          <td class="text-center"> ${in_date.toDateString()} </td>
-          <td class="text-center"> ${d_date.toDateString()} </td>
-          <td class="text-center"> ${theYears > 0 ? theYears + ' Year(s)' : ''} ${theMonths > 0 ? theMonths + ' Month(s)' : ''} ${theDays > 0 ? theDays + ' Day(s)' : ''} </td>
+        <tr class="justify-content-center" id="${symptom.id}">
+          
         </tr>
       `;
       html += htmlSegment;
@@ -73,7 +65,7 @@ function viewSymptoms(param) {
                       <th scope="col" class="text-center"> Infection Area </th>
                     </tr>
                   </thead>
-                  <tbody id="diseasesListing"> </tbody>
+                  <tbody id="symptomsListing"> </tbody>
                 </table>
               </p>
             </div>
@@ -93,14 +85,15 @@ function viewSymptoms(param) {
                   <thead class="table-dark">
                     <tr>
                       <th scope="col" class="text-center"> ID </th>
-                      <th scope="col" class="text-center"> ANIMAL TAG </th>
-                      <th scope="col" class="text-center"> GENDER </th>
-                      <th scope="col" class="text-center"> No OF VACCINATIONS </th>
-                      <th scope="col" class="text-center"> REMAINING VACCINATIONS </th>
-                      <th scope="col" class="text-center"> NEXT VACCINAION DATE </th>
+                      <th scope="col" class="text-center"> Disease Name </th>
+                      <th scope="col" class="text-center"> Type </th>
+                      <th scope="col" class="text-center"> Signs </th>
+                      <th scope="col" class="text-center"> Symptoms </th>
+                      <th scope="col" class="text-center"> Cause </th>
+                      <th scope="col" class="text-center"> Infection Area </th>
                     </tr>
                   </thead>
-                  <tbody id="diseasesListing"> </tbody>
+                  <tbody id="symptomsListing"> </tbody>
                 </table>
               </p>
             </div>

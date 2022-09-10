@@ -307,6 +307,93 @@ app.get('/get-sick/:animal', function (request, response) {
     }
 });
 
+
+// TODO get diseases based on gender
+// Function to retrieve diseases data
+app.get('/getDiseases/:gender', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        const gender = request.params.gender;
+        switch (gender) {
+            case 'male':
+                console.log('male');
+                // Get Data from DB 
+                connection.query(``, function (error, results, fields) {
+                    // If there is an issue with the query, output the error
+                    if (error) throw error;
+                    response.send({ maleDiseases: results });
+                })
+                // end connection after response
+                connection.end();
+                break;
+
+            case 'female':
+                console.log('female');
+                // Get Data from DB 
+                connection.query(``, function (error, results, fields) {
+                    // If there is an issue with the query, output the error
+                    if (error) throw error;
+                    response.send({ femaleDiseases: results });
+                })
+                // end connection after response
+                connection.end();
+                break;
+
+            default:
+                console.log(`Sorry`);
+        }
+
+    } else {
+        console.log(" GETTING DISEASES FAILED no farma_id ");
+        response.redirect('/');
+    }
+    
+});
+
+
+// TODO get symptoms based on gender
+// Function to retrieve symptoms data
+app.get('/getSymptoms/:gender', function (request, response) {
+    const user_id = storage('farma_id');
+    if (user_id) {
+        const gender = request.params.gender;
+        switch (gender) {
+            case 'male':
+                console.log('male');
+                // Get Data from DB 
+                connection.query(``, function (error, results, fields) {
+                    // If there is an issue with the query, output the error
+                    if (error) throw error;
+                    response.send({ maleSymptoms: results });
+                })
+                // end connection after response
+                connection.end();
+                break;
+
+            case 'female':
+                console.log('female');
+                // Get Data from DB 
+                connection.query(``, function (error, results, fields) {
+                    // If there is an issue with the query, output the error
+                    if (error) throw error;
+                    response.send({ femaleSymptoms: results });
+                })
+                // end connection after response
+                connection.end();
+                break;
+
+            default:
+                console.log(`Sorry`);
+        }
+
+    } else {
+        console.log(" GETTING SYMPTOMS FAILED no farma_id ");
+        response.redirect('/');
+    }
+
+});
+
+
 // FIXME  Clean that query
 // Fn to get sick animal listing
 app.get('/getSickAnimals', function (request, response) {
@@ -435,6 +522,23 @@ app.post('/newAnimal', function (req, res) {
     const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
     connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        res.redirect(`/animal/${animal}`);
+        return;
+    });
+})
+
+
+// TODO test new born registration
+// TODO ALTER animal table to add parent-tag column for new borns
+// Registering a new animal
+app.post('/addNewBorn', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the farma table
+    connection.query(`INSERT INTO animal (animal_tag, parent_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
         // If the account exists
