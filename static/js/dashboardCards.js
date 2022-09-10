@@ -1,43 +1,41 @@
 // called when a totaling card is called
 function clicked(param) {
-  cards = ['total', 'sick', 'heavy', 'vaccinated', 'prod', 'feed', 'new-born', 'pending'];
+  cards = ['total', 'sick', 'heavy', 'vaccinated', 'products', 'feed', 'new-born', 'pending'];
   cards.forEach(element => {
     if (element == param) {
       document.getElementById(param).classList.add('border-left-info');
       document.getElementById(param).style.backgroundColor = "#caeaff";
 
       switch (element) {
+        // [x] animals listing fixed  
         case 'total':
           getAllAnimals();
           container.innerHTML = `
-          <div class="card ${param}" id="${param}ss">
-            <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
-            <div class="card-body">
-              <h5 class="card-title"> Special title treatment </h5>
-              <p class="card-text">
-                <table id="generalTable" class="table table-bordered table-hover table-sm">
-                  <thead class="table-dark">
-                    <tr>
-                      <th scope="col" class="text-center"> ID </th>
-                      <th scope="col" class="text-center"> ANIMAL TAG </th>
-                      <th scope="col" class="text-center"> GENDER </th>
-                      <th scope="col" class="text-center"> REGISTRATION DATE </th>
-                      <th scope="col" class="text-center"> DATE OF BIRTH </th>
-                      <th scope="col" class="text-center"> AGE </th>
-                    </tr>
-                  </thead>
-                  <tbody id="dashboardAnimalListing">
-                  
-                  </tr>
-                </tbody>
-              </table>
-            </p>
-          </div>
-        </div>
+            <div class="card ${param}" id="${param}ss">
+              <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
+              <div class="card-body">
+                <h5 class="card-title"> Special title treatment </h5>
+                <p class="card-text">
+                  <table id="generalTable" class="table table-bordered table-hover table-sm">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col" class="text-center"> ID </th>
+                        <th scope="col" class="text-center"> ANIMAL TAG </th>
+                        <th scope="col" class="text-center"> GENDER </th>
+                        <th scope="col" class="text-center"> REGISTRATION DATE </th>
+                        <th scope="col" class="text-center"> DATE OF BIRTH </th>
+                        <th scope="col" class="text-center"> AGE </th>
+                      </tr>
+                    </thead>
+                    <tbody id="dashboardAnimalListing">  </tbody>
+                  </table>
+                </p>
+              </div>
+            </div>
           `;
           break;
 
-          // TODO RETURN ALL THE SICK ANIMALS
+        // TODO RETURN ALL THE SICK ANIMALS
         case 'sick':
           getSickAnimals();
           container.innerHTML = `
@@ -59,13 +57,14 @@ function clicked(param) {
                     </tr>
                   </thead>
                   <tbody id="sickAnimalsListing"> </tbody>
-              </table>
-            </p>
+                </table>
+              </p>
+            </div>
           </div>
-        </div>
           `;
           break;
 
+        // [x] expecting table completed 
         case 'heavy':
           getHeavyAnimals();
           container.innerHTML = `
@@ -95,7 +94,7 @@ function clicked(param) {
           `;
           break;
 
-          // TODO  RETURN FULLY VACCINATED ANIMAKS
+        // TODO  RETURN FULLY VACCINATED ANIMAKS
         case 'vaccinated':
           getVaccinatedAnimals();
           container.innerHTML = `
@@ -110,9 +109,9 @@ function clicked(param) {
                       <th scope="col" class="text-center"> ID </th>
                       <th scope="col" class="text-center"> ANIMAL TAG </th>
                       <th scope="col" class="text-center"> GENDER </th>
+                      <th scope="col" class="text-center"> NO OF VACCINATIONs </th>
                       <th scope="col" class="text-center"> FIRST VACCINATION DATE </th>
                       <th scope="col" class="text-center"> LAST VACCINATION DATE </th>
-                      <th scope="col" class="text-center"> NO OF VACCINATIONs </th>
                     </tr>
                   </thead>
                   <tbody id="vaccinatedAnimalsListing">
@@ -127,7 +126,7 @@ function clicked(param) {
           break;
 
         // TODO return products from animals
-        case 'prod':
+        case 'products':
           getAnimalProducts();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
@@ -156,6 +155,7 @@ function clicked(param) {
           `;
           break;
 
+        // TODO Keep track of stocked feeds
         case 'feed':
           getAnimalFeeds();
           container.innerHTML = `
@@ -224,26 +224,23 @@ function clicked(param) {
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
             <div class="card-body">
               <h5 class="card-title"> ${param} statistics </h5>
-              <p class="card-text">
-                <table id="generalTable" class="table table-bordered table-hover table-sm">
-                  <thead class="table-dark">
-                    <tr>
-                      <th scope="col" class="text-center"> ID </th>
-                      <th scope="col" class="text-center"> ANIMAL TAG </th>
-                      <th scope="col" class="text-center"> GENDER </th>
-                      <th scope="col" class="text-center"> NEXT VACCINAION DATE </th>
-                      <th scope="col" class="text-center"> No OF VACCINATIONS </th>
-                      <th scope="col" class="text-center"> REMAINING VACCINATIONS </th>
-                    </tr>
-                  </thead>
-                  <tbody id="pendingAnimalListing">
-                  
-                  </tr>
-                </tbody>
-              </table>
-            </p>
-          </div>
-        </div>
+                <p class="card-text">
+                  <table id="generalTable" class="table table-bordered table-hover table-sm">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col" class="text-center"> ID </th>
+                        <th scope="col" class="text-center"> ANIMAL TAG </th>
+                        <th scope="col" class="text-center"> GENDER </th>
+                        <th scope="col" class="text-center"> No OF VACCINATIONS </th>
+                        <th scope="col" class="text-center"> REMAINING VACCINATIONS </th>
+                        <th scope="col" class="text-center"> NEXT VACCINAION DATE </th>
+                      </tr>
+                    </thead>
+                    <tbody id="pendingAnimalListing"> </tbody>
+                  </table>
+                </p>
+              </div>
+            </div>
           `;
           break;
 
@@ -389,9 +386,6 @@ async function getVaccinatedAnimals() {
   const con = document.getElementById('dashboardAnimalListing');
 
   list.animalListing.forEach(animal => {
-
-    console.log(animal);
-
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 

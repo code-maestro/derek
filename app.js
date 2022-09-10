@@ -75,13 +75,6 @@ function checkFileType(file, cb) {
 
 
 // First page
-app.get('/test', function (request, response) {
-    // Get saved data from sessionStorage
-    response.sendFile(path.join(__dirname + '/test_dir/last.html'));
-});
-
-
-// First page
 app.get('/', function (request, response) {
     // Get saved data from sessionStorage
     let data = storage('farma_id');
