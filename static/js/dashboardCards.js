@@ -1,3 +1,172 @@
+// Get Total Count of the animals from backend endpoint
+async function getAnimalsCount() {
+  let url = `/getAnimalsCount`;
+  try {
+    let res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Get number of sick of the animals from backend endpoint
+async function getSickAnimalsCount() {
+  let url = `/getSickAnimalsCount`;
+  try {
+    let res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+// Get number of expectant the animals from backend endpoint
+async function getExpectingAnimalsCount() {
+  let url = `/getExpectingAnimalsCount`;
+  try {
+    let res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+// Get number of new borns from backend endpoint
+async function getNewBornsCount() {
+  let url = `/getNewBornsCount`;
+  try {
+    let res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+// Get number of fully vaccinated animals from backend endpoint
+async function getVaccinatedCount() {
+  let url = `/getVaccinatedCount`;
+  try {
+    let res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+// Get number of pending vaccinations animals from backend endpoint
+async function getPendingVaccinationsCount() {
+  let url = `/getPendingVaccinationsCount`;
+  try {
+    let res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+// Get number of animals' feeds from backend endpoint
+async function getFeedsCount() {
+  let url = `/getFeedsCount`;
+  try {
+    let res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+// Get number of animals' products from backend endpoint
+async function getProductsCount() {
+  let url = `/getProductsCount`;
+  try {
+    let res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// RENDERS DATA TO THE BI DASHBOARD CARDS LIVE STATISTICS
+async function renderAnimals() {
+  // registered animals count
+  const animalCount = await getAnimalsCount();
+  animalCount.animalCount.forEach(count => {
+    document.getElementById('allCount').innerText = count.COUNT || 0;
+  })
+
+  // sick animals count
+  const sickAnimalsCount = await getSickAnimalsCount();
+  sickAnimalsCount.sickAnimalCount.forEach(count => {
+    document.getElementById('sickCount').innerText = count.COUNT || 0;
+  })
+
+  // Heavy animals count
+  const expectantCount = await getExpectingAnimalsCount();
+  expectantCount.expectingAnimalCount.forEach(count => {
+    document.getElementById('heavyCount').innerText = count.COUNT || 0;
+
+  })
+
+  // New Borns animals count
+  const newBornsCount = await getNewBornsCount();
+  console.log(newBornsCount);
+  newBornsCount.newBornCount.forEach(count => {
+    document.getElementById('babyCount').innerText = count.COUNT || 0;
+  })
+
+  // FULLY vaccinated animals count
+  const vaccinatedCount = await getVaccinatedCount();
+  vaccinatedCount.vaccinatedCount.forEach(count => {
+    document.getElementById('vaccinatedCount').innerText = count.COUNT || 0;
+  })
+
+
+  // Pending vaccinations animals count
+  const pendingCount = await getPendingVaccinationsCount();
+  vaccinatedCount.pendingVaccincationsCount.forEach(count => {
+    document.getElementById('pendingCount').innerText = count.COUNT || 0;
+  })
+
+  // animals' feeds count
+  const feedsCount = await getPendingVaccinationsCount();
+  feedsCount.feedsCount.forEach(count => {
+    document.getElementById('feedsCount').innerText = count.COUNT || 0;
+  })
+
+  // animals' products count
+  const productsCount = await getProductsCount();
+  productsCount.animalProductsCount.forEach(count => {
+    document.getElementById('productsCount').innerText = count.COUNT || 0;
+  })
+
+  // animals' products count
+  const animalType = await getAnimalTypeCount();
+  animalType.animal_type.forEach(type => {
+    document.getElementById('productsCount').innerText = type || 0;
+  })
+
+
+  document.getElementById("registrationModalLabel").innerText = `${sk.animal_type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
+  document.getElementById("editAnimalModalLabel").innerText = ` UPDATE ${sk.animal_type.toUpperCase()} `;
+  document.getElementById("register-animal").innerText = `REGISTER A NEW ${sk.animal_type.toUpperCase()}`;
+
+  document.getElementById("vaccinesModalLabel").innerText = `AVAILABLE ${sk.animal_type.toUpperCase()} VACCINES`;
+  document.getElementById("editVaccineModalLabel").innerText = `UPDATE ${sk.animal_type.toUpperCase()} `;
+  document.getElementById("available-vaccines").innerText = `ADD A NEW ${sk.animal_type.toUpperCase()} VACCINE`;
+
+}
+
+renderAnimals();
+
+
+
+// CARDS CLICK EVENT HANDLER
 // called when a totaling card is called
 function clicked(param) {
   cards = ['total', 'sick', 'heavy', 'vaccinated', 'products', 'feed', 'new-born', 'pending'];
@@ -255,8 +424,7 @@ function clicked(param) {
   });
 }
 
-// [x]  WORKS
-// Table data for all animals
+// [x]  WORKS registered animals listing
 async function getAllAnimals() {
   let list = await getAnimalListing();
 
@@ -294,8 +462,7 @@ async function getAllAnimals() {
 
 }
 
-// TODO IMPLEMENT THIS FUNCTION
-//Sick animals
+// TODO IMPLEMENT THIS FUNCTION  - Sick animals listintg
 async function getSickAnimals() {
   let list = await getSickAnimalsListing();
 
@@ -319,8 +486,7 @@ async function getSickAnimals() {
 
 }
 
-// [x]  WORKS
-// Get Pregant animals
+// [x]  WORKS - Get Pregant animals listing
 async function getHeavyAnimals() {
   let list = await getHeavyAnimalListing();
 
@@ -357,9 +523,7 @@ async function getHeavyAnimals() {
 
 }
 
-// TODO implement this function
-// [ ]  implement this function
-// Vaccinated Animals
+// TODO implement this function Vaccinated Animals
 async function getVaccinatedAnimals() {
   let list = await getAnimalListing();
 
@@ -383,9 +547,7 @@ async function getVaccinatedAnimals() {
 
 }
 
-// TODO implement this function
-// [ ]  implement this function
-// Animal products
+// TODO implement this function - Animal products listing
 async function getAnimalProducts() {
   let list = await getAnimalListing();
 
@@ -409,9 +571,7 @@ async function getAnimalProducts() {
 
 }
 
-// TODO implement this function
-// [ ]  implement this function
-// Animal Feeds
+// TODO implement this function - Animal Feeds listing
 async function getAnimalFeeds() {
   let list = await getAnimalListing();
 
@@ -436,9 +596,7 @@ async function getAnimalFeeds() {
 
 }
 
-// TODO implement this function
-// [ ]  implement this function
-// New borns
+// TODO implement this function - New borns listing
 async function getNewBornAnimals() {
   let list = await getAnimalListing();
 
@@ -463,9 +621,7 @@ async function getNewBornAnimals() {
 
 }
 
-// TODO implement this function
-// [ ]  implement this function
-// Pending vaccinations
+// TODO implement this function - Pending vaccinations listing
 async function getPendingAnimalVaccinations() {
   let list = await getAnimalListing();
 

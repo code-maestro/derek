@@ -4,54 +4,6 @@ const today = new Date(Date.now());
 const form = document.getElementById('registrationForm');
 const container = document.querySelector('#dynamic');
 
-// Get Total Count of the animals from backend endpoint
-async function getAnimalCount() {
-  let url = `/get-count/${browserUrl.replace('http://localhost:3000/animal/', '')}`;
-  try {
-    let res = await fetch(url);
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// Get number of sick of the animals from backend endpoint
-async function getSickAnimalCount() {
-  let url = `/get-sick/${browserUrl.replace('http://localhost:3000/animal/', '')}`;
-  try {
-    let res = await fetch(url);
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-// RENDERS DATA TO THE BI DASHBOARD CARDS LIVE STATISTICS
-async function renderAnimals() {
-  const all = await getAnimalCount();
-  const sk = JSON.parse(JSON.stringify(all));
-
-  document.getElementById('allCount').innerText = sk.count || 0;
-  document.getElementById('sickCount').innerText = sk.sickCount || 0;
-  document.getElementById('babyCount').innerText = sk.count || 0;
-  document.getElementById('pendingCount').innerText = sk.count || 0;
-  document.getElementById('vaccinatedCount').innerText = sk.disease_id || 0;
-  document.getElementById('feedsCount').innerText = sk.count || 0;
-  document.getElementById('heavyCount').innerText = sk.count || 0;
-
-  document.getElementById("registrationModalLabel").innerText = `${sk.animal_type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
-  document.getElementById("editAnimalModalLabel").innerText = ` UPDATE ${sk.animal_type.toUpperCase()} `;
-  document.getElementById("register-animal").innerText = `REGISTER A NEW ${sk.animal_type.toUpperCase()}`;
-
-  document.getElementById("vaccinesModalLabel").innerText = `AVAILABLE ${sk.animal_type.toUpperCase()} VACCINES`;
-  document.getElementById("editVaccineModalLabel").innerText = `UPDATE ${sk.animal_type.toUpperCase()} `;
-  document.getElementById("available-vaccines").innerText = `ADD A NEW ${sk.animal_type.toUpperCase()} VACCINE`;
-
-}
-
-renderAnimals();
-
 
 // Table data for all animals
 async function getVaccinesTableData() {
