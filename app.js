@@ -246,15 +246,16 @@ app.get('/getNewBornsCount', function (request, response) {
 
 });
 
-// TODO Function to retrieve dashboard data count
+// Function to retrieve dashboard data count
 app.get('/getVaccinatedCount', function (request, response) {
     const animal_type = storage('animal');
     const farma_id = storage('farma_id');
 
-    // TODO derive a query to get count of all fully vaccinated animals
-    connection.query(`SELECT COUNT(id) as COUNT FROM animal A, due_dates B WHERE A.id = B.animal_id `, function (error, results, fields) {
+    // a query to get count of all fully vaccinated animals
+    connection.query(`SELECT COUNT(B.id) as COUNT FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id='${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE() `, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
+        console.log(results);
         response.send({ vaccinatedCount: results });
     })
 
@@ -262,28 +263,28 @@ app.get('/getVaccinatedCount', function (request, response) {
 
 });
 
-// TODO  Function to retrieve dashboard data count
+// Function to retrieve dashboard data count
 app.get('/getPendingVaccinationsCount', function (request, response) {
     const animal_type = storage('animal');
     const farma_id = storage('farma_id');
 
-    // TODO derive a query to get count of all animals with pending vaccinations
-    connection.query(`SELECT COUNT(B.vaccination_date) FROM animal A, due_dateS B WHERE A.animal_type='${animal_type}' A.farma_id = B.farma_id AND B.farma_id ='${farma_id}' AND B.vaccination_date IS NOT NULL`, function (error, results, fields) {
+    // a query to get count of all animals with pending vaccinations
+    connection.query(`SELECT COUNT(B.vaccination_date) AS COUNT FROM animal A, due_dates B WHERE A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id ='${farma_id}' AND B.vaccination_date IS NOT NULL`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
-        response.send({ pendingVaccincationsCount: results });
+        response.send({ pendingCount: results });
     })
 
     //connection.end();
 
 });
 
-// TODO  Function to retrieve dashboard data count
+// Function to retrieve dashboard data count
 app.get('/getFeedsCount', function (request, response) {
     const animal_type = storage('animal');
     const farma_id = storage('farma_id');
 
-    // TODO derive a query to get count of all animal feeds
+    // a query to get count of all animal feeds
     connection.query(`SELECT COUNT(*) as COUNT FROM feeds WHERE animal_type='${animal_type}' AND farma_id='${farma_id}'`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
@@ -300,7 +301,7 @@ app.get('/getProductsCount', function (request, response) {
     const farma_id = storage('farma_id');
 
     // TODO derive a query to get count of all animals
-    connection.query(`SELECT COUNT(*) as COUNT FROM products WHERE farma_id = '${farma_id}' AND animal_type='${animal_type}'`, function (error, results, fields) {
+    connection.query(`SELECT COUNT(B.id) as COUNT FROM animal A, products B WHERE B.animal_id = A.id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}'`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
         response.send({ animalProductsCount: results });
@@ -309,6 +310,11 @@ app.get('/getProductsCount', function (request, response) {
     //connection.end();
 
 });
+
+// TODO  Function to return animal type dashboard data count
+app.get('/getType', function (request, response) { response.send({ type: storage('animal') }); });
+
+
 
 //  LISTING END POINTS
 // TODO get diseases based on gender

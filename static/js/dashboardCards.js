@@ -92,6 +92,19 @@ async function getProductsCount() {
   }
 }
 
+
+// Get number of animals' products from backend endpoint
+async function getAnimalType() {
+  let url = `/getType`;
+  try {
+    let res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 // RENDERS DATA TO THE BI DASHBOARD CARDS LIVE STATISTICS
 async function renderAnimals() {
   // registered animals count
@@ -115,7 +128,6 @@ async function renderAnimals() {
 
   // New Borns animals count
   const newBornsCount = await getNewBornsCount();
-  console.log(newBornsCount);
   newBornsCount.newBornCount.forEach(count => {
     document.getElementById('babyCount').innerText = count.COUNT || 0;
   })
@@ -129,12 +141,12 @@ async function renderAnimals() {
 
   // Pending vaccinations animals count
   const pendingCount = await getPendingVaccinationsCount();
-  vaccinatedCount.pendingVaccincationsCount.forEach(count => {
+  pendingCount.pendingCount.forEach(count => {
     document.getElementById('pendingCount').innerText = count.COUNT || 0;
   })
 
   // animals' feeds count
-  const feedsCount = await getPendingVaccinationsCount();
+  const feedsCount = await getFeedsCount();
   feedsCount.feedsCount.forEach(count => {
     document.getElementById('feedsCount').innerText = count.COUNT || 0;
   })
@@ -146,20 +158,15 @@ async function renderAnimals() {
   })
 
   // animals' products count
-  const animalType = await getAnimalTypeCount();
-  animalType.animal_type.forEach(type => {
-    document.getElementById('productsCount').innerText = type || 0;
-  })
+  const animalType = await getAnimalType();
+    document.getElementById('animalType').innerText = animalType.type || 0;
+    document.getElementById("registrationModalLabel").innerText = `${animalType.type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
+    document.getElementById("editAnimalModalLabel").innerText = ` UPDATE ${animalType.type.toUpperCase()} `;
+    document.getElementById("register-animal").innerText = `REGISTER A NEW ${animalType.type.toUpperCase()}`;
 
-
-  document.getElementById("registrationModalLabel").innerText = `${sk.animal_type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
-  document.getElementById("editAnimalModalLabel").innerText = ` UPDATE ${sk.animal_type.toUpperCase()} `;
-  document.getElementById("register-animal").innerText = `REGISTER A NEW ${sk.animal_type.toUpperCase()}`;
-
-  document.getElementById("vaccinesModalLabel").innerText = `AVAILABLE ${sk.animal_type.toUpperCase()} VACCINES`;
-  document.getElementById("editVaccineModalLabel").innerText = `UPDATE ${sk.animal_type.toUpperCase()} `;
-  document.getElementById("available-vaccines").innerText = `ADD A NEW ${sk.animal_type.toUpperCase()} VACCINE`;
-
+    document.getElementById("vaccinesModalLabel").innerText = `AVAILABLE ${animalType.type.toUpperCase()} VACCINES`;
+    document.getElementById("editVaccineModalLabel").innerText = `UPDATE ${animalType.type.toUpperCase()} `;
+    document.getElementById("available-vaccines").innerText = `ADD A NEW ${animalType.type.toUpperCase()} VACCINE`;
 }
 
 renderAnimals();
