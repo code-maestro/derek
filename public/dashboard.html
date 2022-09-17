@@ -35,7 +35,7 @@
     <link href="../css/sb-admin-2.css" rel="stylesheet" type="text/css" />
     <link href="../css/custom.css" rel="stylesheet" type="text/css" />
 
-    <!-- Datatables -->>
+    <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
     <script defer type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script defer type="text/javascript"
@@ -74,7 +74,7 @@
 
             <!-- TODO implement function move() to handle the click event -->
             <!-- Nav Item - home -->
-            <li class="nav-item" onclick="move()">
+            <li class="nav-item" href="/">
                 <span class="nav-link">
                     <i class="fa-solid fa-gauge"></i>
                     <span> Home </span>
@@ -118,11 +118,10 @@
                             Add a Vaccine </span>
                         <span class="collapse-item" onclick="getVaccinesTableData()" data-bs-toggle="modal"
                             href="#vaccinesModalToggle" role="button"> Available Vaccines </span>
-                        <span class="collapse-item" onclick="getVaccinesTableData()" data-bs-toggle="modal"
+                        <span class="collapse-item" data-bs-toggle="modal"
                             href="#vaccinateModalToggle" role="button"> Schedule Vaccination </span>
-                        <span class="collapse-item" onclick="getpendingVaccinationsTableData()" data-bs-toggle="modal"
-                            href="#pendingVaccinationsModalToggle" role="button"> Pending
-                            Vaccinations </span>
+                        <span class="collapse-item" onclick="getPendingVaccinations()" data-bs-toggle="modal"
+                            href="#pendingVaccinationsModalToggle" role="button"> Pending Vaccinations </span>
                         <span class="collapse-item" onclick="getFullyVaccinatedTableData()" data-bs-toggle="modal"
                             href="#fullyVaccinatedModalToggle" role="button"> Fully Vaccinated </span>
                     </div>
@@ -1115,7 +1114,7 @@
         </div>
     </div>
 
-    <!-- Pending Modal  -->
+    <!-- Pending Vaccinations Modal  -->
     <div class="modal fade" id="pendingVaccinationsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="vaccinationModalToggleLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -1131,21 +1130,17 @@
                             <div class="col">
                                 <div class="row px-4">
                                     <!-- Vaccination Form -->
-                                    <h6 class="fw-bold px-0"> List of animals </h6>
+                                    <h6 class="fw-bold px-0"> List of pending vaccinations </h6>
                                     <table id="pendingVaccinationTable"
                                         class="table table-bordered table-hover table-sm">
                                         <thead class="table-dark">
                                             <tr>
-                                                <th scope="col" class="text-center"> ID </th>
                                                 <th scope="col" class="text-center"> ANIMAL TAG </th>
-                                                <th scope="col" class="text-center"> No OF VACCINATIONS
-                                                </th>
-                                                <th scope="col" class="text-center"> FIRST VACCINATION DATE
-                                                </th>
-                                                <th scope="col" class="text-center"> NEXT VACCINATION DATE
-                                                </th>
-                                                <th scope="col" class="text-center"> No OF PENDING
-                                                    VACCINATIONS </th>
+                                                <th scope="col" class="text-center"> FIRST VACCINATION DATE </th>
+                                                <th scope="col" class="text-center"> NEXT VACCINATION DATE </th>
+                                                <th scope="col" class="text-center"> LAST VACCINATION DATE </th>
+                                                <th scope="col" class="text-center"> No OF VACCINATIONS </th>
+                                                <th scope="col" class="text-center"> No OF PENDING VACCINATIONS </th>
                                                 <th scope="col" class="text-center"> EDIT </th>
                                                 <th scope="col" class="text-center"> DELETE </th>
                                             </tr>
@@ -1953,9 +1948,9 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('symptomTable')"> EXCEL </button>
+                                            onclick="toExcel('diseaseTable')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="printReport('symptomTable')"> PRINT </button>
+                                            onclick="printReport('dieaseTable')"> PRINT </button>
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"

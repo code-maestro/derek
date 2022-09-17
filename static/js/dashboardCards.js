@@ -543,7 +543,7 @@ async function getHeavyAnimals() {
 
 // TODO implement this function Vaccinated Animals
 async function getVaccinatedAnimals() {
-  let list = await getAnimalListing();
+  let list = await getVaccinatedAnimalsListing();
 
   let html = '';
   let htmlSegment = '';
@@ -640,19 +640,98 @@ async function getNewBornAnimals() {
 }
 
 // TODO implement this function - Pending vaccinations listing
-async function getPendingAnimalVaccinations() {
-  let list = await getAnimalListing();
+async function getPendingVaccinations() {
+  let list = await getPendingVaccinationListing();
+
+  console.log(list);
 
   let html = '';
   let htmlSegment = '';
 
-  const con = document.getElementById('dashboardAnimalListing');
+  const con = document.getElementById('pendingVaccinationListing');
 
-  list.animalListing.forEach(animal => {
+  list.pendingListing.forEach(animal => {
     htmlSegment = `
         <tr class="justify-content-center" id="${animal.id}">
-         
+          <td scope="col" class="text-center"> ${animal.animal_tag} </td>
+          <td scope="col" class="text-center"> ${animal.vaccination_date} </td>
+          <td scope="col" class="text-center"> NEXT VACCINATION DATE </td>
+          <td scope="col" class="text-center"> LAST VACCINATION DATE </td>
+          <td scope="col" class="text-center"> No OF VACCINATIONS </td>
+          <td scope="col" class="text-center"> No OF PENDING VACCINATIONS </td>
         </tr>
+      `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
+
+}
+
+// Table data for vaccines
+async function getVaccinesTableData() {
+  let list = await getVaccines();
+
+  let html = '';
+  let htmlSegment = '';
+
+  const con = document.getElementById('vaccinesListing');
+
+  list.vaccines.forEach(animal => {
+    htmlSegment = `
+        <tr class="justify-content-center" id="${animal.id}">
+          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
+          <td class="text-center"> ${animal.name} </td>
+          <td class="text-center vaccineDesc" id="vaccineDescription"> ${animal.description} </td>
+          <td class="text-center"> ${animal.quantity + animal.quantity_measure} </td>
+          <td class="text-center"> ${animal.number_of_vaccinations} </td>
+          <td class="text-center"> ${animal.cycle} </td>
+          <td class="text-center"> ${animal.period} </td>
+          <td class="text-center"> ${animal.injection_area} </td>
+
+          <td class="text-center noprint" data-bs-target="#editVaccineModal" data-bs-toggle="modal"  onclick="editAnimal(${animal.id})">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+          </svg>
+        </td>
+
+        <td class="text-center noprint" onclick="deleteFromList('vaccine', '${animal.id}')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
+          </svg>
+        </td>
+
+        </tr>
+
+
+        <script type="text/javascript">
+
+        var len = 15;
+        var p = document.getElementById('vaccineDescription');
+        if (p) {
+        
+          var trunc = p.innerHTML;
+          if (trunc.length > len) {
+        
+            /* Truncate the content of the P, then go back to the end of the
+               previous word to ensure that we don't truncate in the middle of
+               a word */
+            trunc = trunc.substring(0, len);
+            trunc = trunc.replace(/\w+$/, '');
+        
+            /* Add an ellipses to the end and make it a link that expands
+               the paragraph back to its original size */
+            trunc += '<a href="#" ' +
+              'onclick="this.parentNode.innerHTML=' +
+              'unescape(\''+escape(p.innerHTML)+'\');return false;">' +
+              '...<\/a>';
+            p.innerHTML = trunc;
+          }
+        }
+        
+        </script>
       `;
 
     html += htmlSegment;

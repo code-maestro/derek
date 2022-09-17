@@ -274,9 +274,6 @@ app.get('/getPendingVaccinationsCount', function (request, response) {
         if (error) throw error;
         response.send({ pendingCount: results });
     })
-
-    //connection.end();
-
 });
 
 // Function to retrieve dashboard data count
@@ -325,7 +322,6 @@ app.get('/getDiseases', function (request, response) {
         if (error) throw error;
         response.send({ diseases: results });
     })
-
 });
 
 
@@ -353,7 +349,6 @@ app.get('/getSickAnimals', function (request, response) {
     } else {
         response.redirect('/');
     }
-
 });
 
 // Function to retrieve farma data
@@ -411,6 +406,41 @@ app.get('/getVaccinationData', function (request, response) {
 
 });
 
+// Function to retrieve vaccinated animals
+app.get('/getVaccinatedAnimalsData', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal_type = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id='${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE() `, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ vaccinatedAnimalsListing: results });
+        })
+    } else {
+        response.redirect('/');
+    }
+});
+
+// Function to retrieve animals pending vaccination.
+app.get('/getPendingVaccinationData', function (request, response) {
+    const farma_id = storage('farma_id');
+    const animal_type = storage('animal');
+
+    if (farma_id) {
+        connection.query(`SELECT * FROM animal A, due_dates B WHERE A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id ='${farma_id}' AND B.vaccination_date IS NOT NULL`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            console.log(results);
+            if (error) throw error;
+            response.send({ pendingListing: results });
+        })
+    } else {
+        response.redirect('/');
+    }
+
+});
+
+
 // Function to retrieve animal data for table
 app.get('/getAvailableVaccines', function (request, response) {
     const animal = storage('animal');
@@ -437,7 +467,6 @@ app.get('/getAnimalMaxId', function (request, response) {
     }
 });
 
-
 // Function to retrieve expecting animals
 app.get('/getExpectingAnimals', function (request, response) {
     const user_id = storage('farma_id');
@@ -454,20 +483,6 @@ app.get('/getExpectingAnimals', function (request, response) {
     }
 });
 
-
-// Registering a new animal
-app.post('/newAnimal', function (req, res) {
-    const farma_id = storage('farma_id');
-    const animal = storage('animal');
-    // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        res.redirect(`/animal/${animal}`);
-        return;
-    });
-})
 
 
 /*
@@ -562,6 +577,20 @@ app.post('/auth', function (request, response) {
     }
 });
 
+// Registering a new animal
+app.post('/newAnimal', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the farma table
+    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        // If the account exists
+        res.redirect(`/animal/${animal}`);
+        return;
+    });
+})
+
 
 // TODO test new born registration
 // TODO ALTER animal table to add parent-tag column for new borns
@@ -579,7 +608,6 @@ app.post('/addNewBorn', function (req, res) {
     });
 })
 
-
 // Updating animal data
 app.post('/updateAnimalData', function (req, res) {
     const farma_id = storage('farma_id');
@@ -594,18 +622,6 @@ app.post('/updateAnimalData', function (req, res) {
     });
 })
 
-
-// Inserting Vaccination Data into the DB
-app.post('/insertData', function (req, res) {
-    const farma_id = storage('farma_id');
-    const animal = storage('animal');
-    // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.tag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
-        if (error) throw error;
-    });
-})
-
-
 // Inserting Vaccines into the DB
 app.post('/newVaccine', function (req, res) {
     const farma_id = storage('farma_id');
@@ -619,7 +635,6 @@ app.post('/newVaccine', function (req, res) {
     res.redirect(`/animal/${animal}`);
     return;
 })
-
 
 // Updating Farma Profile Data
 app.post('/updateFarmaProfile', function (req, res) {
@@ -638,7 +653,6 @@ app.post('/updateFarmaProfile', function (req, res) {
     response.redirect('/home');
 
 })
-
 
 // Add animals at the farm to DB
 app.post('/save', async (req, res) => {
@@ -686,7 +700,6 @@ app.post('/save', async (req, res) => {
     );
 });
 
-
 // End Point adding new animal
 app.post('/addAnimal', (request, response) => {
     uploadImage(request, response, (err) => {
@@ -732,7 +745,6 @@ app.post('/addAnimal', (request, response) => {
         }
     });
 });
-
 
 // Function to delete data from animal
 app.post('/delete/:param', function (request, response) {
