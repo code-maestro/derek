@@ -157,20 +157,9 @@ async function renderAnimals() {
     document.getElementById('productsCount').innerText = count.COUNT || 0;
   })
 
-  // animals' products count
-  const animalType = await getAnimalType();
-    document.getElementById('animalType').innerText = animalType.type || 0;
-    document.getElementById("registrationModalLabel").innerText = `${animalType.type.toUpperCase()} REGISTRATION AND TABULAR DATA `;
-    document.getElementById("editAnimalModalLabel").innerText = ` UPDATE ${animalType.type.toUpperCase()} `;
-    document.getElementById("register-animal").innerText = `REGISTER A NEW ${animalType.type.toUpperCase()}`;
-
-    document.getElementById("vaccinesModalLabel").innerText = `AVAILABLE ${animalType.type.toUpperCase()} VACCINES`;
-    document.getElementById("editVaccineModalLabel").innerText = `UPDATE ${animalType.type.toUpperCase()} `;
-    document.getElementById("available-vaccines").innerText = `ADD A NEW ${animalType.type.toUpperCase()} VACCINE`;
 }
 
 renderAnimals();
-
 
 
 // CARDS CLICK EVENT HANDLER
@@ -430,6 +419,28 @@ function clicked(param) {
     }
   });
 }
+
+// Retrieving symptoms from and endpoint
+function loadSymptoms(params) {
+  console.log(params);
+}
+
+// Rendering symptoms to frontend 
+function viewSymptoms(params) {
+  console.log(params);
+}
+
+// Retrieving symptoms from and endpoint
+function loadDiseases(params) {
+  console.log(params);
+}
+
+// Rendering symptoms to frontend 
+function viewDiseases(params) {
+  console.log(params);
+}
+
+
 
 // [x]  WORKS registered animals listing
 async function getAllAnimals() {

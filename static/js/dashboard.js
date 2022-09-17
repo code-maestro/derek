@@ -5,6 +5,10 @@ const form = document.getElementById('registrationForm');
 const container = document.querySelector('#dynamic');
 
 
+document.addEventListener('DOMContentLoaded', function () {
+  let table = new DataTable('#symptomTable');
+});
+
 // Table data for all animals
 async function getVaccinesTableData() {
   let list = await getVaccines();

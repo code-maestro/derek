@@ -34,7 +34,13 @@
     <!-- Custom styles for this template -->
     <link href="../css/sb-admin-2.css" rel="stylesheet" type="text/css" />
     <link href="../css/custom.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Datatables -->>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    <script defer type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script defer type="text/javascript"
+        src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
 
     <!-- List of animals that belong to the farmer that has signed in -->
     <script src="../js/dashboard.js" defer></script>
@@ -131,6 +137,7 @@
                 </span>
             </li>
 
+
             <!-- TODO Test the routing created off  at 20220910-1804 -->
             <!-- TODO define and implement - getFeedsTableData() -->
             <!-- Nav Item - New Borns -->
@@ -149,23 +156,6 @@
                     </div>
                 </div>
             </li>
-
-            <!-- TODO implement function - populateGraphs() -->
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <span class="nav-link collapsed" data-toggle="collapse" data-target="#charts" aria-expanded="true"
-                    aria-controls="charts">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span> Charts </span>
-                </span>
-                <div id="charts" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <span class="collapse-item" onclick="viewGraphs('expected')"> Expectations </span>
-                        <span class="collapse-item" onclick="viewGraphs('actual')"> Actual Data </span>
-                    </div>
-                </div>
-            </li>
-
 
             <!-- TODO implement function - populateGraphs() -->
             <!-- Nav Item - Charts -->
@@ -203,7 +193,7 @@
 
             <!-- TODO implement function - viewSymptoms() to handle the click event -->
             <!-- Nav Item - Symptoms -->
-            <li class="nav-item">
+            <li class="nav-item" onclick="loadSymptoms()">
                 <span class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#symptoms"
                     aria-expanded="true" aria-controls="symptoms">
                     <i class="fas fa-flag"></i>
@@ -211,8 +201,10 @@
                 </span>
                 <div id="symptoms" class="collapse" aria-labelledby="thesymptoms" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <span class="collapse-item" onclick="viewSymptoms('♀️')"> Female </span>
-                        <span class="collapse-item" onclick="viewSymptoms('♂️')"> Male </span>
+                        <span class="collapse-item" onclick="viewSymptoms('♀️')" data-bs-toggle="modal"
+                            href="#symptomModalToggle" role="button"> Female </span>
+                        <span class="collapse-item" onclick="viewSymptoms('♂️')" data-bs-toggle="modal"
+                            href="#symptomModalToggle" role="button"> Male </span>
                     </div>
                 </div>
             </li>
@@ -662,7 +654,7 @@
                 <div class="modal-body">
                     <div>
                         <div class="row p-2 mx-auto">
-                            <div class="mx-auto" style="width: 200px;">
+                            <div class="mx-auto" style="width: auto;">
                                 <h4 class="font-monospace" id="registerAnimalModalLabel"> REGISTER ANIMAL </h4>
                             </div>
                         </div>
@@ -1856,6 +1848,130 @@
             </div>
         </div>
     </div>
+
+    <!--Animal Symptoms listing modal -->
+    <div class="modal fade" id="symptomModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="symptomModalToggleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row p-2 mx-auto">
+                            <div class="mx-auto" style="width: auto;">
+                                <h5 class="font-monospace" id="symptomModalLabel"> </h5>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col">
+                                <div class="row px-4">
+                                    <!-- Symptoms Table -->
+                                    <table id="symptomTable" class="table table-bordered table-hover table-sm">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th scope="col" class="text-center"> ID </th>
+                                                <th scope="col" class="text-center"> SYMPTOM NAME </th>
+                                                <th scope="col" class="text-center"> DESCRIPTION </th>
+                                                <th scope="col" class="text-center"> COMMON AMONG ANIMALS WITH AGE </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="symptomListing"> </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="row px-4 py-2">
+                                    <div class="col-auto me-auto">
+                                        <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                    </div>
+                                    <div class="col-auto me-auto">
+                                        <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                    </div>
+                                    <div class="col-auto">
+                                        <h6 class="fw-bold py-2"> Export your data to </h6>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            onclick="toExcel('symptomTable')"> EXCEL </button>
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            onclick="printReport('symptomTable')"> PRINT </button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                            aria-label="Close"> CLOSE </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Animal Diseases listing modal -->
+    <div class="modal fade" id="diseaseModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="diseaseModalToggleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row p-2 mx-auto">
+                            <div class="mx-auto" style="width: auto;">
+                                <h5 class="font-monospace" id="diseaseModalLabel"> </h5>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col">
+                                <div class="row px-4">
+                                    <!-- Symptoms Table -->
+                                    <table id="diseaseTable" class="table table-bordered table-hover table-sm">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th scope="col" class="text-center"> ID </th>
+                                                <th scope="col" class="text-center"> DISEASE NAME </th>
+                                                <th scope="col" class="text-center"> DESCRIPTION </th>
+                                                <th scope="col" class="text-center"> COMMON AMONG ANIMALS WITH AGE </th>
+                                                <th scope="col" class="text-center"> RECOMMENDED MEDICATION </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="diseaseListing"> </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="row px-4 py-2">
+                                    <div class="col-auto me-auto">
+                                        <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                    </div>
+                                    <div class="col-auto me-auto">
+                                        <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                    </div>
+                                    <div class="col-auto">
+                                        <h6 class="fw-bold py-2"> Export your data to </h6>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            onclick="toExcel('symptomTable')"> EXCEL </button>
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            onclick="printReport('symptomTable')"> PRINT </button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                            aria-label="Close"> CLOSE </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="../vendor/jquery/jquery.min.js"></script>

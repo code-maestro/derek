@@ -295,12 +295,12 @@ app.get('/getFeedsCount', function (request, response) {
 
 });
 
-// TODO  Function to retrieve dashboard data count
+// Function to retrieve dashboard data count
 app.get('/getProductsCount', function (request, response) {
     const animal_type = storage('animal');
     const farma_id = storage('farma_id');
 
-    // TODO derive a query to get count of all animals
+    // a query to get count of all animals
     connection.query(`SELECT COUNT(B.id) as COUNT FROM animal A, products B WHERE B.animal_id = A.id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}'`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
@@ -311,104 +311,41 @@ app.get('/getProductsCount', function (request, response) {
 
 });
 
-// TODO  Function to return animal type dashboard data count
+// Function to return animal type dashboard data count
 app.get('/getType', function (request, response) { response.send({ type: storage('animal') }); });
 
 
 
 //  LISTING END POINTS
-// TODO get diseases based on gender
 // Function to retrieve diseases data
-app.get('/getDiseases/:gender', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        const gender = request.params.gender;
-        switch (gender) {
-            case 'male':
-                console.log('male');
-                // Get Data from DB 
-                connection.query(``, function (error, results, fields) {
-                    // If there is an issue with the query, output the error
-                    if (error) throw error;
-                    response.send({ maleDiseases: results });
-                })
-                // end connection after response
-                //connection.end();
-                break;
-
-            case 'female':
-                console.log('female');
-                // Get Data from DB 
-                connection.query(``, function (error, results, fields) {
-                    // If there is an issue with the query, output the error
-                    if (error) throw error;
-                    response.send({ femaleDiseases: results });
-                })
-                // end connection after response
-                //connection.end();
-                break;
-
-            default:
-                console.log(`Sorry`);
-        }
-
-    } else {
-        console.log(" GETTING DISEASES FAILED no farma_id ");
-        response.redirect('/');
-    }
+app.get('/getDiseases', function (request, response) {
+    // Get Data from DB 
+    connection.query(`SELECT * FROM disease WHERE animal_type = '${storage('animal')}'`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ diseases: results });
+    })
 
 });
 
-// TODO get symptoms based on gender
+
 // Function to retrieve symptoms data
-app.get('/getSymptoms/:gender', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        const gender = request.params.gender;
-        switch (gender) {
-            case 'male':
-                console.log('male');
-                // Get Data from DB 
-                connection.query(``, function (error, results, fields) {
-                    // If there is an issue with the query, output the error
-                    if (error) throw error;
-                    response.send({ maleSymptoms: results });
-                })
-                // end connection after response
-                //connection.end();
-                break;
-
-            case 'female':
-                console.log('female');
-                // Get Data from DB 
-                connection.query(``, function (error, results, fields) {
-                    // If there is an issue with the query, output the error
-                    if (error) throw error;
-                    response.send({ femaleSymptoms: results });
-                })
-                // end connection after response
-                //connection.end();
-                break;
-
-            default:
-                console.log(`Sorry`);
-        }
-
-    } else {
-        console.log(" GETTING SYMPTOMS FAILED no farma_id ");
-        response.redirect('/');
-    }
-
+app.get('/getSymptoms', function (request, response) {
+    connection.query(`SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${storage('animal')}'`, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ symptoms: results });
+    })
 });
 
-// FIXME  Clean that query
+
 // Fn to get sick animal listing
 app.get('/getSickAnimals', function (request, response) {
     const user_id = storage('farma_id');
     const animal = storage('animal');
 
     if (user_id) {
-        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date, disease_id FROM animal WHERE farma_id=(?) AND animal_type=(?) AND disease_id IS NOT NULL`, [user_id, animal], function (error, results, fields) {
+        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date, is_sick FROM animal WHERE farma_id=? AND animal_type=? AND is_sick IS NOT NULL AND is_sick is TRUE`, [user_id, animal], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
             response.send({ sickAnimalListing: results });
