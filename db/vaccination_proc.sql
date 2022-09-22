@@ -1,12 +1,13 @@
-DELIMITER //
 
-CREATE PROCEDURE GetOfficeByCountry(
-	IN countryName VARCHAR(255)
-)
+DELIMITER $$
+
+CREATE PROCEDURE procesDates(IN dates VARCHAR(50), IN animal_kind VARCHAR(50), IN the_id INT, IN the_date DATE,  IN animal_type VARCHAR(25), IN animal_id INT)
+
 BEGIN
-	SELECT * 
- 	FROM offices
-	WHERE country = countryName;
-END //
+
+	INSERT INTO first_dates (dates, animal_kind, the_id)
+	VALUES (the_date, animal_type, animal_id );
+
+END $$
 
 DELIMITER ;
