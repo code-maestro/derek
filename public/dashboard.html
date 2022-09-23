@@ -154,7 +154,7 @@
                             Available Feeds </span>
                         <span class="collapse-item" data-bs-toggle="modal" href="#newFeedingTimetableModalToggle" role="button">
                             Generate TimeTable </span>
-                        <span class="collapse-item" data-bs-toggle="modal" href="#feeingTimetableModalToggle" role="button">
+                        <span class="collapse-item" data-bs-toggle="modal" href="#feedingTimetableModalToggle" role="button">
                             Feeding Timetables </span>
                     </div>
                 </div>
@@ -1857,7 +1857,7 @@
 
                         <div class="row p-3  mx-auto">
                             <div class="mx-auto" style="width: auto;">
-                                <h5 class="font-monospace" id="newFeedingTimetableModalLabel"> ADD NEW VACCINE </h5>
+                                <h5 class="font-monospace" id="newFeedingTimetableModalLabel"> GENERATE NEW FEEDING TIMETABLE </h5>
                             </div>
                         </div>
 
@@ -1865,59 +1865,47 @@
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <!-- Vaccines Form -->
+                                        <!-- New Feeds Form -->
                                         <form class="row g-3 needs-validation" novalidate method="POST"
-                                            action="/newVaccine">
-                                            <div class="col-md-6">
-                                                <label for="vaccine-name" class="form-label fw-bold"> Vaccine Name
-                                                </label>
-                                                <input id="vaccine-name" type="text" class="form-control"
-                                                    name="vaccineName" spellcheck="false" data-ms-editor="true"
-                                                    value="">
-                                            </div>
+                                            action="/newFeedingTimetable">
 
                                             <div class="col-md-6">
-                                                <label for="vaccine-quantity" class="form-label fw-bold">
-                                                    Quantity </label>
-                                                <input id="vaccine-quantity" type="number" class="form-control"
-                                                    name="vaccineQuantity" spellcheck="false" data-ms-editor="true"
-                                                    value="">
-                                            </div>
-
-
-                                            <div class="col-md-6">
-                                                <label for="period" class="form-label fw-bold"> Quantity Measure
-                                                </label>
+                                                <label for="period" class="form-label fw-bold"> Choose Feeds' Name </label>
                                                 <select class="form-select" id="quantity-measure" name="quantityMeasure"
                                                     required="">
-                                                    <option selected="" disabled="" value=""> Choose a measure
-                                                        ...</option>
-                                                    <option value="ml"> milli litre(s) </option>
-                                                    <option value="l"> litre(s) </option>
+                                                    <option selected="" disabled="" value=""> Choose a measure ...</option>
+                                                    <div id="feedsListing">
+                                                        <option value="ml"> milli litre(s) </option>
+                                                        <option value="l"> litre(s) </option>
+                                                        <option value="l"> litre(s) </option>
+                                                        <option value="l"> litre(s) </option>
+                                                    </div>
+                                                    
                                                 </select>
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="vaccine-description" class="form-label fw-bold">
-                                                    Vaccine Description </label>
-                                                <input id="vaccine-description" type="text" class="form-control"
-                                                    name="vaccineDescription" spellcheck="false" data-ms-editor="true"
+                                                <label for="feeds-description" class="form-label fw-bold">
+                                                    Description </label>
+                                                <input id="feeds-description" type="text" class="form-control"
+                                                    name="feedsDescription" spellcheck="false" data-ms-editor="true"
                                                     value="">
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="no-vaccinations" class="form-label fw-bold"> Number
-                                                    of Vaccinations </label>
-                                                <input id="no-vaccinations" type="text" class="form-control"
-                                                    name="noVaccinations" spellcheck="false" data-ms-editor="true"
+                                                <label for="feeds-quantity" class="form-label fw-bold">
+                                                    Quantity </label>
+                                                <input id="feeds-quantity" type="number" class="form-control"
+                                                    name="feedsQuantity" spellcheck="false" data-ms-editor="true"
                                                     value="">
                                             </div>
 
+
                                             <div class="col-md-6">
-                                                <label for="vaccination-cycle" class="form-label fw-bold"> Cycle
+                                                <label for="feeding-cycle" class="form-label fw-bold"> Cycle
                                                 </label>
-                                                <input id="vaccination-cycle" type="number" class="form-control"
-                                                    name="vaccineCycle" spellcheck="false" data-ms-editor="true"
+                                                <input id="feeding-cycle" type="number" class="form-control"
+                                                    name="feedingCycle" spellcheck="false" data-ms-editor="true"
                                                     value="">
                                             </div>
 
@@ -1934,19 +1922,18 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="injection-area" class="form-label fw-bold">
-                                                    Injection Area </label>
-                                                <input id="injection-area" type="text" class="form-control"
-                                                    name="injectionArea" spellcheck="false" data-ms-editor="true"
+                                                <label for="feeds-quantity" class="form-label fw-bold">
+                                                    Quantity Per Cycle </label>
+                                                <input id="feeds-quantity" type="number" class="form-control"
+                                                    name="feedsQuantity" spellcheck="false" data-ms-editor="true"
                                                     value="">
                                             </div>
 
                                             <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
                                                 <button class="btn btn-light me-md-2 font-monospace"
                                                     data-bs-dismiss="modal" type="button">
-                                                    cancel </button>
-                                                <button class="btn btn-primary font-monospace" type="submit"> submit
-                                                    form </button>
+                                                    CANCEL </button>
+                                                <button class="btn btn-primary font-monospace" type="submit"> GENERATE </button>
                                             </div>
 
                                         </form>
@@ -1969,7 +1956,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="container">
-                        <div class="row px-2 py-4">
+                        <div class="row px-2 py-2">
                             <div class="mx-auto" style="width: auto;">
                                 <h5 class="font-monospace" id="feedingTimetableModalLabel"> ON GOING FEEDING TIME TABLES
                                 </h5>
@@ -1980,7 +1967,6 @@
                             <div class="col">
                                 <div class="row px-4">
                                     <!-- Vaccines Form -->
-                                    <h6 class="fw-bold px-0"> List of On Going Feeding TimeTables </h6>
                                     <table id="feedingTimeTable" class="table table-bordered table-hover table-sm">
                                         <thead class="table-dark">
                                             <tr>
