@@ -465,6 +465,22 @@ app.get('/getAnimalMaxId', function (request, response) {
     }
 });
 
+// Function to retrieve animal data for table
+app.get('/getTimeTableMaxId', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT MAX(id) AS LAST, animal_type FROM feeding_timetable WHERE farma_id='${user_id}' AND animal_type='${animal}'`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ last_id: results });
+        })
+    } else {
+        response.redirect('/');
+    }
+});
+
 // Function to retrieve expecting animals
 app.get('/getExpectingAnimals', function (request, response) {
     const user_id = storage('farma_id');
@@ -783,6 +799,20 @@ app.post('/delete/:param', function (request, response) {
         response.redirect('/');
     }
 });
+
+// Inserting new TimeTable into the DB
+app.post('/newTimeTable', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the feeding_timetable table
+    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, last_feed_date, farma_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, '${req.body.feedingPeriod}', ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, '${req.body.feedingTime}', CONVERT('${req.body.feedingFirstDate}', DATETIME), CONVERT('${req.body.feedingLastDate}', DATETIME), '${farma_id}');`,
+        function (error, results, fields) {
+            if (error) throw error;
+        });
+
+    res.redirect(`/animal/${animal}`);
+    return;
+})
 
 
 app.listen(3000);

@@ -1868,7 +1868,14 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <!-- New Feeds Form -->
-                                        <div class="row g-3 needs-validation">
+                                        <form method="POST" action="/newTimeTable" class="row g-3 needs-validation">
+                                            <div class="col-md-12">
+                                                <label for="timetableTitle" class="form-label fw-bold">
+                                                    TimeTable Title </label>
+                                                <input id="timetableTitle" type="text" class="form-control"
+                                                    name="timetableTitle" spellcheck="false" data-ms-editor="true" readonly>
+                                            </div>
+
                                             <div class="col-md-6">
                                                 <label for="feedsName" class="form-label fw-bold"> Choose Feeds' Name
                                                 </label>
@@ -1903,7 +1910,7 @@
 
                                             <div class="col-md-3">
                                                 <label for="period" class="form-label fw-bold"> Every </label>
-                                                <select class="form-select" id="period" name="feedPeriod" required>
+                                                <select class="form-select" id="period" name="feedingPeriod" required>
                                                     <option selected="" disabled="" value=""> Choose a period...
                                                     </option>
                                                     <option value="1"> Day </option>
@@ -1915,8 +1922,8 @@
                                             <div class="col-md-3">
                                                 <label for="feeds-quantity" class="form-label fw-bold">
                                                     Quantity Per Cycle </label>
-                                                <input id="feeds-quantity" type="number" class="form-control"
-                                                    name="feedsQuantity" spellcheck="false" data-ms-editor="true"
+                                                <input id="feeding-quantity" type="number" class="form-control"
+                                                    name="feedingQuantityPerCycle" spellcheck="false" data-ms-editor="true"
                                                     required>
                                             </div>
 
@@ -1924,23 +1931,40 @@
                                                 <label for="feeds-quantity-measure" class="form-label fw-bold">
                                                     Quantity Per Cycle Measure </label>
                                                 <select class="form-select" id="feedQuantityMeasure"
-                                                    name="feedQuantityMeasure" required>
+                                                    name="feedingQuantityPerCycleUnit" required>
                                                     <option selected="" disabled="" value=""> Choose a unit...</option>
                                                     <option value="1000"> kg </option>
                                                     <option value="1"> g </option>
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
+                                                <label for="period" class="form-label fw-bold"> Planned Quantity </label>
+                                                <input id="feedingPeriodQuantity" type="number" class="form-control"
+                                                    name="feedingPeriodQuantity" spellcheck="false" data-ms-editor="true"
+                                                    required>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="period" class="form-label fw-bold"> Planned Quantity Unit </label>
+                                                <select class="form-select" id="feedQuantityMeasure"
+                                                    name="feedingPeriodQuantityUnit" required>
+                                                    <option selected="" disabled="" value=""> Choose a unit...</option>
+                                                    <option value="1000"> kg </option>
+                                                    <option value="1"> g </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3">
                                                 <label for="period" class="form-label fw-bold"> For </label>
                                                 <input id="feeding-t-period" type="number" class="form-control"
                                                     name="feedingTPeriod" spellcheck="false" data-ms-editor="true"
                                                     required>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <label for="time" class="form-label fw-bold"> Time </label>
-                                                <select class="form-select" id="period" name="feedTime" required>
+                                                <select class="form-select" id="period" name="feedingTime" required>
                                                     <option selected="" disabled="" value=""> Choose Time Period...
                                                     </option>
                                                     <option value="1"> Day(s) </option>
@@ -1949,17 +1973,27 @@
                                                 </select>
                                             </div>
 
-                                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                                                <button class="btn btn-light me-md-2 font-monospace"
-                                                    data-bs-dismiss="modal" type="button">
-                                                    CANCEL </button>
-                                                <button class="btn btn-primary font-monospace" onclick="handleTimetable()" type="button"> GENERATE </button>
-
-                                                <button class="btn btn-primary font-monospace"
-                                                    data-bs-toggle="modal" href="#generatedModalToggle" type="button" disabled> VIEW </button>
+                                            <div class="col-md-6">
+                                                <label for="feedingFirstDate" class="form-label fw-bold"> First Feeding Date </label>
+                                                <input id="feedingFirstDate" type="datetime-local" class="form-control"
+                                                    name="feedingFirstDate" spellcheck="false" data-ms-editor="true"
+                                                    required>
                                             </div>
 
-                                        </div>
+                                            <div class="col-md-6">
+                                                <label for="feedingLastDate" class="form-label fw-bold"> Last Feeding Date </label>
+                                                <input id="feedingLastDate" type="datetime-local" class="form-control"
+                                                    name="feedingLastDate" spellcheck="false" data-ms-editor="true"
+                                                    required>
+                                            </div>
+
+                                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <button class="btn btn-light me-md-2 font-monospace"
+                                                    data-bs-dismiss="modal" type="button"> CANCEL </button>
+                                                <button class="btn btn-primary font-monospace" type="submit"> GENERATE </button>
+                                            </div>
+
+                                        </form>
 
                                     </div>
                                 </div>
@@ -2085,9 +2119,6 @@
                                             onclick="printReport('generatedTable')"> PRINT </button>
                                     </div>
                                     <div class="col-auto">
-                                        <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="saveGenerated('generatedTable')"> SAVE </button>
-
                                         <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
                                             aria-label="Close"> CLOSE </button>
                                     </div>

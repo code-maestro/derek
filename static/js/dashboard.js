@@ -123,6 +123,17 @@ async function getMaxId() {
   }
 }
 
+// Getting all animals listings from backend
+async function getTimeTableMaxId() {
+  let url = '/getTimeTableMaxId';
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // [x] FOR REGISTERED ANIMALS MODAL
 // Table data for all animals
 async function getAnimalTableData() {
@@ -223,6 +234,12 @@ const getFeedsTableData = async () => {
 // Function to get All feeds
 const getFeedsListData = async () => {
   const feedsData = await getFeedsData();
+  let last = await getTimeTableMaxId();
+
+  last.last_id.forEach(id => {
+    document.getElementById("timetableTitle").setAttribute('value', `${id.animal_type.toUpperCase()}-FEEDING-000${id.LAST + 1}`);
+  });
+
 
   let listed = '';
   let forlist = `<option selected disabled> Choose a Feed ...</option>`;

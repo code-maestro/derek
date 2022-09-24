@@ -6,6 +6,5 @@
 
 
 const handleTimetable = (e) => {
-    return console.log('lololo');
-  }
-  
+  return console.log('lololo');
+}
