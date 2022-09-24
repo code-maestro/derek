@@ -324,7 +324,6 @@ app.get('/getDiseases', function (request, response) {
     })
 });
 
-
 // Function to retrieve symptoms data
 app.get('/getSymptoms', function (request, response) {
     connection.query(`SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${storage('animal')}'`, function (error, results, fields) {
@@ -333,7 +332,6 @@ app.get('/getSymptoms', function (request, response) {
         response.send({ symptoms: results });
     })
 });
-
 
 // Fn to get sick animal listing
 app.get('/getSickAnimals', function (request, response) {
@@ -482,6 +480,23 @@ app.get('/getExpectingAnimals', function (request, response) {
         response.redirect('/');
     }
 });
+
+// Function to retrieve expecting animals
+app.get('/getFeedsData', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT * FROM feeds WHERE farma_id=? AND animal_type=?`, [user_id, animal], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ animalFeeds: results });
+        })
+    } else {
+        response.redirect('/');
+    }
+});
+
 
 
 

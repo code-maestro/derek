@@ -45,6 +45,7 @@
     <!-- List of animals that belong to the farmer that has signed in -->
     <script src="../js/dashboard.js" defer></script>
     <script src="../js/main.js" defer></script>
+    <script src="../js/timetable.js" defer></script>
     <script src="../js/dashboardCards.js" defer></script>
     <script src="../js/getFarmaData.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -152,9 +153,11 @@
                             role="button"> Register Feeds Stock </span>
                         <span class="collapse-item" data-bs-toggle="modal" href="#feedsModalToggle" role="button">
                             Available Feeds </span>
-                        <span class="collapse-item" data-bs-toggle="modal" href="#newFeedingTimetableModalToggle" role="button">
+                        <span onclick="getFeedsListData()" class="collapse-item" data-bs-toggle="modal"
+                            href="#newFeedingTimetableModalToggle" role="button">
                             Generate TimeTable </span>
-                        <span class="collapse-item" data-bs-toggle="modal" href="#feedingTimetableModalToggle" role="button">
+                        <span class="collapse-item" data-bs-toggle="modal" href="#feedingTimetableModalToggle"
+                            role="button">
                             Feeding Timetables </span>
                     </div>
                 </div>
@@ -1812,9 +1815,7 @@
                                                 <th scope="col" class="text-center"> DELETE </th>
                                             </tr>
                                         </thead>
-                                        <tbody id="feedsListing">
-
-                                        </tbody>
+                                        <tbody id="feedsListing"> </tbody>
                                     </table>
                                 </div>
 
@@ -1853,11 +1854,12 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="container">
+                    <div class="container" id="tt">
 
                         <div class="row p-3  mx-auto">
                             <div class="mx-auto" style="width: auto;">
-                                <h5 class="font-monospace" id="newFeedingTimetableModalLabel"> GENERATE NEW FEEDING TIMETABLE </h5>
+                                <h5 class="font-monospace" id="newFeedingTimetableModalLabel"> GENERATE NEW FEEDING
+                                    TIMETABLE </h5>
                             </div>
                         </div>
 
@@ -1866,77 +1868,98 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <!-- New Feeds Form -->
-                                        <form class="row g-3 needs-validation" novalidate method="POST"
-                                            action="/newFeedingTimetable">
-
+                                        <div class="row g-3 needs-validation">
                                             <div class="col-md-6">
-                                                <label for="period" class="form-label fw-bold"> Choose Feeds' Name </label>
-                                                <select class="form-select" id="quantity-measure" name="quantityMeasure"
-                                                    required="">
-                                                    <option selected="" disabled="" value=""> Choose a measure ...</option>
-                                                    <div id="feedsListing">
-                                                        <option value="ml"> milli litre(s) </option>
-                                                        <option value="l"> litre(s) </option>
-                                                        <option value="l"> litre(s) </option>
-                                                        <option value="l"> litre(s) </option>
-                                                    </div>
-                                                    
+                                                <label for="feedsName" class="form-label fw-bold"> Choose Feeds' Name
+                                                </label>
+                                                <select onChange="getOtherData()" id="feedList" class="form-select"
+                                                    name="feedsName" required>
                                                 </select>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label for="feeds-description" class="form-label fw-bold">
-                                                    Description </label>
-                                                <input id="feeds-description" type="text" class="form-control"
-                                                    name="feedsDescription" spellcheck="false" data-ms-editor="true"
-                                                    value="">
                                             </div>
 
                                             <div class="col-md-6">
                                                 <label for="feeds-quantity" class="form-label fw-bold">
                                                     Quantity </label>
-                                                <input id="feeds-quantity" type="number" class="form-control"
+                                                <input id="feeds-quantity" type="text" class="form-control"
                                                     name="feedsQuantity" spellcheck="false" data-ms-editor="true"
-                                                    value="">
+                                                    value="" disabled>
                                             </div>
 
+                                            <div class="col-md-12">
+                                                <label for="feeds-description" class="form-label fw-bold">
+                                                    Description </label>
+                                                <input id="feeds-description" type="text" class="form-control"
+                                                    name="feedsDescription" spellcheck="false" data-ms-editor="true"
+                                                    value="" readonly>
+                                            </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <label for="feeding-cycle" class="form-label fw-bold"> Cycle
                                                 </label>
                                                 <input id="feeding-cycle" type="number" class="form-control"
                                                     name="feedingCycle" spellcheck="false" data-ms-editor="true"
-                                                    value="">
+                                                    required>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="period" class="form-label fw-bold"> Every </label>
+                                                <select class="form-select" id="period" name="feedPeriod" required>
+                                                    <option selected="" disabled="" value=""> Choose a period...
+                                                    </option>
+                                                    <option value="1"> Day </option>
+                                                    <option value="30"> Month </option>
+                                                    <option value="360"> Year </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="feeds-quantity" class="form-label fw-bold">
+                                                    Quantity Per Cycle </label>
+                                                <input id="feeds-quantity" type="number" class="form-control"
+                                                    name="feedsQuantity" spellcheck="false" data-ms-editor="true"
+                                                    required>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="feeds-quantity-measure" class="form-label fw-bold">
+                                                    Quantity Per Cycle Measure </label>
+                                                <select class="form-select" id="feedQuantityMeasure"
+                                                    name="feedQuantityMeasure" required>
+                                                    <option selected="" disabled="" value=""> Choose a unit...</option>
+                                                    <option value="1000"> kg </option>
+                                                    <option value="1"> g </option>
+                                                </select>
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="period" class="form-label fw-bold"> Every </label>
-                                                <select class="form-select" id="period" name="vaccinePeriod"
-                                                    required="">
-                                                    <option selected="" disabled="" value=""> Choose a period
-                                                        ...</option>
+                                                <label for="period" class="form-label fw-bold"> For </label>
+                                                <input id="feeding-t-period" type="number" class="form-control"
+                                                    name="feedingTPeriod" spellcheck="false" data-ms-editor="true"
+                                                    required>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="time" class="form-label fw-bold"> Time </label>
+                                                <select class="form-select" id="period" name="feedTime" required>
+                                                    <option selected="" disabled="" value=""> Choose Time Period...
+                                                    </option>
                                                     <option value="1"> Day(s) </option>
                                                     <option value="30"> Month(s) </option>
                                                     <option value="360"> Year(s) </option>
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <label for="feeds-quantity" class="form-label fw-bold">
-                                                    Quantity Per Cycle </label>
-                                                <input id="feeds-quantity" type="number" class="form-control"
-                                                    name="feedsQuantity" spellcheck="false" data-ms-editor="true"
-                                                    value="">
-                                            </div>
-
                                             <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
                                                 <button class="btn btn-light me-md-2 font-monospace"
                                                     data-bs-dismiss="modal" type="button">
                                                     CANCEL </button>
-                                                <button class="btn btn-primary font-monospace" type="submit"> GENERATE </button>
+                                                <button class="btn btn-primary font-monospace" onclick="handleTimetable()" type="button"> GENERATE </button>
+
+                                                <button class="btn btn-primary font-monospace"
+                                                    data-bs-toggle="modal" href="#generatedModalToggle" type="button" disabled> VIEW </button>
                                             </div>
 
-                                        </form>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -2013,6 +2036,70 @@
             </div>
         </div>
     </div>
+
+    <!-- Generated Animal Feeding TimeTable modal -->
+    <div class="modal fade" id="generatedModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="generatedModalToggleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row px-2 pt-4">
+                            <div class="mx-auto" style="width: auto;">
+                                <h5 class="font-monospace" id="generatedModalLabel"> GENERATED FEEDING TIMETABLE </h5>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col">
+                                <div class="row px-4">
+                                    <!-- Vaccines Form -->
+                                    <table id="generatedTable" class="table table-bordered table-hover table-sm">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th scope="col" class="text-center"> ID </th>
+                                                <th scope="col" class="text-center"> FIRST DATE </th>
+                                                <th scope="col" class="text-center"> NEXT DATE </th>
+                                                <th scope="col" class="text-center"> QUANTITY PER CYCLE </th>
+                                                <th scope="col" class="text-center"> QUANTITY </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="generatedListing"> </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="row px-4 py-4">
+                                    <div class="col-auto me-auto">
+                                        <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                    </div>
+                                    <div class="col-auto me-auto">
+                                        <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                    </div>
+                                    <div class="col-auto">
+                                        <h6 class="fw-bold py-2"> Export your data to </h6>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            onclick="toExcel('generatedTable')"> EXCEL </button>
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            onclick="printReport('generatedTable')"> PRINT </button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            onclick="saveGenerated('generatedTable')"> SAVE </button>
+
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                            aria-label="Close"> CLOSE </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!--Animal Symptoms listing modal -->
     <div class="modal fade" id="symptomModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
