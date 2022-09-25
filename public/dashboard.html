@@ -75,7 +75,7 @@
 
             <!-- TODO implement function move() to handle the click event -->
             <!-- Nav Item - home -->
-            <li class="nav-item" href="/">
+            <li class="nav-item" onclick="goHome()" href="/">
                 <span class="nav-link">
                     <i class="fa-solid fa-gauge"></i>
                     <span> Home </span>
@@ -97,7 +97,7 @@
                     <span> Registration </span>
                 </span>
                 <div id="reg" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="bg-white collapse-inner rounded">
                         <span class="collapse-item" data-bs-toggle="modal" href="#registerAnimalModalToggle"
                             role="button"> Register an Animal </span>
                         <span class="collapse-item" data-bs-toggle="modal" href="#registeredAnimalsModalToggle"
@@ -114,7 +114,7 @@
                     <span> Vaccination </span>
                 </span>
                 <div id="vaccines" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="bg-white collapse-inner rounded">
                         <span class="collapse-item" data-bs-toggle="modal" href="#newVaccineModalToggle" role="button">
                             Add a Vaccine </span>
                         <span class="collapse-item" onclick="getVaccinesTableData()" data-bs-toggle="modal"
@@ -148,7 +148,7 @@
                     <span> Feeds </span>
                 </span>
                 <div id="babies" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="bg-white collapse-inner rounded">
                         <span class="collapse-item" data-bs-toggle="modal" href="#registerFeedStockModalToggle"
                             role="button"> Register Feeds Stock </span>
                         <span class="collapse-item" data-bs-toggle="modal" href="#feedsModalToggle" role="button">
@@ -156,7 +156,7 @@
                         <span onclick="getFeedsListData()" class="collapse-item" data-bs-toggle="modal"
                             href="#newFeedingTimetableModalToggle" role="button">
                             Generate TimeTable </span>
-                        <span class="collapse-item" data-bs-toggle="modal" href="#feedingTimetableModalToggle"
+                        <span  onclick="getTimetables()" class="collapse-item" data-bs-toggle="modal" href="#feedingTimetableModalToggle"
                             role="button">
                             Feeding Timetables </span>
                     </div>
@@ -172,7 +172,7 @@
                     <span> Charts </span>
                 </span>
                 <div id="charts" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="bg-white collapse-inner rounded">
                         <span class="collapse-item" onclick="viewGraphs('expected')"> Expectations </span>
                         <span class="collapse-item" onclick="viewGraphs('actual')"> Actual Data </span>
                     </div>
@@ -190,7 +190,7 @@
                 </span>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="bg-white collapse-inner rounded">
                         <span class="collapse-item" onclick="viewDiseases('♀️')"> Female </span>
                         <span class="collapse-item" onclick="viewDiseases('♂️')"> Male </span>
                     </div>
@@ -206,7 +206,7 @@
                     <span> Symptoms </span>
                 </span>
                 <div id="symptoms" class="collapse" aria-labelledby="thesymptoms" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="bg-white collapse-inner rounded">
                         <span class="collapse-item" onclick="viewSymptoms('♀️')" data-bs-toggle="modal"
                             href="#symptomModalToggle" role="button"> Female </span>
                         <span class="collapse-item" onclick="viewSymptoms('♂️')" data-bs-toggle="modal"
@@ -350,7 +350,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Total Number </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="allCount">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="allAnimals">
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -369,7 +369,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Sick </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="sickCount">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="sickAnimals">
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -391,7 +391,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
-                                                        id="heavyCount"> </div>
+                                                        id="heavyAnimals"> </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -411,7 +411,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 New Born </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="babyCount">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="newBorns">
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -432,7 +432,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Fully Vaccinated </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="vaccinatedCount">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="vaccinatedAnimals">
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -454,7 +454,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
-                                                        id="pendingCount"> </div>
+                                                        id="pendingAnimals"> </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
@@ -481,7 +481,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Feeds </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="feedsCount">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="allFeeds">
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -500,7 +500,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Total Products </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="productsCount">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="allProducts">
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -1869,6 +1869,11 @@
                                     <div class="card-body">
                                         <!-- New Feeds Form -->
                                         <form method="POST" action="/newTimeTable" class="row g-3 needs-validation">
+                                            
+                                            <div class="col-md-12">
+                                                <input id="feeds_id" type="number" class="form-control" name="feeds_id" hidden>
+                                            </div>
+
                                             <div class="col-md-12">
                                                 <label for="timetableTitle" class="form-label fw-bold">
                                                     TimeTable Title </label>
@@ -1975,14 +1980,14 @@
 
                                             <div class="col-md-6">
                                                 <label for="feedingFirstDate" class="form-label fw-bold"> First Feeding Date </label>
-                                                <input id="feedingFirstDate" type="datetime-local" class="form-control"
+                                                <input id="feedingFirstDate" type="date" class="form-control"
                                                     name="feedingFirstDate" spellcheck="false" data-ms-editor="true"
                                                     required>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <label for="feedingLastDate" class="form-label fw-bold"> Last Feeding Date </label>
-                                                <input id="feedingLastDate" type="datetime-local" class="form-control"
+                                                <input id="feedingLastDate" type="date" class="form-control"
                                                     name="feedingLastDate" spellcheck="false" data-ms-editor="true"
                                                     required>
                                             </div>
@@ -2028,11 +2033,12 @@
                                         <thead class="table-dark">
                                             <tr>
                                                 <th scope="col" class="text-center"> ID </th>
+                                                <th scope="col" class="text-center"> FREQUENCY </th>
                                                 <th scope="col" class="text-center"> QUANTITY PER CYCLE </th>
                                                 <th scope="col" class="text-center"> FIRST DATE </th>
                                                 <th scope="col" class="text-center"> NEXT FEEDING DATE </th>
                                                 <th scope="col" class="text-center"> LAST FEEDING DATE </th>
-                                                <th scope="col" class="text-center"> EDIT </th>
+                                                <th scope="col" class="text-center"> VIEW DETAILS </th>
                                                 <th scope="col" class="text-center"> DELETE </th>
                                             </tr>
                                         </thead>
@@ -2130,7 +2136,6 @@
             </div>
         </div>
     </div>
-
 
     <!--Animal Symptoms listing modal -->
     <div class="modal fade" id="symptomModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

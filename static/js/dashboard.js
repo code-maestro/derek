@@ -112,9 +112,9 @@ async function getFeedsData() {
   }
 }
 
-// Getting all animals listings from backend
-async function getMaxId() {
-  let url = '/getAnimalMaxId';
+// Getting timetables data from backend
+async function getTimetablesData() {
+  let url = '/getTimetables';
   try {
     let res = await fetch(url);
     return await res.json();
@@ -124,8 +124,8 @@ async function getMaxId() {
 }
 
 // Getting all animals listings from backend
-async function getTimeTableMaxId() {
-  let url = '/getTimeTableMaxId';
+async function getMaxId(param) {
+  let url = `/getMaxId/${param}`;
   try {
     let res = await fetch(url);
     return await res.json();
@@ -137,10 +137,10 @@ async function getTimeTableMaxId() {
 // [x] FOR REGISTERED ANIMALS MODAL
 // Table data for all animals
 async function getAnimalTableData() {
-  let last = await getMaxId();
+  let last = await getMaxId('animal_id');
   let list = await getAnimalListing();
 
-  last.animalMaxId.forEach(id => {
+  last.last_id.forEach(id => {
     document.getElementById("animal-tag").setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-000${id.LAST + 1}`);
   });
 
@@ -234,7 +234,7 @@ const getFeedsTableData = async () => {
 // Function to get All feeds
 const getFeedsListData = async () => {
   const feedsData = await getFeedsData();
-  let last = await getTimeTableMaxId();
+  let last = await getMaxId('timetable_id');
 
   last.last_id.forEach(id => {
     document.getElementById("timetableTitle").setAttribute('value', `${id.animal_type.toUpperCase()}-FEEDING-000${id.LAST + 1}`);
@@ -263,24 +263,74 @@ const getOtherData = async () => {
   const names = [];
   const desc = [];
   const numbers = [];
+  const ids = [];
 
   feedsData.animalFeeds.forEach(feed => {
+    ids.push(feed.id);
     names.push(feed.name);
     desc.push(feed.description);
     numbers.push(feed.quantity + ' ' + feed.quantity_measure);
   });
 
   const lstd = document.getElementById('feedList');
+
   if (names.includes(lstd.value)) {
     console.log(lstd.value);
     let getIndex = names.indexOf(lstd.value);
     document.getElementById('feeds-description').value = desc.at(getIndex);
     document.getElementById('feeds-quantity').value = numbers.at(getIndex);
+    document.getElementById('feeds_id').value = ids.at(getIndex);
   }
+}
+
+// Funciton invoked on changes
+const getTimetables = async () => {
+  const timetables = await getTimetablesData();
+
+  console.log(timetables);
+
+  let html = '';
+  let htmlSegment = '';
+
+  const con = document.getElementById('feedingTimetableListing');
+
+  timetables.timetable.forEach(timetable => {
+    htmlSegment = `
+    <tr class="justify-content-center" id="${timetable.id}">
+      <td class="text-center"> ${timetable.id} </td>   
+      <td class="text-center"> ${timetable.cycle} </td> 
+      <td class="text-center"> ${timetable.quantity_per_cycle} </td> 
+      <td class="text-center"> ${timetable.first_feed_date} </td> 
+      <td class="text-center"> ${timetable.last_feed_date} </td> 
+      <td class="text-center"> ${timetable.last_feed_date} </td>
+
+      <td class="text-center noprint" data-bs-target="#generatedModalToggle" data-bs-toggle="modal"  onclick="editAnimal(${timetable.id})">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
+          <path d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3h4v-.5A1.5 1.5 0 0 0 5.5 1h-1zM7 4v1h2V4h4v.882a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V13H9v-1.5a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5V13H1V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882V4h4zM1 14v.5A1.5 1.5 0 0 0 2.5 16h3A1.5 1.5 0 0 0 7 14.5V14H1zm8 0v.5a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5V14H9zm4-11H9v-.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5V3z"/>
+        </svg>
+      </td>
+
+      <td class="text-center noprint" onclick="deleteFromList('animal', '${timetable.id}')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+          <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
+        </svg>
+      </td>
+    </tr>
+  `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
 
 }
 
 
+
+
+// FRONT END LOGIC FUNCTIONS
+// DELETING A TABLE ROW
 function deleteFromList(param1, param2) {
   const url = `/delete/${param1}`;
   // post body data 

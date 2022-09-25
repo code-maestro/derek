@@ -1,6 +1,6 @@
 // Get Total Count of the animals from backend endpoint
-async function getAnimalsCount() {
-  let url = `/getAnimalsCount`;
+async function getCount(param) {
+  let url = `/getCount/${param}`;
   try {
     let res = await fetch(url);
     return res.json();
@@ -107,55 +107,58 @@ async function getAnimalType() {
 
 // RENDERS DATA TO THE BI DASHBOARD CARDS LIVE STATISTICS
 async function renderAnimals() {
-  // registered animals count
-  const animalCount = await getAnimalsCount();
-  animalCount.animalCount.forEach(count => {
-    document.getElementById('allCount').innerText = count.COUNT || 0;
-  })
+  const cardsCount = ['allAnimals', 'sickAnimals', 'newBorns', 'vaccinatedAnimals', 'heavyAnimals', 'pendingAnimals', 'allFeeds', 'allProducts']
 
-  // sick animals count
-  const sickAnimalsCount = await getSickAnimalsCount();
-  sickAnimalsCount.sickAnimalCount.forEach(count => {
-    document.getElementById('sickCount').innerText = count.COUNT || 0;
-  })
+  for (const number of cardsCount) {
+    const animalCount = await getCount(number);
+    animalCount.count.forEach(count => {
+      document.getElementById(number).innerText = count.COUNT || 0;
+    })
+  }
 
-  // Heavy animals count
-  const expectantCount = await getExpectingAnimalsCount();
-  expectantCount.expectingAnimalCount.forEach(count => {
-    document.getElementById('heavyCount').innerText = count.COUNT || 0;
+  // // sick animals count
+  // const sickAnimalsCount = await getSickAnimalsCount();
+  // sickAnimalsCount.sickAnimalCount.forEach(count => {
+  //   document.getElementById('sickCount').innerText = count.COUNT || 0;
+  // })
 
-  })
+  // // Heavy animals count
+  // const expectantCount = await getExpectingAnimalsCount();
+  // expectantCount.expectingAnimalCount.forEach(count => {
+  //   document.getElementById('heavyCount').innerText = count.COUNT || 0;
 
-  // New Borns animals count
-  const newBornsCount = await getNewBornsCount();
-  newBornsCount.newBornCount.forEach(count => {
-    document.getElementById('babyCount').innerText = count.COUNT || 0;
-  })
+  // })
 
-  // FULLY vaccinated animals count
-  const vaccinatedCount = await getVaccinatedCount();
-  vaccinatedCount.vaccinatedCount.forEach(count => {
-    document.getElementById('vaccinatedCount').innerText = count.COUNT || 0;
-  })
+  // // New Borns animals count
+  // const newBornsCount = await getNewBornsCount();
+  // newBornsCount.newBornCount.forEach(count => {
+  //   document.getElementById('babyCount').innerText = count.COUNT || 0;
+  // })
+
+  // // FULLY vaccinated animals count
+  // const vaccinatedCount = await getVaccinatedCount();
+  // vaccinatedCount.vaccinatedCount.forEach(count => {
+  //   document.getElementById('vaccinatedCount').innerText = count.COUNT || 0;
+  // })
 
 
-  // Pending vaccinations animals count
-  const pendingCount = await getPendingVaccinationsCount();
-  pendingCount.pendingCount.forEach(count => {
-    document.getElementById('pendingCount').innerText = count.COUNT || 0;
-  })
+  // // Pending vaccinations animals count
+  // const pendingCount = await getPendingVaccinationsCount();
+  // pendingCount.pendingCount.forEach(count => {
+  //   document.getElementById('pendingCount').innerText = count.COUNT || 0;
+  // })
 
-  // animals' feeds count
-  const feedsCount = await getFeedsCount();
-  feedsCount.feedsCount.forEach(count => {
-    document.getElementById('feedsCount').innerText = count.COUNT || 0;
-  })
+  // // animals' feeds count
+  // const feedsCount = await getFeedsCount();
+  // feedsCount.feedsCount.forEach(count => {
+  //   document.getElementById('feedsCount').innerText = count.COUNT || 0;
+  // })
 
-  // animals' products count
-  const productsCount = await getProductsCount();
-  productsCount.animalProductsCount.forEach(count => {
-    document.getElementById('productsCount').innerText = count.COUNT || 0;
-  })
+  // // animals' products count
+  // const productsCount = await getProductsCount();
+  // productsCount.animalProductsCount.forEach(count => {
+  //   document.getElementById('productsCount').innerText = count.COUNT || 0;
+  // })
 
 }
 

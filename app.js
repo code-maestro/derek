@@ -182,131 +182,35 @@ app.get('/before-home', function (request, response) {
 
 // COUNT END POINTS
 // Function to retrieve dashboard data count
-app.get('/getAnimalsCount', function (request, response) {
+app.get('/getCount/:param', function (request, response) {
     const animal_type = storage('animal');
     const farma_id = storage('farma_id');
+    const param = request.params.param;
 
-    //s a query to get count of all animals
-    connection.query(`SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' `, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ animalCount: results });
-    })
+    const queries = {
+        allAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}';`,
+        sickAnimals: `SELECT COUNT(A.id) as COUNT FROM animal A, treatment_history B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.animal_tag = B.animal_tag AND A.farma_id='${farma_id}';`,
+        newBorns: `SELECT COUNT(parent_tag) as COUNT FROM animal WHERE farma_id = '${farma_id}' AND animal_type='${animal_type}';`,
+        vaccinatedAnimals: `SELECT COUNT(B.id) as COUNT FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id='${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
+        heavyAnimals: `SELECT COUNT(*) as COUNT FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id='${farma_id}';`,
+        pendingAnimals: `SELECT COUNT(B.vaccination_date) AS COUNT FROM animal A, due_dates B WHERE A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id ='${farma_id}' AND B.vaccination_date IS NOT NULL;`,
+        allFeeds: `SELECT COUNT(*) as COUNT FROM feeds WHERE animal_type='${animal_type}' AND farma_id='${farma_id}';`,
+        allProducts: `SELECT COUNT(B.id) as COUNT FROM animal A, products B WHERE B.animal_id = A.id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
+    }
 
-    //connection.end();
+    if (farma_id) {
+        connection.query(queries[param], function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ count: results });
+        })
+    } else {
+        console.log(" trying to delete with no farma_id 🤣😂 ");
+        response.redirect('/');
+    }
 
 });
 
-// Function to retrieve dashboard data count
-app.get('/getSickAnimalsCount', function (request, response) {
-    const animal_type = storage('animal');
-    const farma_id = storage('farma_id');
-
-    // derive a query to get count of all sick animals
-    connection.query(`SELECT COUNT(A.id) as COUNT FROM animal A, treatment_history B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.animal_tag = B.animal_tag AND A.farma_id='${farma_id}'`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ sickAnimalCount: results });
-    })
-
-    //connection.end();
-
-});
-
-// Function to retrieve expecting data count
-app.get('/getExpectingAnimalsCount', function (request, response) {
-    const animal_type = storage('animal');
-    const farma_id = storage('farma_id');
-
-    // a query to get count of all expecting animals
-    connection.query(`SELECT COUNT(*) as COUNT FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id='${farma_id}'`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ expectingAnimalCount: results });
-    })
-
-    //connection.end();
-
-});
-
-// Function to retrieve dashboard data count
-app.get('/getNewBornsCount', function (request, response) {
-    const animal_type = storage('animal');
-    const farma_id = storage('farma_id');
-
-    // a query to get count of all new born animals
-    connection.query(`SELECT COUNT(parent_tag) as COUNT FROM animal WHERE farma_id = '${farma_id}' AND animal_type='${animal_type}'`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        console.log(results);
-        response.send({ newBornCount: results });
-    })
-
-    //connection.end();
-
-});
-
-// Function to retrieve dashboard data count
-app.get('/getVaccinatedCount', function (request, response) {
-    const animal_type = storage('animal');
-    const farma_id = storage('farma_id');
-
-    // a query to get count of all fully vaccinated animals
-    connection.query(`SELECT COUNT(B.id) as COUNT FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id='${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE() `, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        console.log(results);
-        response.send({ vaccinatedCount: results });
-    })
-
-    //connection.end();
-
-});
-
-// Function to retrieve dashboard data count
-app.get('/getPendingVaccinationsCount', function (request, response) {
-    const animal_type = storage('animal');
-    const farma_id = storage('farma_id');
-
-    // a query to get count of all animals with pending vaccinations
-    connection.query(`SELECT COUNT(B.vaccination_date) AS COUNT FROM animal A, due_dates B WHERE A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id ='${farma_id}' AND B.vaccination_date IS NOT NULL`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ pendingCount: results });
-    })
-});
-
-// Function to retrieve dashboard data count
-app.get('/getFeedsCount', function (request, response) {
-    const animal_type = storage('animal');
-    const farma_id = storage('farma_id');
-
-    // a query to get count of all animal feeds
-    connection.query(`SELECT COUNT(*) as COUNT FROM feeds WHERE animal_type='${animal_type}' AND farma_id='${farma_id}'`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ feedsCount: results });
-    })
-
-    //connection.end();
-
-});
-
-// Function to retrieve dashboard data count
-app.get('/getProductsCount', function (request, response) {
-    const animal_type = storage('animal');
-    const farma_id = storage('farma_id');
-
-    // a query to get count of all animals
-    connection.query(`SELECT COUNT(B.id) as COUNT FROM animal A, products B WHERE B.animal_id = A.id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}'`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ animalProductsCount: results });
-    })
-
-    //connection.end();
-
-});
 
 // Function to return animal type dashboard data count
 app.get('/getType', function (request, response) { response.send({ type: storage('animal') }); });
@@ -438,7 +342,6 @@ app.get('/getPendingVaccinationData', function (request, response) {
 
 });
 
-
 // Function to retrieve animal data for table
 app.get('/getAvailableVaccines', function (request, response) {
     const animal = storage('animal');
@@ -450,35 +353,27 @@ app.get('/getAvailableVaccines', function (request, response) {
 });
 
 // Function to retrieve animal data for table
-app.get('/getAnimalMaxId', function (request, response) {
+app.get('/getMaxId/:param', function (request, response) {
     const user_id = storage('farma_id');
     const animal = storage('animal');
+    const param = request.params.param;
 
-    if (user_id) {
-        connection.query(`SELECT MAX(id) AS LAST, animal_type FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({ animalMaxId: results });
-        })
-    } else {
-        response.redirect('/');
+    const queries = {
+        animal_id: `SELECT MAX(id) AS LAST, animal_type FROM animal  WHERE animal_type='${animal}' AND farma_id = '${user_id}';`,
+        timetable_id: `SELECT MAX(id) AS LAST, animal_type FROM feeding_timetable WHERE farma_id = '${user_id}' AND animal_type = '${animal}';`
     }
-});
-
-// Function to retrieve animal data for table
-app.get('/getTimeTableMaxId', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
 
     if (user_id) {
-        connection.query(`SELECT MAX(id) AS LAST, animal_type FROM feeding_timetable WHERE farma_id='${user_id}' AND animal_type='${animal}'`, function (error, results, fields) {
+        connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
             response.send({ last_id: results });
         })
     } else {
+        console.log(" trying to delete with no farma_id 🤣😂 ");
         response.redirect('/');
     }
+
 });
 
 // Function to retrieve expecting animals
@@ -512,6 +407,23 @@ app.get('/getFeedsData', function (request, response) {
         response.redirect('/');
     }
 });
+
+// Function to retrieve expecting animals
+app.get('/getTimetables', function (request, response) {
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (user_id) {
+        connection.query(`SELECT * FROM feeding_timetable WHERE farma_id='${user_id}' AND animal_type='${animal}'`, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ timetable: results });
+        })
+    } else {
+        response.redirect('/');
+    }
+});
+
 
 
 
@@ -786,7 +698,8 @@ app.post('/delete/:param', function (request, response) {
 
     const queries = {
         vaccine: `DELETE FROM vaccines WHERE animal_type='${animal}' AND id = '${param_id}';`,
-        animal: `DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${param_id}';`
+        animal: `DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${param_id}';`,
+        timetable: `DELETE FROM feeding_timetable WHERE farma_id = '${user_id}' AND id = '${param_id}';`
     }
 
     if (user_id) {
@@ -804,13 +717,15 @@ app.post('/delete/:param', function (request, response) {
 app.post('/newTimeTable', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
+    
     // Execute SQL query that'll insert into the feeding_timetable table
-    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, last_feed_date, farma_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, '${req.body.feedingPeriod}', ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, '${req.body.feedingTime}', CONVERT('${req.body.feedingFirstDate}', DATETIME), CONVERT('${req.body.feedingLastDate}', DATETIME), '${farma_id}');`,
+    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, last_feed_date, feeds_id, farma_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', '${req.body.feedingLastDate}', ${req.body.feeds_id}, '${farma_id}');`,
         function (error, results, fields) {
             if (error) throw error;
         });
 
     res.redirect(`/animal/${animal}`);
+
     return;
 })
 
