@@ -115,15 +115,15 @@
                 </span>
                 <div id="vaccines" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white collapse-inner rounded">
-                        <span class="collapse-item" data-bs-toggle="modal" href="#newVaccineModalToggle" role="button">
+                        <span class="collapse-item" onclick="getAvailableVaccines()" data-bs-toggle="modal" href="#newVaccineModalToggle" role="button">
                             Add a Vaccine </span>
-                        <span class="collapse-item" onclick="getVaccinesTableData()" data-bs-toggle="modal"
+                        <span class="collapse-item" onclick="getAvailableVaccines()" data-bs-toggle="modal"
                             href="#vaccinesModalToggle" role="button"> Available Vaccines </span>
-                        <span class="collapse-item" data-bs-toggle="modal" href="#vaccinateModalToggle" role="button">
+                        <span onclick="getVaccineData()" class="collapse-item" data-bs-toggle="modal" href="#vaccinateModalToggle" role="button">
                             Schedule Vaccination </span>
                         <span class="collapse-item" onclick="getPendingVaccinations()" data-bs-toggle="modal"
                             href="#pendingVaccinationsModalToggle" role="button"> Pending Vaccinations </span>
-                        <span class="collapse-item" onclick="getFullyVaccinatedTableData()" data-bs-toggle="modal"
+                        <span class="collapse-item" onclick="getFullyVaccinatedAnimals()" data-bs-toggle="modal"
                             href="#fullyVaccinatedModalToggle" role="button"> Fully Vaccinated </span>
                     </div>
                 </div>
@@ -139,7 +139,6 @@
 
 
             <!-- TODO Test the routing created off  at 20220910-1804 -->
-            <!-- TODO define and implement - getFeedsTableData() -->
             <!-- Nav Item - New Borns -->
             <li class="nav-item" onclick="getFeedsTableData()">
                 <span class="nav-link collapsed" data-toggle="collapse" data-target="#babies" aria-expanded="true"
@@ -938,7 +937,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="container">
-                        <div class="row px-2 py-4">
+                        <div class="row px-2 pt-4">
                             <div class="mx-auto" style="width: auto;">
                                 <h5 class="font-monospace" id="availableVaccinesModalLabel"> AVAILABLE VACCINES
                                 </h5>
@@ -966,7 +965,7 @@
                                                 <th scope="col" class="text-center"> DELETE </th>
                                             </tr>
                                         </thead>
-                                        <tbody id="vaccinesListing">
+                                        <tbody id="availableVaccinesListing">
 
                                         </tbody>
                                     </table>
@@ -1009,8 +1008,10 @@
                 <div class="modal-body">
                     <div class="container">
 
-                        <div class="row px-2 py-4">
-                            <div class="col-auto me-auto fw-bold" id="pendingVaccinationModalLabel"> </div>
+                        <div class="row px-2 py-3">
+                            <div class="mx-auto" style="width: auto;">
+                                <h5 class="font-monospace"id="vaccinateModalLabel"> SCHEDULE A VACCINATION </h5>
+                            </div>
                         </div>
 
                         <div class="row ">
@@ -1019,94 +1020,94 @@
                                     <div class="card-body">
                                         <!-- Vaccination Form -->
                                         <form class="row g-3 needs-validation" novalidate method="POST"
-                                            action="/addPending">
-                                            <!-- Vaccination Records -->
-                                            <div class="col-md-12">
-                                                <label for="age-years" class="form-label fw-bold"> VACCINATION
-                                                    FORM </label>
+                                            action="/scheduleVaccination">
+
+                                            <div class="col-md-3">
+                                                <label for="animal-tag" class="form-label fw-bold"> Animal Tag(s) </label>
+                                                    <select id="animal-tag" class="form-select"  name="animalTag" required> </select>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <label for="pending-vaccine-name" class="form-label fw-bold">
-                                                    Vaccine
-                                                    Name </label>
-                                                <input id="pending-vaccine-name" type="text" class="form-control"
-                                                    name="pendingVaccineName" spellcheck="false" data-ms-editor="true"
-                                                    value="">
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label for="pending-vet-name" class="form-label fw-bold"> Vet
-                                                    Name
-                                                </label>
-                                                <input id="pending-vet-name" type="text" class="form-control"
-                                                    name="pendingVetName" spellcheck="false" data-ms-editor="true"
-                                                    value="">
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label for="pending-no-vaccinations" class="form-label fw-bold">
-                                                    Number
-                                                    of Vaccinations </label>
-                                                <input id="pending-no-vaccinations" type="text" class="form-control"
-                                                    name="pendingNoVaccinations" spellcheck="false"
-                                                    data-ms-editor="true" value="">
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label for="first_vaccination" class="form-label fw-bold"> First
-                                                    Vaccination Date </label>
-                                                <input id="p-first_vaccination" type="text" class="form-control"
-                                                    name="pendingFirstVaccination" spellcheck="false"
-                                                    data-ms-editor="true" value="">
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label for="p-vaccination-cycle" class="form-label fw-bold">
-                                                    Cycle
-                                                </label>
-                                                <input id="p-vaccination-cycle" type="number" class="form-control"
-                                                    name="pendingVaccinationCycle" spellcheck="false"
-                                                    data-ms-editor="true" value="">
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label for="pending-period" class="form-label fw-bold"> Every
-                                                </label>
-                                                <select class="form-select" id="pending-period" name="pending-period"
-                                                    required="">
-                                                    <option selected="" disabled="" value=""> Choose a period
-                                                        ...</option>
-                                                    <option value="1"> Day(s) </option>
-                                                    <option value="30"> Month(s) </option>
-                                                    <option value="360"> Year(s) </option>
+                                            <div class="col-md-3">
+                                                <label for="vaccine-name" class="form-label fw-bold"> Vaccine Name </label>
+                                                    <select onChange="getOtherVaccineData()" id="vaccine-name" class="form-select" data-live-search="true"
+                                                    name="vaccineName" required>
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <label for="pending-next-vaccination" class="form-label fw-bold">
-                                                    Next
-                                                    Vaccination Date </label>
-                                                <input id="pending-next-vaccination" type="text" class="form-control"
-                                                    name="pendingNextVaccination" spellcheck="false"
+                                            <div class="col-md-3">
+                                                <label for="no-vaccinations" class="form-label fw-bold">
+                                                    Number of Vaccinations </label>
+                                                <input id="no-vaccinations" type="number" class="form-control"
+                                                    name="noVaccinations" spellcheck="false"
                                                     data-ms-editor="true" value="">
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <label for="pending-last-vaccination" class="form-label fw-bold">
+                                            <div class="col-md-3">
+                                                <label for="cycle-vaccinations" class="form-label fw-bold">  Vaccination cycle </label>
+                                                <input id="cycle-vaccinations" type="text" class="form-control"
+                                                    name="cycleVaccinations" spellcheck="false"
+                                                    data-ms-editor="true" value="">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="vet-name" class="form-label fw-bold"> Vet Name </label>
+                                                <select onChange="getOtherVaccineData()" id="vet-name" class="form-select" data-live-search="true"
+                                                name="vetName" required>
+                                            </select>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="vet-hospital" class="form-label fw-bold"> Station </label>
+                                                <input id="vet-hospital" type="text" class="form-control"
+                                                    name="vetHospital" spellcheck="false" data-ms-editor="true"
+                                                    value="">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="vet-email" class="form-label fw-bold"> Email </label>
+                                                <input id="vet-email" type="email" class="form-control"
+                                                    name="vetEmail" spellcheck="false" data-ms-editor="true"
+                                                    value="">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="vet-phone" class="form-label fw-bold"> Phone
+                                                </label>
+                                                <input id="vet-phone" type="tel" class="form-control"
+                                                    name="vetPhone" spellcheck="false" data-ms-editor="true"
+                                                    value="">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="scheduled_first_date" class="form-label fw-bold"> First
+                                                    Vaccination Date </label>
+                                                <input id="scheduled_first_date" type="date" class="form-control"
+                                                    name="scheduled_first_date" spellcheck="false"
+                                                    data-ms-editor="true" value="">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="pending-next-vaccination" class="form-label fw-bold">
+                                                    Next
+                                                    Vaccination Date </label>
+                                                <input id="next-vaccination" type="date" class="form-control"
+                                                    name="nextVaccination" spellcheck="false"
+                                                    data-ms-editor="true" value="">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="last-vaccination" class="form-label fw-bold">
                                                     Last
                                                     Vaccination Date </label>
-                                                <input id="pending-last-vaccination" type="text" class="form-control"
-                                                    name="pendingLastVaccination" spellcheck="false"
+                                                <input id="last-vaccination" type="date" class="form-control"
+                                                    name="lastVaccination" spellcheck="false"
                                                     data-ms-editor="true" value="">
                                             </div>
 
                                             <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
                                                 <button class="btn btn-light me-md-2 font-monospace"
-                                                    data-bs-dismiss="modal" type="button">
-                                                    cancel </button>
-                                                <button class="btn btn-primary font-monospace" type="submit"> submit
-                                                </button>
+                                                    data-bs-dismiss="modal" type="button"> cancel </button>
+                                                <button class="btn btn-primary font-monospace" type="submit"> submit </button>
                                             </div>
 
                                         </form>
@@ -1221,7 +1222,7 @@
                                             </tr>
                                         </thead>
 
-                                        <tbody id="fullyVaccinatedListing"> </tbody>
+                                        <tbody id="vaccinatedListing"> </tbody>
 
                                     </table>
                                 </div>

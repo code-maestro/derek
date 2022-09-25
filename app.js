@@ -76,9 +76,10 @@ function checkFileType(file, cb) {
     }
 }
 
+
 /* 
 
-    [x] UI END POINTS PAGES (routes) 
+    UI END POINTS PAGES (routes) 
 
 */
 
@@ -150,9 +151,11 @@ app.get('/logout', (req, res) => {
 });
 
 
+
 /* 
 
-    [x] END POINTS THAT READ FROM THE DATABASE
+    END POINTS THAT READ FROM THE DATABASE
+
 
 */
 
@@ -181,7 +184,7 @@ app.get('/before-home', function (request, response) {
 
 
 // COUNT END POINTS
-// Function to retrieve dashboard data count
+// Cleaned Function to retrieve dashboard data count
 app.get('/getCount/:param', function (request, response) {
     const animal_type = storage('animal');
     const farma_id = storage('farma_id');
@@ -211,130 +214,39 @@ app.get('/getCount/:param', function (request, response) {
 
 });
 
-
 // Function to return animal type dashboard data count
 app.get('/getType', function (request, response) { response.send({ type: storage('animal') }); });
 
 
-
 //  LISTING END POINTS
-// Function to retrieve diseases data
-app.get('/getDiseases', function (request, response) {
-    // Get Data from DB 
-    connection.query(`SELECT * FROM disease WHERE animal_type = '${storage('animal')}'`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ diseases: results });
-    })
-});
-
-// Function to retrieve symptoms data
-app.get('/getSymptoms', function (request, response) {
-    connection.query(`SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${storage('animal')}'`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ symptoms: results });
-    })
-});
-
-// Fn to get sick animal listing
-app.get('/getSickAnimals', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date, is_sick FROM animal WHERE farma_id=? AND animal_type=? AND is_sick IS NOT NULL AND is_sick is TRUE`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({ sickAnimalListing: results });
-        })
-    } else {
-        response.redirect('/');
-    }
-});
-
-// Function to retrieve farma data
-app.get('/getFarmaData', function (request, response) {
-    const user_id = storage('farma_id');
-    if (user_id) {
-        connection.query(`SELECT * FROM farma WHERE farma_id='${user_id}';`, function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            results.forEach(element => {
-                if (element == null) {
-                    console.log("😒😒😒😒😒");
-                } else {
-                    response.send(JSON.parse(JSON.stringify(element)));
-                }
-            });
-        })
-    } else {
-        console.log("FARMA DATA no farma_id");
-        response.redirect('/');
-    }
-});
-
-// Function to retrieve animal data for table
-app.get('/getAnimalListing', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({ animalListing: results });
-        })
-    } else {
-        response.redirect('/');
-    }
-
-});
-
-// Function to retrieve animal's vaccination data
-app.get('/getVaccinationData', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id=(?) AND animal_type=(?)`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({ animalListing: results });
-        })
-    } else {
-        response.redirect('/');
-    }
-
-});
-
-// Function to retrieve vaccinated animals
-app.get('/getVaccinatedAnimalsData', function (request, response) {
-    const user_id = storage('farma_id');
+// Cleaned
+app.get('/getListing/:param', function (request, response) {
     const animal_type = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id='${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE() `, function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({ vaccinatedAnimalsListing: results });
-        })
-    } else {
-        response.redirect('/');
-    }
-});
-
-// Function to retrieve animals pending vaccination.
-app.get('/getPendingVaccinationData', function (request, response) {
     const farma_id = storage('farma_id');
-    const animal_type = storage('animal');
+    const param = request.params.param;
+
+    const queries = {
+        farma_data: `SELECT * FROM farma WHERE farma_id = '${farma_id}';`,
+        diseases: `SELECT * FROM disease WHERE animal_type = ${animal_type}';`,
+        symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${animal_type}';`,
+        allAnimals: `SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
+        expectingAnimals: `SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date FROM due_dates a, animal b, first_dates c WHERE b.farma_id = '${farma_id}' AND b.animal_type = '${animal_type}' AND a.animal_id = b.id AND a.animal_id = c.animal_id AND c.animal_id = b.id AND a.animal_id=b.id AND a.farma_id = b.farma_id AND a.delivery_date IS NOT NULL;`,
+        sickAnimals: `SELECT id, animal_tag, gender,  dob, reg_date, is_sick FROM animal WHERE farma_id='${farma_id}' AND animal_type='${animal_type}' AND is_sick IS NOT NULL AND is_sick is TRUE;`,
+        vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
+        pendingAnimals: `SELECT * FROM animal A, due_dates B WHERE A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL;`,
+        availableVaccines: `SELECT * FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
+        feeds: `SELECT * FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
+        timetables: `SELECT * FROM feeding_timetable WHERE farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
+        fullyVaxedAnimals: `SELECT * FROM vaccination_details VD, vaccines V, animal A WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_vaccination_date IS NOT NULL;`,
+        vets: `SELECT * FROM vets;`
+    }
 
     if (farma_id) {
-        connection.query(`SELECT * FROM animal A, due_dates B WHERE A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id ='${farma_id}' AND B.vaccination_date IS NOT NULL`, function (error, results, fields) {
+        connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
-            console.log(results);
             if (error) throw error;
-            response.send({ pendingListing: results });
+            console.log(results);
+            response.send({ listing: results });
         })
     } else {
         response.redirect('/');
@@ -342,16 +254,9 @@ app.get('/getPendingVaccinationData', function (request, response) {
 
 });
 
-// Function to retrieve animal data for table
-app.get('/getAvailableVaccines', function (request, response) {
-    const animal = storage('animal');
-    connection.query(`SELECT * FROM vaccines WHERE animal_type=(?)`, [animal], function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ vaccines: results });
-    })
-});
 
+
+// Cleaned 
 // Function to retrieve animal data for table
 app.get('/getMaxId/:param', function (request, response) {
     const user_id = storage('farma_id');
@@ -376,61 +281,11 @@ app.get('/getMaxId/:param', function (request, response) {
 
 });
 
-// Function to retrieve expecting animals
-app.get('/getExpectingAnimals', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date FROM due_dates a, animal b, first_dates c WHERE b.farma_id=(?) AND b.animal_type=(?) AND a.animal_id=b.id AND a.animal_id=c.animal_id AND c.animal_id=b.id AND a.animal_id=b.id AND a.farma_id = b.farma_id AND a.delivery_date IS NOT NULL`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({ heavyAnimals: results });
-        })
-    } else {
-        response.redirect('/');
-    }
-});
-
-// Function to retrieve expecting animals
-app.get('/getFeedsData', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT * FROM feeds WHERE farma_id=? AND animal_type=?`, [user_id, animal], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({ animalFeeds: results });
-        })
-    } else {
-        response.redirect('/');
-    }
-});
-
-// Function to retrieve expecting animals
-app.get('/getTimetables', function (request, response) {
-    const user_id = storage('farma_id');
-    const animal = storage('animal');
-
-    if (user_id) {
-        connection.query(`SELECT * FROM feeding_timetable WHERE farma_id='${user_id}' AND animal_type='${animal}'`, function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({ timetable: results });
-        })
-    } else {
-        response.redirect('/');
-    }
-});
-
-
-
 
 
 /*
     
-    [x] ENDPOINTS THAT WRITE TO DATABASE 
+    ENDPOINTS THAT WRITE TO DATABASE 
 
 */
 
@@ -536,7 +391,6 @@ app.post('/newAnimal', function (req, res) {
 
 
 // TODO test new born registration
-// TODO ALTER animal table to add parent-tag column for new borns
 // Registering a new animal
 app.post('/addNewBorn', function (req, res) {
     const farma_id = storage('farma_id');
@@ -549,6 +403,22 @@ app.post('/addNewBorn', function (req, res) {
         res.redirect(`/animal/${animal}`);
         return;
     });
+})
+
+// Inserting new TimeTable into the DB
+app.post('/newTimeTable', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    
+    // Execute SQL query that'll insert into the feeding_timetable table
+    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, last_feed_date, feeds_id, farma_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', '${req.body.feedingLastDate}', ${req.body.feeds_id}, '${farma_id}');`,
+        function (error, results, fields) {
+            if (error) throw error;
+        });
+
+    res.redirect(`/animal/${animal}`);
+
+    return;
 })
 
 // Updating animal data
@@ -579,6 +449,21 @@ app.post('/newVaccine', function (req, res) {
     return;
 })
 
+// Inserting Vaccines into the DB
+app.post('/scheduleVaccination', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, number_of_vaccinations, cycle, period, injection_area, animal_type) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.noVaccinations}, ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${animal}');`,
+        function (error, results, fields) {
+            if (error) throw error;
+        });
+
+    res.redirect(`/animal/${animal}`);
+    return;
+})
+
+
 // Updating Farma Profile Data
 app.post('/updateFarmaProfile', function (req, res) {
     const data = req.body;
@@ -597,6 +482,8 @@ app.post('/updateFarmaProfile', function (req, res) {
 
 })
 
+
+// DON'T TOUCH
 // Add animals at the farm to DB
 app.post('/save', async (req, res) => {
     const getDetails = JSON.parse(JSON.stringify(req.body))
@@ -712,22 +599,6 @@ app.post('/delete/:param', function (request, response) {
         response.redirect('/');
     }
 });
-
-// Inserting new TimeTable into the DB
-app.post('/newTimeTable', function (req, res) {
-    const farma_id = storage('farma_id');
-    const animal = storage('animal');
-    
-    // Execute SQL query that'll insert into the feeding_timetable table
-    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, last_feed_date, feeds_id, farma_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', '${req.body.feedingLastDate}', ${req.body.feeds_id}, '${farma_id}');`,
-        function (error, results, fields) {
-            if (error) throw error;
-        });
-
-    res.redirect(`/animal/${animal}`);
-
-    return;
-})
 
 
 app.listen(3000);

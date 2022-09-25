@@ -9,89 +9,6 @@ async function getCount(param) {
   }
 }
 
-// Get number of sick of the animals from backend endpoint
-async function getSickAnimalsCount() {
-  let url = `/getSickAnimalsCount`;
-  try {
-    let res = await fetch(url);
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-// Get number of expectant the animals from backend endpoint
-async function getExpectingAnimalsCount() {
-  let url = `/getExpectingAnimalsCount`;
-  try {
-    let res = await fetch(url);
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-// Get number of new borns from backend endpoint
-async function getNewBornsCount() {
-  let url = `/getNewBornsCount`;
-  try {
-    let res = await fetch(url);
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-// Get number of fully vaccinated animals from backend endpoint
-async function getVaccinatedCount() {
-  let url = `/getVaccinatedCount`;
-  try {
-    let res = await fetch(url);
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-// Get number of pending vaccinations animals from backend endpoint
-async function getPendingVaccinationsCount() {
-  let url = `/getPendingVaccinationsCount`;
-  try {
-    let res = await fetch(url);
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-// Get number of animals' feeds from backend endpoint
-async function getFeedsCount() {
-  let url = `/getFeedsCount`;
-  try {
-    let res = await fetch(url);
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-// Get number of animals' products from backend endpoint
-async function getProductsCount() {
-  let url = `/getProductsCount`;
-  try {
-    let res = await fetch(url);
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 
 // Get number of animals' products from backend endpoint
 async function getAnimalType() {
@@ -115,51 +32,6 @@ async function renderAnimals() {
       document.getElementById(number).innerText = count.COUNT || 0;
     })
   }
-
-  // // sick animals count
-  // const sickAnimalsCount = await getSickAnimalsCount();
-  // sickAnimalsCount.sickAnimalCount.forEach(count => {
-  //   document.getElementById('sickCount').innerText = count.COUNT || 0;
-  // })
-
-  // // Heavy animals count
-  // const expectantCount = await getExpectingAnimalsCount();
-  // expectantCount.expectingAnimalCount.forEach(count => {
-  //   document.getElementById('heavyCount').innerText = count.COUNT || 0;
-
-  // })
-
-  // // New Borns animals count
-  // const newBornsCount = await getNewBornsCount();
-  // newBornsCount.newBornCount.forEach(count => {
-  //   document.getElementById('babyCount').innerText = count.COUNT || 0;
-  // })
-
-  // // FULLY vaccinated animals count
-  // const vaccinatedCount = await getVaccinatedCount();
-  // vaccinatedCount.vaccinatedCount.forEach(count => {
-  //   document.getElementById('vaccinatedCount').innerText = count.COUNT || 0;
-  // })
-
-
-  // // Pending vaccinations animals count
-  // const pendingCount = await getPendingVaccinationsCount();
-  // pendingCount.pendingCount.forEach(count => {
-  //   document.getElementById('pendingCount').innerText = count.COUNT || 0;
-  // })
-
-  // // animals' feeds count
-  // const feedsCount = await getFeedsCount();
-  // feedsCount.feedsCount.forEach(count => {
-  //   document.getElementById('feedsCount').innerText = count.COUNT || 0;
-  // })
-
-  // // animals' products count
-  // const productsCount = await getProductsCount();
-  // productsCount.animalProductsCount.forEach(count => {
-  //   document.getElementById('productsCount').innerText = count.COUNT || 0;
-  // })
-
 }
 
 renderAnimals();
@@ -444,8 +316,6 @@ function viewDiseases(params) {
 }
 
 
-
-// [x]  WORKS registered animals listing
 async function getAllAnimals() {
   let list = await getAnimalListing();
 

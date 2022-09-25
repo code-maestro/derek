@@ -35,9 +35,10 @@ async function editAnimal(param) {
   });
 }
 
-// Getting all animals listings from backend
-async function getAnimalListing() {
-  let url = '/getAnimalListing';
+
+// Getting all listings from backend
+async function getListing(param) {
+  let url = `/getListing/${param}`;
   try {
     let res = await fetch(url);
     return await res.json();
@@ -46,82 +47,6 @@ async function getAnimalListing() {
   }
 }
 
-// Getting all animals listings from backend
-async function getSickAnimalsListing() {
-  let url = '/getSickAnimals';
-  try {
-    let res = await fetch(url);
-    return await res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// Getting all animals listings from backend
-async function getHeavyAnimalListing() {
-  let url = '/getExpectingAnimals';
-  try {
-    let res = await fetch(url);
-    return await res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// Getting all vaccination data from backend
-async function getVaccines() {
-  let url = '/getAvailableVaccines';
-  try {
-    let res = await fetch(url);
-    return await res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// Getting all vaccinated animals from backend endpoint
-async function getVaccinatedAnimalsListing() {
-  let url = '/getVaccinatedAnimalsData';
-  try {
-    let res = await fetch(url);
-    return await res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// Getting all pending vaccinations from backend endpoint
-async function getPendingVaccinationListing() {
-  let url = '/getPendingVaccinationData';
-  try {
-    let res = await fetch(url);
-    return await res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// Getting feeds data from backend
-async function getFeedsData() {
-  let url = '/getFeedsData';
-  try {
-    let res = await fetch(url);
-    return await res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// Getting timetables data from backend
-async function getTimetablesData() {
-  let url = '/getTimetables';
-  try {
-    let res = await fetch(url);
-    return await res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 // Getting all animals listings from backend
 async function getMaxId(param) {
@@ -134,11 +59,13 @@ async function getMaxId(param) {
   }
 }
 
-// [x] FOR REGISTERED ANIMALS MODAL
+// FOR REGISTERED ANIMALS MODAL
 // Table data for all animals
 async function getAnimalTableData() {
   let last = await getMaxId('animal_id');
-  let list = await getAnimalListing();
+  let list = await getListing('allAnimals');
+
+  console.log(list);
 
   last.last_id.forEach(id => {
     document.getElementById("animal-tag").setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-000${id.LAST + 1}`);
@@ -149,7 +76,7 @@ async function getAnimalTableData() {
 
   const con = document.getElementById('animalListing');
 
-  list.animalListing.forEach(animal => {
+  list.listing.forEach(animal => {
 
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
@@ -194,12 +121,12 @@ async function getAnimalTableData() {
 
 // Function to get All feeds
 const getFeedsTableData = async () => {
-  const feedsData = await getFeedsData();
+  const feedsData = await getListing('feeds');
   let html, htmlSegment = '';
 
   const con = document.getElementById('feedsListing');
 
-  feedsData.animalFeeds.forEach(feed => {
+  feedsData.listing.forEach(feed => {
     htmlSegment = `
         <tr class="justify-content-center" id="${feed.id}">
           <td class="text-center"> ${feed.id} </td>
@@ -233,7 +160,7 @@ const getFeedsTableData = async () => {
 
 // Function to get All feeds
 const getFeedsListData = async () => {
-  const feedsData = await getFeedsData();
+  const feedsData = await getListing('feeds');
   let last = await getMaxId('timetable_id');
 
   last.last_id.forEach(id => {
@@ -246,7 +173,7 @@ const getFeedsListData = async () => {
 
   const lstd = document.getElementById('feedList');
 
-  feedsData.animalFeeds.forEach(feed => {
+  feedsData.listing.forEach(feed => {
     listed = ` <option id="${feed.id}" value="${feed.name}">  ${feed.name} </option> `;
     forlist += listed
   });
@@ -259,13 +186,13 @@ const getFeedsListData = async () => {
 
 // Funciton invoked on changes
 const getOtherData = async () => {
-  const feedsData = await getFeedsData();
+  const feedsData = await getListing('feeds');
   const names = [];
   const desc = [];
   const numbers = [];
   const ids = [];
 
-  feedsData.animalFeeds.forEach(feed => {
+  feedsData.listing.forEach(feed => {
     ids.push(feed.id);
     names.push(feed.name);
     desc.push(feed.description);
@@ -283,18 +210,88 @@ const getOtherData = async () => {
   }
 }
 
+// TODO look into thisssss
+// Function to get All feeds
+const getVaccineData = async () => {
+  const vaccines = await getListing('availableVaccines');
+  const animals = await getListing('allAnimals');
+  const vets = await getListing('vets');
+
+  console.log("animals");
+  console.log(animals);
+
+  console.log("vaccines");
+  console.log(vaccines);
+
+  let vaccineListed, tagListed, vetListed = '';
+
+  let vaccineList = `<option selected disabled> Choose a Vaccine ...</option>`;
+  let tagList = `<option selected disabled> Choose an Animal Tag ...</option>`;
+  let vetList = `<option selected disabled> Choose an Vet ...</option>`;
+
+  const vaccine_lstd = document.getElementById('vaccine-name');
+  const tag_lstd = document.getElementById('animal-tag');
+  const vet_lstd = document.getElementById('vet-name');
+
+  vaccines.listing.forEach(vaccine => {
+    vaccineListed = ` <option id="${vaccine.id}" value="${vaccine.id}">  ${vaccine.name} </option> `;
+    vaccineList += vaccineListed;
+  });
+
+  animals.listing.forEach(animal => {
+    tagListed = ` <option id="${animal.id}" value="${animal.id}">  ${animal.animal_tag} </option> `;
+    tagList += tagListed;
+  });
+
+  vets.listing.forEach(vet => {
+    vetListed = ` <option id="${vet.id}" value="${vet.id}">  ${vet.fname + ' ' + vet.lname} </option> `;
+    vetList += vetListed;
+  });
+
+  vaccine_lstd.innerHTML = vaccineList;
+  tag_lstd.innerHTML = tagList;
+  vet_lstd.innerHTML = vetList;
+
+}
+
+// Funciton invoked on changes
+const getOtherVaccineData = async () => {
+  const vaccines = await getListing('avaliableVaccines');
+
+  const names = [];
+  const desc = [];
+  const numbers = [];
+  const ids = [];
+
+  vaccines.listing.forEach(vaccine => {
+    ids.push(vaccine.id);
+    names.push(vaccine.name);
+    desc.push(vaccine.description);
+    numbers.push(vaccine.quantity + ' ' + vaccine.quantity_measure);
+  });
+
+  const lstd = document.getElementById('vaccine-name');
+
+  if (names.includes(lstd.value)) {
+    console.log(lstd.value);
+    let getIndex = names.indexOf(lstd.value);
+    document.getElementById('feeds-description').value = desc.at(getIndex);
+    document.getElementById('cycle-vaccinations').value = numbers.at(getIndex);
+    document.getElementById('no-vaccinations').value = ids.at(getIndex);
+  }
+}
+
+
 // Funciton invoked on changes
 const getTimetables = async () => {
-  const timetables = await getTimetablesData();
-
-  console.log(timetables);
+  const timetables = await getListing('timetables');
 
   let html = '';
   let htmlSegment = '';
 
   const con = document.getElementById('feedingTimetableListing');
 
-  timetables.timetable.forEach(timetable => {
+  timetables.listing.forEach(timetable => {
     htmlSegment = `
     <tr class="justify-content-center" id="${timetable.id}">
       <td class="text-center"> ${timetable.id} </td>   
@@ -315,6 +312,85 @@ const getTimetables = async () => {
           <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
         </svg>
       </td>
+    </tr>
+  `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
+
+}
+
+// Function to get available vaccines
+const getAvailableVaccines = async () => {
+  const vaccines = await getListing('availableVaccines');
+
+  let html = '';
+  let htmlSegment = '';
+
+  const con = document.getElementById('availableVaccinesListing');
+
+  vaccines.listing.forEach(vaccine => {
+    htmlSegment = `
+    <tr class="justify-content-center" id="${vaccine.id}">
+      <td class="text-center"> ${vaccine.id} </td>
+      <td class="text-center"> ${vaccine.name} </td>
+      <td class="text-center"> ${vaccine.description} </td>
+      <td class="text-center"> ${vaccine.quantity} </td>
+      <td class="text-center"> ${vaccine.no_of_vaccinations} </td>
+      <td class="text-center"> ${vaccine.cycle} </td>
+      <td class="text-center"> ${vaccine.period} </td>
+      <td class="text-center"> ${vaccine.injection_area} </td>
+
+      <td class="text-center noprint" onclick="deleteFromList('animal', '${vaccine.id}')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+          <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
+        </svg>
+      </td>
+
+    </tr>
+  `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
+
+}
+
+// Function to get available vaccines
+const getFullyVaccinatedAnimals = async () => {
+  const vaccinated = await getListing('fullyVaxedAnimals');
+
+  let html = '';
+  let htmlSegment = '';
+
+  const con = document.getElementById('vaccinatedListing');
+
+  console.log(con);
+
+  console.log(vaccinated);
+
+  vaccinated.listing.forEach(vaxed => {
+    htmlSegment = `
+    <tr class="justify-content-center" id="${vaxed.id}">
+      <td class="text-center"> ${vaxed.id} </td>
+      <td class="text-center"> ${vaxed.animal_tag} </td>
+      <td class="text-center"> ${vaxed.vaccine_name} </td>
+      <td class="text-center"> ${vaxed.disease_vaxed_against} </td>
+      <td class="text-center"> ${vaxed.no_of_vaccinations} </td>
+      <td class="text-center"> ${vaxed.first_vaccination_date} </td>
+      <td class="text-center"> ${vaxed.last_vaccination_date} </td>
+
+      <td class="text-center noprint" onclick="deleteFromList('animal', '${vaxed.id}')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+          <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
+        </svg>
+      </td>
+
     </tr>
   `;
 
