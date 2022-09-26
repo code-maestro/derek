@@ -212,29 +212,22 @@ const getOtherData = async () => {
 
 // TODO look into thisssss
 // Function to get All feeds
-const getVaccineData = async () => {
+const getAllVaccines = async () => {
   const vaccines = await getListing('availableVaccines');
   const animals = await getListing('allAnimals');
   const vets = await getListing('vets');
 
-  console.log("animals");
-  console.log(animals);
-
-  console.log("vaccines");
-  console.log(vaccines);
-
   let vaccineListed, tagListed, vetListed = '';
-
   let vaccineList = `<option selected disabled> Choose a Vaccine ...</option>`;
   let tagList = `<option selected disabled> Choose an Animal Tag ...</option>`;
   let vetList = `<option selected disabled> Choose an Vet ...</option>`;
 
-  const vaccine_lstd = document.getElementById('vaccine-name');
-  const tag_lstd = document.getElementById('animal-tag');
+  const vaccine_lstd = document.getElementById('all-vaccines-name');
+  const tag_lstd = document.getElementById('all-animals-tag');
   const vet_lstd = document.getElementById('vet-name');
 
   vaccines.listing.forEach(vaccine => {
-    vaccineListed = ` <option id="${vaccine.id}" value="${vaccine.id}">  ${vaccine.name} </option> `;
+    vaccineListed = ` <option id="${vaccine.id}" value="${vaccine.name}">  ${vaccine.name} </option> `;
     vaccineList += vaccineListed;
   });
 
@@ -244,7 +237,7 @@ const getVaccineData = async () => {
   });
 
   vets.listing.forEach(vet => {
-    vetListed = ` <option id="${vet.id}" value="${vet.id}">  ${vet.fname + ' ' + vet.lname} </option> `;
+    vetListed = ` <option id="${vet.id}" value="${vet.fname + ' '+ vet.lname}">  ${vet.fname + ' ' + vet.lname} </option> `;
     vetList += vetListed;
   });
 
@@ -254,31 +247,71 @@ const getVaccineData = async () => {
 
 }
 
+
 // Funciton invoked on changes
 const getOtherVaccineData = async () => {
-  const vaccines = await getListing('avaliableVaccines');
+  const vaccines = await getListing('availableVaccines');
 
-  const names = [];
-  const desc = [];
-  const numbers = [];
-  const ids = [];
+  const vaxName = document.getElementById('all-vaccines-name');
 
+  const vaxIds = [];
+  const vaxNames = [];
+  const noVaxs = [];
+  const vaxCycles = [];
+  
   vaccines.listing.forEach(vaccine => {
-    ids.push(vaccine.id);
-    names.push(vaccine.name);
-    desc.push(vaccine.description);
-    numbers.push(vaccine.quantity + ' ' + vaccine.quantity_measure);
+
+    const vax_period = vaccine.period == 1 ? "a day" : vaccine.period == 7 ? "a week" : vaccine.period == 30 ? "a month" : "a year";
+    const vax_cycle = vaccine.cycle == 1 ? "once" : vaccine.cycle == 2 ? "twice" : `${vaccine.cycle} times`;
+
+    vaxIds.push(vaccine.id);
+    vaxNames.push(vaccine.name);
+    noVaxs.push(vaccine.no_of_vaccinations);
+    vaxCycles.push(vax_cycle + ' ' + vax_period );
   });
 
-  const lstd = document.getElementById('vaccine-name');
+  if (vaxNames.includes(vaxName.value)) {
+    let getIndex = vaxNames.indexOf(vaxName.value);
 
-  if (names.includes(lstd.value)) {
-    console.log(lstd.value);
-    let getIndex = names.indexOf(lstd.value);
-    document.getElementById('feeds-description').value = desc.at(getIndex);
-    document.getElementById('cycle-vaccinations').value = numbers.at(getIndex);
-    document.getElementById('no-vaccinations').value = ids.at(getIndex);
+    console.log(vaxCycles.at(getIndex));
+
+    console.log('noVaxs' + noVaxs.at(getIndex));
+
+    document.getElementById('vaxID').value = vaxIds.at(getIndex);
+    document.getElementById('cycle-vaccinations').value = vaxCycles.at(getIndex);
+    document.getElementById('no-vax').value = noVaxs.at(getIndex);
   }
+}
+
+// VET DR DATA
+const getOtherVetData = async () => {
+  // VET DOCTORS NAMES
+  const vets = await getListing('vets');
+  const vetName = document.getElementById('vet-name');
+
+  const vetNames = [];
+  const vetStations = [];
+  const vetEmails = [];
+  const vetPhones = [];
+  const vetIds = [];
+
+  vets.listing.forEach(vet => {
+    vetIds.push(vet.id);
+    vetNames.push(vet.fname + ' ' + vet.lname)
+    vetStations.push(vet.station);
+    vetEmails.push(vet.email);
+    vetPhones.push(vet.phone);
+  });
+
+  console.log(vetName.value);
+
+  if (vetNames.includes(vetName.value)) {
+    let getIndex = vetNames.indexOf(vetName.value);
+    document.getElementById('vet-hospital').value = vetStations.at(getIndex);
+    document.getElementById('vet-email').value = vetEmails.at(getIndex);
+    document.getElementById('vet-phone').value = vetPhones.at(getIndex);
+  }
+
 }
 
 
@@ -401,7 +434,6 @@ const getFullyVaccinatedAnimals = async () => {
   con.innerHTML = html;
 
 }
-
 
 
 

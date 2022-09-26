@@ -17,11 +17,15 @@
 // console.log(new Intl.DateTimeFormat('en-CA').format(new Date()));
 // console.log(formatYmd);
 
-const aran = 'vaccine'
+// const aran = 'vaccine'
 
-const queries = {
-  vaccine: `DELETE FROM vaccine`,
-  animal: `DELETE FROM animal `
-}
+// const queries = {
+//   vaccine: `DELETE FROM vaccine`,
+//   animal: `DELETE FROM animal `
+// }
 
-console.log(); // John
+// console.log(); // John
+
+var x=360;
+var y = x==1 ? "DAY" : x==7 ? "WEEK" : x==30 ? "MONTH" : "YEAR";
+console.log(y);
