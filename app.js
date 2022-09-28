@@ -450,6 +450,20 @@ app.post('/newVaccine', function (req, res) {
 })
 
 // Inserting Vaccines into the DB
+app.post('/newVet', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, number_of_vaccinations, cycle, period, injection_area, animal_type) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.noVaccinations}, ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${animal}');`,
+        function (error, results, fields) {
+            if (error) throw error;
+        });
+
+    res.redirect(`/animal/${animal}`);
+    return;
+})
+
+// Inserting Vaccines into the DB
 app.post('/scheduleVaccination', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
