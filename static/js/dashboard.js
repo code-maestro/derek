@@ -259,6 +259,7 @@ const getOtherVaccineData = async () => {
   const noVaxs = [];
   const vaxCycles = [];
   
+  // PUSHING TO VACCINES ARRAY
   vaccines.listing.forEach(vaccine => {
 
     const vax_period = vaccine.period == 1 ? "a day" : vaccine.period == 7 ? "a week" : vaccine.period == 30 ? "a month" : "a year";
@@ -268,6 +269,7 @@ const getOtherVaccineData = async () => {
     vaxNames.push(vaccine.name);
     noVaxs.push(vaccine.no_of_vaccinations);
     vaxCycles.push(vax_cycle + ' ' + vax_period );
+
   });
 
   if (vaxNames.includes(vaxName.value)) {
@@ -281,6 +283,8 @@ const getOtherVaccineData = async () => {
     document.getElementById('cycle-vaccinations').value = vaxCycles.at(getIndex);
     document.getElementById('no-vax').value = noVaxs.at(getIndex);
   }
+
+
 }
 
 // VET DR DATA
@@ -307,6 +311,7 @@ const getOtherVetData = async () => {
 
   if (vetNames.includes(vetName.value)) {
     let getIndex = vetNames.indexOf(vetName.value);
+    document.getElementById('vetID').value = vetIds.at(getIndex);
     document.getElementById('vet-hospital').value = vetStations.at(getIndex);
     document.getElementById('vet-email').value = vetEmails.at(getIndex);
     document.getElementById('vet-phone').value = vetPhones.at(getIndex);
