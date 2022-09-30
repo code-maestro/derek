@@ -235,10 +235,10 @@
                 </span>
                 <div id="vets" class="collapse" aria-labelledby="vets" data-parent="#accordionSidebar">
                     <div class="bg-white collapse-inner rounded">
-                        <span class="collapse-item" data-bs-toggle="offcanvas"
-                            href="#allVetsToggle" role="button"> Available Vets </span>
-                        <span class="collapse-item" data-bs-toggle="offcanvas"
-                            href="#newVetToggle" role="button"> Add Vet </span>
+                        <span class="collapse-item" data-bs-toggle="modal" href="#allVetsToggle" role="button">
+                            Available Vets </span>
+                        <span class="collapse-item" data-bs-toggle="modal" href="#newVetToggle" role="button"> Add Vet
+                        </span>
                     </div>
                 </div>
             </li>
@@ -1513,74 +1513,73 @@
         </div>
     </div>
 
-    <!-- VET Offcanvas -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="newVetToggle" aria-labelledby="newVetLabel">
-        <div class="offcanvas-header">
-            <h5 id="offcanvasRightLabel"> Add a Veterinary Doctor </h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
+    <!-- New Vet Modal -->
+    <div class="modal fade" id="newVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aaria-labelledby="newVetToggleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container">
 
-        <div class="offcanvas-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col align-self-center">
-                        <form class="row g-4 needs-validation" id="newVetForm" method="post" onsubmit="addVet()">
-                            <!-- <div class="col-md-12">
-                                <div class="Neon Neon-theme-dragdropbox">
-                                    <input
-                                        style="z-index: 999; opacity: 0; height: 200px; position: absolute; right: 0px; left: 0px; margin-right: auto; margin-left: auto;"
-                                        name="files[]" id="filer_input2" multiple="multiple" type="file">
-                                    <div class="Neon-input-dragDrop">
-                                        <div class="Neon-input-inner">
-                                            <div class="Neon-input-icon"><i class="fa fa-file-image-o"></i></div>
-                                            <div class="Neon-input-text">
-                                                <h3>Drag&amp;Drop files here</h3>
-                                                <span style="display:inline-block; margin: 15px 0">or</span>
+                        <div class="row p-3  mx-auto">
+                            <div class="mx-auto" style="width: auto;">
+                                <h5 class="font-monospace" id="newVaccineModalLabel"> ADD NEW VETERINARY DOCTOR </h5>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- New Vet Form -->
+                                        <form class="row g-3 needs-validation" novalidate method="POST" action="/newVet">
+                                            <div class="col-md-6">
+                                                <label for="vet-fname" class="form-label fw-bold"> First Name</label>
+                                                <input id="vet-fname" type="text" class="form-control" name="vetFname"
+                                                    spellcheck="false" data-ms-editor="true">
                                             </div>
-                                            <a class="Neon-input-choose-btn blue">Browse Files</a>
-                                        </div>
+
+                                            <div class="col-md-6">
+                                                <label for="vet-lname" class="form-label fw-bold"> Last Name</label>
+                                                <input id="vet-lname" type="text" class="form-control" name="vetLname"
+                                                    spellcheck="false" data-ms-editor="true">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="vet-phone" class="form-label fw-bold"> Phone Number </label>
+                                                <input id="vet-phone" type="phone" class="form-control"
+                                                    name="vetPhone" spellcheck="false" data-ms-editor="true">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="vet-mail" class="form-label fw-bold"> Email </label>
+                                                <input id="vet-mail" type="email" class="form-control" name="vetEmail"
+                                                    spellcheck="false" data-ms-editor="true">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="vet-station" class="form-label fw-bold"> Station </label>
+                                                <input id="vet-station" type="text" class="form-control" name="vetStation"
+                                                    spellcheck="false" data-ms-editor="true">
+                                            </div>
+
+                                                <input id="vet-uuid" type="text" name="vet_uuid">
+
+                                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <button class="btn btn-light me-md-2 font-monospace"
+                                                    data-bs-dismiss="modal" type="button">
+                                                    cancel </button>
+                                                <button class="btn btn-primary font-monospace" type="submit"> submit
+                                                    form </button>
+                                            </div>
+
+                                        </form>
+
                                     </div>
                                 </div>
-                            </div> -->
-
-                            <div class="col-md-12">
-                                <label for="validation01" class="form-label"> First name </label>
-                                <input type="text" class="form-control" name="vetfname" required>
-
                             </div>
+                        </div>
 
-                            <div class="col-md-12">
-                                <label for="validation02" class="form-label">Last name</label>
-                                <input type="text" class="form-control" name="vetlname" required>
-
-                            </div>
-
-                            <div class="col-md-12">
-                                <label for="validation04" id="mail" class="form-label"> Email </label>
-                                <input type="email" class="form-control" name="vetemail" required>
-
-                            </div>
-
-                            <div class="col-md-12">
-                                <label for="validation03" class="form-label"> Phone Number </label>
-                                <input type="phone" class="form-control" name="vetphone" required>
-
-                            </div>
-
-                            <div class="col-md-12">
-                                <label for="validation02" class="form-label"> Work Station / Hospital </label>
-                                <input type="text" class="form-control" name="hospital" value="" required>
-
-                            </div>
-
-                            <input type="text" class="form-control" name="vet_uiud" required>
-
-                            <div class="col-12">
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-primary" type="submit">Submit form</button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

@@ -453,8 +453,9 @@ app.post('/newVaccine', function (req, res) {
 app.post('/newVet', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
+    const vet_uuid = uuidv4();
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, number_of_vaccinations, cycle, period, injection_area, animal_type) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.noVaccinations}, ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${animal}');`,
+    connection.query(`INSERT INTO vets (fname, lname, email, phone, station, vet_id) VALUES ('${req.body.vetFname}', '${req.body.vetLname}', '${req.body.vetEmail}', '${req.body.vetPhone}', '${req.body.vetStation}', '${vet_uuid}');`,
         function (error, results, fields) {
             if (error) throw error;
         });

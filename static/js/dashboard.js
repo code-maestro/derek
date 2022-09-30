@@ -441,7 +441,6 @@ const getFullyVaccinatedAnimals = async () => {
 }
 
 
-
 // FRONT END LOGIC FUNCTIONS
 // DELETING A TABLE ROW
 function deleteFromList(param1, param2) {
