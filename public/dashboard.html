@@ -45,6 +45,7 @@
     <!-- List of animals that belong to the farmer that has signed in -->
     <script src="../js/dashboard.js" defer></script>
     <script src="../js/main.js" defer></script>
+    <script src="../js/vet.js" defer></script>
     <script src="../js/timetable.js" defer></script>
     <script src="../js/dashboardCards.js" defer></script>
     <script src="../js/getFarmaData.js" defer></script>
@@ -212,6 +213,32 @@
                             href="#symptomModalToggle" role="button"> Female </span>
                         <span class="collapse-item" onclick="viewSymptoms('♂️')" data-bs-toggle="modal"
                             href="#symptomModalToggle" role="button"> Male </span>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Veterinary Doctor Profile
+            </div>
+
+            <!-- TODO implement function - viewVet() to handle the click event -->
+            <!-- Nav Item - Symptoms -->
+            <li class="nav-item" onclick="loadVets()">
+                <span class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#vets"
+                    aria-expanded="true" aria-controls="vets">
+                    <i class="fas fa-flag"></i>
+                    <span> Vets </span>
+                </span>
+                <div id="vets" class="collapse" aria-labelledby="vets" data-parent="#accordionSidebar">
+                    <div class="bg-white collapse-inner rounded">
+                        <span class="collapse-item" data-bs-toggle="offcanvas"
+                            href="#allVetsToggle" role="button"> Available Vets </span>
+                        <span class="collapse-item" data-bs-toggle="offcanvas"
+                            href="#newVetToggle" role="button"> Add Vet </span>
                     </div>
                 </div>
             </li>
@@ -1487,7 +1514,7 @@
     </div>
 
     <!-- VET Offcanvas -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="newVetToggle" aria-labelledby="newVetLabel">
         <div class="offcanvas-header">
             <h5 id="offcanvasRightLabel"> Add a Veterinary Doctor </h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -1497,9 +1524,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col align-self-center">
-                        <form class="row g-4 needs-validation" id="newVetForm" novalidate method="POST"
-                            action="/newVetProfile">
-                            <div class="col-md-12">
+                        <form class="row g-4 needs-validation" id="newVetForm" method="post" onsubmit="addVet()">
+                            <!-- <div class="col-md-12">
                                 <div class="Neon Neon-theme-dragdropbox">
                                     <input
                                         style="z-index: 999; opacity: 0; height: 200px; position: absolute; right: 0px; left: 0px; margin-right: auto; margin-left: auto;"
@@ -1515,44 +1541,40 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-
+                            </div> -->
 
                             <div class="col-md-12">
                                 <label for="validation01" class="form-label"> First name </label>
-                                <input type="text" class="form-control" name="fname" required>
-                                
+                                <input type="text" class="form-control" name="vetfname" required>
+
                             </div>
 
                             <div class="col-md-12">
                                 <label for="validation02" class="form-label">Last name</label>
-                                <input type="text" class="form-control" name="lname" required>
-                                
+                                <input type="text" class="form-control" name="vetlname" required>
+
                             </div>
 
                             <div class="col-md-12">
                                 <label for="validation04" id="mail" class="form-label"> Email </label>
-                                <input type="email" class="form-control" name="email" required>
-                                
+                                <input type="email" class="form-control" name="vetemail" required>
+
                             </div>
 
                             <div class="col-md-12">
                                 <label for="validation03" class="form-label"> Phone Number </label>
-                                <input type="phone" class="form-control" name="phone"
-                                    required>
-                                
+                                <input type="phone" class="form-control" name="vetphone" required>
+
                             </div>
 
                             <div class="col-md-12">
                                 <label for="validation02" class="form-label"> Work Station / Hospital </label>
-                                <input type="text" class="form-control" name="lname"  value=""
-                                    required>
-                                
+                                <input type="text" class="form-control" name="hospital" value="" required>
+
                             </div>
 
                             <input type="text" class="form-control" name="vet_uiud" required>
-                            
+
                             <div class="col-12">
                                 <div class="d-grid gap-2">
                                     <button class="btn btn-primary" type="submit">Submit form</button>
