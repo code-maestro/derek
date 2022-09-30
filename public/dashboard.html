@@ -233,7 +233,9 @@
                     <i class="fas fa-flag"></i>
                     <span> Vets </span>
                 </span>
-                <div id="vets" class="collapse" aria-labelledby="vets" data-parent="#accordionSidebar">
+
+                <div onclick="getVets()" id="vets" class="collapse" aria-labelledby="vets"
+                    data-parent="#accordionSidebar">
                     <div class="bg-white collapse-inner rounded">
                         <span class="collapse-item" data-bs-toggle="modal" href="#allVetsToggle" role="button">
                             Available Vets </span>
@@ -985,8 +987,7 @@
                                                 <th scope="col" class="text-center"> NAME </th>
                                                 <th scope="col" class="text-center"> DESCRIPTION </th>
                                                 <th scope="col" class="text-center"> QUANTITY </th>
-                                                <th scope="col" class="text-center"> No OF VACCINATIONS
-                                                </th>
+                                                <th scope="col" class="text-center"> No OF VACCINATIONS </th>
                                                 <th scope="col" class="text-center"> CYCLE </th>
                                                 <th scope="col" class="text-center"> PEROID </th>
                                                 <th scope="col" class="text-center"> INJECTION AREA </th>
@@ -1523,7 +1524,7 @@
 
                         <div class="row p-3  mx-auto">
                             <div class="mx-auto" style="width: auto;">
-                                <h5 class="font-monospace" id="newVaccineModalLabel"> ADD NEW VETERINARY DOCTOR </h5>
+                                <h5 class="font-monospace" id="newVetModalLabel"> ADD NEW VETERINARY DOCTOR </h5>
                             </div>
                         </div>
 
@@ -1532,7 +1533,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <!-- New Vet Form -->
-                                        <form class="row g-3 needs-validation" novalidate method="POST" action="/newVet">
+                                        <form class="row g-3 needs-validation" novalidate method="POST"
+                                            action="/newVet">
                                             <div class="col-md-6">
                                                 <label for="vet-fname" class="form-label fw-bold"> First Name</label>
                                                 <input id="vet-fname" type="text" class="form-control" name="vetFname"
@@ -1547,8 +1549,8 @@
 
                                             <div class="col-md-6">
                                                 <label for="vet-phone" class="form-label fw-bold"> Phone Number </label>
-                                                <input id="vet-phone" type="phone" class="form-control"
-                                                    name="vetPhone" spellcheck="false" data-ms-editor="true">
+                                                <input id="vet-phone" type="phone" class="form-control" name="vetPhone"
+                                                    spellcheck="false" data-ms-editor="true">
                                             </div>
 
                                             <div class="col-md-6">
@@ -1559,11 +1561,150 @@
 
                                             <div class="col-md-6">
                                                 <label for="vet-station" class="form-label fw-bold"> Station </label>
-                                                <input id="vet-station" type="text" class="form-control" name="vetStation"
+                                                <input id="vet-station" type="text" class="form-control"
+                                                    name="vetStation" spellcheck="false" data-ms-editor="true">
+                                            </div>
+
+                                            <input id="vet-uuid" type="text" name="vet_uuid">
+
+                                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <button class="btn btn-light me-md-2 font-monospace"
+                                                    data-bs-dismiss="modal" type="button">
+                                                    cancel </button>
+                                                <button class="btn btn-primary font-monospace" type="submit"> submit
+                                                    form </button>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Vets  modal -->
+    <div class="modal fade" id="allVetsToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="allVetsToggleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row px-2 pt-4">
+                            <div class="mx-auto" style="width: auto;">
+                                <h5 class="font-monospace" id="allVetsToggleLabel"> SAVED VETERINARY DOCTORS </h5>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col">
+                                <div class="row px-4">
+                                    <!-- Vets Table -->
+                                    <table id="vetsTable" class="table table-bordered table-hover table-sm">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th scope="col" class="text-center"> ID </th>
+                                                <th scope="col" class="text-center"> NAME </th>
+                                                <th scope="col" class="text-center"> PHONE NUMBER </th>
+                                                <th scope="col" class="text-center"> EMAIL </th>
+                                                <th scope="col" class="text-center"> STATION </th>
+                                                <th scope="col" class="text-center"> UUID </th>
+                                                <th scope="col" class="text-center"> EDIT </th>
+                                                <th scope="col" class="text-center"> DELETE </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="vetsListing">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="row px-4 py-4">
+                                    <div class="col-auto me-auto">
+                                        <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                    </div>
+                                    <div class="col-auto me-auto">
+                                        <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                    </div>
+                                    <div class="col-auto">
+                                        <h6 class="fw-bold py-2"> Export your data to </h6>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            onclick="printReport('vaccinationTable')"> PRINT </button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                            aria-label="Close"> CLOSE </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edt Vet Modal -->
+    <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aaria-labelledby="editVetToggleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container">
+
+                        <div class="row p-3  mx-auto">
+                            <div class="mx-auto" style="width: auto;">
+                                <h5 class="font-monospace" id="editVetModalLabel"> ADD NEW VETERINARY DOCTOR </h5>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- New Vet Form -->
+                                        <form class="row g-3 needs-validation" novalidate method="POST"
+                                            action="/updateVet">
+                                            <div class="col-md-6">
+                                                <label for="edit-vet-fname" class="form-label fw-bold"> First Name</label>
+                                                <input id="edit-vet-fname" type="text" class="form-control" name="editVetFname"
                                                     spellcheck="false" data-ms-editor="true">
                                             </div>
 
-                                                <input id="vet-uuid" type="text" name="vet_uuid">
+                                            <div class="col-md-6">
+                                                <label for="edit-vet-lname" class="form-label fw-bold"> Last Name</label>
+                                                <input id="edit-vet-lname" type="text" class="form-control" name="editVetLname"
+                                                    spellcheck="false" data-ms-editor="true">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="edit-vet-phone" class="form-label fw-bold"> Phone Number </label>
+                                                <input id="edit-vet-phone" type="phone" class="form-control" name="editVetPhone"
+                                                    spellcheck="false" data-ms-editor="true">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="edit-vet-mail" class="form-label fw-bold"> Email </label>
+                                                <input id="edit-vet-mail" type="email" class="form-control" name="editVetEmail"
+                                                    spellcheck="false" data-ms-editor="true">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="edit-vet-station" class="form-label fw-bold"> Station </label>
+                                                <input id="edit-vet-station" type="text" class="form-control"
+                                                    name="editVetStation" spellcheck="false" data-ms-editor="true">
+                                            </div>
+
+                                            <input id="edit-vet-uuid" type="text" name="editVetID">
 
                                             <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
                                                 <button class="btn btn-light me-md-2 font-monospace"

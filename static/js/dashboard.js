@@ -5,11 +5,6 @@ const form = document.getElementById('registrationForm');
 const container = document.querySelector('#dynamic');
 
 
-document.addEventListener('DOMContentLoaded', function () {
-  let table = new DataTable('#symptomTable');
-});
-
-
 // Editing animal and  setting vaccination records
 async function editAnimal(param) {
   const editid = document.getElementById("editid");
@@ -18,7 +13,7 @@ async function editAnimal(param) {
   const dob = document.getElementById("edit-dob");
   const regDate = document.getElementById("edit-registration-date");
 
-  let list = await getAnimalListing();
+  let list = await getListing('allAnimals');
   list.animalListing.every(v => {
     // const ddate = v.dob;
     // console.log(ddate.toDateString());
@@ -440,6 +435,47 @@ const getFullyVaccinatedAnimals = async () => {
 
 }
 
+// Funciton to retrieve vets listing
+const getVets = async () => {
+  const vets = await getListing('vets');
+
+  let html = '';
+  let htmlSegment = '';
+
+  const con = document.getElementById('vetsListing');
+
+  vets.listing.forEach(vet => {
+    htmlSegment = `
+    <tr class="justify-content-center" id="${vet.vet_id}">
+      <td class="text-center"> ${vet.id} </td>   
+      <td class="text-center"> ${vet.lname + ' ' + vet.fname} </td> 
+      <td class="text-center"> ${vet.phone} </td> 
+      <td class="text-center"> ${vet.email} </td>
+      <td class="text-center"> ${vet.station} </td>
+      <td class="text-center"> ${vet.vet_id} </td>
+
+      <td class="text-center noprint" data-bs-target="#generatedModalToggle" data-bs-toggle="modal"  onclick="editVet(${vet.vet_id})">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
+          <path d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3h4v-.5A1.5 1.5 0 0 0 5.5 1h-1zM7 4v1h2V4h4v.882a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V13H9v-1.5a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5V13H1V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882V4h4zM1 14v.5A1.5 1.5 0 0 0 2.5 16h3A1.5 1.5 0 0 0 7 14.5V14H1zm8 0v.5a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5V14H9zm4-11H9v-.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5V3z"/>
+        </svg>
+      </td>
+
+      <td class="text-center noprint" onclick="deleteFromList('vet', '${vet.vet_id}')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+          <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
+        </svg>
+      </td>
+    </tr>
+  `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
+
+}
+
 
 // FRONT END LOGIC FUNCTIONS
 // DELETING A TABLE ROW
@@ -626,4 +662,83 @@ function calculateAge(params) {
     document.getElementById('age-years').value = `${ageYrs > 0 ? ageYrs + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Months' : ''} ${ageDays > 0 ? ageDays + ' Days' : ''}`;
 
   }
+}
+
+// Editing animal and  setting vaccination records
+async function editAnimal(param) {
+  const editid = document.getElementById("editid");
+  const tag = document.getElementById("edit-animal-tag");
+  const gender = document.getElementById("edit-gender");
+  const dob = document.getElementById("edit-dob");
+  const regDate = document.getElementById("edit-registration-date");
+
+  let list = await getListing('allAnimals');
+  list.listing.every(v => {
+    // const ddate = v.dob;
+    // console.log(ddate.toDateString());
+    if (v.id == param) {
+      editid.setAttribute("value", param)
+      tag.setAttribute('value', v.animal_tag);
+      gender.innerText = v.gender;
+      dob.setAttribute('value', new Date(v.dob).toISOString().slice(0, 10));
+      regDate.setAttribute('value', new Date(v.reg_date).toISOString().slice(0, 10));
+
+      return false;
+    }
+    return true;
+  });
+}
+
+// Editing vaccine
+async function editVaccine(param) {
+  const editid = document.getElementById("editid");
+  const tag = document.getElementById("edit-animal-tag");
+  const gender = document.getElementById("edit-gender");
+  const dob = document.getElementById("edit-dob");
+  const regDate = document.getElementById("edit-registration-date");
+
+  let list = await getListing('allAnimals');
+  list.listing.every(v => {
+    // const ddate = v.dob;
+    // console.log(ddate.toDateString());
+    if (v.id == param) {
+      editid.setAttribute("value", param)
+      tag.setAttribute('value', v.animal_tag);
+      gender.innerText = v.gender;
+      dob.setAttribute('value', new Date(v.dob).toISOString().slice(0, 10));
+      regDate.setAttribute('value', new Date(v.reg_date).toISOString().slice(0, 10));
+
+      return false;
+    }
+    return true;
+  });
+}
+
+// Editing veterinary
+async function editVet(param) {  
+  const fname = document.getElementById("edit-vet-fname");
+  const lname = document.getElementById("edit-vet-lname");
+  const phone = document.getElementById("edit-vet-phone");
+  const mail = document.getElementById("edit-vet-email");
+  const station = document.getElementById("edit-vet-station");
+
+  let vets = await getListing('vets');
+  
+  console.log("vets");
+  console.log(vets);
+
+  vets.listing.every(vet => {
+    // const ddate = v.dob;
+    // console.log(ddate.toDateString());
+    if (v.vet_id == param) {
+      fname.setAttribute("value", vet.fname)
+      lname.setAttribute('value', vet.animal_tag);
+      phone.isetAttribute("value", vet.gender);
+      mail.setAttribute('value', vet.email);
+      station.setAttribute('value', vet.station);
+
+      return false;
+    }
+    return true;
+  });
 }

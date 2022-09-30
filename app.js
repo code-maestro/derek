@@ -255,7 +255,6 @@ app.get('/getListing/:param', function (request, response) {
 });
 
 
-
 // Cleaned 
 // Function to retrieve animal data for table
 app.get('/getMaxId/:param', function (request, response) {
@@ -465,6 +464,19 @@ app.post('/newVet', function (req, res) {
 })
 
 // Inserting Vaccines into the DB
+app.post('/updateVet', function (req, res) {
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`UPDATE vets SET fname = '${req.body.editVetFname}', lname = '${req.body.editVetLname}', email = '${req.body.editVetEmail}', phone = '${req.body.editVetPhone}', station = '${req.body.editVetStation}', vet_id) WHERE vet_id = '${req.body.editVetID}');`,
+        function (error, results, fields) {
+            if (error) throw error;
+        });
+
+    res.redirect(`/animal/${animal}`);
+    return;
+})
+
+
+// Inserting Vaccines into the DB
 app.post('/scheduleVaccination', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
@@ -601,7 +613,8 @@ app.post('/delete/:param', function (request, response) {
     const queries = {
         vaccine: `DELETE FROM vaccines WHERE animal_type='${animal}' AND id = '${param_id}';`,
         animal: `DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${param_id}';`,
-        timetable: `DELETE FROM feeding_timetable WHERE farma_id = '${user_id}' AND id = '${param_id}';`
+        timetable: `DELETE FROM feeding_timetable WHERE farma_id = '${user_id}' AND id = '${param_id}';`,
+        vet: `DELETE FROM vets WHERE vet_id = '${param_id}';`
     }
 
     if (user_id) {
