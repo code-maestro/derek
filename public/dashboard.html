@@ -140,7 +140,6 @@
                 </span>
             </li>
 
-
             <!-- TODO Test the routing created off  at 20220910-1804 -->
             <!-- Nav Item - New Borns -->
             <li class="nav-item" onclick="getFeedsTableData()">
@@ -1559,20 +1558,15 @@
                                                     spellcheck="false" data-ms-editor="true">
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <label for="vet-station" class="form-label fw-bold"> Station </label>
                                                 <input id="vet-station" type="text" class="form-control"
                                                     name="vetStation" spellcheck="false" data-ms-editor="true">
                                             </div>
 
-                                            <input id="vet-uuid" type="text" name="vet_uuid">
-
                                             <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                                                <button class="btn btn-light me-md-2 font-monospace"
-                                                    data-bs-dismiss="modal" type="button">
-                                                    cancel </button>
-                                                <button class="btn btn-primary font-monospace" type="submit"> submit
-                                                    form </button>
+                                                <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button"> cancel </button>
+                                                <button class="btn btn-primary font-monospace" type="submit"> submit form </button>
                                             </div>
 
                                         </form>
@@ -1613,7 +1607,6 @@
                                                 <th scope="col" class="text-center"> PHONE NUMBER </th>
                                                 <th scope="col" class="text-center"> EMAIL </th>
                                                 <th scope="col" class="text-center"> STATION </th>
-                                                <th scope="col" class="text-center"> UUID </th>
                                                 <th scope="col" class="text-center"> EDIT </th>
                                                 <th scope="col" class="text-center"> DELETE </th>
                                             </tr>
@@ -1663,7 +1656,7 @@
 
                         <div class="row p-3  mx-auto">
                             <div class="mx-auto" style="width: auto;">
-                                <h5 class="font-monospace" id="editVetModalLabel"> ADD NEW VETERINARY DOCTOR </h5>
+                                <h5 class="font-monospace" id="editVetModalLabel"> EDIT  VETERINARY DOCTOR </h5>
                             </div>
                         </div>
 
@@ -1672,8 +1665,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <!-- New Vet Form -->
-                                        <form class="row g-3 needs-validation" novalidate method="POST"
-                                            action="/updateVet">
+                                        <form class="row g-3 needs-validation" novalidate method="POST" action="/updateVet">
                                             <div class="col-md-6">
                                                 <label for="edit-vet-fname" class="form-label fw-bold"> First Name</label>
                                                 <input id="edit-vet-fname" type="text" class="form-control" name="editVetFname"
@@ -1698,13 +1690,13 @@
                                                     spellcheck="false" data-ms-editor="true">
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <label for="edit-vet-station" class="form-label fw-bold"> Station </label>
                                                 <input id="edit-vet-station" type="text" class="form-control"
                                                     name="editVetStation" spellcheck="false" data-ms-editor="true">
                                             </div>
 
-                                            <input id="edit-vet-uuid" type="text" name="editVetID">
+                                            <input id="edit-vet-uuid" type="text" name="editVetID" hidden>
 
                                             <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
                                                 <button class="btn btn-light me-md-2 font-monospace"

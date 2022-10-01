@@ -403,10 +403,6 @@ const getFullyVaccinatedAnimals = async () => {
 
   const con = document.getElementById('vaccinatedListing');
 
-  console.log(con);
-
-  console.log(vaccinated);
-
   vaccinated.listing.forEach(vaxed => {
     htmlSegment = `
     <tr class="justify-content-center" id="${vaxed.id}">
@@ -452,9 +448,8 @@ const getVets = async () => {
       <td class="text-center"> ${vet.phone} </td> 
       <td class="text-center"> ${vet.email} </td>
       <td class="text-center"> ${vet.station} </td>
-      <td class="text-center"> ${vet.vet_id} </td>
 
-      <td class="text-center noprint" data-bs-target="#generatedModalToggle" data-bs-toggle="modal"  onclick="editVet(${vet.vet_id})">
+      <td class="text-center noprint" data-bs-target="#editVetToggle" data-bs-toggle="modal"  onclick="editVet('${vet.vet_id}')">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
           <path d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3h4v-.5A1.5 1.5 0 0 0 5.5 1h-1zM7 4v1h2V4h4v.882a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V13H9v-1.5a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5V13H1V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882V4h4zM1 14v.5A1.5 1.5 0 0 0 2.5 16h3A1.5 1.5 0 0 0 7 14.5V14H1zm8 0v.5a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5V14H9zm4-11H9v-.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5V3z"/>
         </svg>
@@ -466,6 +461,7 @@ const getVets = async () => {
         </svg>
       </td>
     </tr>
+    
   `;
 
     html += htmlSegment;
@@ -719,8 +715,9 @@ async function editVet(param) {
   const fname = document.getElementById("edit-vet-fname");
   const lname = document.getElementById("edit-vet-lname");
   const phone = document.getElementById("edit-vet-phone");
-  const mail = document.getElementById("edit-vet-email");
+  const mail = document.getElementById("edit-vet-mail");
   const station = document.getElementById("edit-vet-station");
+  const vet_uuid = document.getElementById("edit-vet-uuid");
 
   let vets = await getListing('vets');
   
@@ -728,14 +725,14 @@ async function editVet(param) {
   console.log(vets);
 
   vets.listing.every(vet => {
-    // const ddate = v.dob;
-    // console.log(ddate.toDateString());
-    if (v.vet_id == param) {
+
+    if (vet.vet_id == param) {
       fname.setAttribute("value", vet.fname)
-      lname.setAttribute('value', vet.animal_tag);
-      phone.isetAttribute("value", vet.gender);
+      lname.setAttribute('value', vet.lname);
+      phone.setAttribute("value", vet.phone);
       mail.setAttribute('value', vet.email);
       station.setAttribute('value', vet.station);
+      vet_uuid.setAttribute('value', param);
 
       return false;
     }

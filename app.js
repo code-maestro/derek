@@ -465,8 +465,10 @@ app.post('/newVet', function (req, res) {
 
 // Inserting Vaccines into the DB
 app.post('/updateVet', function (req, res) {
+    const animal = storage('animal');
+
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`UPDATE vets SET fname = '${req.body.editVetFname}', lname = '${req.body.editVetLname}', email = '${req.body.editVetEmail}', phone = '${req.body.editVetPhone}', station = '${req.body.editVetStation}', vet_id) WHERE vet_id = '${req.body.editVetID}');`,
+    connection.query(`UPDATE vets SET fname = '${req.body.editVetFname}', lname = '${req.body.editVetLname}', email = '${req.body.editVetEmail}', phone = '${req.body.editVetPhone}', station = '${req.body.editVetStation}' WHERE vet_id = '${req.body.editVetID}';`,
         function (error, results, fields) {
             if (error) throw error;
         });
