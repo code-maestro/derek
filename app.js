@@ -214,6 +214,35 @@ app.get('/getCount/:param', function (request, response) {
 
 });
 
+
+// // COUNT END POINTS
+// // OPTIMISED COUNT SOLUTION
+// // Cleaned Function to retrieve dashboard data count
+// app.get('/getCount', function (request, response) {
+//     const animal_type = storage('animal');
+//     const farma_id = storage('farma_id');
+
+//     if (farma_id) {
+//         const query = `CALL getCount('${farma_id}', '${animal_type}');`;
+//         connection.query(query, function (error, results, fields) {
+//             // If there is an issue with the query, output the error
+//             if (error) throw error;
+
+//             console.log(results);
+//             response.send({ count: results });
+
+//         })
+
+//     } else {
+
+//         console.log(" trying to delete with no farma_id 🤣😂 ");
+//         response.redirect('/');
+
+//     }
+
+// });
+
+
 // Function to return animal type dashboard data count
 app.get('/getType', function (request, response) { response.send({ type: storage('animal') }); });
 
@@ -227,29 +256,34 @@ app.get('/getListing/:param', function (request, response) {
 
     const queries = {
         farma_data: `SELECT * FROM farma WHERE farma_id = '${farma_id}';`,
-        diseases: `SELECT * FROM disease WHERE animal_type = ${animal_type}';`,
+        diseases: `SELECT * FROM disease WHERE animal_type = '${animal_type}';`,
         symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${animal_type}';`,
         allAnimals: `SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
         expectingAnimals: `SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date FROM due_dates a, animal b, first_dates c WHERE b.farma_id = '${farma_id}' AND b.animal_type = '${animal_type}' AND a.animal_id = b.id AND a.animal_id = c.animal_id AND c.animal_id = b.id AND a.animal_id=b.id AND a.farma_id = b.farma_id AND a.delivery_date IS NOT NULL;`,
         sickAnimals: `SELECT id, animal_tag, gender,  dob, reg_date, is_sick FROM animal WHERE farma_id='${farma_id}' AND animal_type='${animal_type}' AND is_sick IS NOT NULL AND is_sick is TRUE;`,
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
-        pendingAnimals: `SELECT * FROM animal A, due_dates B WHERE A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL;`,
+        pendingAnimals: `SELECT A.id, C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending FROM vaccination_details A, vaccines B, animal C, vets D WHERE A.vet_id = D.vet_id AND A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.animal_type = B.animal_type AND C.animal_type = A.animal_type AND B.id = A.vaccine_id AND B.farma_id = C.farma_id AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
         availableVaccines: `SELECT * FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
         feeds: `SELECT * FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
         timetables: `SELECT * FROM feeding_timetable WHERE farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
-        fullyVaxedAnimals: `SELECT * FROM vaccination_details VD, vaccines V, animal A WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_vaccination_date IS NOT NULL;`,
-        vets: `SELECT * FROM vets;`
+        fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, V.no_of_vaccinations, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
+        vets: `SELECT * FROM vets;`,
+        healthyAnimals: `SELECT id, animal_tag, gender FROM animal WHERE id NOT IN (SELECT animal_id FROM sick_animals) AND farma_id = '${farma_id}' AND animal_type = '${animal_type}';`
+
     }
 
     if (farma_id) {
+
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
-            console.log(results);
             response.send({ listing: results });
         })
+
     } else {
+
         response.redirect('/');
+
     }
 
 });
@@ -348,19 +382,16 @@ app.post('/auth', function (request, response) {
                 // Authenticate the user
                 const row = Object.values(JSON.parse(JSON.stringify(results)));
 
-                let id;
-                row.forEach((v) => id = v.farma_id);
-
                 row.forEach(element => {
+                    // Save data to sessionStorage
+                    storage('farma_id', element.farma_id);
+
                     if (element.list_of_animals == null) {
                         response.redirect('/selection');
                     } else {
                         response.redirect('/home');
                     }
                 });
-
-                // Save data to sessionStorage
-                storage('farma_id', id);
 
             } else {
                 response.redirect(`/`);
@@ -408,7 +439,7 @@ app.post('/addNewBorn', function (req, res) {
 app.post('/newTimeTable', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
-    
+
     // Execute SQL query that'll insert into the feeding_timetable table
     connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, last_feed_date, feeds_id, farma_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', '${req.body.feedingLastDate}', ${req.body.feeds_id}, '${farma_id}');`,
         function (error, results, fields) {
@@ -439,7 +470,7 @@ app.post('/newVaccine', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, number_of_vaccinations, cycle, period, injection_area, animal_type) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.noVaccinations}, ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${animal}');`,
+    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, no_of_vaccinations, cycle, period, injection_area, animal_type) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.noVaccinations}, ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${animal}');`,
         function (error, results, fields) {
             if (error) throw error;
         });
@@ -477,7 +508,6 @@ app.post('/updateVet', function (req, res) {
     return;
 })
 
-
 // Inserting Vaccines into the DB
 app.post('/scheduleVaccination', function (req, res) {
     const farma_id = storage('farma_id');
@@ -491,7 +521,6 @@ app.post('/scheduleVaccination', function (req, res) {
     res.redirect(`/animal/${animal}`);
     return;
 })
-
 
 // Updating Farma Profile Data
 app.post('/updateFarmaProfile', function (req, res) {
@@ -509,6 +538,24 @@ app.post('/updateFarmaProfile', function (req, res) {
 
     response.redirect('/home');
 
+})
+
+// Reportig Sick animals into the DB
+app.post('/addSick', function (req, res) {
+    const animal = storage('animal');
+
+    console.log(req.body);
+
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`CALL recordSick(${req.body.healthyAnimals}, '${req.body.reportedDate}', '${req.body.vets_id}', '${req.body.appointment_date}', ${req.body.suspected_disease}, '${req.body.ssText}');`,
+        function (error, results, fields) {
+            if (error) throw error;
+        });
+
+    res.redirect(`/animal/${animal}`);
+
+    return;
+    
 })
 
 
@@ -607,28 +654,45 @@ app.post('/addAnimal', (request, response) => {
 
 // Function to delete data from animal
 app.post('/delete/:param', function (request, response) {
-    const param = request.params.param;
+    const par = request.params.param;
     const user_id = storage('farma_id');
     const param_id = request.body.id;
     const animal = storage('animal');
 
+    console.log(param_id + user_id + animal);
+
     const queries = {
-        vaccine: `DELETE FROM vaccines WHERE animal_type='${animal}' AND id = '${param_id}';`,
+        vaccine: `DELETE FROM vaccines WHERE id = ${param_id};`,
         animal: `DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${param_id}';`,
+        pendingAnimal: `EXEC`,
         timetable: `DELETE FROM feeding_timetable WHERE farma_id = '${user_id}' AND id = '${param_id}';`,
         vet: `DELETE FROM vets WHERE vet_id = '${param_id}';`
     }
 
     if (user_id) {
-        connection.query(queries[param], function (error, results, fields) {
+        connection.query(queries[par], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
+
+            console.log(results);
+
         })
+
     } else {
-        console.log(" trying to delete with no farma_id 🤣😂 ");
+
+        console.log(" trying to delete with no farma_id  ");
         response.redirect('/');
     }
 });
 
+
+// // Reportig Sick animals into the DB
+// app.post('/addProc', function (req, res) {
+//     // Execute SQL query that'll insert into the vaccines table
+//     connection.query(``,
+//         function (error, results, fields) {
+//             if (error) throw error;
+//         });
+// })
 
 app.listen(3000);

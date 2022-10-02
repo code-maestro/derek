@@ -1,3 +1,4 @@
+// FIRST NON OPTIMISED ATTEMPT
 // Get Total Count of the animals from backend endpoint
 async function getCount(param) {
   let url = `/getCount/${param}`;
@@ -9,6 +10,18 @@ async function getCount(param) {
   }
 }
 
+
+// // ALEDGED OPTIMISED ATTEMPT
+// // Get Total Count of the animals from backend endpoint
+// async function getCount() {
+//   let url = `/getCount`;
+//   try {
+//     let res = await fetch(url);
+//     return res.json();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 // Get number of animals' products from backend endpoint
 async function getAnimalType() {
@@ -134,9 +147,9 @@ function clicked(param) {
           `;
           break;
 
-        // TODO  RETURN FULLY VACCINATED ANIMAKS
+        // RETURN FULLY VACCINATED ANIMAKS
         case 'vaccinated':
-          getVaccinatedAnimals();
+          getFullyVaccinated();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
@@ -146,15 +159,16 @@ function clicked(param) {
                 <table id="generalTable" class="table table-bordered table-hover table-sm">
                   <thead class="table-dark">
                     <tr>
-                      <th scope="col" class="text-center"> ID </th>
-                      <th scope="col" class="text-center"> ANIMAL TAG </th>
-                      <th scope="col" class="text-center"> GENDER </th>
-                      <th scope="col" class="text-center"> NO OF VACCINATIONs </th>
-                      <th scope="col" class="text-center"> FIRST VACCINATION DATE </th>
-                      <th scope="col" class="text-center"> LAST VACCINATION DATE </th>
+                    <th scope="col" class="text-center"> ID </th>
+                    <th scope="col" class="text-center"> ANIMAL TAG </th>
+                    <th scope="col" class="text-center"> VACCINE </th>
+                    <th scope="col" class="text-center"> DISEASE </th>
+                    <th scope="col" class="text-center"> No OF VACCINATIONS </th>
+                    <th scope="col" class="text-center"> FIRST DATE </th>
+                    <th scope="col" class="text-center"> LAST DATE </th>
                     </tr>
                   </thead>
-                  <tbody id="vaccinatedAnimalsListing">
+                  <tbody id="vaccinatedListing">
                   
                   </tr>
                 </tbody>
@@ -317,14 +331,14 @@ function viewDiseases(params) {
 
 
 async function getAllAnimals() {
-  let list = await getAnimalListing();
+  let list = await getListing('allAnimals');
 
   let html = '';
   let htmlSegment = '';
 
   const con = document.getElementById('dashboardAnimalListing');
 
-  list.animalListing.forEach(animal => {
+  list.listing.forEach(animal => {
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 
@@ -414,30 +428,6 @@ async function getHeavyAnimals() {
 
 }
 
-// TODO implement this function Vaccinated Animals
-async function getVaccinatedAnimals() {
-  let list = await getVaccinatedAnimalsListing();
-
-  let html = '';
-  let htmlSegment = '';
-
-  const con = document.getElementById('dashboardAnimalListing');
-
-  list.animalListing.forEach(animal => {
-    htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-          
-        </tr>
-      `;
-
-    html += htmlSegment;
-
-  });
-
-  con.innerHTML = html;
-
-}
-
 // TODO implement this function - Animal products listing
 async function getAnimalProducts() {
   let list = await getAnimalListing();
@@ -512,36 +502,6 @@ async function getNewBornAnimals() {
 
 }
 
-// TODO implement this function - Pending vaccinations listing
-async function getPendingVaccinations() {
-  let list = await getPendingVaccinationListing();
-
-  console.log(list);
-
-  let html = '';
-  let htmlSegment = '';
-
-  const con = document.getElementById('pendingVaccinationListing');
-
-  list.pendingListing.forEach(animal => {
-    htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-          <td scope="col" class="text-center"> ${animal.animal_tag} </td>
-          <td scope="col" class="text-center"> ${animal.vaccination_date} </td>
-          <td scope="col" class="text-center"> NEXT VACCINATION DATE </td>
-          <td scope="col" class="text-center"> LAST VACCINATION DATE </td>
-          <td scope="col" class="text-center"> No OF VACCINATIONS </td>
-          <td scope="col" class="text-center"> No OF PENDING VACCINATIONS </td>
-        </tr>
-      `;
-
-    html += htmlSegment;
-
-  });
-
-  con.innerHTML = html;
-
-}
 
 // Table data for vaccines
 async function getVaccinesTableData() {

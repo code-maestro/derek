@@ -1,8 +1,3 @@
-
-const loadVets = async () => {
-    console.log("😂");
-}
-
 const addVet = async (e) => {
     e.preventDefault();
     console.log("😊😊😊😊😊😊");

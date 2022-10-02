@@ -5,32 +5,6 @@ const form = document.getElementById('registrationForm');
 const container = document.querySelector('#dynamic');
 
 
-// Editing animal and  setting vaccination records
-async function editAnimal(param) {
-  const editid = document.getElementById("editid");
-  const tag = document.getElementById("edit-animal-tag");
-  const gender = document.getElementById("edit-gender");
-  const dob = document.getElementById("edit-dob");
-  const regDate = document.getElementById("edit-registration-date");
-
-  let list = await getListing('allAnimals');
-  list.animalListing.every(v => {
-    // const ddate = v.dob;
-    // console.log(ddate.toDateString());
-    if (v.id == param) {
-      editid.setAttribute("value", param)
-      tag.setAttribute('value', v.animal_tag);
-      gender.innerText = v.gender;
-      dob.setAttribute('value', new Date(v.dob).toISOString().slice(0, 10));
-      regDate.setAttribute('value', new Date(v.reg_date).toISOString().slice(0, 10));
-
-      return false;
-    }
-    return true;
-  });
-}
-
-
 // Getting all listings from backend
 async function getListing(param) {
   let url = `/getListing/${param}`;
@@ -41,7 +15,6 @@ async function getListing(param) {
     console.log(error);
   }
 }
-
 
 // Getting all animals listings from backend
 async function getMaxId(param) {
@@ -60,14 +33,12 @@ async function getAnimalTableData() {
   let last = await getMaxId('animal_id');
   let list = await getListing('allAnimals');
 
-  console.log(list);
-
   last.last_id.forEach(id => {
     document.getElementById("animal-tag").setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-000${id.LAST + 1}`);
   });
 
-  let html = '';
-  let htmlSegment = '';
+  let html = ""; 
+  let htmlSegment = "";
 
   const con = document.getElementById('animalListing');
 
@@ -117,7 +88,8 @@ async function getAnimalTableData() {
 // Function to get All feeds
 const getFeedsTableData = async () => {
   const feedsData = await getListing('feeds');
-  let html, htmlSegment = '';
+  let html =""; 
+  let htmlSegment = "";
 
   const con = document.getElementById('feedsListing');
 
@@ -205,7 +177,7 @@ const getOtherData = async () => {
   }
 }
 
-// TODO look into thisssss
+
 // Function to get All feeds
 const getAllVaccines = async () => {
   const vaccines = await getListing('availableVaccines');
@@ -377,7 +349,7 @@ const getAvailableVaccines = async () => {
       <td class="text-center"> ${vaccine.period} </td>
       <td class="text-center"> ${vaccine.injection_area} </td>
 
-      <td class="text-center noprint" onclick="deleteFromList('animal', '${vaccine.id}')">
+      <td class="text-center noprint" onclick="deleteFromList('vaccine', '${vaccine.id}')">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
           <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
         </svg>
@@ -395,8 +367,62 @@ const getAvailableVaccines = async () => {
 }
 
 // Function to get available vaccines
-const getFullyVaccinatedAnimals = async () => {
+const getPendingVaccinations = async () => {
+  const vaccinated = await getListing('pendingAnimals');
+
+  console.log(vaccinated);
+
+  let html = '';
+  let htmlSegment = '';
+
+  const con = document.getElementById('pendingAnimalsListing');
+
+  vaccinated.listing.forEach(vaxed => {
+
+    const first_date = new Date(Date.parse(vaxed.first_date));
+    const next_date = new Date(Date.parse(vaxed.next_date));    
+    const last_date = new Date(Date.parse(vaxed.last_date));
+
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+    htmlSegment = `
+      <tr class="justify-content-center" id="${vaxed.id}">
+        <td class="text-center"> ${vaxed.id} </td>
+        <td class="text-center"> ${vaxed.animal_tag} </td>
+        <td class="text-center"> ${first_date.toLocaleDateString(undefined, options)} </td>
+        <td class="text-center"> ${next_date.toLocaleDateString(undefined, options)} </td>
+        <td class="text-center"> ${last_date.toLocaleDateString(undefined, options)} </td>
+        <td class="text-center"> ${vaxed.no_of_vaccinations} </td>
+        <td class="text-center"> ${vaxed.no_pending} </td>
+
+        <td class="text-center noprint" onclick="viewDetails('${vaxed.id}')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
+          </svg>
+        </td>
+
+        <td class="text-center noprint" onclick="deleteFromList('pendingAnimal', '${vaxed.id}')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
+          </svg>
+        </td>
+
+      </tr>
+  `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
+
+}
+
+// Function to get available vaccines
+const getFullyVaccinated = async () => {
   const vaccinated = await getListing('fullyVaxedAnimals');
+
+  console.log(vaccinated);
 
   let html = '';
   let htmlSegment = '';
@@ -404,22 +430,21 @@ const getFullyVaccinatedAnimals = async () => {
   const con = document.getElementById('vaccinatedListing');
 
   vaccinated.listing.forEach(vaxed => {
+
+    const first_date = new Date(Date.parse(vaxed.first_date));    
+    const last_date = new Date(Date.parse(vaxed.last_date));
+
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
     htmlSegment = `
     <tr class="justify-content-center" id="${vaxed.id}">
       <td class="text-center"> ${vaxed.id} </td>
       <td class="text-center"> ${vaxed.animal_tag} </td>
-      <td class="text-center"> ${vaxed.vaccine_name} </td>
-      <td class="text-center"> ${vaxed.disease_vaxed_against} </td>
+      <td class="text-center"> ${vaxed.name} </td>
+      <td class="text-center"> ${vaxed.disease_name} </td>
       <td class="text-center"> ${vaxed.no_of_vaccinations} </td>
-      <td class="text-center"> ${vaxed.first_vaccination_date} </td>
-      <td class="text-center"> ${vaxed.last_vaccination_date} </td>
-
-      <td class="text-center noprint" onclick="deleteFromList('animal', '${vaxed.id}')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-          <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
-        </svg>
-      </td>
-
+      <td class="text-center"> ${first_date.toLocaleDateString(undefined, options)} </td>
+      <td class="text-center"> ${last_date.toLocaleDateString(undefined, options)} </td>
     </tr>
   `;
 
@@ -461,7 +486,7 @@ const getVets = async () => {
         </svg>
       </td>
     </tr>
-    
+
   `;
 
     html += htmlSegment;
@@ -727,6 +752,33 @@ async function editVet(param) {
   vets.listing.every(vet => {
 
     if (vet.vet_id == param) {
+      fname.setAttribute("value", vet.fname)
+      lname.setAttribute('value', vet.lname);
+      phone.setAttribute("value", vet.phone);
+      mail.setAttribute('value', vet.email);
+      station.setAttribute('value', vet.station);
+      vet_uuid.setAttribute('value', param);
+
+      return false;
+    }
+    return true;
+  });
+}
+
+// Editing veterinary
+async function viewDetails(param) {  
+  const fname = document.getElementById("edit-vet-fname");
+  const lname = document.getElementById("edit-vet-lname");
+  const phone = document.getElementById("edit-vet-phone");
+  const mail = document.getElementById("edit-vet-mail");
+  const station = document.getElementById("edit-vet-station");
+  const vet_uuid = document.getElementById("edit-vet-uuid");
+
+  let pending = await getListing('pendingAnimals');
+
+  pending.listing.every(vet => {
+
+    if (vet.v_id == param) {
       fname.setAttribute("value", vet.fname)
       lname.setAttribute('value', vet.lname);
       phone.setAttribute("value", vet.phone);

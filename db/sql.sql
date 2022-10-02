@@ -60,3 +60,26 @@ VALUES
 ('Piliguard Pinkeye + 7', 'contains leukotoxoid to neutralize lung-damaging leukotoxins. Give 2 ml subcutaneous', 1, 2, 4, 'behind left ear', 'cow'),
 ('Alpha-7/MB-1', 'contains leukotoxoid to neutralize lung-damaging leukotoxins. Give 2 ml subcutaneous', 4, 4, 4, 'behind left ear', 'cow'),
 ('SolidBac Pinkeye IR/PR Implants', 'contains leukotoxoid to neutralize lung-damaging leukotoxins. Give 2 ml subcutaneous',1, 1, 1, 'behind left ear', 'cow')
+
+
+-- QUERY TO EXECUTE FOE PENDING VACCINATION ANIMALS
+SELECT C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending
+FROM vaccination_details A, 
+vaccines B, 
+animal C, 
+vets D 
+WHERE A.vet_id = D.vet_id 
+AND A.no_pending > 0 
+AND A.no_pending IS NOT NULL
+AND B.id = A.vaccine_id 
+AND A.last_date > CURDATE();
+
+
+DELIMITER //
+
+CREATE PROCEDURE getAnimals()
+BEGIN
+	SELECT *  FROM animal//
+END //
+
+DELIMITER ;
