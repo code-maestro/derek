@@ -130,7 +130,7 @@ const getFeedsListData = async () => {
   const feedsData = await getListing('feeds');
   let last = await getMaxId('timetable_id');
 
-  last.last_id.forEach(id => {
+  last.listing.forEach(id => {
     document.getElementById("timetableTitle").setAttribute('value', `${id.animal_type.toUpperCase()}-FEEDING-000${id.LAST + 1}`);
   });
 

@@ -98,7 +98,7 @@ CREATE PROCEDURE recordSick (
 	IN animalID INT,
 	IN reportedDate DATE,
 	IN vetID VARCHAR(100),
-	IN appointmentDate DATE,
+	IN appointmentDate DATETIME,
 	IN diseaseID INT,
 	IN symptomName VARCHAR(200)
 )

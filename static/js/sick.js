@@ -34,13 +34,12 @@ const getRequiredData = async () => {
   
   }
 
-
-  // VET DR DATA
+// VET DR DATA
 const getMoreVetData = async () => {
   // VET DOCTORS NAMES
   const vets = await getListing('vets');
   const vetName = document.getElementById('vets-named');
-  
+
   const vetNames = [];
   const vetStations = [];
   const vetEmails = [];
@@ -71,4 +70,21 @@ const getMoreVetData = async () => {
 
 }
 
-  
+const validateDate = (param) => {
+  // VALIDATIG DATES
+  const currentDate = new Date().toJSON().slice(0, 10);
+  const enteredDateFeild = document.getElementById(`${param}`);
+
+  const enteredDate = new Date(`${enteredDateFeild.value}`).toJSON().slice(0, 10);
+
+  var toastLiveExample = document.getElementById('ttoast');
+  var toast = new bootstrap.Toast(toastLiveExample, { delay: 2000 });
+
+  const showClear = () => {
+    toast.show();
+    enteredDateFeild.value = "";
+  }
+
+  currentDate >= enteredDate ? showClear() : console.log(enteredDate) ;
+
+}

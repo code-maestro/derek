@@ -540,7 +540,7 @@ app.post('/updateFarmaProfile', function (req, res) {
 
 })
 
-// Reportig Sick animals into the DB
+// Reportinsg Sick animals into the DB
 app.post('/addSick', function (req, res) {
     const animal = storage('animal');
 
@@ -555,7 +555,7 @@ app.post('/addSick', function (req, res) {
     res.redirect(`/animal/${animal}`);
 
     return;
-    
+
 })
 
 
