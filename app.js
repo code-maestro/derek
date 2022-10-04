@@ -250,6 +250,7 @@ app.get('/getType', function (request, response) { response.send({ type: storage
 //  LISTING END POINTS
 // Cleaned
 app.get('/getListing/:param', function (request, response) {
+
     const animal_type = storage('animal');
     const farma_id = storage('farma_id');
     const param = request.params.param;
@@ -260,7 +261,10 @@ app.get('/getListing/:param', function (request, response) {
         symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${animal_type}';`,
         allAnimals: `SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
         expectingAnimals: `SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date FROM due_dates a, animal b, first_dates c WHERE b.farma_id = '${farma_id}' AND b.animal_type = '${animal_type}' AND a.animal_id = b.id AND a.animal_id = c.animal_id AND c.animal_id = b.id AND a.animal_id=b.id AND a.farma_id = b.farma_id AND a.delivery_date IS NOT NULL;`,
-        sickAnimals: `SELECT id, animal_tag, gender,  dob, reg_date, is_sick FROM animal WHERE farma_id='${farma_id}' AND animal_type='${animal_type}' AND is_sick IS NOT NULL AND is_sick is TRUE;`,
+        sickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
+        // TODO work on this query
+        editSickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
+        
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
         pendingAnimals: `SELECT A.id, C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending FROM vaccination_details A, vaccines B, animal C, vets D WHERE A.vet_id = D.vet_id AND A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.animal_type = B.animal_type AND C.animal_type = A.animal_type AND B.id = A.vaccine_id AND B.farma_id = C.farma_id AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
         availableVaccines: `SELECT * FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
@@ -664,7 +668,7 @@ app.post('/delete/:param', function (request, response) {
     const queries = {
         vaccine: `DELETE FROM vaccines WHERE id = ${param_id};`,
         animal: `DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${param_id}';`,
-        pendingAnimal: `EXEC`,
+        sickAnimal: `DELETE FROM sick_animals WHERE id = '${param_id}';`,
         timetable: `DELETE FROM feeding_timetable WHERE farma_id = '${user_id}' AND id = '${param_id}';`,
         vet: `DELETE FROM vets WHERE vet_id = '${param_id}';`
     }
