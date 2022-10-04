@@ -80,11 +80,16 @@ const validateDate = (param) => {
   var toastLiveExample = document.getElementById('ttoast');
   var toast = new bootstrap.Toast(toastLiveExample, { delay: 2000 });
 
-  const showClear = () => {
+  const showClear = (param) => {
     toast.show();
     enteredDateFeild.value = "";
+    document.getElementById('err_msg').innerText = param
   }
 
-  currentDate >= enteredDate ? showClear() : console.log(enteredDate) ;
+  if (param == 'reportedDate') {
+    currentDate >= enteredDate ? console.log(enteredDate): showClear("Please Select a date less than today ");
+  } else {
+    currentDate >= enteredDate ? showClear("Please Select a date greater than today") : console.log(enteredDate);
+  }
 
 }
