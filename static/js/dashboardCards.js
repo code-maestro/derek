@@ -67,7 +67,6 @@ function clicked(param) {
             <div class="card ${param}" id="${param}ss">
               <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
               <div class="card-body">
-                <h5 class="card-title"> Special title treatment </h5>
                 <p class="card-text">
                   <table id="generalTable" class="table table-bordered table-hover table-sm">
                     <thead class="table-dark">
@@ -194,6 +193,7 @@ function clicked(param) {
                       <th scope="col" class="text-center"> ID </th>
                       <th scope="col" class="text-center"> ANIMAL TAG </th>
                       <th scope="col" class="text-center"> TYPE </th>
+                      <th scope="col" class="text-center"> EXTRACT DATE </th>
                       <th scope="col" class="text-center"> ACTUAL QUANTITY </th>
                       <th scope="col" class="text-center"> EXPECTED QUANTITY </th>
                     </tr>
@@ -309,20 +309,6 @@ function clicked(param) {
   });
 }
 
-// Retrieving symptoms from and endpoint
-function loadSymptoms(params) {
-  console.log(params);
-}
-
-// Rendering symptoms to frontend 
-function viewSymptoms(params) {
-  console.log(params);
-}
-
-// Retrieving symptoms from and endpoint
-function loadDiseases(params) {
-  console.log(params);
-}
 
 // Rendering symptoms to frontend 
 function viewDiseases(params) {
@@ -369,17 +355,22 @@ async function getAllAnimals() {
 
 // TODO IMPLEMENT THIS FUNCTION  - Sick animals listintg
 async function getSickAnimals() {
-  let list = await getSickAnimalsListing();
+  let sickAnimals = await getListing("sickAnimals");
 
   let html = '';
   let htmlSegment = '';
 
-  const con = document.getElementById('dashboardAnimalListing');
+  const con = document.getElementById('sickAnimalsListing');
 
-  list.animalListing.forEach(animal => {
+  sickAnimals.listing.forEach(sick => {
+
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-        
+        <tr class="justify-content-center" id="${sick.id}">
+          <td scope="col" class="text-center"> ${sick.id} </td>
+          <td scope="col" class="text-center"> ${sick.id} </td>
+          <td scope="col" class="text-center"> ${sick.id} </td>
+          <td scope="col" class="text-center"> ${sick.id} </td>
+          <td scope="col" class="text-center"> ${sick.id} </td>
         </tr>
       `;
 
@@ -393,16 +384,16 @@ async function getSickAnimals() {
 
 // [x]  WORKS - Get Pregant animals listing
 async function getHeavyAnimals() {
-  let list = await getHeavyAnimalListing();
+  let heavyAnimals = await getListing("expectingAnimals");
 
   let html = '';
   let htmlSegment = '';
 
   const con = document.getElementById('heavyAnimalsListing');
 
-  list.heavyAnimals.forEach(animal => {
-    const in_date = new Date(Date.parse(animal.insemination_date));
-    const d_date = new Date(Date.parse(animal.delivery_date));
+  heavyAnimals.listing.forEach(heavy => {
+    const in_date = new Date(Date.parse(heavy.insemination_date));
+    const d_date = new Date(Date.parse(heavy.delivery_date));
 
     // AGE CALCULATION
     const theYears = d_date.getFullYear() - in_date.getFullYear();
@@ -411,9 +402,9 @@ async function getHeavyAnimals() {
     const theDays = d_date.getDate() - parseInt(in_date.toDateString().slice(8, 10));
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
-          <td class="text-center"> ${animal.animal_tag} </td>
+        <tr class="justify-content-center" id="${heavy.id}">
+          <th scope="row" class="text-center" id="id"> ${heavy.id} </th>
+          <td class="text-center"> ${heavy.heavy_tag} </td>
           <td class="text-center"> ${in_date.toDateString()} </td>
           <td class="text-center"> ${d_date.toDateString()} </td>
           <td class="text-center"> ${theYears > 0 ? theYears + ' Year(s)' : ''} ${theMonths > 0 ? theMonths + ' Month(s)' : ''} ${theDays > 0 ? theDays + ' Day(s)' : ''} </td>
@@ -430,17 +421,22 @@ async function getHeavyAnimals() {
 
 // TODO implement this function - Animal products listing
 async function getAnimalProducts() {
-  let list = await getAnimalListing();
+  let products = await getListing("products");
 
   let html = '';
   let htmlSegment = '';
 
-  const con = document.getElementById('dashboardAnimalListing');
+  const con = document.getElementById('animalProductsListing');
 
-  list.animalListing.forEach(animal => {
+  products.listing.forEach(product => {
+
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-      
+        <tr class="justify-content-center" id="${product.id}">
+          <td scope="col" class="text-center"> ${product.id} </td>
+          <td scope="col" class="text-center"> ${product.id} </td>
+          <td scope="col" class="text-center"> ${product.id} </td>
+          <td scope="col" class="text-center"> ${product.id} </td>
+          <td scope="col" class="text-center"> ${product.id} </td>
         </tr>
       `;
 
@@ -450,22 +446,27 @@ async function getAnimalProducts() {
 
   con.innerHTML = html;
 
+
 }
 
 // TODO implement this function - Animal Feeds listing
 async function getAnimalFeeds() {
-  let list = await getAnimalListing();
+  let feeds = await getListing("feeds");
 
   let html = '';
   let htmlSegment = '';
 
   const con = document.getElementById('dashboardAnimalListing');
 
-  list.animalListing.forEach(animal => {
+  feeds.listing.forEach(feed => {
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-
+        <tr class="justify-content-center" id="${feed.id}">
+          <td scope="col" class="text-center"> ${feed.id} </td>
+          <td scope="col" class="text-center"> ${feed.id} </td>
+          <td scope="col" class="text-center"> ${feed.id} </td>
+          <td scope="col" class="text-center"> ${feed.id} </td>
+          <td scope="col" class="text-center"> ${feed.id} </td>
         </tr>
       `;
 
@@ -479,18 +480,22 @@ async function getAnimalFeeds() {
 
 // TODO implement this function - New borns listing
 async function getNewBornAnimals() {
-  let list = await getAnimalListing();
+  let babies = await getListing("babies");
 
   let html = '';
   let htmlSegment = '';
 
-  const con = document.getElementById('dashboardAnimalListing');
+  const con = document.getElementById('newBornsListing');
 
-  list.animalListing.forEach(animal => {
+  babies.listing.forEach(baby => {
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${animal.id}">
-
+        <tr class="justify-content-center" id="${baby.id}">
+          <td scope="col" class="text-center"> ${baby.id} </td>
+          <td scope="col" class="text-center"> ${baby.id} </td>
+          <td scope="col" class="text-center"> ${baby.id} </td>
+          <td scope="col" class="text-center"> ${baby.id} </td>
+          <td scope="col" class="text-center"> ${baby.id} </td>
         </tr>
       `;
 
@@ -499,6 +504,7 @@ async function getNewBornAnimals() {
   });
 
   con.innerHTML = html;
+
 
 }
 
