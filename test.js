@@ -31,29 +31,30 @@
 // console.log(y);
 
 
-// crypto module
-const crypto = require("crypto");
-const algorithm = "aes-256-cbc";
-// generate 16 bytes of random data
-const initVector = crypto.randomBytes(16);
-// secret key generate 32 bytes of random data
-const Securitykey = crypto.randomBytes(32);
+// TODO implement this on login
+// // crypto module
+// const crypto = require("crypto");
+// const algorithm = "aes-256-cbc";
+// // generate 16 bytes of random data
+// const initVector = crypto.randomBytes(16);
+// // secret key generate 32 bytes of random data
+// const Securitykey = crypto.randomBytes(32);
 
-const message = "This is a secret message";
+// const message = "This is a secret message";
 
 
-const encryptPassword = (password) => {
-    // the cipher function
-    const cipher = crypto.createCipheriv(algorithm, Securitykey, initVector);
-    // encrypt the message
-    let encryptedData = cipher.update(password, "utf-8", "hex");
-    encryptedData += cipher.final("hex");
+// const encryptPassword = (password) => {
+//     // the cipher function
+//     const cipher = crypto.createCipheriv(algorithm, Securitykey, initVector);
+//     // encrypt the message
+//     let encryptedData = cipher.update(password, "utf-8", "hex");
+//     encryptedData += cipher.final("hex");
 
-    return encryptedData;
+//     return encryptedData;
 
-}
+// }
 
-console.log(encryptPassword(message));
+// console.log(encryptPassword(message));
 
 
 // // the decipher function
@@ -64,3 +65,16 @@ console.log(encryptPassword(message));
 // decryptedData += decipher.final("utf8");
 
 // console.log("Decrypted message: " + decryptedData);
+
+
+
+const date = new Date();
+
+console.log(date);
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+
+// This arrangement can be altered based on how we want the date's format to appear.
+let currentDate = `${day}-${month}-${year}`;
+console.log(currentDate); // "17-6-2022"

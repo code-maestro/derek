@@ -87,7 +87,7 @@ function clicked(param) {
           `;
           break;
 
-        // TODO RETURN ALL THE SICK ANIMALS
+          // Sick Animals Card and dashboard table
         case 'sick':
           getSickAnimals();
           container.innerHTML = `
@@ -101,11 +101,10 @@ function clicked(param) {
                     <tr>
                       <th scope="col" class="text-center"> ID </th>
                       <th scope="col" class="text-center"> ANIMAL TAG </th>
-                      <th scope="col" class="text-center"> GENDER </th>
-                      <th scope="col" class="text-center"> DISEASE </h>
-                      <th scope="col" class="text-center"> SIGNS & SYMPTOMS </th>
-                      <th scope="col" class="text-center"> LAST TREATMENT DATE </th>
+                      <th scope="col" class="text-center"> DISEASE </th>
+                      <th scope="col" class="text-center"> VET_NAME </th>
                       <th scope="col" class="text-center"> SCHEDULED TREATMENT DATE </th>
+                      <th scope="col" class="text-center"> CONFIRMED APPOINTMENT </th>
                     </tr>
                   </thead>
                   <tbody id="sickAnimalsListing"> </tbody>
@@ -216,15 +215,15 @@ function clicked(param) {
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
             <div class="card-body">
-              <h5 class="card-title"> ${param} statistics </h5>
+              <h5 class="card-title"> ${param} </h5>
               <p class="card-text">
                 <table id="generalTable" class="table table-bordered table-hover table-sm">
                   <thead class="table-dark">
                     <tr>
                       <th scope="col" class="text-center"> ID </th>
-                      <th scope="col" class="text-center"> STOCKED </th>
+                      <th scope="col" class="text-center"> FEED NAME </th>
+                      <th scope="col" class="text-center"> STOCKED QUANTITY </th>
                       <th scope="col" class="text-center"> STOCKING DATE </th>
-                      <th scope="col" class="text-center"> FEEDING FREQUENCY </th>
                       <th scope="col" class="text-center"> RESTOCK DATE </th>
                     </tr>
                   </thead>
@@ -353,7 +352,7 @@ async function getAllAnimals() {
 
 }
 
-// TODO IMPLEMENT THIS FUNCTION  - Sick animals listintg
+// Sick animals listintg
 async function getSickAnimals() {
   let sickAnimals = await getListing("sickAnimals");
 
@@ -364,13 +363,16 @@ async function getSickAnimals() {
 
   sickAnimals.listing.forEach(sick => {
 
+    const a_date = new Date(Date.parse(sick.appointment_date));
+
     htmlSegment = `
         <tr class="justify-content-center" id="${sick.id}">
           <td scope="col" class="text-center"> ${sick.id} </td>
-          <td scope="col" class="text-center"> ${sick.id} </td>
-          <td scope="col" class="text-center"> ${sick.id} </td>
-          <td scope="col" class="text-center"> ${sick.id} </td>
-          <td scope="col" class="text-center"> ${sick.id} </td>
+          <td scope="col" class="text-center"> ${sick.ANIMAL_TAG} </td>
+          <td scope="col" class="text-center"> ${sick.DISEASE} </td>
+          <td scope="col" class="text-center"> ${sick.VET_NAME} </td>
+          <td scope="col" class="text-center"> ${a_date.toDateString()} </td>
+          <td scope="col" class="text-center"> ${sick.confirmed} </td>
         </tr>
       `;
 
@@ -395,19 +397,13 @@ async function getHeavyAnimals() {
     const in_date = new Date(Date.parse(heavy.insemination_date));
     const d_date = new Date(Date.parse(heavy.delivery_date));
 
-    // AGE CALCULATION
-    const theYears = d_date.getFullYear() - in_date.getFullYear();
-    const theMonths = d_date.getMonth() - in_date.getMonth();
-    // const ageDays = today.getDay() - dobYear.getDay();
-    const theDays = d_date.getDate() - parseInt(in_date.toDateString().slice(8, 10));
-
     htmlSegment = `
         <tr class="justify-content-center" id="${heavy.id}">
           <th scope="row" class="text-center" id="id"> ${heavy.id} </th>
           <td class="text-center"> ${heavy.heavy_tag} </td>
           <td class="text-center"> ${in_date.toDateString()} </td>
           <td class="text-center"> ${d_date.toDateString()} </td>
-          <td class="text-center"> ${theYears > 0 ? theYears + ' Year(s)' : ''} ${theMonths > 0 ? theMonths + ' Month(s)' : ''} ${theDays > 0 ? theDays + ' Day(s)' : ''} </td>
+          <td class="text-center"> ${heavy.AGE + 'Days(s)'} </td>
         </tr>
       `;
 
@@ -456,17 +452,19 @@ async function getAnimalFeeds() {
   let html = '';
   let htmlSegment = '';
 
-  const con = document.getElementById('dashboardAnimalListing');
+  const con = document.getElementById('animalFeedsListing');
 
   feeds.listing.forEach(feed => {
+    const stock_date = new Date(Date.parse(feed.expected_restock_date));
+    const restock_date = new Date(Date.parse(feed.expected_restock_date));
 
     htmlSegment = `
         <tr class="justify-content-center" id="${feed.id}">
-          <td scope="col" class="text-center"> ${feed.id} </td>
-          <td scope="col" class="text-center"> ${feed.id} </td>
-          <td scope="col" class="text-center"> ${feed.id} </td>
-          <td scope="col" class="text-center"> ${feed.id} </td>
-          <td scope="col" class="text-center"> ${feed.id} </td>
+        <td scope="col" class="text-center"> ${feed.id} </td>
+          <td scope="col" class="text-center"> ${feed.name} </td>
+          <td scope="col" class="text-center"> ${feed.quantity + ' ' + feed.quantity_measure} </td>
+          <td scope="col" class="text-center"> ${stock_date.toDateString()} </td>
+          <td scope="col" class="text-center"> ${restock_date.toDateString()} </td>
         </tr>
       `;
 
