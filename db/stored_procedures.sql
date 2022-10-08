@@ -28,10 +28,6 @@ END $$
 DELIMITER ;
 
 
-
-
-
-
 -- 2. RETRIEVES THE COUNT OF ALL ANIMALS
 
 DELIMITER $$
@@ -118,3 +114,27 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+-- 4. CREATES A FARMA SCHEDULES
+
+DELIMITER |
+
+CREATE PROCEDURE register_farma (
+	IN f_id VARCHAR(120),
+	IN mail VARCHAR(50),
+	IN password VARCHAR(200)
+)
+
+BEGIN
+
+	INSERT INTO farma (farma_id, mail, password	) 
+	VALUES (f_id, mail, AES_ENCRYPT(f_id, password)	)
+
+	INSERT INTO animals_at_farm (farma_id) VALUES (f_id)
+	
+END |
+
+DELIMITER ;
+
+

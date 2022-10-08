@@ -37,7 +37,7 @@ async function getAnimalType() {
 
 // RENDERS DATA TO THE BI DASHBOARD CARDS LIVE STATISTICS
 async function renderAnimals() {
-  const cardsCount = ['allAnimals', 'sickAnimals', 'newBorns', 'vaccinatedAnimals', 'heavyAnimals', 'pendingAnimals', 'allFeeds', 'allProducts']
+  const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'newBorns', 'vaccinatedAnimals',  'pendingAnimals', 'allFeeds', 'allProducts']
 
   for (const number of cardsCount) {
     const animalCount = await getCount(number);
@@ -134,10 +134,7 @@ function clicked(param) {
                       <th scope="col" class="text-center"> REMAINING PERIOD </th>
                     </tr>
                   </thead>
-                  <tbody id="heavyAnimalsListing">
-                  
-                  </tr>
-                </tbody>
+                  <tbody id="heavyAnimalsListing"> </tbody>
               </table>
             </p>
           </div>
@@ -166,16 +163,43 @@ function clicked(param) {
                     <th scope="col" class="text-center"> LAST DATE </th>
                     </tr>
                   </thead>
-                  <tbody id="vaccinatedListing">
-                  
-                  </tr>
-                </tbody>
+                  <tbody id="vaccinatedListing">  </tbody>
               </table>
             </p>
           </div>
         </div>
           `;
           break;
+
+        // all animals pending vaccinations
+        case 'pending':
+          getPendingVaccinationsListing();
+          container.innerHTML = `
+            <div class="card ${param}" id="${param}ss">
+              <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
+              <div class="card-body">
+                <h5 class="card-title"> ${param} statistics </h5>
+                  <p class="card-text">
+                    <table id="generalTable" class="table table-bordered table-hover table-sm">
+                      <thead class="table-dark">
+                        <tr>
+                          <th scope="col" class="text-center"> ID </th>
+                          <th scope="col" class="text-center"> ANIMAL TAG </th>
+                          <th scope="col" class="text-center"> VACCINE </th>
+                          <th scope="col" class="text-center"> DISEASE </th>
+                          <th scope="col" class="text-center"> No OF VACCINATIONS </th>
+                          <th scope="col" class="text-center"> REMAINING VACCINATIONS </th>
+                          <th scope="col" class="text-center"> NEXT VACCINAION DATE </th>
+                        </tr>
+                      </thead>
+                      <tbody id="pendingAnimalListing"> </tbody>
+                    </table>
+                  </p>
+                </div>
+              </div>
+          `;
+          break;
+
 
         // TODO return products from animals
         case 'products':
@@ -192,15 +216,11 @@ function clicked(param) {
                       <th scope="col" class="text-center"> ID </th>
                       <th scope="col" class="text-center"> ANIMAL TAG </th>
                       <th scope="col" class="text-center"> TYPE </th>
-                      <th scope="col" class="text-center"> EXTRACT DATE </th>
                       <th scope="col" class="text-center"> ACTUAL QUANTITY </th>
                       <th scope="col" class="text-center"> EXPECTED QUANTITY </th>
                     </tr>
                   </thead>
-                  <tbody id="animalProductsListing">
-                  
-                  </tr>
-                </tbody>
+                  <tbody id="animalProductsListing">  </tbody>
               </table>
             </p>
           </div>
@@ -227,10 +247,7 @@ function clicked(param) {
                       <th scope="col" class="text-center"> RESTOCK DATE </th>
                     </tr>
                   </thead>
-                  <tbody id="animalFeedsListing">
-                  
-                  </tr>
-                </tbody>
+                  <tbody id="animalFeedsListing">  </tbody>
               </table>
             </p>
           </div>
@@ -258,42 +275,11 @@ function clicked(param) {
                       <th scope="col" class="text-center"> PARENT ANIMAL_TAG </th>
                     </tr>
                   </thead>
-                  <tbody id="newBornsListing">
-                  
-                  </tr>
-                </tbody>
+                  <tbody id="newBornsListing">  </tbody>
               </table>
             </p>
           </div>
         </div>
-          `;
-          break;
-
-        // TODO return all animals pending vaccinations
-        case 'pending':
-          getPendingAnimalVaccinations();
-          container.innerHTML = `
-          <div class="card ${param}" id="${param}ss">
-            <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
-            <div class="card-body">
-              <h5 class="card-title"> ${param} statistics </h5>
-                <p class="card-text">
-                  <table id="generalTable" class="table table-bordered table-hover table-sm">
-                    <thead class="table-dark">
-                      <tr>
-                        <th scope="col" class="text-center"> ID </th>
-                        <th scope="col" class="text-center"> ANIMAL TAG </th>
-                        <th scope="col" class="text-center"> GENDER </th>
-                        <th scope="col" class="text-center"> No OF VACCINATIONS </th>
-                        <th scope="col" class="text-center"> REMAINING VACCINATIONS </th>
-                        <th scope="col" class="text-center"> NEXT VACCINAION DATE </th>
-                      </tr>
-                    </thead>
-                    <tbody id="pendingAnimalListing"> </tbody>
-                  </table>
-                </p>
-              </div>
-            </div>
           `;
           break;
 
@@ -327,12 +313,6 @@ async function getAllAnimals() {
     const dobYear = new Date(Date.parse(animal.dob));
     const regDate = new Date(Date.parse(animal.reg_date));
 
-    // AGE CALCULATION
-    const ageYears = today.getFullYear() - dobYear.getFullYear();
-    const ageMonths = today.getMonth() - dobYear.getMonth();
-    // const ageDays = today.getDay() - dobYear.getDay();
-    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
-
     htmlSegment = `
         <tr class="justify-content-center" id="${animal.animal_type}${animal.id}">
           <th scope="row" class="text-center" id="id"> ${animal.id} </th>
@@ -340,7 +320,7 @@ async function getAllAnimals() {
           <td class="text-center"> ${animal.gender} </td>
           <td class="text-center"> ${regDate.toDateString()} </td>
           <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${ageYears > 0 ? ageYears + ' Year(s)' : ''} ${ageMonths > 0 ? ageMonths + ' Month(s)' : ''} ${ageDays > 0 ? ageDays + ' Day(s)' : ''} </td>
+          <td class="text-center"> ${animal.YEARS > 0 ? animal.YEARS + ' Year(s)' : ''} ${ animal.MONTHS > 0 ? animal.MONTHS + ' Month(s)' : ''} ${ animal.DAYS > 0 ? animal.DAYS + ' Day(s)' : ''} </td>
         </tr>
       `;
 
@@ -415,9 +395,9 @@ async function getHeavyAnimals() {
 
 }
 
-// TODO implement this function - Animal products listing
+// this function - Animal products listing
 async function getAnimalProducts() {
-  let products = await getListing("products");
+  let products = await getListing("allProducts");
 
   let html = '';
   let htmlSegment = '';
@@ -429,10 +409,10 @@ async function getAnimalProducts() {
     htmlSegment = `
         <tr class="justify-content-center" id="${product.id}">
           <td scope="col" class="text-center"> ${product.id} </td>
-          <td scope="col" class="text-center"> ${product.id} </td>
-          <td scope="col" class="text-center"> ${product.id} </td>
-          <td scope="col" class="text-center"> ${product.id} </td>
-          <td scope="col" class="text-center"> ${product.id} </td>
+          <td scope="col" class="text-center"> ${product.animal_tag} </td>
+          <td scope="col" class="text-center"> ${product.name} </td>
+          <td scope="col" class="text-center"> ${product.quantity + product.measure } </td>
+          <td scope="col" class="text-center"> ${product.expected_qnty + product.measure} </td>
         </tr>
       `;
 
@@ -445,7 +425,7 @@ async function getAnimalProducts() {
 
 }
 
-// TODO implement this function - Animal Feeds listing
+//  Animal Feeds listing
 async function getAnimalFeeds() {
   let feeds = await getListing("feeds");
 
@@ -569,6 +549,38 @@ async function getVaccinesTableData() {
         }
         
         </script>
+      `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
+
+}
+
+// Table data for p3ending 
+async function getPendingVaccinationsListing() {
+  let list = await getListing("pendingAnimals");
+
+  let html = '';
+  let htmlSegment = '';
+
+  const con = document.getElementById('pendingAnimalListing');
+
+  list.listing.forEach(animal => {
+    const d_date = new Date(Date.parse(animal.next_date));
+
+    htmlSegment = `
+        <tr class="justify-content-center" id="${animal.id}">
+          <th scope="row" class="text-center" id="id"> ${animal.id} </th>
+          <td class="text-center"> ${animal.animal_tag} </td>
+          <td class="text-center"> ${animal.vaccine_name} </td>
+          <td class="text-center"> ${animal.d_name} </td>
+          <td class="text-center"> ${animal.no_of_vaccinations} </td>
+          <td class="text-center"> ${animal.no_pending} </td>
+          <td class="text-center"> ${d_date.toDateString()} </td>
+        </tr>
       `;
 
     html += htmlSegment;

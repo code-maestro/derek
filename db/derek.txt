@@ -1,0 +1,19 @@
+Azure subscription 1
+Resource group
+derek
+Region
+East US
+Database name
+farma
+Server
+(new) derekfarma
+Authentication method
+SQL authentication
+Server admin login
+derek
+
+
+
+    // // Regex to name a table to store the registered farmer
+    // const re = /(?<=@).*$/
+    // const from_mail = mail.replace(re, "").replace('@', '');

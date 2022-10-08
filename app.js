@@ -194,9 +194,9 @@ app.get('/getCount/:param', function (request, response) {
         allAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}';`,
         sickAnimals: `SELECT COUNT(SA.id) as COUNT FROM sick_animals SA, animal A WHERE A.id = SA.animal_id AND A.animal_type ='${animal_type}' AND A.farma_id='${farma_id}';`,
         newBorns: `SELECT COUNT(parent_tag) as COUNT FROM animal WHERE farma_id = '${farma_id}' AND animal_type='${animal_type}';`,
-        vaccinatedAnimals: `SELECT COUNT(B.id) as COUNT FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id='${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
-        heavyAnimals: `SELECT COUNT(*) as COUNT FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id='${farma_id}';`,
-        pendingAnimals: `SELECT COUNT(B.vaccination_date) AS COUNT FROM animal A, due_dates B WHERE A.animal_type='${animal_type}' AND A.farma_id = B.farma_id AND B.farma_id ='${farma_id}' AND B.vaccination_date IS NOT NULL;`,
+        vaccinatedAnimals: `SELECT COUNT(VD.id) AS COUNT FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
+        heavyAnimals: `SELECT COUNT(*) as COUNT FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}';`,
+        pendingAnimals: `SELECT COUNT(A.id) AS COUNT FROM vaccination_details A, animal C WHERE A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
         allFeeds: `SELECT COUNT(*) as COUNT FROM feeds WHERE animal_type='${animal_type}' AND farma_id='${farma_id}';`,
         allProducts: `SELECT COUNT(B.id) as COUNT FROM animal A, products B WHERE B.animal_id = A.id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
     }
@@ -259,22 +259,22 @@ app.get('/getListing/:param', function (request, response) {
         farma_data: `SELECT * FROM farma WHERE farma_id = '${farma_id}';`,
         diseases: `SELECT * FROM disease WHERE animal_type = '${animal_type}';`,
         symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${animal_type}';`,
-        allAnimals: `SELECT id, animal_tag, gender,  dob, reg_date FROM animal WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
-        expectingAnimals: `SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date, TIMESTAMPDIFF(DAY, CURDATE(), delivery_date) AS AGE FROM due_dates a, animal b, first_dates c WHERE b.farma_id = '${farma_id}' AND b.animal_type = '${animal_type}' AND a.animal_id = b.id AND a.animal_id = c.animal_id AND c.animal_id = b.id AND a.animal_id=b.id AND a.farma_id = b.farma_id AND a.delivery_date IS NOT NULL;`,
+        allAnimals: `SELECT id, animal_tag, gender,  dob, reg_date, TIMESTAMPDIFF(YEAR, dob, CURDATE()) AS YEARS FROM animal WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
+        expectingAnimals: `SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date, TIMESTAMPDIFF(DAY, CURDATE(), delivery_date) AS AGE FROM due_dates a, animal b, first_dates c WHERE b.farma_id = '${farma_id}' AND b.animal_type = '${animal_type}' AND a.animal_id = b.id AND a.animal_id = c.animal_id AND c.animal_id = b.id AND a.animal_id=b.id AND a.delivery_date > CURDATE();`,
         sickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
         // TODO work on this query
         editSickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT symptom_name FROM symptom WHERE disease_id = (SELECT id FROM disease WHERE id = SA.disease_id))AS SS, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
         babies: `SELECT id, animal_tag FROM animal WHERE farma_id='${farma_id}' AND animal_type='${animal_type}' AND parent_tag IS NOT NULL OR parent_tag != '';`,
         
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
-        pendingAnimals: `SELECT A.id, C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending FROM vaccination_details A, vaccines B, animal C, vets D WHERE A.vet_id = D.vet_id AND A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.animal_type = B.animal_type AND C.animal_type = A.animal_type AND B.id = A.vaccine_id AND B.farma_id = C.farma_id AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
+        pendingAnimals: `SELECT A.id, C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending, (SELECT disease_name FROM disease WHERE id=B.disease_id) AS d_name, (SELECT name FROM vaccines WHERE id = A.vaccine_id) AS vaccine_name FROM vaccination_details A, vaccines B, animal C, vets D WHERE A.vet_id = D.vet_id AND A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.animal_type = B.animal_type AND B.id = A.vaccine_id AND B.farma_id = C.farma_id AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
         availableVaccines: `SELECT * FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
         feeds: `SELECT * FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
         timetables: `SELECT * FROM feeding_timetable WHERE farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
         fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, V.no_of_vaccinations, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
         vets: `SELECT * FROM vets;`,
         healthyAnimals: `SELECT id, animal_tag, gender FROM animal WHERE id NOT IN (SELECT animal_id FROM sick_animals) AND farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
-        products: `SELECT * FROM products WHERE farma_id = '${farma_id}';`
+        allProducts: `SELECT B.id, A.animal_tag, B.name, B.quantity, C.expected_qnty, IF(B.quantity_measure >= 1000, 'kg', 'g') AS measure FROM animal A, products B, product_schedule C WHERE B.animal_id = A.id AND B.animal_id = C.animal_id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
 
     }
 
@@ -283,6 +283,7 @@ app.get('/getListing/:param', function (request, response) {
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
+
             response.send({ listing: results });
         })
 
@@ -336,30 +337,11 @@ app.post('/register', function (request, response) {
     const password = request.body.password;
     const password2 = request.body.password2;
 
-    // // Regex to name a table to store the registered farmer
-    // const re = /(?<=@).*$/
-    // const from_mail = mail.replace(re, "").replace('@', '');
-
     if (mail !== null && password2 !== null) {
         // Execute SQL query that'll insert into the farma table
-        connection.query(`INSERT INTO farma (farma_id, mail, password) VALUES (?, ?, ?);`, [f_id, mail, password], function (error, results, fields) {
-            // If there is an issue with the query, output the error
+        connection.query(`CALL register_farma('${f_id}', '${mail}', '${password}')`, function (error, results, fields) {
             if (error) throw error;
             // If the account exists
-            console.log("RESULTS" + results);
-            console.log("FIELDS " + fields);
-            return;
-        });
-
-        connection.query(`INSERT INTO animals_at_farm (farma_id) VALUES (?);`, [f_id], function (error, results, fields) {
-            // connection.query(`INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (JSON_ARRAY(), '${f_id}');`, function (error, results, fields) {
-            // connection.query(`INSERT INTO animals_at_farm (list_of_animals, farma_id) VALUES (?,?);`, [JSON.stringify(animals), f_id], function (error, results, fields) {
-            // If there is an issue with the query, output the error
-            if (error) throw error;
-            // If the account exists
-            console.log("RESULTS" + results);
-            console.log("FIELDS " + fields);
-
             response.redirect('/');
             response.end();
         });
@@ -379,7 +361,7 @@ app.post('/auth', function (request, response) {
     // Ensure the input fields exists and are not empty
     if (mail && password) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
-        connection.query(`SELECT a.farma_id, a.mail, a.password, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${mail}' AND a.password = '${password}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
+        connection.query(`SELECT a.farma_id, a.mail, (AES_DECRYPT(a.farma_id,a.password)) AS pwd, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${mail}' AND pwd = '${password}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
             // connection.query('SELECT farma_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
@@ -519,7 +501,7 @@ app.post('/scheduleVaccination', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_vaccination_date, next_vaccination_date, last_vaccination_date, animal_id, vet_id, animal_type) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', '${req.body.nextVaccination}', '${req.body.lastVaccination}', ${req.body.animalTag},${req.body.vetID},'${animal}');`,
+    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_vaccination_date, next_vaccination_date, last_vaccination_date, animal_id, vet_id) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', '${req.body.nextVaccination}', '${req.body.lastVaccination}', ${req.body.animalTag},${req.body.vetID});`,
         function (error, results, fields) {
             if (error) throw error;
         });
