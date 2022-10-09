@@ -57,6 +57,7 @@ async function viewSickDetails(param) {
   const signss = document.getElementById("edit-ss-text");
   const vet_name = document.getElementById("update-vet-named");
   const appointment_date = document.getElementById("edit-appointment_date");
+  const confirmed = document.getElementById("update-confirmed");
 
   // TODO implement just after fixing query 
   let the_sick = await getListing('editSickAnimals');
@@ -67,10 +68,11 @@ async function viewSickDetails(param) {
 
       animal_tag.setAttribute("value", sick.ANIMAL_TAG)
       report_date.setAttribute("value", formatDate(sick.reported_date));
-      disease.setAttribute("value", sick.DISEASE);
-      signss.setAttribute('value', sick.symptom_name);
-      vet_name.setAttribute('value', sick.VET_NAME);
+      disease.innerText = sick.DISEASE;
+      signss.innerText = sick.SS;
+      vet_name.innerText = sick.VET_NAME;
       appointment_date.setAttribute('value', formatDate(sick.appointment_date));
+      confirmed.innerText = sick.confirmed == NULL ? 'NO': 'YES';
 
       return false;
 

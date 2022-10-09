@@ -185,7 +185,8 @@
             <!-- TODO implement function - viewDiseases() to handle the click event -->
             <!-- Nav Item - Diseases -->
             <li class="nav-item">
-                <span class="nav-link collapsed" data-toggle="modal" data-target="#diseaseModalToggle" aria-expanded="true" aria-controls="collapseUtilities">
+                <span class="nav-link collapsed" data-toggle="modal" data-target="#diseaseModalToggle"
+                    aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-disease"></i>
                     <span> Diseases </span>
                 </span>
@@ -444,7 +445,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div class="row">
@@ -1020,10 +1021,15 @@
                 </div>
             </div>
         </div>
+
     </div>
 
+
+
+
     <!-- Schedule a Vaccination Modal  -->
-    <div class="modal fade" id="vaccinateModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="vaccinationModalToggleLabel" aria-hidden="true">
+    <div class="modal fade" id="vaccinateModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="vaccinationModalToggleLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-body">
@@ -2659,8 +2665,8 @@
     </div>
 
     <!-- Edit Sick Modal -->
-    <div class="modal fade" id="editSickModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
-        aria-labelledby="editSickModalToggleLabel" tabindex="-1">
+    <div class="modal fade" id="editSickModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-hidden="true" aria-labelledby="editSickModalToggleLabel" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content px-2">
                 <div class="modal-header">
@@ -2677,24 +2683,23 @@
                         <div class="col-md-4">
                             <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG
                             </label>
-                            <input id="edit-sick-animal-tag" type="text" class="form-control"
-                            name="editSickTag" spellcheck="false" data-ms-editor="true"
-                            readonly>
+                            <input id="edit-sick-animal-tag" type="text" class="form-control" name="editSickTag"
+                                spellcheck="false" data-ms-editor="true" readonly>
                         </div>
 
                         <div class="col-md-4">
                             <label for="edit-reported-date" class="form-label fw-bold"> First Signs
                                 Date </label>
-                            <input onchange="valDate()" id="edit-reported-date"
-                                type="date" class="form-control" name="editReportedDate"
-                                spellcheck="false" data-ms-editor="true">
+                            <input onchange="valDate()" id="edit-reported-date" type="date" class="form-control"
+                                name="editReportedDate" spellcheck="false" data-ms-editor="true">
                         </div>
 
                         <div class="col-md-4">
                             <label for="edit-disease-suspected" class="form-label fw-bold"> Suspected Disease
                             </label>
-                            <select id="edit-disease-suspected" class="form-select"
-                                name="disease_suspected"> </select>
+                            <select id="edit-disease-s" class="form-select" name="disease_suspected">
+                                <option selected id="edit-disease-suspected"  value=""></option> 
+                            </select>
                         </div>
 
                         <div class="col-md-12">
@@ -2709,48 +2714,52 @@
 
                         <div class="col-md-6">
                             <label for="update-vet-name" class="form-label fw-bold"> Vet Name </label>
-                            <select onChange="getMoreVetData()" id="update-vet-named" class="form-select"
-                                data-live-search="true" name="vetName" required> </select>
+                            <select onChange="getMoreVetData()" id="update-vet-name" class="form-select"
+                                data-live-search="true" name="vetName" required>
+                                <option selected id="update-vet-named"  value=""></option> 
+                            
+                            </select>
                         </div>
 
                         <input id="new-vet-id" type="text" name="newVetID" hidden>
 
                         <div class="col-md-6">
                             <label for="vet-hospital" class="form-label fw-bold"> Station </label>
-                            <input id="vets-hospital" type="text" class="form-control"
-                                name="vetHospital" spellcheck="false" data-ms-editor="true"
-                                readonly>
+                            <input id="vets-hospital" type="text" class="form-control" name="vetHospital"
+                                spellcheck="false" data-ms-editor="true" readonly>
                         </div>
 
                         <div class="col-md-3">
                             <label for="vet-email" class="form-label fw-bold"> Email </label>
-                            <input id="vets-email" type="email" class="form-control" name="vetEmail"
-                                spellcheck="false" data-ms-editor="true" readonly>
+                            <input id="vets-email" type="email" class="form-control" name="vetEmail" spellcheck="false"
+                                data-ms-editor="true" readonly>
                         </div>
 
                         <div class="col-md-3">
                             <label for="vet-phone" class="form-label fw-bold"> Phone </label>
-                            <input id="vets-phone" type="tel" class="form-control" name="vetPhone"
-                                spellcheck="false" data-ms-editor="true" readonly>
+                            <input id="vets-phone" type="tel" class="form-control" name="vetPhone" spellcheck="false"
+                                data-ms-editor="true" readonly>
                         </div>
 
                         <div class="col-md-6">
                             <label for="edit-appointment_date" class="form-label fw-bold"> Appointmemt
                                 Date and Time </label>
                             <input onchange="validateDate('edit-appointment_date')" id="edit-appointment_date"
-                                type="datetime-local" class="form-control" required
-                                name="editAppointmentDate" spellcheck="false" data-ms-editor="true">
+                                type="date" class="form-control" required name="editAppointmentDate"
+                                spellcheck="false" data-ms-editor="true">
                         </div>
 
                         <div class="col-md-6">
                             <label for="update-confirmation" class="form-label fw-bold"> confirmed </label>
-                            <select id="update-confirmation" class="form-select"
-                                data-live-search="true" name="updateConfirmation" required> </select>
+                            <select id="update-confirmation" class="form-select" data-live-search="true"
+                                name="updateConfirmation" required> 
+                                <option selected id="update-confirmated"  value=""></option> 
+                            </select>
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                            <button class="btn btn-light me-md-2 font-monospace"
-                                data-bs-dismiss="modal" type="button"> CANCEL </button>
+                            <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button">
+                                CANCEL </button>
                             <button class="btn btn-primary font-monospace" type="submit"> GENERATE
                             </button>
                         </div>

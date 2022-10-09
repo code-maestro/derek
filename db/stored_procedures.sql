@@ -123,18 +123,103 @@ DELIMITER |
 CREATE PROCEDURE register_farma (
 	IN f_id VARCHAR(120),
 	IN mail VARCHAR(50),
-	IN password VARCHAR(200)
+	IN pwd VARCHAR(200)
 )
 
 BEGIN
 
 	INSERT INTO farma (farma_id, mail, password	) 
-	VALUES (f_id, mail, AES_ENCRYPT(f_id, password)	)
+	VALUES (f_id, mail, TO_BASE64(AES_ENCRYPT(pwd, f_id)));
 
-	INSERT INTO animals_at_farm (farma_id) VALUES (f_id)
+	INSERT INTO animals_at_farm (farma_id) VALUES (f_id);
 	
 END |
 
 DELIMITER ;
 
 
+
+-- 4. FEEDING TIMETABLE
+
+-- DROP PROCEDURE FeedingTimetable;
+
+-- DELIMITER $$
+
+-- CREATE PROCEDURE FeedingTimetable(
+-- 	IN ID VARCHAR(120),
+-- 	IN ANIMAL_TYPE VARCHAR(20),
+-- )
+
+-- BEGIN
+	
+-- 	SET @feeds_id = (SELECT id FROM feeds WHERE farma_id = ID and animal_type = ANIMAL_TYPE);
+-- 	SET @total_qnty = (SELECT quantity*quantity_measure FROM feeds WHERE farma_id = ID);
+-- 	SET @qnty_per = (SELECT quantity_per_cycle*quantity_per_cycle_unit FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @feeding_freq = (SELECT cycle FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @feeding_times = (SELECT period FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @period_planned = (SELECT planned_period FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @period_planned_time = (SELECT planned_period_time FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @first_feed_date = (SELECT first_feed_date FROM feeding_timetable WHERE feeds_id = @feeds_id);
+
+
+-- 	feeding_timetable:  LOOP
+-- 		IF  @total_qnty = 0 THEN
+-- 			LEAVE  feeding_timetable;
+		
+-- 		ELSE      
+-- 			SET @total_qnty = @total_qnty - @qnty_per;
+-- 			ITERATE  loop_label;
+
+
+-- 		END  IF;
+
+-- 	END LOOP;
+	
+-- 	SELECT str;
+
+-- END$$
+
+-- DELIMITER ;
+
+
+-- -- 4. FEEDING TIMETABLE
+
+-- DROP PROCEDURE IF EXISTS feedingTimetable;
+
+-- DELIMITER $$
+
+-- CREATE PROCEDURE feedingTimetable(
+-- 	IN ID VARCHAR(120),
+-- 	IN ANIMAL_TYPE VARCHAR(20)
+-- )
+
+-- BEGIN
+
+-- 	SET @feeds_id = (SELECT A.id FROM feeds A, feeding_timetable B WHERE B.feeds_id = A.id AND A.farma_id = ID AND  A.animal_type = ANIMAL_TYPE);
+-- 	SET @total_qnty = (SELECT A.quantity*A.quantity_measure FROM feeds A, feeding_timetable B WHERE A.farma_id = ID AND A.id = B.feeds_id);
+-- 	SET @tt_id = (SELECT id FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @qnty_per = (SELECT quantity_per_cycle*quantity_per_cycle_unit FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @feeding_freq = (SELECT cycle FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @feeding_times = (SELECT period FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @period_planned = (SELECT planned_period FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @period_planned_time = (SELECT planned_period_time FROM feeding_timetable WHERE feeds_id = @feeds_id);
+-- 	SET @first_feed_date = (SELECT first_feed_date FROM feeding_timetable WHERE feeds_id = @feeds_id);
+
+--   	loop2: LOOP
+
+--     	SET @total_qnty = @total_qnty - @qnty_per;
+
+-- 		INSERT feeding_schedule (feeding_tt_id, effective_date, next_date, feeds_qnty_pending)
+-- 		VALUES (@tt_id, @first_feed_date, DATE_ADD(@first_feed_date, INTERVAL @feeding_times DAY), @qnty);
+
+--     IF @total_qnty = 0 THEN
+
+--     	LEAVE loop2;
+
+--     END IF;
+
+--  END LOOP loop2;
+
+-- END $$
+
+-- DELIMITER ;
