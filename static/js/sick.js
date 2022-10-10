@@ -52,32 +52,42 @@ const viewSick = async () => {
 // Editing veterinary
 async function viewSickDetails(param) {
   const animal_tag = document.getElementById("edit-sick-animal-tag");
+  const animal_id = document.getElementById("edit-sick-animal-id");
   const report_date = document.getElementById("edit-reported-date");
-  const disease = document.getElementById("edit-disease-suspected");
+  // const disease = document.getElementById("edit-disease-suspected");
   const signss = document.getElementById("edit-ss-text");
-  const vet_name = document.getElementById("update-vet-named");
+  // const vet_name = document.getElementById("edit-vet-name");
+  const vet_id = document.getElementById("edit-vet-id");
   const appointment_date = document.getElementById("edit-appointment_date");
+  const appointment_time = document.getElementById("edit-appointment_time");
   const confirmed = document.getElementById("update-confirmed");
 
   // TODO implement just after fixing query 
   let the_sick = await getListing('editSickAnimals');
 
+  console.log(vet_name);
+
   the_sick.listing.every(sick => {
 
     if (sick.id == param) {
 
-      animal_tag.setAttribute("value", sick.ANIMAL_TAG)
+      animal_tag.setAttribute("value", sick.ANIMAL_TAG);
+      animal_id.setAttribute("value", sick.id)
       report_date.setAttribute("value", formatDate(sick.reported_date));
       disease.innerText = sick.DISEASE;
       signss.innerText = sick.SS;
       vet_name.innerText = sick.VET_NAME;
+      vet_id.innerText = sick.vet_id;
       appointment_date.setAttribute('value', formatDate(sick.appointment_date));
-      confirmed.innerText = sick.confirmed == NULL ? 'NO': 'YES';
+      appointment_time.setAttribute('value', formatTime(sick.appointment_date));
+      confirmed.innerText = sick.confirmed ? 'YES'  : 'NO';
 
       return false;
 
     } else {
+
       console.log("💐💐💐💐💐");
+
     }
 
     return true;
@@ -102,6 +112,24 @@ const formatDate = (param) => {
 
   return formattedDate;
 
+}
+
+// Function to farmat the dates for html form
+
+function padTo2Digits(num) {
+  return num.toString().padStart(2, '0');
+}
+
+// 👇️ Format Date as yyyy-mm-dd hh:mm:ss
+const formatTime = (param) => {
+  const the_date = new Date(param)
+  return (
+    [
+      padTo2Digits(the_date.getHours()),
+      padTo2Digits(the_date.getMinutes()),
+      padTo2Digits(the_date.getSeconds()),  // 👈️ can also add seconds
+    ].join(':')
+  );
 }
 
 
@@ -178,6 +206,40 @@ const getMoreVetData = async () => {
 
 }
 
+// Function to get Required data to report a sick animal
+const getUpdateData = async () => {
+  const diseases = await getListing('diseases');
+  const vets = await getListing('vets');
+
+  let diseaseListed, tagListed, vetListed = '';
+  let diseaseList = `<option selected id="edit-disease-suspected"  value=""></option> <option selected id="edit-disease-suspected"  value=""></option> `;
+  let tagList = `<option selected disabled> Choose an Animal Tag ... </option>`;
+  let vetList = `<option selected id="edit-vet-name"  value=""></option> `;
+
+  const disease_lstd = document.getElementById('edit-disease_s');
+  const tag_lstd = document.getElementById('healthyList');
+  const vet_lstd = document.getElementById('vets-named');
+
+  diseases.listing.forEach(disease => {
+    diseaseListed = ` <option id="${disease.id}" value="${disease.id}">  ${disease.disease_name} </option> `;
+    diseaseList += diseaseListed;
+  });
+
+  animals.listing.forEach(animal => {
+    tagListed = ` <option id="${animal.id}" value="${animal.id}">  ${animal.animal_tag} </option> `;
+    tagList += tagListed;
+  });
+
+  vets.listing.forEach(vet => {
+    vetListed = ` <option id="${vet.id}" value="${vet.fname + ' ' + vet.lname}">  ${vet.fname + ' ' + vet.lname} </option> `;
+    vetList += vetListed;
+  });
+
+  disease_lstd.innerHTML = diseaseList;
+  tag_lstd.innerHTML = tagList;
+  vet_lstd.innerHTML = vetList;
+
+}
 
 // GLOBAL DATES VALIDATION
 const validateDate = (param) => {

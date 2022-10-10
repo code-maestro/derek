@@ -2681,11 +2681,12 @@
                     <form method="POST" action="/updateSick" class="row g-3">
                         <!-- HEALTHY ANIMALS -->
                         <div class="col-md-4">
-                            <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG
-                            </label>
+                            <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG </label>
                             <input id="edit-sick-animal-tag" type="text" class="form-control" name="editSickTag"
                                 spellcheck="false" data-ms-editor="true" readonly>
                         </div>
+
+                        <input id="edit-sick-animal-id" type="number" name="edit-sick-animal-id" hidden readonly>
 
                         <div class="col-md-4">
                             <label for="edit-reported-date" class="form-label fw-bold"> First Signs
@@ -2714,47 +2715,29 @@
 
                         <div class="col-md-6">
                             <label for="update-vet-name" class="form-label fw-bold"> Vet Name </label>
-                            <select onChange="getMoreVetData()" id="update-vet-name" class="form-select"
-                                data-live-search="true" name="vetName" required>
-                                <option selected id="update-vet-named"  value=""></option> 
-                            
+                            <select id="update-vet-name" class="form-select" name="vetName" >
+                                <option selected id="edit-vet-name"  value=""></option> 
                             </select>
                         </div>
 
-                        <input id="new-vet-id" type="text" name="newVetID" hidden>
-
-                        <div class="col-md-6">
-                            <label for="vet-hospital" class="form-label fw-bold"> Station </label>
-                            <input id="vets-hospital" type="text" class="form-control" name="vetHospital"
-                                spellcheck="false" data-ms-editor="true" readonly>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="vet-email" class="form-label fw-bold"> Email </label>
-                            <input id="vets-email" type="email" class="form-control" name="vetEmail" spellcheck="false"
-                                data-ms-editor="true" readonly>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="vet-phone" class="form-label fw-bold"> Phone </label>
-                            <input id="vets-phone" type="tel" class="form-control" name="vetPhone" spellcheck="false"
-                                data-ms-editor="true" readonly>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label for="edit-appointment_date" class="form-label fw-bold"> Appointmemt
-                                Date and Time </label>
-                            <input onchange="validateDate('edit-appointment_date')" id="edit-appointment_date"
-                                type="date" class="form-control" required name="editAppointmentDate"
-                                spellcheck="false" data-ms-editor="true">
-                        </div>
+                        <input id="edit-sick-vet-id" type="text" name="edit-sick-vet-id" hidden>
 
                         <div class="col-md-6">
                             <label for="update-confirmation" class="form-label fw-bold"> confirmed </label>
                             <select id="update-confirmation" class="form-select" data-live-search="true"
                                 name="updateConfirmation" required> 
-                                <option selected id="update-confirmated"  value=""></option> 
+                                <option selected id="update-confirmed"  value=""></option> 
                             </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="edit-appointment_date" class="form-label fw-bold"> Appointment Date </label>
+                            <input min="2022-01-01" onchange="validateDate('edit-appointment_date')" id="edit-appointment_date" type="date" class="form-control" required name="editAppointmentDate">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="edit-appointment_time" class="form-label fw-bold"> Appointment Time </label>
+                            <input id="edit-appointment_time" type="time" class="form-control" required name="editAppointmentTime">
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">

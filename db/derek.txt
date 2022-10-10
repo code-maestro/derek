@@ -17,3 +17,8 @@ derek
     // // Regex to name a table to store the registered farmer
     // const re = /(?<=@).*$/
     // const from_mail = mail.replace(re, "").replace('@', '');
+
+
+GCP
+
+820052256973-b68dvo6d3p3a1qtaulijusk7at0a3hnv.apps.googleusercontent.com
