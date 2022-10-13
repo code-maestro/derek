@@ -7,6 +7,8 @@ const storage = require("store2");
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const { default: store } = require('store2');
+const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
 
 // DATABASE CONNECTIONS
 const connection = mysql.createConnection({
@@ -261,13 +263,13 @@ app.get('/getListing/:param', function (request, response) {
         symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${animal_type}';`,
         allAnimals: `SELECT id, animal_tag, gender,  dob, reg_date, TIMESTAMPDIFF(YEAR, dob, CURDATE()) AS YEARS FROM animal WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
         expectingAnimals: `SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date, TIMESTAMPDIFF(DAY, CURDATE(), delivery_date) AS AGE FROM due_dates a, animal b, first_dates c WHERE b.farma_id = '${farma_id}' AND b.animal_type = '${animal_type}' AND a.animal_id = b.id AND a.animal_id = c.animal_id AND c.animal_id = b.id AND a.animal_id=b.id AND a.delivery_date > CURDATE();`,
-        sickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
+        sickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.vet_id, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
         editSickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT symptom_name FROM symptom WHERE disease = (SELECT id FROM disease WHERE id = SA.disease_id))AS SS, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
         babies: `SELECT id, animal_tag FROM animal WHERE farma_id='${farma_id}' AND animal_type='${animal_type}' AND parent_tag IS NOT NULL OR parent_tag != '';`,
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
         pendingAnimals: `SELECT A.id, C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending, (SELECT disease_name FROM disease WHERE id=B.disease_id) AS d_name, (SELECT name FROM vaccines WHERE id = A.vaccine_id) AS vaccine_name FROM vaccination_details A, vaccines B, animal C, vets D WHERE A.vet_id = D.vet_id AND A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.animal_type = B.animal_type AND B.id = A.vaccine_id AND B.farma_id = C.farma_id AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
         availableVaccines: `SELECT * FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
-        feeds: `SELECT * FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
+        feeds: `SELECT name, description, quantity, IF(quantity_measure >= 1000, 'kg', 'g') AS measure, stock_date, expected_restock_date FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
         timetables: `SELECT * FROM feeding_timetable WHERE farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
         fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, V.no_of_vaccinations, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
         vets: `SELECT * FROM vets;`,
@@ -428,7 +430,7 @@ app.post('/newTimeTable', function (req, res) {
     const animal = storage('animal');
 
     // Execute SQL query that'll insert into the feeding_timetable table
-    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, last_feed_date, feeds_id, farma_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', '${req.body.feedingLastDate}', ${req.body.feeds_id}, '${farma_id}');`,
+    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, last_feed_date, feeds_id, farma_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', '${req.body.feedingLastDate}', ${req.body.feedsID}, '${farma_id}');`,
         function (error, results, fields) {
             if (error) throw error;
         });
@@ -498,11 +500,36 @@ app.post('/updateVet', function (req, res) {
 // Inserting Vaccines into the DB
 app.post('/updateSick', function (req, res) {
     const animal = storage('animal');
-
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`UPDATE vets SET fname = '${req.body.editVetFname}', lname = '${req.body.editVetLname}', email = '${req.body.editVetEmail}', phone = '${req.body.editVetPhone}', station = '${req.body.editVetStation}' WHERE vet_id = '${req.body.editVetID}';`,
+    connection.query(`CALL update_sick('${req.body.edit_sick_animal_id}', '${req.body.editReportedDate}', '${req.body.editVetName}', '${req.body.editAppointmentDate + ' ' + req.body.editAppointmentTime}', '${req.body.disease_suspected}', '${req.body.editSSText}' )`,
         function (error, results, fields) {
-            if (error) throw error;
+            if (error) {
+                console.log(error);
+                console.log(error.errno);
+                console.log(error.message);
+                console.log(error.name);
+                res.redirect(`/animal/rabbbit`);
+            }
+        });
+
+    res.redirect(`/animal/${animal}`);
+    return;
+})
+
+
+// Confirming appointment
+app.post('/confirmation', function (req, res) {
+    const animal = storage('animal');
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`UPDATE UPDATE sick_animals SET confirmed = '${req.body.confirm}' WHERE animal_id = ${req.body.id};`,
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+                console.log(error.errno);
+                console.log(error.message);
+                console.log(error.name);
+                res.redirect(`/animal/rabbbit`);
+            }
         });
 
     res.redirect(`/animal/${animal}`);
@@ -545,8 +572,6 @@ app.post('/updateFarmaProfile', function (req, res) {
 // Reportinsg Sick animals into the DB
 app.post('/addSick', function (req, res) {
     const animal = storage('animal');
-
-    console.log(req.body);
 
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`CALL recordSick(${req.body.healthyAnimals}, '${req.body.reportedDate}', '${req.body.vets_id}', '${req.body.appointment_date}', ${req.body.suspected_disease}, '${req.body.ssText}');`,
@@ -688,13 +713,43 @@ app.post('/delete/:param', function (request, response) {
 });
 
 
-// // Reportig Sick animals into the DB
-// app.post('/addProc', function (req, res) {
-//     // Execute SQL query that'll insert into the vaccines table
-//     connection.query(``,
-//         function (error, results, fields) {
-//             if (error) throw error;
-//         });
-// })
 
-app.listen(3000);
+// Reportinsg Sick animals into the DB
+app.post('/sendy', function (req, res) {
+
+    // function to send email
+    const sendmail = async () => {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'ell889lle@gmail.com',
+                pass: 'hfzpdceyryganpcy'
+            }
+        });
+        
+        
+        const mailOptions = {
+          from: 'ell889lle@gmail.com',
+          to: 'michaelajnew@gmail.com',
+          subject: 'Sending Email using Node.js',
+          text: 'That was easy!'
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+    }
+
+    // test
+    sendmail();
+
+})
+
+
+app.listen(3000, function () {
+    console.log('Server is running at port: ', 3000);
+});

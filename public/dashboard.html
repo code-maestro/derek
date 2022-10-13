@@ -209,7 +209,6 @@
                             role="button"> Sick Animals </span>
                     </div>
                 </div>
-
             </li>
 
             <!-- Divider -->
@@ -1896,7 +1895,7 @@
                                         <form method="POST" action="/newTimeTable" class="row g-3 needs-validation">
 
                                             <div class="col-md-12">
-                                                <input id="feeds_id" type="number" class="form-control" name="feeds_id"
+                                                <input id="feeds_id" type="number" class="form-control" name="feedsID"
                                                     hidden>
                                             </div>
 
@@ -2211,8 +2210,7 @@
                                             <div class="col-md-4">
                                                 <label for="feedsName" class="form-label fw-bold"> Choose Animal TAG
                                                 </label>
-                                                <select id="healthyList" class="form-select" name="healthyAnimals"
-                                                    required> </select>
+                                                <select id="healthyList" class="form-select" name="healthyAnimals" required> </select>
                                             </div>
 
                                             <div class="col-md-4">
@@ -2226,8 +2224,7 @@
                                             <div class="col-md-4">
                                                 <label for="feedsName" class="form-label fw-bold"> Suspected Disease
                                                 </label>
-                                                <select id="disease_suspected" class="form-select"
-                                                    name="suspected_disease" required> </select>
+                                                <select id="disease_suspected" class="form-select"  name="suspected_disease" required> </select>
                                             </div>
 
                                             <div class="col-md-12">
@@ -2667,10 +2664,10 @@
     <!-- Edit Sick Modal -->
     <div class="modal fade" id="editSickModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-hidden="true" aria-labelledby="editSickModalToggleLabel" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content px-2">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="editSickModalLabel"> </h5>
+                    <h5 class="modal-title fw-bold" id="editSickModalLabel"> DETAILS </h5>
                 </div>
                 <div class="modal-body">
 
@@ -2686,7 +2683,7 @@
                                 spellcheck="false" data-ms-editor="true" readonly>
                         </div>
 
-                        <input id="edit-sick-animal-id" type="number" name="edit-sick-animal-id" hidden readonly>
+                        <input id="edit-sick-animal-id" type="number" name="edit_sick_animal_id" hidden readonly>
 
                         <div class="col-md-4">
                             <label for="edit-reported-date" class="form-label fw-bold"> First Signs
@@ -2699,7 +2696,7 @@
                             <label for="edit-disease-suspected" class="form-label fw-bold"> Suspected Disease
                             </label>
                             <select id="edit-disease-s" class="form-select" name="disease_suspected">
-                                <option selected id="edit-disease-suspected"  value=""></option> 
+                                <option selected id="edit-disease-suspected"  value=""></option>
                             </select>
                         </div>
 
@@ -2713,40 +2710,27 @@
                             <h5 class="font-monospace"> TREATMENT APPOINTMENT </h5>
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="update-vet-name" class="form-label fw-bold"> Vet Name </label>
-                            <select id="update-vet-name" class="form-select" name="vetName" >
-                                <option selected id="edit-vet-name"  value=""></option> 
-                            </select>
-                        </div>
-
-                        <input id="edit-sick-vet-id" type="text" name="edit-sick-vet-id" hidden>
-
-                        <div class="col-md-6">
-                            <label for="update-confirmation" class="form-label fw-bold"> confirmed </label>
-                            <select id="update-confirmation" class="form-select" data-live-search="true"
-                                name="updateConfirmation" required> 
-                                <option selected id="update-confirmed"  value=""></option> 
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="edit-appointment_date" class="form-label fw-bold"> Appointment Date </label>
                             <input min="2022-01-01" onchange="validateDate('edit-appointment_date')" id="edit-appointment_date" type="date" class="form-control" required name="editAppointmentDate">
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="edit-appointment_time" class="form-label fw-bold"> Appointment Time </label>
                             <input id="edit-appointment_time" type="time" class="form-control" required name="editAppointmentTime">
                         </div>
 
-                        <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                            <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button">
-                                CANCEL </button>
-                            <button class="btn btn-primary font-monospace" type="submit"> GENERATE
-                            </button>
+                        <div class="col-md-4">
+                            <label for="update-vet-name" class="form-label fw-bold"> Vet Name </label>
+                            <select id="update-vet-name" class="form-select" name="editVetName" >
+                                <option selected id="edit-vets" value=""></option>
+                            </select>
                         </div>
-
+                        
+                        <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end" id="action_btns">
+                            <button class="btn btn-secondary me-md-2 font-monospace" data-bs-dismiss="modal" type="button"> CANCEL </button>
+                            <button class="btn btn-primary font-monospace" type="submit"> UPDATE </button>
+                        </div>
                     </form>
 
 

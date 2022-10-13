@@ -157,7 +157,7 @@ BEGIN
 	SET disease_id = diseaseID,
 	reported_date = reportedDate,
 	vet_id = vetID,
-	appointment_date = appointmentDate 
+	appointment_date = CONVERT(appointmentDate, DATETIME)
 	WHERE animal_id = animalID;
 	
 	UPDATE symptom

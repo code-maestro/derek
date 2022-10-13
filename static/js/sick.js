@@ -47,6 +47,34 @@ const viewSick = async () => {
 
 }
 
+// confirming the sick animal treatment appointment
+const confirm_appointment = (param) => {
+  // POST request using fetch()
+  fetch("/confirmation", {
+
+    // Adding method type
+    method: "POST",
+
+    // Adding body or contents to send
+    body: JSON.stringify({
+      confirm: "Y",
+      id: param
+    }),
+
+    // Adding headers to the request
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  })
+
+    // Converting to JSON
+    .then(response => response.json())
+
+    // Displaying results to console
+    .then(json => console.log(json));
+
+}
+
 
 
 // Editing veterinary
@@ -54,33 +82,59 @@ async function viewSickDetails(param) {
   const animal_tag = document.getElementById("edit-sick-animal-tag");
   const animal_id = document.getElementById("edit-sick-animal-id");
   const report_date = document.getElementById("edit-reported-date");
-  // const disease = document.getElementById("edit-disease-suspected");
+  const s_disease_id = document.getElementById("edit-s-disease-id");
   const signss = document.getElementById("edit-ss-text");
-  // const vet_name = document.getElementById("edit-vet-name");
-  const vet_id = document.getElementById("edit-vet-id");
+  const vet_id = document.getElementById("edit-sick-vet-id");
   const appointment_date = document.getElementById("edit-appointment_date");
   const appointment_time = document.getElementById("edit-appointment_time");
   const confirmed = document.getElementById("update-confirmed");
 
-  // TODO implement just after fixing query 
+  const confirm_btn = document.getElementById("confirm_btn");
+
+
   let the_sick = await getListing('editSickAnimals');
-
-  console.log(vet_name);
-
   the_sick.listing.every(sick => {
 
     if (sick.id == param) {
 
       animal_tag.setAttribute("value", sick.ANIMAL_TAG);
-      animal_id.setAttribute("value", sick.id)
+      animal_id.setAttribute("value", sick.id);
       report_date.setAttribute("value", formatDate(sick.reported_date));
-      disease.innerText = sick.DISEASE;
+      document.getElementById("edit-disease-suspected").innerText = sick.DISEASE;
+      document.getElementById("edit-disease-suspected").setAttribute("value", sick.disease_id);
+      // s_disease_id.setAttribute("value", sick.disease_id);
       signss.innerText = sick.SS;
-      vet_name.innerText = sick.VET_NAME;
-      vet_id.innerText = sick.vet_id;
+      document.getElementById("edit-vets").innerText = sick.VET_NAME;
+      document.getElementById("update-vet-name").setAttribute("value", sick.vet_id);
+      // vet_id.innerText = sick.vet_id;
       appointment_date.setAttribute('value', formatDate(sick.appointment_date));
       appointment_time.setAttribute('value', formatTime(sick.appointment_date));
-      confirmed.innerText = sick.confirmed ? 'YES'  : 'NO';
+
+      if (sick.confirm = 'N' || sick.confirm == null) {
+
+        // const newnode = `<button class="btn btn-info font-monospace" type="button" id="confirm_btn"> </button>`;
+        const list = document.getElementById("action_btns");
+
+        console.log(list.children);
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.innerHTML = ' CONFIRM APPOINTMENT';
+        button.className = 'btn btn-info font-monospace';
+        button.id = 'confirm_btn';
+
+        console.log(button);
+        list.insertBefore(button, list.children[1]);
+
+        button.onclick = function () {
+          confirm_appointment(sick.id);
+        };
+
+
+      } else {
+
+        confirmed.style.display = "none";
+        
+      }
 
       return false;
 
@@ -95,6 +149,7 @@ async function viewSickDetails(param) {
   });
 
 }
+
 
 // Function to farmat the dates for html form
 const formatDate = (param) => {
@@ -131,7 +186,6 @@ const formatTime = (param) => {
     ].join(':')
   );
 }
-
 
 
 // Function to get Required data to report a sick animal
@@ -203,41 +257,6 @@ const getMoreVetData = async () => {
   } else {
     console.log('ETF');
   }
-
-}
-
-// Function to get Required data to report a sick animal
-const getUpdateData = async () => {
-  const diseases = await getListing('diseases');
-  const vets = await getListing('vets');
-
-  let diseaseListed, tagListed, vetListed = '';
-  let diseaseList = `<option selected id="edit-disease-suspected"  value=""></option> <option selected id="edit-disease-suspected"  value=""></option> `;
-  let tagList = `<option selected disabled> Choose an Animal Tag ... </option>`;
-  let vetList = `<option selected id="edit-vet-name"  value=""></option> `;
-
-  const disease_lstd = document.getElementById('edit-disease_s');
-  const tag_lstd = document.getElementById('healthyList');
-  const vet_lstd = document.getElementById('vets-named');
-
-  diseases.listing.forEach(disease => {
-    diseaseListed = ` <option id="${disease.id}" value="${disease.id}">  ${disease.disease_name} </option> `;
-    diseaseList += diseaseListed;
-  });
-
-  animals.listing.forEach(animal => {
-    tagListed = ` <option id="${animal.id}" value="${animal.id}">  ${animal.animal_tag} </option> `;
-    tagList += tagListed;
-  });
-
-  vets.listing.forEach(vet => {
-    vetListed = ` <option id="${vet.id}" value="${vet.fname + ' ' + vet.lname}">  ${vet.fname + ' ' + vet.lname} </option> `;
-    vetList += vetListed;
-  });
-
-  disease_lstd.innerHTML = diseaseList;
-  tag_lstd.innerHTML = tagList;
-  vet_lstd.innerHTML = vetList;
 
 }
 

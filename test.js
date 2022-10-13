@@ -68,13 +68,17 @@
 
 
 
-const date = new Date();
+// const date = new Date();
 
-console.log(date);
-let day = date.getDate();
-let month = date.getMonth() + 1;
-let year = date.getFullYear();
+// console.log(date);
+// let day = date.getDate();
+// let month = date.getMonth() + 1;
+// let year = date.getFullYear();
 
-// This arrangement can be altered based on how we want the date's format to appear.
-let currentDate = `${day}-${month}-${year}`;
-console.log(currentDate); // "17-6-2022"
+// // This arrangement can be altered based on how we want the date's format to appear.
+// let currentDate = `${day}-${month}-${year}`;
+// console.log(currentDate); // "17-6-2022"
+
+
+
+var nodemailer = require('nodemailer');

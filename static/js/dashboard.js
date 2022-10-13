@@ -94,14 +94,18 @@ const getFeedsTableData = async () => {
   const con = document.getElementById('feedsListing');
 
   feedsData.listing.forEach(feed => {
+
+    const st_date = new Date(Date.parse(feed.stock_date));    
+    const ex_date = new Date(Date.parse(feed.expected_restock_date));
+
     htmlSegment = `
         <tr class="justify-content-center" id="${feed.id}">
           <td class="text-center"> ${feed.id} </td>
           <td class="text-center"> ${feed.name} </td>
           <td class="text-center"> ${feed.description} </td>
           <td class="text-center"> ${feed.quantity + ' ' + feed.quantity_measure} </td>
-          <td class="text-center"> ${feed.stock_date} </td>
-          <td class="text-center"> ${feed.expected_restock_date} </td>
+          <td class="text-center"> ${st_date} </td>
+          <td class="text-center"> ${ex_date} </td>
           
           <td class="text-center noprint" data-bs-target="#editAnimalModal" data-bs-toggle="modal"  onclick="editAnimal(${feed.id})">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
@@ -130,7 +134,7 @@ const getFeedsListData = async () => {
   const feedsData = await getListing('feeds');
   let last = await getMaxId('timetable_id');
 
-  last.listing.forEach(id => {
+  last.last_id.forEach(id => {
     document.getElementById("timetableTitle").setAttribute('value', `${id.animal_type.toUpperCase()}-FEEDING-000${id.LAST + 1}`);
   });
 
@@ -163,7 +167,7 @@ const getOtherData = async () => {
     ids.push(feed.id);
     names.push(feed.name);
     desc.push(feed.description);
-    numbers.push(feed.quantity + ' ' + feed.quantity_measure);
+    numbers.push(feed.quantity + ' ' + feed.measure);
   });
 
   const lstd = document.getElementById('feedList');
