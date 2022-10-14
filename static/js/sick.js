@@ -47,35 +47,6 @@ const viewSick = async () => {
 
 }
 
-// confirming the sick animal treatment appointment
-const confirm_appointment = (param) => {
-  // POST request using fetch()
-  fetch("/confirmation", {
-
-    // Adding method type
-    method: "POST",
-
-    // Adding body or contents to send
-    body: JSON.stringify({
-      confirm: "Y",
-      id: param
-    }),
-
-    // Adding headers to the request
-    headers: {
-      "Content-type": "application/json; charset=UTF-8"
-    }
-  })
-
-    // Converting to JSON
-    .then(response => response.json())
-
-    // Displaying results to console
-    .then(json => console.log(json));
-
-}
-
-
 
 // Editing veterinary
 async function viewSickDetails(param) {
@@ -91,12 +62,10 @@ async function viewSickDetails(param) {
 
   const confirm_btn = document.getElementById("confirm_btn");
 
-
   let the_sick = await getListing('editSickAnimals');
   the_sick.listing.every(sick => {
 
     if (sick.id == param) {
-
       animal_tag.setAttribute("value", sick.ANIMAL_TAG);
       animal_id.setAttribute("value", sick.id);
       report_date.setAttribute("value", formatDate(sick.reported_date));
@@ -110,38 +79,15 @@ async function viewSickDetails(param) {
       appointment_date.setAttribute('value', formatDate(sick.appointment_date));
       appointment_time.setAttribute('value', formatTime(sick.appointment_date));
 
-      if (sick.confirm = 'N' || sick.confirm == null) {
-
-        // const newnode = `<button class="btn btn-info font-monospace" type="button" id="confirm_btn"> </button>`;
-        const list = document.getElementById("action_btns");
-
-        console.log(list.children);
-        var button = document.createElement('button');
-        button.type = 'button';
-        button.innerHTML = ' CONFIRM APPOINTMENT';
-        button.className = 'btn btn-info font-monospace';
-        button.id = 'confirm_btn';
-
-        console.log(button);
-        list.insertBefore(button, list.children[1]);
-
-        button.onclick = function () {
-          confirm_appointment(sick.id);
-        };
-
-
-      } else {
-
-        confirmed.style.display = "none";
-        
+      if (sick.confirm = 'Y') {
+        // ✅ Set the disabled attribute
+        confirm_btn.setAttribute('disabled', '');
       }
 
       return false;
 
     } else {
-
       console.log("💐💐💐💐💐");
-
     }
 
     return true;
@@ -223,6 +169,7 @@ const getRequiredData = async () => {
   vet_lstd.innerHTML = vetList;
 
 }
+
 
 // VET DR DATA
 const getMoreVetData = async () => {

@@ -200,3 +200,7 @@ input[type="checkbox"]:checked ~ .modal-background {
 #tt {
   padding: 0 .25rem;
 }
+
+#bt {
+  padding: .5rem 1.25rem;
+}

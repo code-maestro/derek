@@ -87,7 +87,7 @@
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">
+            <div id="ssd" class="sidebar-heading">
                 Bio-data
             </div>
 
@@ -655,6 +655,20 @@
         </div>
         <!-- End of Content Wrapper -->
 
+        <div class="toast-container mt-3 top-0 start-50 translate-middle-x">
+            <div id="bt" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+                aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Hello, world! This is a toast message.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+
     </div>
     <!-- End of Page Wrapper -->
 
@@ -1022,8 +1036,6 @@
         </div>
 
     </div>
-
-
 
 
     <!-- Schedule a Vaccination Modal  -->
@@ -1727,60 +1739,44 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <!-- Feeds Registration Form -->
-                                        <form id="registerForm" class="row g-3 needs-validation" novalidate
-                                            method="POST" action="/newAnimal">
+                                        <form id="registerForm" class="row g-3 needs-validation" novalidate method="POST" action="/newFeed">
                                             <div class="col-md-6">
-                                                <label for="animal-tag" class="form-label fw-bold"> NAME </label>
-                                                <input id="animal-tag" type="text" placeholder="Disabled input"
-                                                    class="form-control" name="feeds_name" required id="feeds-name">
+                                                <label for="feeds_name" class="form-label fw-bold"> NAME </label>
+                                                <input id="feeds_name" type="text" class="form-control" name="feeds_name" required>
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
-                                            <div class="col-md-4">
-                                                <label for="dob" class="form-label fw-bold"> QUANTITY-MEASURE </label>
-                                                <input onchange="calculateAge()" type="date" class="form-control"
-                                                    name="quantity-measure" id="quantity-measure" required>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <label for="registration-date" class="form-label fw-bold">
-                                                    REGISTRATION DATE </label>
-                                                <div class="input-group has-validation">
-                                                    <input type="date" class="form-control" name="regDate"
-                                                        id="registration-date" aria-describedby="inputGroupPrepend"
-                                                        required>
-                                                    <div class="invalid-feedback"> Please choose a Date. </div>
-                                                    <div class="valid-feedback"> Looks Good </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <label for="age-years" class="form-label fw-bold"> AGE </label>
-                                                <input type="text" class="form-control" id="age-years" name="ageYears"
-                                                    readonly>
-                                                <div class="invalid-feedback"> Enter Age </div>
+                                            <div class="col-md-6">
+                                                <label for="feeds_stock_date" class="form-label fw-bold"> STOCK DATE </label>
+                                                <input id="feeds_stock_date" type="datetime-local" class="form-control"
+                                                    name="feeds_stock_date" required>
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
-                                            <div class="col-md-12">
-                                                <!-- <label for="age-days" class="form-label fw-bold"> AGE (Days)
-                                                            </label>
-                                                            <input type="text" class="form-control" id="age-days"
-                                                                name="ageDays" readonly>
-                                                            <div class="invalid-feedback"> Enter Age </div>
-                                                            <div class="valid-feedback"> Looks good! </div> -->
+                                            <div class="col-md-6">
+                                                <label for="feeds_qnty" class="form-label fw-bold"> QUANTITY </label>
+                                                <input id="feeds_qnty" type="number" class="form-control"
+                                                    name="feeds_qnty" required>
+                                                <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
-                                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                                                <button class="btn btn-light me-md-2 font-monospace"
-                                                    data-bs-dismiss="modal" type="button"> cancel </button>
-                                                <button class="btn btn-primary font-monospace" type="submit"> submit
-                                                    form </button>
+                                            <div class="col-md-6">
+                                                <label for="feeds_qnty_measure" class="form-label fw-bold">
+                                                    QUANTITY-MEASURE </label>
+                                                <select class="form-select" id="period" name="feeds_qnty_measure" required>
+                                                    <option value="1000" selected> kg </option>
+                                                    <option value="1"> g </option>
+                                                </select>
                                             </div>
-
-                                        </form>
-
                                     </div>
+
+                                    <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                        <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button"> cancel </button>
+                                        <button class="btn btn-primary font-monospace" type="submit"> submit form </button>
+                                    </div>
+
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
@@ -1788,6 +1784,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Available Feeds modal -->
@@ -2210,7 +2207,8 @@
                                             <div class="col-md-4">
                                                 <label for="feedsName" class="form-label fw-bold"> Choose Animal TAG
                                                 </label>
-                                                <select id="healthyList" class="form-select" name="healthyAnimals" required> </select>
+                                                <select id="healthyList" class="form-select" name="healthyAnimals"
+                                                    required> </select>
                                             </div>
 
                                             <div class="col-md-4">
@@ -2224,7 +2222,8 @@
                                             <div class="col-md-4">
                                                 <label for="feedsName" class="form-label fw-bold"> Suspected Disease
                                                 </label>
-                                                <select id="disease_suspected" class="form-select"  name="suspected_disease" required> </select>
+                                                <select id="disease_suspected" class="form-select"
+                                                    name="suspected_disease" required> </select>
                                             </div>
 
                                             <div class="col-md-12">
@@ -2675,7 +2674,7 @@
                     </div>
 
                     <!-- Sick Animal Edit Form -->
-                    <form method="POST" action="/updateSick" class="row g-3">
+                    <form method="POST" action="/confirmation" class="row g-3">
                         <!-- HEALTHY ANIMALS -->
                         <div class="col-md-4">
                             <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG </label>
@@ -2696,7 +2695,7 @@
                             <label for="edit-disease-suspected" class="form-label fw-bold"> Suspected Disease
                             </label>
                             <select id="edit-disease-s" class="form-select" name="disease_suspected">
-                                <option selected id="edit-disease-suspected"  value=""></option>
+                                <option selected id="edit-disease-suspected" value=""></option>
                             </select>
                         </div>
 
@@ -2712,24 +2711,28 @@
 
                         <div class="col-md-4">
                             <label for="edit-appointment_date" class="form-label fw-bold"> Appointment Date </label>
-                            <input min="2022-01-01" onchange="validateDate('edit-appointment_date')" id="edit-appointment_date" type="date" class="form-control" required name="editAppointmentDate">
+                            <input min="2022-01-01" onchange="validateDate('edit-appointment_date')"
+                                id="edit-appointment_date" type="date" class="form-control" required
+                                name="editAppointmentDate">
                         </div>
 
                         <div class="col-md-4">
                             <label for="edit-appointment_time" class="form-label fw-bold"> Appointment Time </label>
-                            <input id="edit-appointment_time" type="time" class="form-control" required name="editAppointmentTime">
+                            <input id="edit-appointment_time" type="time" class="form-control" required
+                                name="editAppointmentTime">
                         </div>
 
                         <div class="col-md-4">
                             <label for="update-vet-name" class="form-label fw-bold"> Vet Name </label>
-                            <select id="update-vet-name" class="form-select" name="editVetName" >
+                            <select id="update-vet-name" class="form-select" name="editVetName">
                                 <option selected id="edit-vets" value=""></option>
                             </select>
                         </div>
-                        
+
                         <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end" id="action_btns">
-                            <button class="btn btn-secondary me-md-2 font-monospace" data-bs-dismiss="modal" type="button"> CANCEL </button>
-                            <button class="btn btn-primary font-monospace" type="submit"> UPDATE </button>
+                            <button class="btn btn-secondary me-md-2 font-monospace" data-bs-dismiss="modal"
+                                type="button"> CLOSE </button>
+                            <button class="btn btn-primary font-monospace" type="submit"> CONFIRM APPOINTMENT </button>
                         </div>
                     </form>
 

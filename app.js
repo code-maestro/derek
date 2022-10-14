@@ -78,6 +78,32 @@ function checkFileType(file, cb) {
     }
 }
 
+// function to send email
+const sendmail = async (param1, param2, param3) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'ell889lle@gmail.com',
+            pass: 'hfzpdceyryganpcy'
+        }
+    });
+
+    const mailOptions = {
+        from: 'ell889lle@gmail.com',
+        to: `${param1}`,
+        subject: 'APPOINTMENT CONFIRMED',
+        text: `${param3}`
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
+
 
 /* 
 
@@ -112,6 +138,13 @@ app.get('/selection', function (request, response) {
         response.redirect('/');
     }
 });
+
+
+// NEW FARMA ANIMAL SELECTION PAGE
+app.get('/re', function (request, response) {
+    response.render(path.join(__dirname + '/public/nohome.html'));
+});
+
 
 // HOME PAGE
 app.get('/home', function (request, response) {
@@ -269,7 +302,7 @@ app.get('/getListing/:param', function (request, response) {
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
         pendingAnimals: `SELECT A.id, C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending, (SELECT disease_name FROM disease WHERE id=B.disease_id) AS d_name, (SELECT name FROM vaccines WHERE id = A.vaccine_id) AS vaccine_name FROM vaccination_details A, vaccines B, animal C, vets D WHERE A.vet_id = D.vet_id AND A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.animal_type = B.animal_type AND B.id = A.vaccine_id AND B.farma_id = C.farma_id AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
         availableVaccines: `SELECT * FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
-        feeds: `SELECT name, description, quantity, IF(quantity_measure >= 1000, 'kg', 'g') AS measure, stock_date, expected_restock_date FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
+        feeds: `SELECT id, name, description, quantity, IF(quantity_measure >= 1000, 'kg', 'g') AS measure, stock_date, expected_restock_date FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
         timetables: `SELECT * FROM feeding_timetable WHERE farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
         fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, V.no_of_vaccinations, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
         vets: `SELECT * FROM vets;`,
@@ -468,6 +501,21 @@ app.post('/newVaccine', function (req, res) {
     return;
 })
 
+// Inserting Feeds into the DB
+app.post('/newFeed', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+    const vet_uuid = uuidv4();
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`INSERT INTO feeds (name, description, quantity, quantity_measure, stock_date, animal_type, farma_id) VALUES ('${req.body.feeds_name}','${req.body.feeds_name}',${req.body.feeds_qnty},${req.body.feeds_qnty_measure},'${req.body.feeds_stock_date}', '${animal}','${farma_id}');`,
+        function (error, results, fields) {
+            if (error) throw error;
+            console.log(results);
+        });
+    res.redirect(`/animal/${animal}`);
+    return;
+})
+
 // Inserting Vaccines into the DB
 app.post('/newVet', function (req, res) {
     const farma_id = storage('farma_id');
@@ -483,6 +531,7 @@ app.post('/newVet', function (req, res) {
     return;
 })
 
+
 // Inserting Vaccines into the DB
 app.post('/updateVet', function (req, res) {
     const animal = storage('animal');
@@ -497,42 +546,49 @@ app.post('/updateVet', function (req, res) {
     return;
 })
 
-// Inserting Vaccines into the DB
-app.post('/updateSick', function (req, res) {
-    const animal = storage('animal');
-    // Execute SQL query that'll insert into the vaccines table
-    connection.query(`CALL update_sick('${req.body.edit_sick_animal_id}', '${req.body.editReportedDate}', '${req.body.editVetName}', '${req.body.editAppointmentDate + ' ' + req.body.editAppointmentTime}', '${req.body.disease_suspected}', '${req.body.editSSText}' )`,
-        function (error, results, fields) {
-            if (error) {
-                console.log(error);
-                console.log(error.errno);
-                console.log(error.message);
-                console.log(error.name);
-                res.redirect(`/animal/rabbbit`);
-            }
-        });
+// // Inserting Vaccines into the DB
+// app.post('/updateSick', function (req, res) {
+//     const animal = storage('animal');
+//     // Execute SQL query that'll insert into the vaccines table
+//     connection.query(`CALL update_sick('${req.body.edit_sick_animal_id}', '${req.body.editReportedDate}', '${req.body.editVetName}', '${req.body.editAppointmentDate + ' ' + req.body.editAppointmentTime}', '${req.body.disease_suspected}', '${req.body.editSSText}' )`,
+//         function (error, results, fields) {
+//             if (error) {
+//                 console.log(error);
+//                 console.log(error.errno);
+//                 console.log(error.message);
+//                 console.log(error.name);
+//                 res.redirect(`/animal/rabbbit`);
+//             }
+//         });
 
-    res.redirect(`/animal/${animal}`);
-    return;
-})
+//     res.redirect(`/animal/${animal}`);
+//     return;
+// })
 
 
 // Confirming appointment
 app.post('/confirmation', function (req, res) {
     const animal = storage('animal');
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`UPDATE UPDATE sick_animals SET confirmed = '${req.body.confirm}' WHERE animal_id = ${req.body.id};`,
+    connection.query(`UPDATE sick_animals SET confirmed = 'Y' WHERE id = '${req.body.edit_sick_animal_id}';`,
         function (error, results, fields) {
             if (error) {
                 console.log(error);
                 console.log(error.errno);
                 console.log(error.message);
                 console.log(error.name);
-                res.redirect(`/animal/rabbbit`);
+                res.redirect(`/animal/rabbit`);
             }
+
+            if (results.affectedRow === 1) {
+                console.log(results.affectedRows);
+                console.log(req.body.edit_sick_animal_id);
+            }
+
         });
 
     res.redirect(`/animal/${animal}`);
+
     return;
 })
 
@@ -713,43 +769,7 @@ app.post('/delete/:param', function (request, response) {
 });
 
 
-
-// Reportinsg Sick animals into the DB
-app.post('/sendy', function (req, res) {
-
-    // function to send email
-    const sendmail = async () => {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'ell889lle@gmail.com',
-                pass: 'hfzpdceyryganpcy'
-            }
-        });
-        
-        
-        const mailOptions = {
-          from: 'ell889lle@gmail.com',
-          to: 'michaelajnew@gmail.com',
-          subject: 'Sending Email using Node.js',
-          text: 'That was easy!'
-        };
-        
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
-    }
-
-    // test
-    sendmail();
-
-})
-
-
 app.listen(3000, function () {
     console.log('Server is running at port: ', 3000);
 });
+

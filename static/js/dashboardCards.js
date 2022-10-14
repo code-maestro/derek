@@ -435,16 +435,21 @@ async function getAnimalFeeds() {
   const con = document.getElementById('animalFeedsListing');
 
   feeds.listing.forEach(feed => {
-    const stock_date = new Date(Date.parse(feed.expected_restock_date));
+
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+    // const expected_restock_date = feed.expected_restock_date == null ? feed.expected_restock_date : ''
+
+    const stock_date = new Date(Date.parse(feed.stock_date));
     const restock_date = new Date(Date.parse(feed.expected_restock_date));
 
     htmlSegment = `
         <tr class="justify-content-center" id="${feed.id}">
-        <td scope="col" class="text-center"> ${feed.id} </td>
+          <td scope="col" class="text-center"> ${feed.id} </td>
           <td scope="col" class="text-center"> ${feed.name} </td>
-          <td scope="col" class="text-center"> ${feed.quantity + ' ' + feed.quantity_measure} </td>
-          <td scope="col" class="text-center"> ${stock_date.toDateString()} </td>
-          <td scope="col" class="text-center"> ${restock_date.toDateString()} </td>
+          <td scope="col" class="text-center"> ${feed.quantity + ' ' + feed.measure} </td>
+          <td scope="col" class="text-center"> ${stock_date.toLocaleDateString(undefined, options)} </td>
+          <td scope="col" class="text-center"> ${restock_date.toLocaleDateString(undefined, options) == 'Invalid Date' ? '-' : restock_date.toLocaleDateString(undefined, options) } </td>
         </tr>
       `;
 
@@ -589,4 +594,8 @@ async function getPendingVaccinationsListing() {
 
   con.innerHTML = html;
 
+}
+
+document.querySelector("#ssd").onclick = function () {
+  new bootstrap.Toast(document.querySelector('#bt')).show();
 }
