@@ -75,11 +75,15 @@ AND B.id = A.vaccine_id
 AND A.last_date > CURDATE();
 
 
-DELIMITER //
 
-CREATE PROCEDURE getAnimals()
-BEGIN
-	SELECT *  FROM animal//
-END //
+-- GESTATION PERIODS FOR ANIMALS
+INSERT INTO 
+gestation_period (period,animal_type)
+VALUES 
+(31, 'rabbit'),
+(150, 'goat'),
+(147, 'sheep'),
+(283, 'cow'),
+(125, 'pig')
 
-DELIMITER ;
+

@@ -50,6 +50,7 @@
     <script src="../js/timetable.js" defer></script>
     <script src="../js/dashboardCards.js" defer></script>
     <script src="../js/getFarmaData.js" defer></script>
+    <script src="../js/breed.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
@@ -134,7 +135,7 @@
             </li>
 
             <!-- Nav Item - Breeding -->
-            <li class="nav-item" onclick="getBreedingRecords()">
+            <li class="nav-item" onclick="getBreedAnimals()">
                 <span class="nav-link" data-bs-toggle="modal" href="#breedingAnimalModalToggle" role="button">
                     <i class="fa-solid fa-address-card"></i>
                     <span> Breeding </span>
@@ -1661,7 +1662,7 @@
     <!-- Add Breeding Modal -->
     <div class="modal fade" id="breedingAnimalModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-hidden="true" aria-labelledby="breedingAnimalModalToggleLabel" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content px-2">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold" id="breedingAnimalModalLabel"> </h5>
@@ -1671,52 +1672,48 @@
                     <div class="row">
                     </div>
 
-                    <form id="breedingAnimalForm" class="row g-3 needs-validation px-4" novalidate="" method="POST"
-                        action="/addBreedingAnimal">
+                    <form id="breedingAnimalForm" class="row g-3 needs-validation px-4" method="POST" action="/newBred">
                         <div class="col-md-6">
-                            <label for="edit-animal-tag" class="form-label fw-bold"> Animal Tag </label>
-                            <input id="edit-animal-tag" type="text" placeholder="Disabled input" class="form-control"
-                                name="editAnimalTag" spellcheck="false" data-ms-editor="true" value="">
+                            <label for="breading_animal" class="form-label fw-bold"> Animal Tag </label>
+                            <select onchange="getGender()" id="breeding_animal" class="form-select"
+                                name="breeding_animal" required> </select>
                         </div>
 
                         <div class="col-md-6">
-                            <label for="edit-gender" class="form-label fw-bold"> Gender </label>
-                            <select class="form-select" name="editGender" required>
-                                <option selected disabled id="edit-gender" value="">Choose...</option>
-                                <option value="Male"> Male </option>
-                                <option value="Female"> Female </option>
-                            </select>
+                            <label for="breeding_gender" class="form-label fw-bold"> Gender </label>
+                            <input type="text" class="form-control" id="breeding_gender" name="breeding_gender"
+                                disabled>
+                        </div>
+
+                        <input type="number" class="form-control" id="breeding_animal_id" name="breeding_animal_id"
+                            hidden>
+                        <input type="text" class="form-control" id="gestation_period" name="gestation_period" hidden>
+
+                        <div class="col-md-6">
+                            <label for="breeding_date" class="form-label fw-bold"> Breeding Date </label>
+                            <input onchange="calcDueDate()" type="date" class="form-control" name="breeding_date"
+                                id="breeding_date" required>
                         </div>
 
                         <div class="col-md-6">
-                            <label for="edit-dob" class="form-label fw-bold"> Date of Birth </label>
-                            <input onchange="calculateAge()" type="date" class="form-control" name="editDob"
-                                id="edit-dob" required="">
+                            <label for="expected_delivery_date" class="form-label fw-bold"> Expected Delivery Date
+                            </label>
+                            <input type="date" class="form-control" name="expected_due_date" id="expected_due_date"
+                                readonly>
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="edit-registration-date" class="form-label fw-bold">
-                                Registration Date </label>
-                            <div class="input-group has-validation">
-                                <input type="date" class="form-control" name="editRegDate" id="edit-registration-date"
-                                    aria-describedby="inputGroupPrepend" required="">
-                            </div>
+                        <div class="d-grid gap-2 d-md-flex px-2 pt-4 justify-content-md-end">
+                            <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button">
+                                cancel
+                            </button>
+                            <button class="btn btn-primary font-monospace" type="submit"> submit </button>
                         </div>
 
-
-                        <div class="col-md-6">
-                            <input type="number" class="form-control" name="editid" id="editid"
-                                aria-describedby="inputGroupPrepend" hidden>
-                        </div>
+                    </form>
                 </div>
 
-                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                    <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button">
-                        cancel </button>
-                    <button class="btn btn-primary font-monospace" type="submit"> submit </button>
-                </div>
 
-                </form>
+
             </div>
         </div>
     </div>
@@ -1739,15 +1736,18 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <!-- Feeds Registration Form -->
-                                        <form id="registerForm" class="row g-3 needs-validation" novalidate method="POST" action="/newFeed">
+                                        <form id="registerForm" class="row g-3 needs-validation" novalidate
+                                            method="POST" action="/newFeed">
                                             <div class="col-md-6">
                                                 <label for="feeds_name" class="form-label fw-bold"> NAME </label>
-                                                <input id="feeds_name" type="text" class="form-control" name="feeds_name" required>
+                                                <input id="feeds_name" type="text" class="form-control"
+                                                    name="feeds_name" required>
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="feeds_stock_date" class="form-label fw-bold"> STOCK DATE </label>
+                                                <label for="feeds_stock_date" class="form-label fw-bold"> STOCK DATE
+                                                </label>
                                                 <input id="feeds_stock_date" type="datetime-local" class="form-control"
                                                     name="feeds_stock_date" required>
                                                 <div class="valid-feedback"> Looks good! </div>
@@ -1763,7 +1763,8 @@
                                             <div class="col-md-6">
                                                 <label for="feeds_qnty_measure" class="form-label fw-bold">
                                                     QUANTITY-MEASURE </label>
-                                                <select class="form-select" id="period" name="feeds_qnty_measure" required>
+                                                <select class="form-select" id="period" name="feeds_qnty_measure"
+                                                    required>
                                                     <option value="1000" selected> kg </option>
                                                     <option value="1"> g </option>
                                                 </select>
@@ -1771,8 +1772,10 @@
                                     </div>
 
                                     <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                                        <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button"> cancel </button>
-                                        <button class="btn btn-primary font-monospace" type="submit"> submit form </button>
+                                        <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
+                                            type="button"> cancel </button>
+                                        <button class="btn btn-primary font-monospace" type="submit"> submit form
+                                        </button>
                                     </div>
 
                                     </form>
@@ -1784,7 +1787,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <!-- Available Feeds modal -->
@@ -2418,7 +2420,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Edt Vet Modal -->
     <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

@@ -79,6 +79,7 @@
 // let currentDate = `${day}-${month}-${year}`;
 // console.log(currentDate); // "17-6-2022"
 
-
-
-var nodemailer = require('nodemailer');
+console.log("Add 283 Days to Current Date")
+const d = new Date();
+d.setDate(d.getDate() + 283);
+console.log(d)

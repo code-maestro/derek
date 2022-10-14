@@ -255,7 +255,6 @@ const getOtherVaccineData = async () => {
     document.getElementById('no-vax').value = noVaxs.at(getIndex);
   }
 
-
 }
 
 // VET DR DATA

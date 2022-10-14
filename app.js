@@ -295,10 +295,11 @@ app.get('/getListing/:param', function (request, response) {
         diseases: `SELECT * FROM disease WHERE animal_type = '${animal_type}';`,
         symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${animal_type}';`,
         allAnimals: `SELECT id, animal_tag, gender,  dob, reg_date, TIMESTAMPDIFF(YEAR, dob, CURDATE()) AS YEARS FROM animal WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
-        expectingAnimals: `SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date, TIMESTAMPDIFF(DAY, CURDATE(), delivery_date) AS AGE FROM due_dates a, animal b, first_dates c WHERE b.farma_id = '${farma_id}' AND b.animal_type = '${animal_type}' AND a.animal_id = b.id AND a.animal_id = c.animal_id AND c.animal_id = b.id AND a.animal_id=b.id AND a.delivery_date > CURDATE();`,
+        notHeavyAnimals: `SELECT * FROM animal A, gestation_periods GP WHERE A.id NOT IN (SELECT animal_id FROM breeding) AND A.animal_type='${animal_type}' AND GP.animal_type = '${animal_type}' AND A.animal_type = GP.animal_type AND A.farma_id='${farma_id}';`,
+        expectingAnimals: `SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date, TIMESTAMPDIFF(DAY, CURDATE(), delivery_date) AS AGE FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}';`,
         sickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.vet_id, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
         editSickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT symptom_name FROM symptom WHERE disease = (SELECT id FROM disease WHERE id = SA.disease_id))AS SS, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
-        babies: `SELECT id, animal_tag FROM animal WHERE farma_id='${farma_id}' AND animal_type='${animal_type}' AND parent_tag IS NOT NULL OR parent_tag != '';`,
+        babies: `SELECT * FROM animal WHERE farma_id='${farma_id}' AND animal_type='${animal_type}' AND parent_tag IS NOT NULL OR parent_tag != '';`,
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
         pendingAnimals: `SELECT A.id, C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending, (SELECT disease_name FROM disease WHERE id=B.disease_id) AS d_name, (SELECT name FROM vaccines WHERE id = A.vaccine_id) AS vaccine_name FROM vaccination_details A, vaccines B, animal C, vets D WHERE A.vet_id = D.vet_id AND A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.animal_type = B.animal_type AND B.id = A.vaccine_id AND B.farma_id = C.farma_id AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
         availableVaccines: `SELECT * FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
@@ -499,7 +500,8 @@ app.post('/newVaccine', function (req, res) {
 
     res.redirect(`/animal/${animal}`);
     return;
-})
+});
+
 
 // Inserting Feeds into the DB
 app.post('/newFeed', function (req, res) {
@@ -514,7 +516,26 @@ app.post('/newFeed', function (req, res) {
         });
     res.redirect(`/animal/${animal}`);
     return;
-})
+});
+
+
+// Inserting Animals that have been fvcked (Insemination/Mating/Breeding) into the DB
+app.post('/newBred', function (req, res) {
+    const animal = storage('animal');
+    const breeding_uuid = uuidv4();
+
+    console.log(req.body);
+
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`INSERT INTO breeding (animal_id, breeding_date, expected_due_date, breeding_uuid) VALUES ('${req.body.breeding_animal_id}','${req.body.breeding_date}','${req.body.expected_due_date}', '${breeding_uuid}');`,
+        function (error, results, fields) {
+            if (error) throw error;
+            console.log(results);
+        });
+    res.redirect(`/animal/${animal}`);
+    return;
+});
+
 
 // Inserting Vaccines into the DB
 app.post('/newVet', function (req, res) {
