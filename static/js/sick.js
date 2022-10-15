@@ -8,20 +8,14 @@ const viewSick = async () => {
   const con = document.getElementById('sickListing');
 
   allSickAnimals.listing.forEach(sick => {
-
-    const REPORTED_DATE = new Date(Date.parse(sick.reported_date));
-    const APPOINTMENT_DATE = new Date(Date.parse(sick.appointment_date));
-
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
     htmlSegment = `
      <tr class="justify-content-center" id="${sick.id}">
        <td class="text-center"> ${sick.id} </td>
        <td class="text-center"> ${sick.ANIMAL_TAG} </td>
        <td class="text-center"> ${sick.DISEASE} </td>
-       <td class="text-center"> ${REPORTED_DATE.toLocaleDateString(undefined, options)} </td>
+       <td class="text-center"> ${dateFrontend(sick.reported_date)} </td>
        <td class="text-center"> ${sick.VET_NAME} </td>
-       <td class="text-center"> ${APPOINTMENT_DATE.toLocaleDateString(undefined, options)} </td>
+       <td class="text-center"> ${dateFrontend(sick.appointment_date)} </td>
        <td class="text-center"> ${sick.confirmed} </td>
 
        <td class="text-center noprint" data-bs-target="#editSickModalToggle" data-bs-toggle="modal"  onclick="viewSickDetails('${sick.id}')">
@@ -53,16 +47,13 @@ async function viewSickDetails(param) {
   const animal_tag = document.getElementById("edit-sick-animal-tag");
   const animal_id = document.getElementById("edit-sick-animal-id");
   const report_date = document.getElementById("edit-reported-date");
-  const s_disease_id = document.getElementById("edit-s-disease-id");
   const signss = document.getElementById("edit-ss-text");
-  const vet_id = document.getElementById("edit-sick-vet-id");
   const appointment_date = document.getElementById("edit-appointment_date");
   const appointment_time = document.getElementById("edit-appointment_time");
-  const confirmed = document.getElementById("update-confirmed");
-
   const confirm_btn = document.getElementById("confirm_btn");
 
   let the_sick = await getListing('editSickAnimals');
+
   the_sick.listing.every(sick => {
 
     if (sick.id == param) {
@@ -71,17 +62,19 @@ async function viewSickDetails(param) {
       report_date.setAttribute("value", formatDate(sick.reported_date));
       document.getElementById("edit-disease-suspected").innerText = sick.DISEASE;
       document.getElementById("edit-disease-suspected").setAttribute("value", sick.disease_id);
-      // s_disease_id.setAttribute("value", sick.disease_id);
       signss.innerText = sick.SS;
       document.getElementById("edit-vets").innerText = sick.VET_NAME;
-      document.getElementById("update-vet-name").setAttribute("value", sick.vet_id);
-      // vet_id.innerText = sick.vet_id;
+      document.getElementById("edit-vets").setAttribute("value", sick.VET_NAME);
+      document.getElementById("update-vet-name").setAttribute("value", sick.VET_NAME);
+      document.getElementById("update-vet-mail").setAttribute("value", sick.VET_MAIL);
       appointment_date.setAttribute('value', formatDate(sick.appointment_date));
       appointment_time.setAttribute('value', formatTime(sick.appointment_date));
 
-      if (sick.confirm = 'Y') {
+      if (sick.confirmed == 'Y') {
         // ✅ Set the disabled attribute
-        confirm_btn.setAttribute('disabled', '');
+        confirm_btn.setAttribute('disabled', "");
+      } else {
+        confirm_btn.removeAttribute('disabled', "");
       }
 
       return false;

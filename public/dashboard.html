@@ -44,6 +44,7 @@
 
     <!-- List of animals that belong to the farmer that has signed in -->
     <script src="../js/dashboard.js" defer></script>
+    <script src="../js/age.js" defer></script>
     <script src="../js/main.js" defer></script>
     <script src="../js/vet.js" defer></script>
     <script src="../js/sick.js" defer></script>
@@ -736,7 +737,7 @@
                                             <div class="col-md-4">
                                                 <label for="dob" class="form-label fw-bold"> DATE OF BIRTH
                                                 </label>
-                                                <input onchange="calculateAge()" type="date" class="form-control"
+                                                <input onchange="getAge('dob')" type="date" class="form-control"
                                                     name="dob" id="dob" required>
                                             </div>
 
@@ -2522,7 +2523,7 @@
 
                         <div class="col-md-6">
                             <label for="edit-gender" class="form-label fw-bold"> Gender </label>
-                            <select class="form-select" name="editGender" required>
+                            <select class="form-select" name="editGender">
                                 <option selected disabled id="edit-gender" value="">Choose...</option>
                                 <option value="Male"> Male </option>
                                 <option value="Female"> Female </option>
@@ -2531,8 +2532,8 @@
 
                         <div class="col-md-6">
                             <label for="edit-dob" class="form-label fw-bold"> Date of Birth </label>
-                            <input onchange="calculateAge()" type="date" class="form-control" name="editDob"
-                                id="edit-dob" required="">
+                            <input onchange="getAge('edit-dob')" type="date" class="form-control" name="editDob"
+                                id="edit-dob">
                         </div>
 
                         <div class="col-md-6">
@@ -2540,7 +2541,7 @@
                                 Registration Date </label>
                             <div class="input-group has-validation">
                                 <input type="date" class="form-control" name="editRegDate" id="edit-registration-date"
-                                    aria-describedby="inputGroupPrepend" required="">
+                                    aria-describedby="inputGroupPrepend">
                             </div>
                         </div>
 
@@ -2683,7 +2684,8 @@
                                 spellcheck="false" data-ms-editor="true" readonly>
                         </div>
 
-                        <input id="edit-sick-animal-id" type="number" name="edit_sick_animal_id" hidden readonly>
+                        <input id="edit-sick-animal-id" type="number" name="edit_sick_animal_id" hidden>
+                        <input id="update-vet-mail" type="text" name="update_vet_mail" hidden>
 
                         <div class="col-md-4">
                             <label for="edit-reported-date" class="form-label fw-bold"> First Signs
@@ -2733,7 +2735,7 @@
                         <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end" id="action_btns">
                             <button class="btn btn-secondary me-md-2 font-monospace" data-bs-dismiss="modal"
                                 type="button"> CLOSE </button>
-                            <button class="btn btn-primary font-monospace" type="submit"> CONFIRM APPOINTMENT </button>
+                            <button class="btn btn-primary font-monospace" id="confirm_btn" type="submit"> CONFIRM APPOINTMENT </button>
                         </div>
                     </form>
 

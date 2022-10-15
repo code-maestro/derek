@@ -379,20 +379,13 @@ const getPendingVaccinations = async () => {
   const con = document.getElementById('pendingAnimalsListing');
 
   vaccinated.listing.forEach(vaxed => {
-
-    const first_date = new Date(Date.parse(vaxed.first_date));
-    const next_date = new Date(Date.parse(vaxed.next_date));    
-    const last_date = new Date(Date.parse(vaxed.last_date));
-
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
     htmlSegment = `
       <tr class="justify-content-center" id="${vaxed.id}">
         <td class="text-center"> ${vaxed.id} </td>
         <td class="text-center"> ${vaxed.animal_tag} </td>
-        <td class="text-center"> ${first_date.toLocaleDateString(undefined, options)} </td>
-        <td class="text-center"> ${next_date.toLocaleDateString(undefined, options)} </td>
-        <td class="text-center"> ${last_date.toLocaleDateString(undefined, options)} </td>
+        <td class="text-center"> ${dateFrontend(vaxed.first_date)} </td>
+        <td class="text-center"> ${dateFrontend(vaxed.next_date)} </td>
+        <td class="text-center"> ${dateFrontend(vaxed.last_date)} </td>
         <td class="text-center"> ${vaxed.no_of_vaccinations} </td>
         <td class="text-center"> ${vaxed.no_pending} </td>
 
@@ -431,12 +424,6 @@ const getFullyVaccinated = async () => {
   const con = document.getElementById('vaccinatedListing');
 
   vaccinated.listing.forEach(vaxed => {
-
-    const first_date = new Date(Date.parse(vaxed.first_date));    
-    const last_date = new Date(Date.parse(vaxed.last_date));
-
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
     htmlSegment = `
     <tr class="justify-content-center" id="${vaxed.id}">
       <td class="text-center"> ${vaxed.id} </td>
@@ -444,8 +431,8 @@ const getFullyVaccinated = async () => {
       <td class="text-center"> ${vaxed.name} </td>
       <td class="text-center"> ${vaxed.disease_name} </td>
       <td class="text-center"> ${vaxed.no_of_vaccinations} </td>
-      <td class="text-center"> ${first_date.toLocaleDateString(undefined, options)} </td>
-      <td class="text-center"> ${last_date.toLocaleDateString(undefined, options)} </td>
+      <td class="text-center"> ${dateFrontend(vaxed.first_date)} </td>
+      <td class="text-center"> ${dateFrontend(vaxed.last_date)} </td>
     </tr>
   `;
 

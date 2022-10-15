@@ -201,7 +201,7 @@ function clicked(param) {
           break;
 
 
-        // TODO return products from animals
+        // products from animals
         case 'products':
           getAnimalProducts();
           container.innerHTML = `
@@ -228,7 +228,7 @@ function clicked(param) {
           `;
           break;
 
-        // TODO Keep track of stocked feeds
+        // stocked feeds
         case 'feed':
           getAnimalFeeds();
           container.innerHTML = `
@@ -268,9 +268,7 @@ function clicked(param) {
                   <thead class="table-dark">
                     <tr>
                       <th scope="col" class="text-center"> ID </th>
-                      <th scope="col" class="text-center"> ANIMAL TAG </th>
-                      <th scope="col" class="text-center"> GENDER </th>
-                      <th scope="col" class="text-center"> REGISTRATION DATE </th>
+                      <th scope="col" class="text-center"> NEW BORN ANIMAL_TAG </th>
                       <th scope="col" class="text-center"> DATE OF BIRTH </th>
                       <th scope="col" class="text-center"> PARENT ANIMAL_TAG </th>
                     </tr>
@@ -320,7 +318,7 @@ async function getAllAnimals() {
           <td class="text-center"> ${animal.gender} </td>
           <td class="text-center"> ${regDate.toDateString()} </td>
           <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${animal.YEARS > 0 ? animal.YEARS + ' Year(s)' : ''} ${ animal.MONTHS > 0 ? animal.MONTHS + ' Month(s)' : ''} ${ animal.DAYS > 0 ? animal.DAYS + ' Day(s)' : ''} </td>
+          <td class="text-center"> ${animal.YEARS > 0 ? animal.YEARS + ' Year(s)' : '' + animal.MONTHS > 0 ? animal.MONTHS + ' Month(s)' : '' + animal.DAYS > 0 ? animal.DAYS + ' Day(s)' : ''} </td>
         </tr>
       `;
 
@@ -435,21 +433,13 @@ async function getAnimalFeeds() {
   const con = document.getElementById('animalFeedsListing');
 
   feeds.listing.forEach(feed => {
-
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
-    // const expected_restock_date = feed.expected_restock_date == null ? feed.expected_restock_date : ''
-
-    const stock_date = new Date(Date.parse(feed.stock_date));
-    const restock_date = new Date(Date.parse(feed.expected_restock_date));
-
     htmlSegment = `
         <tr class="justify-content-center" id="${feed.id}">
           <td scope="col" class="text-center"> ${feed.id} </td>
           <td scope="col" class="text-center"> ${feed.name} </td>
           <td scope="col" class="text-center"> ${feed.quantity + ' ' + feed.measure} </td>
-          <td scope="col" class="text-center"> ${stock_date.toLocaleDateString(undefined, options)} </td>
-          <td scope="col" class="text-center"> ${restock_date.toLocaleDateString(undefined, options) == 'Invalid Date' ? '-' : restock_date.toLocaleDateString(undefined, options) } </td>
+          <td scope="col" class="text-center"> ${dateFrontend(feed.stock_date)} </td>
+          <td scope="col" class="text-center"> ${dateFrontend(feed.expected_restock_date) == 'Invalid Date' ? '-' : dateFrontend(feed.expected_restock_date) } </td>
         </tr>
       `;
 
@@ -472,13 +462,14 @@ async function getNewBornAnimals() {
 
   babies.listing.forEach(baby => {
 
+    const dobYear = new Date(Date.parse(baby.dob));
+    
     htmlSegment = `
         <tr class="justify-content-center" id="${baby.id}">
           <td scope="col" class="text-center"> ${baby.id} </td>
-          <td scope="col" class="text-center"> ${baby.id} </td>
-          <td scope="col" class="text-center"> ${baby.id} </td>
-          <td scope="col" class="text-center"> ${baby.id} </td>
-          <td scope="col" class="text-center"> ${baby.id} </td>
+          <td scope="col" class="text-center"> ${baby.new_born_tag} </td>
+          <td scope="col" class="text-center"> ${dobYear.toLocaleDateString()} </td>
+          <td scope="col" class="text-center"> ${baby.animal_tag} </td>
         </tr>
       `;
 
