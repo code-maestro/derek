@@ -83,4 +83,8 @@
 // d.setDate(d.getDate() + 283);
 // console.log(d)
 
-console.log(getAge(new Date(1978, 11, 22)));
+// console.log(getAge(new Date(1978, 11, 22)));
+ // 2023-04-20T00:00:00.000Z
+
+ console.log(new Date().getFullYear() + 1);
+ 

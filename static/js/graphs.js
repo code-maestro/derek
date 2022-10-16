@@ -2,7 +2,21 @@ document.addEventListener('DOMContentLoaded', function () {
     showGraphs();
 });
 
-const showGraphs = () => {
+
+// DISPLAYS GRAPHS
+const showGraphs = async () => {
+
+    const year_registered = ['oldAnimals', 'yearAnimals', 'newAnimals'];
+    const no = [];
+
+    for (const yr of year_registered) {
+        const animalCount = await getCount(yr);
+        no.push(animalCount.count[0].COUNT);
+    }
+
+    const pCount = await getCount('pendingAnimals');
+    const vCount = await getCount('vaccinatedAnimals');
+
     Highcharts.chart('graph', {
         chart: {
             type: 'column'
@@ -12,7 +26,9 @@ const showGraphs = () => {
         },
         xAxis: {
             categories: [
-                '2010'
+                `${new Date().getFullYear() - 1}`,
+                `${new Date().getFullYear()}`,
+                `${new Date().getFullYear() + 1}`
             ],
 
             crosshair: true
@@ -21,7 +37,7 @@ const showGraphs = () => {
         yAxis: {
             title: {
                 useHTML: true,
-                text: 'Million tonnes CO<sub>2</sub>-equivalents'
+                text: 'Numbers'
             }
         },
 
@@ -42,16 +58,16 @@ const showGraphs = () => {
         },
 
         series: [{
-            name: 'Oil and gas extraction',
-            data: [13.93]
+            name: 'Registered Animals',
+            data: no
 
         }, {
-            name: 'Road traffic',
-            data: [10.00]
+            name: 'Vaccinated Animals',
+            data:  [0, vCount.count[0].COUNT, 0]
 
         }, {
-            name: 'Agriculture',
-            data: [4.35]
+            name: 'Animals Pending Vaccinations',
+            data: [0, pCount.count[0].COUNT, 0]
 
         }]
     });

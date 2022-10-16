@@ -126,7 +126,7 @@ const sendmail = async (params) => {
 }
 
 
-/* 
+/*
 
     UI END POINTS PAGES (routes) 
 
@@ -241,6 +241,9 @@ app.get('/getCount/:param', function (request, response) {
 
     const queries = {
         allAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}';`,
+        oldAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND YEAR(reg_date) < YEAR(CURDATE());`,
+        newAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND YEAR(reg_date) > YEAR(CURDATE());`,
+        yearAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND YEAR(reg_date) = YEAR(CURDATE());`,
         sickAnimals: `SELECT COUNT(SA.id) as COUNT FROM sick_animals SA, animal A WHERE A.id = SA.animal_id AND A.animal_type ='${animal_type}' AND A.farma_id='${farma_id}';`,
         newBorns: `SELECT COUNT(NB.id) as COUNT FROM new_born NB, animal A WHERE NB.parent_id = A.id AND  A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
         vaccinatedAnimals: `SELECT COUNT(VD.id) AS COUNT FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
@@ -821,4 +824,3 @@ app.post('/delete/:param', function (request, response) {
 app.listen(3000, function () {
     console.log('Server is running at port: ', 3000);
 });
-

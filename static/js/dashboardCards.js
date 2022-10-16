@@ -255,7 +255,7 @@ function clicked(param) {
           `;
           break;
 
-        // TODO return newborn animals
+        // newborn animals
         case 'new-born':
           getNewBornAnimals();
           container.innerHTML = `
