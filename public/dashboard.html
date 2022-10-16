@@ -40,9 +40,9 @@
     <script defer type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script defer type="text/javascript"
         src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/jquery.table2excel.min.js" defer></script>
 
-
-    <!-- List of animals that belong to the farmer that has signed in -->
+    <!-- List of animals that belong to the farmer that has signed in -->    
     <script src="../js/dashboard.js" defer></script>
     <script src="../js/age.js" defer></script>
     <script src="../js/main.js" defer></script>
@@ -52,10 +52,16 @@
     <script src="../js/dashboardCards.js" defer></script>
     <script src="../js/getFarmaData.js" defer></script>
     <script src="../js/breed.js" defer></script>
+    <script src="../js/excel.js" defer></script>
+    <script src="../js/graphs.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"
+        defer></script>
+    <script src="https://code.highcharts.com/highcharts.js" defer></script>
+    <script src="https://code.highcharts.com/modules/exporting.js" defer></script>
+    <script src="https://code.highcharts.com/modules/export-data.js" defer></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js" defer></script>
+        
 </head>
 
 <body id="page-top">
@@ -79,7 +85,7 @@
 
             <!-- TODO implement function move() to handle the click event -->
             <!-- Nav Item - home -->
-            <li class="nav-item" onclick="goHome()" href="/">
+            <li class="nav-item" onclick="gohome()">
                 <span class="nav-link">
                     <i class="fa-solid fa-gauge"></i>
                     <span> Home </span>
@@ -143,6 +149,7 @@
                 </span>
             </li>
 
+
             <!-- TODO Test the routing created off  at 20220910-1804 -->
             <!-- Nav Item - New Borns -->
             <li class="nav-item" onclick="getFeedsTableData()">
@@ -177,7 +184,7 @@
                 </span>
                 <div id="charts" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white collapse-inner rounded">
-                        <span class="collapse-item" onclick="viewGraphs('expected')"> Expectations </span>
+                        <span class="collapse-item" onclick="showGraphs()"> Expectations </span>
                         <span class="collapse-item" onclick="viewGraphs('actual')"> Actual Data </span>
                     </div>
                 </div>
@@ -540,7 +547,43 @@
                     </div>
 
                     <div class="row" id="dynamic">
-                        <div class="col-lg-6">
+                        <div class="col-lg-8">
+                            <!-- Dropdown Card Example -->
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary"> DOCTOR </h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <figure class="highcharts-figure">
+                                        <p class="highcharts-description">
+                                            A basic column chart comparing emissions by pollutant.
+                                            Oil and gas extraction has the overall highest amount of
+                                            emissions
+                                        </p>
+                                        <div id="graph"></div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
                             <!-- Dropdown Card Example -->
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
@@ -569,70 +612,6 @@
                                     vertical
                                     ellipsis icon in the card header can be clicked on in order to toggle a dropdown
                                     menu.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <!-- Dropdown Card Example -->
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary"> DOCTOR </h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    Dropdown menus can be placed in the card header in order to extend the
-                                    functionality of a basic card. In this dropdown card example, the Font Awesome
-                                    vertical
-                                    ellipsis icon in the card header can be clicked on in order to toggle a dropdown
-                                    menu.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <!-- Dropdown Card Example -->
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary"> DOCTOR </h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    Dropdown menus can be placed in the card header in order to extend the
-                                    functionality of a basic card. In this dropdown card example, the Font Awesome
-                                    vertical
                                 </div>
                             </div>
                         </div>
@@ -692,6 +671,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Register Animal modal -->
     <div class="modal fade" id="registerAnimalModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -839,7 +819,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('registeredAnimalsTable')"> EXCEL </button>
+                                            onclick="toExcel('registeredAnimalsTable', 'ANIMALS REPORT_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('registeredAnimalsTable')"> PRINT </button>
                                     </div>
@@ -856,6 +836,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- New Vaccine Modal -->
     <div class="modal fade" id="newVaccineModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -902,8 +883,8 @@
                                                     required="">
                                                     <option selected="" disabled="" value=""> Choose a measure
                                                         ...</option>
-                                                    <option value="ml"> milli litre(s) </option>
-                                                    <option value="l"> litre(s) </option>
+                                                    <option value="1000"> milli litre(s) </option>
+                                                    <option value="1"> litre(s) </option>
                                                 </select>
                                             </div>
 
@@ -938,6 +919,7 @@
                                                     <option selected="" disabled="" value=""> Choose a period
                                                         ...</option>
                                                     <option value="1"> Day(s) </option>
+                                                    <option value="7"> Week(s) </option>
                                                     <option value="30"> Month(s) </option>
                                                     <option value="360"> Year(s) </option>
                                                 </select>
@@ -1021,7 +1003,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                            onclick="toExcel('vaccinationTable', 'VACCINES_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('vaccinationTable')"> PRINT </button>
                                     </div>
@@ -1220,7 +1202,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('pendingVaccinationTable')"> EXCEL </button>
+                                            onclick="HtmlTOExcel('xlsx','pendingVaccinationTable')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('pendingVaccinationTable')"> PRINT
                                         </button>
@@ -1286,7 +1268,8 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('fullyVaccinatedTable')"> EXCEL </button>
+                                            onclick="exportTableToExcel('fullyVaccinatedTable', 'vaccinatedAnimalsReport')">
+                                            EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('fullyVaccinatedTable')"> PRINT </button>
                                     </div>
@@ -1303,6 +1286,7 @@
         </div>
     </div>
 
+    
     <!-- Register New Born Modal  -->
     <div class="modal fade" id="registerNewBornModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aaria-labelledby="newBornModalToggleLabel" aria-hidden="true">
@@ -1438,7 +1422,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('fullyVaccinatedTable')"> EXCEL </button>
+                                            onclick="toExcel('newBornsTable', 'NEW BORN ANIMALS_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('fullyVaccinatedTable')"> PRINT </button>
                                     </div>
@@ -1455,7 +1439,8 @@
         </div>
     </div>
 
-    <!-- Update Offcanvas -->
+
+    <!-- Update Farma Data Offcanvas -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 id="offcanvasRightLabel"> Update Farmer Data </h5>
@@ -1524,6 +1509,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- New Vet Modal -->
     <div class="modal fade" id="newVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -1643,7 +1629,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                            onclick="toExcel('vetsTable', 'VETERINARY DOCTORS_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('vaccinationTable')"> PRINT </button>
                                     </div>
@@ -1659,6 +1645,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Add Breeding Modal -->
     <div class="modal fade" id="breedingAnimalModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -1718,6 +1705,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Add Animal Feeds modal -->
     <div class="modal fade" id="registerFeedStockModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -1837,7 +1825,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                            onclick="toExcel('feedsTable', 'ANIMAL FEEDS REPORT_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('vaccinationTable')"> PRINT </button>
                                     </div>
@@ -2151,7 +2139,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('generatedTable')"> EXCEL </button>
+                                            onclick="toExcel('generatedTable', 'FEEDING SCHEDULES_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('generatedTable')"> PRINT </button>
                                     </div>
@@ -2167,6 +2155,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Add Sick Animal Modal -->
     <div class="modal fade" id="addSickModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -2296,6 +2285,7 @@
         </div>
     </div>
 
+
     <!-- CLEANED -->
     <!-- Sick Animals listing modal -->
     <div class="modal fade" id="sickModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -2343,7 +2333,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('sickTable')"> EXCEL </button>
+                                            onclick="toExcel('sickTable', 'SICK ANIMALS_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('sickTable')"> PRINT </button>
                                     </div>
@@ -2360,6 +2350,7 @@
             </div>
         </div>
     </div>
+
 
     <!--Animal Diseases listing modal -->
     <div class="modal fade" id="diseaseModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -2404,7 +2395,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('diseaseTable')"> EXCEL </button>
+                                            onclick="toExcel('diseaseTable', 'DISEASES_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('dieaseTable')"> PRINT </button>
                                     </div>
@@ -2421,6 +2412,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Edt Vet Modal -->
     <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -2500,10 +2492,11 @@
         </div>
     </div>
 
+
     <!-- Edit Animal Modal -->
     <div class="modal fade" id="editAnimalModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
         aria-labelledby="editAnimalModalToggleLabel" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content px-2">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold" id="editAnimalModalLabel"> </h5>
@@ -2552,7 +2545,7 @@
                         </div>
                 </div>
 
-                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                <div class="d-grid gap-2 d-md-flex px-2 pb-4 justify-content-md-end">
                     <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button">
                         cancel </button>
                     <button class="btn btn-primary font-monospace" type="submit"> update </button>
@@ -2735,7 +2728,8 @@
                         <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end" id="action_btns">
                             <button class="btn btn-secondary me-md-2 font-monospace" data-bs-dismiss="modal"
                                 type="button"> CLOSE </button>
-                            <button class="btn btn-primary font-monospace" id="confirm_btn" type="submit"> CONFIRM APPOINTMENT </button>
+                            <button class="btn btn-primary font-monospace" id="confirm_btn" type="submit"> CONFIRM
+                                APPOINTMENT </button>
                         </div>
                     </form>
 

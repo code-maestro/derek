@@ -316,7 +316,7 @@ app.get('/getListing/:param', function (request, response) {
         babies: `SELECT NB.id, NB.new_born_tag, NB.dob, A.animal_tag FROM new_born NB, animal A WHERE NB.parent_id = A.id AND  A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
         pendingAnimals: `SELECT A.id, C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending, (SELECT disease_name FROM disease WHERE id=B.disease_id) AS d_name, (SELECT name FROM vaccines WHERE id = A.vaccine_id) AS vaccine_name FROM vaccination_details A, vaccines B, animal C, vets D WHERE A.vet_id = D.vet_id AND A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.animal_type = B.animal_type AND B.id = A.vaccine_id AND B.farma_id = C.farma_id AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
-        availableVaccines: `SELECT * FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
+        availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, no_of_vaccinations, cycle, period, injection_area FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
         feeds: `SELECT id, name, description, quantity, IF(quantity_measure >= 1000, 'kg', 'g') AS measure, stock_date, expected_restock_date FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
         timetables: `SELECT * FROM feeding_timetable WHERE farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
         fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, V.no_of_vaccinations, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
@@ -424,7 +424,7 @@ app.post('/auth', function (request, response) {
                 row.forEach(element => {
                     // Save data to sessionStorage
                     storage('farma_id', element.farma_id);
-                    storage('farma_name', element.first_name + '' + element.last_name);
+                    storage('farma_name', element.first_name + ' ' + element.last_name);
 
                     if (element.list_of_animals == null) {
                         response.redirect('/selection');
@@ -510,7 +510,7 @@ app.post('/newVaccine', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, no_of_vaccinations, cycle, period, injection_area, animal_type) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.noVaccinations}, ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${animal}');`,
+    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, no_of_vaccinations, cycle, period, injection_area, animal_type, farma_id) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.noVaccinations}, ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${animal}', '${farma_id}');`,
         function (error, results, fields) {
             if (error) throw error;
         });
@@ -615,7 +615,7 @@ app.post('/confirmation', function (req, res) {
                 console.log(error.errno);
                 console.log(error.message);
                 console.log(error.name);
-                res.redirect(`/animal/rabbit`);
+                res.redirect(`/animal/${animal}`);
             }
 
             if (results.affectedRows === 1) {

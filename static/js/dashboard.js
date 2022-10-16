@@ -4,6 +4,11 @@ const today = new Date(Date.now());
 const form = document.getElementById('registrationForm');
 const container = document.querySelector('#dynamic');
 
+// GOHOME
+const gohome = async () => {
+  window.location.replace(" http://localhost:3000/home");
+}
+
 
 // Getting all listings from backend
 async function getListing(param) {
@@ -103,7 +108,7 @@ const getFeedsTableData = async () => {
           <td class="text-center"> ${feed.id} </td>
           <td class="text-center"> ${feed.name} </td>
           <td class="text-center"> ${feed.description} </td>
-          <td class="text-center"> ${feed.quantity + ' ' + feed.quantity_measure} </td>
+          <td class="text-center"> ${feed.quantity + ' ' + feed.measure} </td>
           <td class="text-center"> ${st_date} </td>
           <td class="text-center"> ${ex_date} </td>
           
@@ -346,7 +351,7 @@ const getAvailableVaccines = async () => {
       <td class="text-center"> ${vaccine.id} </td>
       <td class="text-center"> ${vaccine.name} </td>
       <td class="text-center"> ${vaccine.description} </td>
-      <td class="text-center"> ${vaccine.quantity} </td>
+      <td class="text-center"> ${vaccine.quantity + ' ' + vaccine.measure} </td>
       <td class="text-center"> ${vaccine.no_of_vaccinations} </td>
       <td class="text-center"> ${vaccine.cycle} </td>
       <td class="text-center"> ${vaccine.period} </td>
@@ -597,35 +602,16 @@ function deleteFromDom(param) {
   `;
 }
 
+
 // Export to excel
-function toExcel(tableID, filename = '') {
-  var downloadLink;
-  var dataType = 'application/vnd.ms-excel';
-  var tableSelect = document.getElementById(tableID);
-  var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-
-  // Specify file name
-  filename = filename ? filename + '.xlsx' : 'REPORT.xlsx';
-
-  // Create download link element
-  downloadLink = document.createElement("a");
-
-  document.body.appendChild(downloadLink);
-
-  if (navigator.msSaveOrOpenBlob) {
-    var blob = new Blob(['\ufeff', tableHTML], {
-      type: dataType
-    });
-    navigator.msSaveOrOpenBlob(blob, filename);
-  } else {
-    // Create a link to the file
-    downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-    // Setting the file name
-    downloadLink.download = filename;
-    //triggering the function
-    downloadLink.click();
-  }
+function HtmlTOExcel(type, name, fun, dl) {
+  var elt = document.getElementById(`${name}`);
+  var wb = XLSX.utils.table_to_book(elt, { sheet: `${name}` });
+  return dl ?
+    XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+    XLSX.writeFile(wb, fun || (`${name}.` + (type || 'xlsx')));
 }
+
 
 // Function to print report
 function printReport(param) {
