@@ -50,7 +50,7 @@
     <script src="../js/sick.js" defer></script>
     <script src="../js/timetable.js" defer></script>
     <script src="../js/dashboardCards.js" defer></script>
-    <script src="../js/getFarmaData.js" defer></script>
+    <script src="../js/getFarma.js" defer></script>
     <script src="../js/breed.js" defer></script>
     <script src="../js/excel.js" defer></script>
     <script src="../js/graphs.js" defer></script>
@@ -83,7 +83,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- TODO implement function move() to handle the click event -->
+
             <!-- Nav Item - home -->
             <li class="nav-item" onclick="gohome()">
                 <span class="nav-link">
@@ -257,7 +257,7 @@
 
             <!-- Nav Item -Profile Update -->
             <li class="nav-item">
-                <span onclick="renderFarmaData()" class="nav-link" type="button" data-bs-toggle="offcanvas"
+                <span onclick="renderFarma()" class="nav-link" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                     <i class="fa-solid fa-address-card"></i>
                     <span> Profile </span>
@@ -1454,7 +1454,7 @@
                 <div class="row">
                     <div class="col align-self-center">
                         <form class="row g-4 needs-validation" id="updateFarmaProfileForm" novalidate method="POST"
-                            action="/updateFarmaProfile">
+                            action="/updateFarma">
                             <div class="col-md-12">
                                 <div class="Neon Neon-theme-dragdropbox">
                                     <input
@@ -1475,7 +1475,7 @@
 
                             <div class="col-md-12">
                                 <label for="validation04" id="mail" class="form-label"> Email </label>
-                                <input type="email" class="form-control" name="email" id="validation04" value=""
+                                <input type="email" class="form-control" name="mail" id="validation04" value=""
                                     required>
                                 <div class="valid-feedback"> Looks good! </div>
                             </div>

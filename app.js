@@ -299,6 +299,31 @@ app.get('/getCount/:param', function (request, response) {
 app.get('/getType', function (request, response) { response.send({ type: storage('animal') }); });
 
 
+// Function to return animal type dashboard data count
+app.get('/getFarmaName', function (request, response) { response.send({ type: storage('farma_name') }); });
+
+
+// Function to retrieve animal data for table
+app.get('/getFarma', function (request, response) {
+    const user_id = storage('farma_id');
+
+    const sql_query = `SELECT first_name, last_name, mail, phone FROM farma  WHERE farma_id = '${user_id}';`;
+
+    if (user_id) {
+        connection.query(sql_query, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+            response.send({ farma: results });
+        })
+    } else {
+        console.log(" trying to delete with no farma_id 🤣😂 ");
+        response.redirect('/');
+    }
+
+});
+
+
+
 //  LISTING END POINTS
 // Cleaned
 app.get('/getListing/:param', function (request, response) {
@@ -559,7 +584,6 @@ app.post('/newBred', function (req, res) {
 
 // Inserting Vaccines into the DB
 app.post('/newVet', function (req, res) {
-    const farma_id = storage('farma_id');
     const animal = storage('animal');
     const vet_uuid = uuidv4();
     // Execute SQL query that'll insert into the vaccines table
@@ -660,11 +684,13 @@ app.post('/scheduleVaccination', function (req, res) {
 })
 
 // Updating Farma Profile Data
-app.post('/updateFarmaProfile', function (req, res) {
+app.post('/updateFarma', function (req, res) {
+    const animal = storage('animal');
+    const farma_id = storage('farma_id');
     const data = req.body;
     console.log(data);
     // Execute SQL query that'll insert into the farma table
-    connection.query(`UPDATE farma SET first_name = ${data.fname}, last_name = ${data.lname}, phone = ${data.phone} WHERE farma_id = ${f_id});`, function (error, results, fields) {
+    connection.query(`UPDATE farma SET first_name = '${data.fname}', last_name = '${data.lname}', phone = '${data.phone}', mail = '${data.mail}' WHERE farma_id = '${farma_id}';`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
         // If the account exists
@@ -673,7 +699,7 @@ app.post('/updateFarmaProfile', function (req, res) {
         return;
     });
 
-    response.redirect('/home');
+    res.redirect(`/animal/${animal}`);
 
 })
 
