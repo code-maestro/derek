@@ -99,10 +99,6 @@ const getFeedsTableData = async () => {
   const con = document.getElementById('feedsListing');
 
   feedsData.listing.forEach(feed => {
-
-    const st_date = new Date(Date.parse(feed.stock_date));    
-    const ex_date = new Date(Date.parse(feed.expected_restock_date));
-
     htmlSegment = `
         <tr class="justify-content-center" id="${feed.id}">
           <td class="text-center"> ${feed.id} </td>
@@ -310,9 +306,9 @@ const getTimetables = async () => {
       <td class="text-center"> ${timetable.id} </td>   
       <td class="text-center"> ${timetable.cycle} </td> 
       <td class="text-center"> ${timetable.quantity_per_cycle} </td> 
-      <td class="text-center"> ${timetable.first_feed_date} </td> 
-      <td class="text-center"> ${timetable.last_feed_date} </td> 
-      <td class="text-center"> ${timetable.last_feed_date} </td>
+      <td class="text-center"> ${dateFrontend(timetable.first_feed_date)} </td> 
+      <td class="text-center"> ${dateFrontend(timetable.next_feed_date)} </td> 
+      <td class="text-center"> ${dateFrontend(timetable.last_feed_date)}</td>
 
       <td class="text-center noprint" data-bs-target="#generatedModalToggle" data-bs-toggle="modal"  onclick="editAnimal(${timetable.id})">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
