@@ -117,7 +117,7 @@ function clicked(param) {
 
         // [x] expecting table completed 
         case 'heavy':
-          getHeavyAnimals();
+          getExpectingAnimals();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
@@ -340,16 +340,13 @@ async function getSickAnimals() {
   const con = document.getElementById('sickAnimalsListing');
 
   sickAnimals.listing.forEach(sick => {
-
-    const a_date = new Date(Date.parse(sick.appointment_date));
-
     htmlSegment = `
         <tr class="justify-content-center" id="${sick.id}">
           <td scope="col" class="text-center"> ${sick.id} </td>
           <td scope="col" class="text-center"> ${sick.ANIMAL_TAG} </td>
           <td scope="col" class="text-center"> ${sick.DISEASE} </td>
           <td scope="col" class="text-center"> ${sick.VET_NAME} </td>
-          <td scope="col" class="text-center"> ${a_date.toDateString()} </td>
+          <td scope="col" class="text-center"> ${dateFrontend(sick.appointment_date)} </td>
           <td scope="col" class="text-center"> ${sick.confirmed} </td>
         </tr>
       `;
@@ -363,8 +360,9 @@ async function getSickAnimals() {
 }
 
 // [x]  WORKS - Get Pregant animals listing
-async function getHeavyAnimals() {
+async function getExpectingAnimals() {
   let heavyAnimals = await getListing("expectingAnimals");
+  console.log(heavyAnimals);
 
   let html = '';
   let htmlSegment = '';
@@ -372,16 +370,16 @@ async function getHeavyAnimals() {
   const con = document.getElementById('heavyAnimalsListing');
 
   heavyAnimals.listing.forEach(heavy => {
-    const in_date = new Date(Date.parse(heavy.insemination_date));
-    const d_date = new Date(Date.parse(heavy.delivery_date));
 
+    console.log(heavy);
+    
     htmlSegment = `
         <tr class="justify-content-center" id="${heavy.id}">
-          <th scope="row" class="text-center" id="id"> ${heavy.id} </th>
-          <td class="text-center"> ${heavy.heavy_tag} </td>
-          <td class="text-center"> ${in_date.toDateString()} </td>
-          <td class="text-center"> ${d_date.toDateString()} </td>
-          <td class="text-center"> ${heavy.AGE + 'Days(s)'} </td>
+          <th scope="row" class="text-center"> ${heavy.id} </th>
+          <td class="text-center"> ${heavy.animal_tag} </td>
+          <td class="text-center"> ${dateFrontend(heavy.breeding_date)} </td>
+          <td class="text-center"> ${dateFrontend(heavy.expected_due_date)} </td>
+          <td class="text-center"> ${heavy.DAYS + 'Days(s)'} </td>
         </tr>
       `;
 

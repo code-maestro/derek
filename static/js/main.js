@@ -17,3 +17,29 @@
     })
 
 })()
+
+
+const getAuditTrail = async () => {
+  let events = await getListing("systemAudit");
+
+  let html = '';
+  let htmlSegment = '';
+
+  const con = document.getElementById('events');
+
+  events.listing.forEach(event => {
+
+    console.log(event);
+    
+    htmlSegment = `
+        <li style="font-size: 14px;" class="list-group-item font-monospace fw-normal"> ${event.action} at ${formatDate(event.action_date) + ' ' +formatTime(event.action_date)} </li>
+      `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
+}
+
+setInterval(getAuditTrail, 5000);

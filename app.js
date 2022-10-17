@@ -247,7 +247,7 @@ app.get('/getCount/:param', function (request, response) {
         sickAnimals: `SELECT COUNT(SA.id) as COUNT FROM sick_animals SA, animal A WHERE A.id = SA.animal_id AND A.animal_type ='${animal_type}' AND A.farma_id='${farma_id}';`,
         newBorns: `SELECT COUNT(NB.id) as COUNT FROM new_born NB, animal A WHERE NB.parent_id = A.id AND  A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
         vaccinatedAnimals: `SELECT COUNT(VD.id) AS COUNT FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
-        heavyAnimals: `SELECT COUNT(*) as COUNT FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}';`,
+        heavyAnimals: `SELECT COUNT(A.id) AS COUNT FROM animal A, breeding B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}';`,
         pendingAnimals: `SELECT COUNT(A.id) AS COUNT FROM vaccination_details A, animal C WHERE A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
         allFeeds: `SELECT COUNT(*) as COUNT FROM feeds WHERE animal_type='${animal_type}' AND farma_id='${farma_id}';`,
         allProducts: `SELECT COUNT(B.id) as COUNT FROM animal A, products B WHERE B.animal_id = A.id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
@@ -337,8 +337,8 @@ app.get('/getListing/:param', function (request, response) {
         diseases: `SELECT * FROM disease WHERE animal_type = '${animal_type}';`,
         symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${animal_type}';`,
         allAnimals: `SELECT id, animal_tag, gender,  dob, reg_date, TIMESTAMPDIFF(YEAR, dob, CURDATE()) AS YEARS, TIMESTAMPDIFF(MONTH, dob, CURDATE()) AS MONTHS, TIMESTAMPDIFF(DAY, dob, CURDATE()) AS DAYS FROM animal WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
-        notHeavyAnimals: `SELECT * FROM animal A, gestation_periods GP WHERE A.id NOT IN (SELECT animal_id FROM breeding) AND A.animal_type='${animal_type}' AND GP.animal_type = '${animal_type}' AND A.animal_type = GP.animal_type AND A.farma_id='${farma_id}';`,
-        expectingAnimals: `SELECT a.id,  a.delivery_date, b.animal_tag, c.insemination_date, TIMESTAMPDIFF(DAY, CURDATE(), delivery_date) AS AGE FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}';`,
+        notHeavyAnimals: `SELECT A.id, A.animal_tag, A.animal_type, A.farma_id, A.gender, GP.period FROM animal A, gestation_periods GP WHERE A.id NOT IN (SELECT animal_id FROM breeding) AND A.animal_type='${animal_type}' AND GP.animal_type = '${animal_type}' AND A.animal_type = GP.animal_type AND A.farma_id='${farma_id}';`,
+        expectingAnimals: `SELECT A.id, A.animal_tag, B.breeding_date, B.expected_due_date, TIMESTAMPDIFF(DAY, CURDATE(), B.expected_due_date) AS DAYS FROM animal A, breeding B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}';`,
         sickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.vet_id, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
         editSickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT symptom_name FROM symptom WHERE disease = (SELECT id FROM disease WHERE id = SA.disease_id))AS SS, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, (SELECT email FROM vets WHERE vet_id = SA.vet_id) AS VET_MAIL, SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id, SA.vet_id FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
         babies: `SELECT NB.id, NB.new_born_tag, NB.dob, A.animal_tag FROM new_born NB, animal A WHERE NB.parent_id = A.id AND  A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
@@ -349,6 +349,7 @@ app.get('/getListing/:param', function (request, response) {
         timetables: `SELECT * FROM feeding_timetable WHERE farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
         fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, V.no_of_vaccinations, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
         vets: `SELECT * FROM vets;`,
+        systemAudit: `SELECT action, action_date FROM audit_trail WHERE user_id = '${farma_id}'`,
         healthyAnimals: `SELECT id, animal_tag, gender FROM animal WHERE id NOT IN (SELECT animal_id FROM sick_animals) AND farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
         allProducts: `SELECT B.id, A.animal_tag, B.name, B.quantity, C.expected_qnty, IF(B.quantity_measure >= 1000, 'kg', 'g') AS measure FROM animal A, products B, product_schedule C WHERE B.animal_id = A.id AND B.animal_id = C.animal_id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
 
@@ -552,7 +553,7 @@ app.post('/newVaccine', function (req, res) {
 app.post('/newFeed', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
-    const vet_uuid = uuidv4();
+
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`INSERT INTO feeds (name, description, quantity, quantity_measure, stock_date, animal_type, farma_id) VALUES ('${req.body.feeds_name}','${req.body.feeds_name}',${req.body.feeds_qnty},${req.body.feeds_qnty_measure},'${req.body.feeds_stock_date}', '${animal}','${farma_id}');`,
         function (error, results, fields) {

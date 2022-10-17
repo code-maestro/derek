@@ -10,6 +10,8 @@ const getBreedAnimals = async () => {
 
     animals.listing.forEach(animal => {
 
+        console.log(animal.id);
+
         document.getElementById('breeding_animal_id').value = animal.id;
         document.getElementById('gestation_period').value = animal.period;
 
