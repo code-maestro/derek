@@ -610,7 +610,7 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <ul id="events" class="list-group list-group-flush">    </ul>
+                                    <ul id="events" class="list-group list-group-flush"> </ul>
                                 </div>
                             </div>
                         </div>
@@ -2740,6 +2740,76 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Animal Feeds modal -->
+    <div class="modal fade" id="editFeedsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="editFeedModalToggleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div>
+                        <div class="row p-2 mx-auto">
+                            <div class="mx-auto" style="width: auto;">
+                                <h4 class="font-monospace" id="editFeedModalToggleLabel"> UDPATE FEEDS STOCK </h4>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- Feeds Registration Form -->
+                                        <form id="registerForm" class="row g-3 needs-validation" novalidate
+                                            method="POST" action="/updateFeed">
+                                            <div class="col-md-6">
+                                                <label for="edit-feeds_name" class="form-label fw-bold"> FEED NAME
+                                                </label>
+                                                <input id="edit_feeds_name" type="text" class="form-control"
+                                                    name="edit_feeds_name" required>
+                                                <div class="valid-feedback"> Looks good! </div>
+                                            </div>
+
+                                            <input id="edit_feeds_id" type="number" class="form-control" name="edit_feeds_id" hidden>
+
+                                            <div class="col-md-6">
+                                                <label for="edit_feeds_stock_date" class="form-label fw-bold"> STOCK DATE </label>
+                                                <input id="edit_feeds_stock_date" type="date" class="form-control" name="edit_feeds_stock_date">
+                                                <div class="valid-feedback"> Looks good! </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="edit_feeds_qnty" class="form-label fw-bold"> QUANTITY </label>
+                                                <input id="edit_feeds_qnty" type="number" class="form-control" name="edit_feeds_qnty">
+                                                <div class="valid-feedback"> Looks good! </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="edit_feeds_qnty_measure" class="form-label fw-bold">
+                                                    QUANTITY-MEASURE </label>
+                                                <select class="form-select" id="edit_feeds_qnty_measure" name="edit_feeds_qnty_measure">
+                                                    <option value="1000" selected id="qm"> kg </option>
+                                                    <option value="1"> g </option>
+                                                </select>
+                                            </div>
+                                    </div>
+
+                                    <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                        <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
+                                            type="button"> cancel </button>
+                                        <button class="btn btn-primary font-monospace" type="submit"> udpate </button>
+                                    </div>
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="../vendor/jquery/jquery.min.js"></script>

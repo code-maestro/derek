@@ -14,8 +14,8 @@ CREATE TRIGGER new_animal
 BEGIN
 
     -- statements
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(), NEW.farma_id, CONCAT(NEW.animal_tag, " has been created by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = NEW.farma_id)));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(), NEW.farma_id, CONCAT(NEW.animal_tag, " has been created by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = NEW.farma_id)));
 
 END$$    
 
@@ -34,8 +34,8 @@ CREATE TRIGGER animal_update
 
 BEGIN
 
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(), NEW.farma_id, CONCAT(NEW.animal_tag, "'s data been updated by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = NEW.farma_id)));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(), NEW.farma_id, CONCAT(NEW.animal_tag, "'s data been updated by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = NEW.farma_id)));
 
 END$$
 
@@ -55,8 +55,8 @@ CREATE TRIGGER before_animal_delete
 
 BEGIN
 
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(), OLD.farma_id, CONCAT(OLD.animal_tag, " has been deleted by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = OLD.farma_id)));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(), OLD.farma_id, CONCAT(OLD.animal_tag, " has been deleted by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = OLD.farma_id)));
 
 END$$    
 
@@ -78,8 +78,8 @@ CREATE TRIGGER new_feeds_stock
 BEGIN
 
     -- statements
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(), NEW.farma_id, CONCAT(NEW.name, " - ", NEW.quantity, " ", NEW.quantity_measure, " has been added by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = NEW.farma_id)));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(), NEW.farma_id, CONCAT(NEW.name, " - ", NEW.quantity, " ", NEW.quantity_measure, " has been added by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = NEW.farma_id)));
 
 END$$    
 
@@ -98,8 +98,8 @@ CREATE TRIGGER feeds_update
 
 BEGIN
 
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(), NEW.farma_id, CONCAT(NEW.name, " - ", NEW.quantity, " ", NEW.quantity_measure, " has been added by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = NEW.farma_id)));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(), NEW.farma_id, CONCAT(NEW.name, " - ", NEW.quantity, " ", NEW.quantity_measure, " has been added by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = NEW.farma_id)));
 
 END$$
 
@@ -119,8 +119,8 @@ CREATE TRIGGER before_feeds_delete
 
 BEGIN
 
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(), OLD.farma_id, CONCAT(OLD.name, " - ", OLD.quantity, " ", OLD.quantity_measure, " has been deleted by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = OLD.farma_id)));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(), OLD.farma_id, CONCAT(OLD.name, " - ", OLD.quantity, " ", OLD.quantity_measure, " has been deleted by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = OLD.farma_id)));
 
 END$$    
 
@@ -141,8 +141,8 @@ CREATE TRIGGER new_feeding_timetable
 BEGIN
 
     -- statements
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(), (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id), CONCAT(NEW.tt_name, " - ", NEW.quantity, " ", NEW.quantity_measure, " has been added by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id))));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(), (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id), CONCAT(NEW.tt_name, " - ", NEW.quantity, " ", NEW.quantity_measure, " has been added by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id))));
 
 END$$    
 
@@ -162,8 +162,8 @@ CREATE TRIGGER feeding_timetable_update
 
 BEGIN
 
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(), (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id), CONCAT(NEW.tt_name, " - ", NEW.quantity, " ", NEW.quantity_measure, " has been added by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id))));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(), (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id), CONCAT(NEW.tt_name, " - ", NEW.quantity, " ", NEW.quantity_measure, " has been added by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id))));
 
 END$$
 
@@ -183,8 +183,8 @@ CREATE TRIGGER before_feeding_timetable_delete
 
 BEGIN
 
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(), (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id), CONCAT(NEW.tt_name, " - ", NEW.quantity, " ", NEW.quantity_measure, " has been added by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id))));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(), (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id), CONCAT(NEW.tt_name, " - ", NEW.quantity, " ", NEW.quantity_measure, " has been added by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM feeds WHERE id = NEW.feeds_id))));
 
 END$$    
 
@@ -206,8 +206,8 @@ CREATE TRIGGER new_animal_vaccination_schedule
 BEGIN
 
     -- statements
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(),(SELECT farma_id FROM animal WHERE id = NEW.animal_id), CONCAT( (SELECT animal_tag FROM animal WHERE id = NEW.animal_id), " has been created by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM animal WHERE id = NEW.animal_id))));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(),(SELECT farma_id FROM animal WHERE id = NEW.animal_id), CONCAT( (SELECT animal_tag FROM animal WHERE id = NEW.animal_id), " has been created by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM animal WHERE id = NEW.animal_id))));
 
 END$$    
 
@@ -227,8 +227,8 @@ CREATE TRIGGER animal_vaccination_schedule_update
 
 BEGIN
 
-    INSERT INTO audit_trail(uuid, user_id, action)
-        VALUES(UUID(),(SELECT farma_id FROM animal WHERE id = NEW.animal_id), CONCAT( (SELECT animal_tag FROM animal WHERE id = NEW.animal_id), " has been created by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM animal WHERE id = NEW.animal_id))));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+        VALUES(UUID(),(SELECT farma_id FROM animal WHERE id = NEW.animal_id), CONCAT( (SELECT animal_tag FROM animal WHERE id = NEW.animal_id), " has been created by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM animal WHERE id = NEW.animal_id))));
 
 END$$
 
@@ -248,8 +248,8 @@ CREATE TRIGGER before_vaccination_schedule_delete
 
 BEGIN
 
-    INSERT INTO audit_trail(uuid, user_id, action)
-    VALUES(UUID(),(SELECT farma_id FROM animal WHERE id = NEW.animal_id), CONCAT( (SELECT animal_tag FROM animal WHERE id = NEW.animal_id), " has been created by", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM animal WHERE id = NEW.animal_id))));
+    INSERT INTO audit_trail(uuid, user_id, action, animal_type)
+    VALUES(UUID(),(SELECT farma_id FROM animal WHERE id = NEW.animal_id), CONCAT( (SELECT animal_tag FROM animal WHERE id = NEW.animal_id), " has been created by ", (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM animal WHERE id = NEW.animal_id))));
 
 
 END$$

@@ -346,10 +346,10 @@ app.get('/getListing/:param', function (request, response) {
         pendingAnimals: `SELECT A.id, C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending, (SELECT disease_name FROM disease WHERE id=B.disease_id) AS d_name, (SELECT name FROM vaccines WHERE id = A.vaccine_id) AS vaccine_name FROM vaccination_details A, vaccines B, animal C, vets D WHERE A.vet_id = D.vet_id AND A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.animal_type = B.animal_type AND B.id = A.vaccine_id AND B.farma_id = C.farma_id AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
         availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, no_of_vaccinations, cycle, period, injection_area FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
         feeds: `SELECT id, name, description, quantity, IF(quantity_measure >= 1000, 'kg', 'g') AS measure, stock_date, expected_restock_date FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
-        timetables: `SELECT * FROM feeding_timetable WHERE farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
+        timetables: `SELECT * FROM feeding_timetable WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${farma_id}') AND animal_type = '${animal_type}';`,
         fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, V.no_of_vaccinations, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
         vets: `SELECT * FROM vets;`,
-        systemAudit: `SELECT action, action_date FROM audit_trail WHERE user_id = '${farma_id}'`,
+        systemAudit: `SELECT action, action_date FROM audit_trail WHERE user_id = '${farma_id}' ORDER BY id DESC;`,
         healthyAnimals: `SELECT id, animal_tag, gender FROM animal WHERE id NOT IN (SELECT animal_id FROM sick_animals) AND farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
         allProducts: `SELECT B.id, A.animal_tag, B.name, B.quantity, C.expected_qnty, IF(B.quantity_measure >= 1000, 'kg', 'g') AS measure FROM animal A, products B, product_schedule C WHERE B.animal_id = A.id AND B.animal_id = C.animal_id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
 
@@ -382,7 +382,7 @@ app.get('/getMaxId/:param', function (request, response) {
 
     const queries = {
         animal_id: `SELECT MAX(id) AS LAST, animal_type FROM animal  WHERE animal_type='${animal}' AND farma_id = '${user_id}';`,
-        timetable_id: `SELECT MAX(id) AS LAST, animal_type FROM feeding_timetable WHERE farma_id = '${user_id}' AND animal_type = '${animal}';`
+        timetable_id: `SELECT MAX(id) AS LAST, animal_type FROM feeding_timetable WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${user_id}') AND animal_type = '${animal}';`
     }
 
     if (user_id) {
@@ -443,7 +443,9 @@ app.post('/auth', function (request, response) {
         connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, a.password, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${mail}' AND (AES_DECRYPT(FROM_BASE64(a.password), a.farma_id)) =  '${password}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
             // connection.query('SELECT farma_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
             // If there is an issue with the query, output the error
-            if (error) throw error;
+            if (error) {
+                response.redirect(`/`);
+            }
 
             // If the account exists
             if (results.length > 0) {
@@ -533,6 +535,25 @@ app.post('/updateAnimalData', function (req, res) {
         return;
     });
 })
+
+// Inserting Feeds into the DB
+app.post('/updateFeed', function (req, res) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`UPDATE feeds SET name = '${req.body.edit_feeds_name}',  description = '${req.body.edit_feeds_name}', quantity = ${req.body.edit_feeds_qnty}, quantity_measure = ${req.body.edit_feeds_qnty_measure}, stock_date  = '${req.body.edit_feeds_stock_date}', animal_type = '${animal}' WHERE farma_id ='${farma_id}' AND id = ${req.body.edit_feeds_id};`,
+        function (error, results, fields) {
+            if (error) { 
+                // res.redirect(`/animal/${animal}`); 
+
+                console.log(error);
+            }
+        });
+    res.redirect(`/animal/${animal}`);
+    return;
+});
+
 
 // Inserting Vaccines into the DB
 app.post('/newVaccine', function (req, res) {
@@ -827,16 +848,15 @@ app.post('/delete/:param', function (request, response) {
         vaccine: `DELETE FROM vaccines WHERE id = ${param_id};`,
         animal: `DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${param_id}';`,
         sickAnimal: `DELETE FROM sick_animals WHERE id = '${param_id}';`,
-        timetable: `DELETE FROM feeding_timetable WHERE farma_id = '${user_id}' AND id = '${param_id}';`,
-        vet: `DELETE FROM vets WHERE vet_id = '${param_id}';`
+        timetable: `DELETE FROM feeding_timetable WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${user_id}') AND id = '${param_id}';`,
+        vet: `DELETE FROM vets WHERE vet_id = '${param_id}';`,
+        feed: `DELETE FROM feeds WHERE id = '${param_id}'`
     }
 
     if (user_id) {
         connection.query(queries[par], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
-
-            console.log(results);
 
         })
 
