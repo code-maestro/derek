@@ -82,3 +82,9 @@
 // const d = new Date();
 // d.setDate(d.getDate() + 283);
 // console.log(d)
+
+let n = 5;
+while (n > 0) {
+  console.log(n);
+  n=n-4;
+}

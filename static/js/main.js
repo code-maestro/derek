@@ -20,6 +20,7 @@
 
 
 const getAuditTrail = async () => {
+
   let events = await getListing("systemAudit");
 
   let html = '';
@@ -29,7 +30,8 @@ const getAuditTrail = async () => {
 
   events.listing.forEach(event => {
     htmlSegment = `
-        <li style="font-size: 14px;" class="list-group-item font-monospace fw-normal"> ${event.action} at ${formatDate(event.action_date) + ' ' +formatTime(event.action_date)} </li>
+        <li style="font-size: 14px;" class="list-group-item font-monospace fw-normal"> ${event.action} at <div class="badge bg-primary text-wrap">
+      ${formatDate(event.action_date) + ' ' +formatTime(event.action_date)}  </div> </li>
       `;
 
     html += htmlSegment;
@@ -37,6 +39,8 @@ const getAuditTrail = async () => {
   });
 
   con.innerHTML = html;
+
 }
 
-setInterval(getAuditTrail, 30000);
+
+setInterval(getAuditTrail, 50000);
