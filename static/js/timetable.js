@@ -9,17 +9,20 @@ const viewSchedule = async (param) => {
   const con = document.getElementById('ttable');
 
   timetables.listing.forEach(timetable => {
+    
+    console.log(timetable);
 
     if (timetable.id == param) {
 
       let n = timetable.quantity;
+      let id = timetable.id;
 
       while (n > 0) {
         htmlSegment = `
         <tr class="justify-content-center" id="${timetable.id}">
-          <td class="text-center"> ${timetable.id} </td>
-          <td class="text-center"> ${timetable.first_feed_date} </td>
-          <td class="text-center"> ${dateFrontend(timetable.next_feed_date)} </td>
+          <td class="text-center"> ${id++} </td>
+          <td class="text-center"> ${dateFrontend(timetable.first_feed_date)} </td>
+          <td class="text-center"> ${dateFrontend(addDays(timetable.first_feed_date, timetable.period++))} </td>
           <td class="text-center"> ${n} </td>
         </tr>
       `;
@@ -28,13 +31,14 @@ const viewSchedule = async (param) => {
 
         console.log(n);
 
-        n = n - 4;
+        n = n - timetable.quantity_per_cycle;
 
       }
 
       console.log("😒😊👌💕🤦‍♂️🤦‍♀️😢🎶😎🤞😍😁✌️");
 
     }
+
   })
 
   con.innerHTML = html;

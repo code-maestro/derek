@@ -32,7 +32,7 @@ function getAge(param) {
     if (months > 1) mAppendix = " months"; else mAppendix = " month";
     if (days > 1) dAppendix = " days"; else dAppendix = " day";
 
-    if(date_1 < date_2) {
+    if (date_1 < date_2) {
         document.getElementById('age-years').setAttribute("value", years > 0 ? years + yAppendix : '' + " " + months > 0 ? months + mAppendix : '' + " " + days > 0 ? days + dAppendix : '');
     } else {
         document.getElementById('age-years').setAttribute("value", "");
@@ -50,7 +50,19 @@ function DaysInMonth(date2_UTC) {
 const dateFrontend = (param) => {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const the_date = new Date(Date.parse(param));
-    
+
     return the_date.toLocaleDateString(undefined, options);
 
+}
+
+// function addDays(dt, days) {
+//     const copy = new Date(Number(date))
+//     copy.setDate(dt.getDate() + days)
+//     return copy
+// }
+
+const addDays = (date, days) => {
+    const dt = new Date(date);
+    dt.setDate(dt.getDate() + days);
+    return dt;
 }
