@@ -1,10 +1,84 @@
-// document.getElementById('generateSchedule').addEventListener('onclick', (e) => {
-//     // e.preventDefault();
-//     console.log('FORM LOGGED');
-// });
 
+// CREATING THE SCHEDULE
+const viewSchedule = async (param) => {
 
+  const timetables = await getListing('timetables');
+  let html = "";
+  let htmlSegment = "";
 
-const handleTimetable = (e) => {
-  return console.log('lololo');
+  const con = document.getElementById('ttable');
+
+  timetables.listing.forEach(timetable => {
+    
+    console.log(timetable);
+
+    if (timetable.id == param) {
+
+      let n = timetable.quantity;
+      let id = timetable.id;
+
+      while (n > 0) {
+        htmlSegment = `
+        <tr class="justify-content-center" id="${timetable.id}">
+          <td class="text-center"> ${id++} </td>
+          <td class="text-center"> ${dateFrontend(timetable.first_feed_date)} </td>
+          <td class="text-center"> ${dateFrontend(addDays(timetable.first_feed_date, timetable.period++))} </td>
+          <td class="text-center"> ${n} </td>
+        </tr>
+      `;
+
+        html += htmlSegment;
+
+        console.log(n);
+
+        n = n - timetable.quantity_per_cycle;
+
+      }
+
+      console.log("😒😊👌💕🤦‍♂️🤦‍♀️😢🎶😎🤞😍😁✌️");
+
+    }
+
+  })
+
+  con.innerHTML = html;
+
 }
+
+
+// // DELETING A TABLE ROW
+// function createTimetable(param) {
+//   const url = `/timetable`;
+//   // post body data
+//   const user = {
+//     id: param
+//   };
+
+//   // request options
+//   const options = {
+//     method: 'POST',
+//     body: JSON.stringify(user),
+//     headers: {
+//       'Content-Type': 'application/json'
+//     }
+//   }
+
+//   fetch(url, options)
+//     .then(function (response) {
+//       if (!response.ok) {
+//         throw Error(response.statusText);
+//       } else {
+//         console.log("😎😎😎😜");
+//       }
+//       return response;
+//     }).then(function (response) {
+//       console.log("ok");
+//       console.log(response);
+
+//     }).catch(function (error) {
+//       console.log(error);
+//     });
+
+// }
+
+// Function to get All timetables

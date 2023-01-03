@@ -117,7 +117,7 @@ function clicked(param) {
 
         // [x] expecting table completed 
         case 'heavy':
-          getHeavyAnimals();
+          getExpectingAnimals();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
@@ -201,7 +201,7 @@ function clicked(param) {
           break;
 
 
-        // TODO return products from animals
+        // products from animals
         case 'products':
           getAnimalProducts();
           container.innerHTML = `
@@ -228,7 +228,7 @@ function clicked(param) {
           `;
           break;
 
-        // TODO Keep track of stocked feeds
+        // stocked feeds
         case 'feed':
           getAnimalFeeds();
           container.innerHTML = `
@@ -255,7 +255,7 @@ function clicked(param) {
           `;
           break;
 
-        // TODO return newborn animals
+        // newborn animals
         case 'new-born':
           getNewBornAnimals();
           container.innerHTML = `
@@ -268,9 +268,7 @@ function clicked(param) {
                   <thead class="table-dark">
                     <tr>
                       <th scope="col" class="text-center"> ID </th>
-                      <th scope="col" class="text-center"> ANIMAL TAG </th>
-                      <th scope="col" class="text-center"> GENDER </th>
-                      <th scope="col" class="text-center"> REGISTRATION DATE </th>
+                      <th scope="col" class="text-center"> NEW BORN ANIMAL_TAG </th>
                       <th scope="col" class="text-center"> DATE OF BIRTH </th>
                       <th scope="col" class="text-center"> PARENT ANIMAL_TAG </th>
                     </tr>
@@ -320,7 +318,7 @@ async function getAllAnimals() {
           <td class="text-center"> ${animal.gender} </td>
           <td class="text-center"> ${regDate.toDateString()} </td>
           <td class="text-center"> ${dobYear.toDateString()} </td>
-          <td class="text-center"> ${animal.YEARS > 0 ? animal.YEARS + ' Year(s)' : ''} ${ animal.MONTHS > 0 ? animal.MONTHS + ' Month(s)' : ''} ${ animal.DAYS > 0 ? animal.DAYS + ' Day(s)' : ''} </td>
+          <td class="text-center"> ${animal.YEARS > 0 ? animal.YEARS + ' Year(s)' : '' + animal.MONTHS > 0 ? animal.MONTHS + ' Month(s)' : '' + animal.DAYS > 0 ? animal.DAYS + ' Day(s)' : ''} </td>
         </tr>
       `;
 
@@ -342,16 +340,13 @@ async function getSickAnimals() {
   const con = document.getElementById('sickAnimalsListing');
 
   sickAnimals.listing.forEach(sick => {
-
-    const a_date = new Date(Date.parse(sick.appointment_date));
-
     htmlSegment = `
         <tr class="justify-content-center" id="${sick.id}">
           <td scope="col" class="text-center"> ${sick.id} </td>
           <td scope="col" class="text-center"> ${sick.ANIMAL_TAG} </td>
           <td scope="col" class="text-center"> ${sick.DISEASE} </td>
           <td scope="col" class="text-center"> ${sick.VET_NAME} </td>
-          <td scope="col" class="text-center"> ${a_date.toDateString()} </td>
+          <td scope="col" class="text-center"> ${dateFrontend(sick.appointment_date)} </td>
           <td scope="col" class="text-center"> ${sick.confirmed} </td>
         </tr>
       `;
@@ -365,8 +360,9 @@ async function getSickAnimals() {
 }
 
 // [x]  WORKS - Get Pregant animals listing
-async function getHeavyAnimals() {
+async function getExpectingAnimals() {
   let heavyAnimals = await getListing("expectingAnimals");
+  console.log(heavyAnimals);
 
   let html = '';
   let htmlSegment = '';
@@ -374,16 +370,16 @@ async function getHeavyAnimals() {
   const con = document.getElementById('heavyAnimalsListing');
 
   heavyAnimals.listing.forEach(heavy => {
-    const in_date = new Date(Date.parse(heavy.insemination_date));
-    const d_date = new Date(Date.parse(heavy.delivery_date));
 
+    console.log(heavy);
+    
     htmlSegment = `
         <tr class="justify-content-center" id="${heavy.id}">
-          <th scope="row" class="text-center" id="id"> ${heavy.id} </th>
-          <td class="text-center"> ${heavy.heavy_tag} </td>
-          <td class="text-center"> ${in_date.toDateString()} </td>
-          <td class="text-center"> ${d_date.toDateString()} </td>
-          <td class="text-center"> ${heavy.AGE + 'Days(s)'} </td>
+          <th scope="row" class="text-center"> ${heavy.id} </th>
+          <td class="text-center"> ${heavy.animal_tag} </td>
+          <td class="text-center"> ${dateFrontend(heavy.breeding_date)} </td>
+          <td class="text-center"> ${dateFrontend(heavy.expected_due_date)} </td>
+          <td class="text-center"> ${heavy.DAYS + 'Days(s)'} </td>
         </tr>
       `;
 
@@ -435,16 +431,13 @@ async function getAnimalFeeds() {
   const con = document.getElementById('animalFeedsListing');
 
   feeds.listing.forEach(feed => {
-    const stock_date = new Date(Date.parse(feed.expected_restock_date));
-    const restock_date = new Date(Date.parse(feed.expected_restock_date));
-
     htmlSegment = `
         <tr class="justify-content-center" id="${feed.id}">
-        <td scope="col" class="text-center"> ${feed.id} </td>
+          <td scope="col" class="text-center"> ${feed.id} </td>
           <td scope="col" class="text-center"> ${feed.name} </td>
-          <td scope="col" class="text-center"> ${feed.quantity + ' ' + feed.quantity_measure} </td>
-          <td scope="col" class="text-center"> ${stock_date.toDateString()} </td>
-          <td scope="col" class="text-center"> ${restock_date.toDateString()} </td>
+          <td scope="col" class="text-center"> ${feed.quantity + ' ' + feed.measure} </td>
+          <td scope="col" class="text-center"> ${dateFrontend(feed.stock_date)} </td>
+          <td scope="col" class="text-center"> ${dateFrontend(feed.expected_restock_date) == 'Invalid Date' ? '-' : dateFrontend(feed.expected_restock_date) } </td>
         </tr>
       `;
 
@@ -467,13 +460,14 @@ async function getNewBornAnimals() {
 
   babies.listing.forEach(baby => {
 
+    const dobYear = new Date(Date.parse(baby.dob));
+    
     htmlSegment = `
         <tr class="justify-content-center" id="${baby.id}">
           <td scope="col" class="text-center"> ${baby.id} </td>
-          <td scope="col" class="text-center"> ${baby.id} </td>
-          <td scope="col" class="text-center"> ${baby.id} </td>
-          <td scope="col" class="text-center"> ${baby.id} </td>
-          <td scope="col" class="text-center"> ${baby.id} </td>
+          <td scope="col" class="text-center"> ${baby.new_born_tag} </td>
+          <td scope="col" class="text-center"> ${dobYear.toLocaleDateString()} </td>
+          <td scope="col" class="text-center"> ${baby.animal_tag} </td>
         </tr>
       `;
 
@@ -589,4 +583,8 @@ async function getPendingVaccinationsListing() {
 
   con.innerHTML = html;
 
+}
+
+document.querySelector("#ssd").onclick = function () {
+  new bootstrap.Toast(document.querySelector('#bt')).show();
 }

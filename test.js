@@ -31,7 +31,6 @@
 // console.log(y);
 
 
-// TODO implement this on login
 // // crypto module
 // const crypto = require("crypto");
 // const algorithm = "aes-256-cbc";
@@ -68,13 +67,18 @@
 
 
 
-const date = new Date();
+// const date = new Date();
 
-console.log(date);
-let day = date.getDate();
-let month = date.getMonth() + 1;
-let year = date.getFullYear();
+// console.log(date);
+// let day = date.getDate();
+// let month = date.getMonth() + 1;
+// let year = date.getFullYear();
 
-// This arrangement can be altered based on how we want the date's format to appear.
-let currentDate = `${day}-${month}-${year}`;
-console.log(currentDate); // "17-6-2022"
+// // This arrangement can be altered based on how we want the date's format to appear.
+// let currentDate = `${day}-${month}-${year}`;
+// console.log(currentDate); // "17-6-2022"
+
+// console.log("Add 283 Days to Current Date")
+// const d = new Date();
+// d.setDate(d.getDate() + 283);
+// console.log(d)

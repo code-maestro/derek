@@ -8,20 +8,14 @@ const viewSick = async () => {
   const con = document.getElementById('sickListing');
 
   allSickAnimals.listing.forEach(sick => {
-
-    const REPORTED_DATE = new Date(Date.parse(sick.reported_date));
-    const APPOINTMENT_DATE = new Date(Date.parse(sick.appointment_date));
-
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
     htmlSegment = `
      <tr class="justify-content-center" id="${sick.id}">
        <td class="text-center"> ${sick.id} </td>
        <td class="text-center"> ${sick.ANIMAL_TAG} </td>
        <td class="text-center"> ${sick.DISEASE} </td>
-       <td class="text-center"> ${REPORTED_DATE.toLocaleDateString(undefined, options)} </td>
+       <td class="text-center"> ${dateFrontend(sick.reported_date)} </td>
        <td class="text-center"> ${sick.VET_NAME} </td>
-       <td class="text-center"> ${APPOINTMENT_DATE.toLocaleDateString(undefined, options)} </td>
+       <td class="text-center"> ${dateFrontend(sick.appointment_date)} </td>
        <td class="text-center"> ${sick.confirmed} </td>
 
        <td class="text-center noprint" data-bs-target="#editSickModalToggle" data-bs-toggle="modal"  onclick="viewSickDetails('${sick.id}')">
@@ -48,46 +42,45 @@ const viewSick = async () => {
 }
 
 
-
 // Editing veterinary
 async function viewSickDetails(param) {
   const animal_tag = document.getElementById("edit-sick-animal-tag");
   const animal_id = document.getElementById("edit-sick-animal-id");
   const report_date = document.getElementById("edit-reported-date");
-  // const disease = document.getElementById("edit-disease-suspected");
   const signss = document.getElementById("edit-ss-text");
-  // const vet_name = document.getElementById("edit-vet-name");
-  const vet_id = document.getElementById("edit-vet-id");
   const appointment_date = document.getElementById("edit-appointment_date");
   const appointment_time = document.getElementById("edit-appointment_time");
-  const confirmed = document.getElementById("update-confirmed");
+  const confirm_btn = document.getElementById("confirm_btn");
 
-  // TODO implement just after fixing query 
   let the_sick = await getListing('editSickAnimals');
-
-  console.log(vet_name);
 
   the_sick.listing.every(sick => {
 
     if (sick.id == param) {
-
       animal_tag.setAttribute("value", sick.ANIMAL_TAG);
-      animal_id.setAttribute("value", sick.id)
+      animal_id.setAttribute("value", sick.id);
       report_date.setAttribute("value", formatDate(sick.reported_date));
-      disease.innerText = sick.DISEASE;
+      document.getElementById("edit-disease-suspected").innerText = sick.DISEASE;
+      document.getElementById("edit-disease-suspected").setAttribute("value", sick.disease_id);
       signss.innerText = sick.SS;
-      vet_name.innerText = sick.VET_NAME;
-      vet_id.innerText = sick.vet_id;
+      document.getElementById("edit-vets").innerText = sick.VET_NAME;
+      document.getElementById("edit-vets").setAttribute("value", sick.VET_NAME);
+      document.getElementById("update-vet-name").setAttribute("value", sick.VET_NAME);
+      document.getElementById("update-vet-mail").setAttribute("value", sick.VET_MAIL);
       appointment_date.setAttribute('value', formatDate(sick.appointment_date));
       appointment_time.setAttribute('value', formatTime(sick.appointment_date));
-      confirmed.innerText = sick.confirmed ? 'YES'  : 'NO';
+
+      if (sick.confirmed == 'Y') {
+        // ✅ Set the disabled attribute
+        confirm_btn.setAttribute('disabled', "");
+      } else {
+        confirm_btn.removeAttribute('disabled', "");
+      }
 
       return false;
 
     } else {
-
       console.log("💐💐💐💐💐");
-
     }
 
     return true;
@@ -95,6 +88,7 @@ async function viewSickDetails(param) {
   });
 
 }
+
 
 // Function to farmat the dates for html form
 const formatDate = (param) => {
@@ -133,7 +127,6 @@ const formatTime = (param) => {
 }
 
 
-
 // Function to get Required data to report a sick animal
 const getRequiredData = async () => {
   const diseases = await getListing('diseases');
@@ -170,6 +163,7 @@ const getRequiredData = async () => {
 
 }
 
+
 // VET DR DATA
 const getMoreVetData = async () => {
   // VET DOCTORS NAMES
@@ -203,41 +197,6 @@ const getMoreVetData = async () => {
   } else {
     console.log('ETF');
   }
-
-}
-
-// Function to get Required data to report a sick animal
-const getUpdateData = async () => {
-  const diseases = await getListing('diseases');
-  const vets = await getListing('vets');
-
-  let diseaseListed, tagListed, vetListed = '';
-  let diseaseList = `<option selected id="edit-disease-suspected"  value=""></option> <option selected id="edit-disease-suspected"  value=""></option> `;
-  let tagList = `<option selected disabled> Choose an Animal Tag ... </option>`;
-  let vetList = `<option selected id="edit-vet-name"  value=""></option> `;
-
-  const disease_lstd = document.getElementById('edit-disease_s');
-  const tag_lstd = document.getElementById('healthyList');
-  const vet_lstd = document.getElementById('vets-named');
-
-  diseases.listing.forEach(disease => {
-    diseaseListed = ` <option id="${disease.id}" value="${disease.id}">  ${disease.disease_name} </option> `;
-    diseaseList += diseaseListed;
-  });
-
-  animals.listing.forEach(animal => {
-    tagListed = ` <option id="${animal.id}" value="${animal.id}">  ${animal.animal_tag} </option> `;
-    tagList += tagListed;
-  });
-
-  vets.listing.forEach(vet => {
-    vetListed = ` <option id="${vet.id}" value="${vet.fname + ' ' + vet.lname}">  ${vet.fname + ' ' + vet.lname} </option> `;
-    vetList += vetListed;
-  });
-
-  disease_lstd.innerHTML = diseaseList;
-  tag_lstd.innerHTML = tagList;
-  vet_lstd.innerHTML = vetList;
 
 }
 

@@ -40,19 +40,29 @@
     <script defer type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script defer type="text/javascript"
         src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/jquery.table2excel.min.js" defer></script>
 
     <!-- List of animals that belong to the farmer that has signed in -->
     <script src="../js/dashboard.js" defer></script>
+    <script src="../js/age.js" defer></script>
     <script src="../js/main.js" defer></script>
     <script src="../js/vet.js" defer></script>
     <script src="../js/sick.js" defer></script>
     <script src="../js/timetable.js" defer></script>
     <script src="../js/dashboardCards.js" defer></script>
-    <script src="../js/getFarmaData.js" defer></script>
+    <script src="../js/getFarma.js" defer></script>
+    <script src="../js/breed.js" defer></script>
+    <script src="../js/excel.js" defer></script>
+    <script src="../js/graphs.js" defer></script>
+    <script src="../js/calculations.js" defer></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"
+        defer></script>
+    <script src="https://code.highcharts.com/highcharts.js" defer></script>
+    <script src="https://code.highcharts.com/modules/exporting.js" defer></script>
+    <script src="https://code.highcharts.com/modules/export-data.js" defer></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js" defer></script>
 
 </head>
 
@@ -75,9 +85,9 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- TODO implement function move() to handle the click event -->
+
             <!-- Nav Item - home -->
-            <li class="nav-item" onclick="goHome()" href="/public/dashboard.html">
+            <li class="nav-item" onclick="goHome()">
                 <span class="nav-link">
                     <i class="fa-solid fa-gauge"></i>
                     <span> Home </span>
@@ -87,7 +97,7 @@
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">
+            <div id="ssd" class="sidebar-heading">
                 Bio-data
             </div>
 
@@ -134,12 +144,13 @@
             </li>
 
             <!-- Nav Item - Breeding -->
-            <li class="nav-item" onclick="getBreedingRecords()">
+            <li class="nav-item" onclick="getBreedAnimals()">
                 <span class="nav-link" data-bs-toggle="modal" href="#breedingAnimalModalToggle" role="button">
                     <i class="fa-solid fa-address-card"></i>
                     <span> Breeding </span>
                 </span>
             </li>
+
 
             <!-- TODO Test the routing created off  at 20220910-1804 -->
             <!-- Nav Item - New Borns -->
@@ -175,7 +186,7 @@
                 </span>
                 <div id="charts" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white collapse-inner rounded">
-                        <span class="collapse-item" onclick="viewGraphs('expected')"> Expectations </span>
+                        <span class="collapse-item" onclick="showGraphs()"> Expectations </span>
                         <span class="collapse-item" onclick="viewGraphs('actual')"> Actual Data </span>
                     </div>
                 </div>
@@ -209,7 +220,6 @@
                             role="button"> Sick Animals </span>
                     </div>
                 </div>
-
             </li>
 
             <!-- Divider -->
@@ -249,7 +259,7 @@
 
             <!-- Nav Item -Profile Update -->
             <li class="nav-item">
-                <span onclick="renderFarmaData()" class="nav-link" type="button" data-bs-toggle="offcanvas"
+                <span onclick="renderFarma()" class="nav-link" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                     <i class="fa-solid fa-address-card"></i>
                     <span> Profile </span>
@@ -539,13 +549,13 @@
                     </div>
 
                     <div class="row" id="dynamic">
-                        <div class="col-lg-6">
+                        <div class="col-lg-7">
                             <!-- Dropdown Card Example -->
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary"> Information </h6>
+                                    <h6 class="m-0 font-weight-bold text-primary"> GRAPHS </h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -553,11 +563,12 @@
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-header"> ACTIONS </div>
+                                            <span class="dropdown-item"> Refresh </span>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
+                                            <span class="dropdown-item"> Save </span>
+                                            <div class="dropdown-divider"></div>
+                                            <span class="dropdown-item"> Clear </span>
                                         </div>
                                     </div>
                                 </div>
@@ -570,37 +581,43 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                                    <figure class="highcharts-figure">
+                                        <div id="graph"></div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5">
                             <!-- Dropdown Card Example -->
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary"> Information </h6>
+                                    <h6 class="m-0 font-weight-bold text-primary"> SYSTEM EVENTS </h6>
                                     <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                        <a class="dropdown-toggle" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-header"> ACTIONS </div>
+                                            <span class="dropdown-item"> Refresh </span>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
+                                            <span class="dropdown-item"> Save </span>
+                                            <div class="dropdown-divider"></div>
+                                            <span class="dropdown-item"> Clear </span>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    The worlds deadliest animal isn’t a shark, bear or tiger, but something far smaller – the mosquito.
-                                    According to the World Health Organization, 725,000 people are killed each year from mosquito-borne diseases,
-                                    such as Malaria, dengue fever and yellow fever
+                                    <ul id="events" class="list-group list-group-flush"> </ul>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -620,6 +637,20 @@
 
         </div>
         <!-- End of Content Wrapper -->
+
+        <div class="toast-container mt-3 top-0 start-50 translate-middle-x">
+            <div id="bt" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+                aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Hello, world! This is a toast message.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
 
     </div>
     <!-- End of Page Wrapper -->
@@ -642,6 +673,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Register Animal modal -->
     <div class="modal fade" id="registerAnimalModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -687,7 +719,7 @@
                                             <div class="col-md-4">
                                                 <label for="dob" class="form-label fw-bold"> DATE OF BIRTH
                                                 </label>
-                                                <input onchange="calculateAge()" type="date" class="form-control"
+                                                <input onchange="getAge('dob')" type="date" class="form-control"
                                                     name="dob" id="dob" required>
                                             </div>
 
@@ -789,7 +821,8 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('registeredAnimalsTable')"> EXCEL </button>
+                                            onclick="toExcel('registeredAnimalsTable', 'ANIMALS REPORT_')"> EXCEL
+                                        </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('registeredAnimalsTable')"> PRINT </button>
                                     </div>
@@ -806,6 +839,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- New Vaccine Modal -->
     <div class="modal fade" id="newVaccineModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -852,8 +886,8 @@
                                                     required="">
                                                     <option selected="" disabled="" value=""> Choose a measure
                                                         ...</option>
-                                                    <option value="ml"> milli litre(s) </option>
-                                                    <option value="l"> litre(s) </option>
+                                                    <option value="1000"> milli litre(s) </option>
+                                                    <option value="1"> litre(s) </option>
                                                 </select>
                                             </div>
 
@@ -888,6 +922,7 @@
                                                     <option selected="" disabled="" value=""> Choose a period
                                                         ...</option>
                                                     <option value="1"> Day(s) </option>
+                                                    <option value="7"> Week(s) </option>
                                                     <option value="30"> Month(s) </option>
                                                     <option value="360"> Year(s) </option>
                                                 </select>
@@ -971,7 +1006,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                            onclick="toExcel('vaccinationTable', 'VACCINES_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('vaccinationTable')"> PRINT </button>
                                     </div>
@@ -988,8 +1023,6 @@
         </div>
 
     </div>
-
-
 
 
     <!-- Schedule a Vaccination Modal  -->
@@ -1172,7 +1205,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('pendingVaccinationTable')"> EXCEL </button>
+                                            onclick="HtmlTOExcel('xlsx','pendingVaccinationTable')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('pendingVaccinationTable')"> PRINT
                                         </button>
@@ -1238,7 +1271,8 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('fullyVaccinatedTable')"> EXCEL </button>
+                                            onclick="exportTableToExcel('fullyVaccinatedTable', 'vaccinatedAnimalsReport')">
+                                            EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('fullyVaccinatedTable')"> PRINT </button>
                                     </div>
@@ -1254,6 +1288,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Register New Born Modal  -->
     <div class="modal fade" id="registerNewBornModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -1390,7 +1425,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('fullyVaccinatedTable')"> EXCEL </button>
+                                            onclick="toExcel('newBornsTable', 'NEW BORN ANIMALS_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('fullyVaccinatedTable')"> PRINT </button>
                                     </div>
@@ -1407,7 +1442,8 @@
         </div>
     </div>
 
-    <!-- Update Offcanvas -->
+
+    <!-- Update Farma Data Offcanvas -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 id="offcanvasRightLabel"> Update Farmer Data </h5>
@@ -1419,7 +1455,7 @@
                 <div class="row">
                     <div class="col align-self-center">
                         <form class="row g-4 needs-validation" id="updateFarmaProfileForm" novalidate method="POST"
-                            action="/updateFarmaProfile">
+                            action="/updateFarma">
                             <div class="col-md-12">
                                 <div class="Neon Neon-theme-dragdropbox">
                                     <input
@@ -1440,7 +1476,7 @@
 
                             <div class="col-md-12">
                                 <label for="validation04" id="mail" class="form-label"> Email </label>
-                                <input type="email" class="form-control" name="email" id="validation04" value=""
+                                <input type="email" class="form-control" name="mail" id="validation04" value=""
                                     required>
                                 <div class="valid-feedback"> Looks good! </div>
                             </div>
@@ -1476,6 +1512,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- New Vet Modal -->
     <div class="modal fade" id="newVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -1595,7 +1632,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                            onclick="toExcel('vetsTable', 'VETERINARY DOCTORS_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('vaccinationTable')"> PRINT </button>
                                     </div>
@@ -1612,10 +1649,11 @@
         </div>
     </div>
 
+
     <!-- Add Breeding Modal -->
     <div class="modal fade" id="breedingAnimalModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-hidden="true" aria-labelledby="breedingAnimalModalToggleLabel" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content px-2">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold" id="breedingAnimalModalLabel"> </h5>
@@ -1625,55 +1663,52 @@
                     <div class="row">
                     </div>
 
-                    <form id="breedingAnimalForm" class="row g-3 needs-validation px-4" novalidate="" method="POST"
-                        action="/addBreedingAnimal">
+                    <form id="breedingAnimalForm" class="row g-3 needs-validation px-4" method="POST" action="/newBred">
                         <div class="col-md-6">
-                            <label for="edit-animal-tag" class="form-label fw-bold"> Animal Tag </label>
-                            <input id="edit-animal-tag" type="text" placeholder="Disabled input" class="form-control"
-                                name="editAnimalTag" spellcheck="false" data-ms-editor="true" value="">
+                            <label for="breading_animal" class="form-label fw-bold"> Animal Tag </label>
+                            <select onchange="getGender()" id="breeding_animal" class="form-select"
+                                name="breeding_animal" required> </select>
                         </div>
 
                         <div class="col-md-6">
-                            <label for="edit-gender" class="form-label fw-bold"> Gender </label>
-                            <select class="form-select" name="editGender" required>
-                                <option selected disabled id="edit-gender" value="">Choose...</option>
-                                <option value="Male"> Male </option>
-                                <option value="Female"> Female </option>
-                            </select>
+                            <label for="breeding_gender" class="form-label fw-bold"> Gender </label>
+                            <input type="text" class="form-control" id="breeding_gender" name="breeding_gender"
+                                disabled>
+                        </div>
+
+                        <input type="number" class="form-control" id="breeding_animal_id" name="breeding_animal_id"
+                            hidden>
+                        <input type="text" class="form-control" id="gestation_period" name="gestation_period" hidden>
+
+                        <div class="col-md-6">
+                            <label for="breeding_date" class="form-label fw-bold"> Breeding Date </label>
+                            <input onchange="calcDueDate()" type="date" class="form-control" name="breeding_date"
+                                id="breeding_date" required>
                         </div>
 
                         <div class="col-md-6">
-                            <label for="edit-dob" class="form-label fw-bold"> Date of Birth </label>
-                            <input onchange="calculateAge()" type="date" class="form-control" name="editDob"
-                                id="edit-dob" required="">
+                            <label for="expected_delivery_date" class="form-label fw-bold"> Expected Delivery Date
+                            </label>
+                            <input type="date" class="form-control" name="expected_due_date" id="expected_due_date"
+                                readonly>
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="edit-registration-date" class="form-label fw-bold">
-                                Registration Date </label>
-                            <div class="input-group has-validation">
-                                <input type="date" class="form-control" name="editRegDate" id="edit-registration-date"
-                                    aria-describedby="inputGroupPrepend" required="">
-                            </div>
+                        <div class="d-grid gap-2 d-md-flex px-2 pt-4 justify-content-md-end">
+                            <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button">
+                                cancel
+                            </button>
+                            <button class="btn btn-primary font-monospace" type="submit"> submit </button>
                         </div>
 
-
-                        <div class="col-md-6">
-                            <input type="number" class="form-control" name="editid" id="editid"
-                                aria-describedby="inputGroupPrepend" hidden>
-                        </div>
+                    </form>
                 </div>
 
-                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                    <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button">
-                        cancel </button>
-                    <button class="btn btn-primary font-monospace" type="submit"> submit </button>
-                </div>
 
-                </form>
+
             </div>
         </div>
     </div>
+
 
     <!-- Add Animal Feeds modal -->
     <div class="modal fade" id="registerFeedStockModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -1694,59 +1729,49 @@
                                     <div class="card-body">
                                         <!-- Feeds Registration Form -->
                                         <form id="registerForm" class="row g-3 needs-validation" novalidate
-                                            method="POST" action="/newAnimal">
+                                            method="POST" action="/newFeed">
                                             <div class="col-md-6">
-                                                <label for="animal-tag" class="form-label fw-bold"> NAME </label>
-                                                <input id="animal-tag" type="text" placeholder="Disabled input"
-                                                    class="form-control" name="feeds_name" required id="feeds-name">
+                                                <label for="feeds_name" class="form-label fw-bold"> NAME </label>
+                                                <input id="feeds_name" type="text" class="form-control"
+                                                    name="feeds_name" required>
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
-                                            <div class="col-md-4">
-                                                <label for="dob" class="form-label fw-bold"> QUANTITY-MEASURE </label>
-                                                <input onchange="calculateAge()" type="date" class="form-control"
-                                                    name="quantity-measure" id="quantity-measure" required>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <label for="registration-date" class="form-label fw-bold">
-                                                    REGISTRATION DATE </label>
-                                                <div class="input-group has-validation">
-                                                    <input type="date" class="form-control" name="regDate"
-                                                        id="registration-date" aria-describedby="inputGroupPrepend"
-                                                        required>
-                                                    <div class="invalid-feedback"> Please choose a Date. </div>
-                                                    <div class="valid-feedback"> Looks Good </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <label for="age-years" class="form-label fw-bold"> AGE </label>
-                                                <input type="text" class="form-control" id="age-years" name="ageYears"
-                                                    readonly>
-                                                <div class="invalid-feedback"> Enter Age </div>
+                                            <div class="col-md-6">
+                                                <label for="feeds_stock_date" class="form-label fw-bold"> STOCK DATE
+                                                </label>
+                                                <input id="feeds_stock_date" type="datetime-local" class="form-control"
+                                                    name="feeds_stock_date" required>
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
-                                            <div class="col-md-12">
-                                                <!-- <label for="age-days" class="form-label fw-bold"> AGE (Days)
-                                                            </label>
-                                                            <input type="text" class="form-control" id="age-days"
-                                                                name="ageDays" readonly>
-                                                            <div class="invalid-feedback"> Enter Age </div>
-                                                            <div class="valid-feedback"> Looks good! </div> -->
+                                            <div class="col-md-6">
+                                                <label for="feeds_qnty" class="form-label fw-bold"> QUANTITY </label>
+                                                <input id="feeds_qnty" type="number" class="form-control"
+                                                    name="feeds_qnty" required>
+                                                <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
-                                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                                                <button class="btn btn-light me-md-2 font-monospace"
-                                                    data-bs-dismiss="modal" type="button"> cancel </button>
-                                                <button class="btn btn-primary font-monospace" type="submit"> submit
-                                                    form </button>
+                                            <div class="col-md-6">
+                                                <label for="feeds_qnty_measure" class="form-label fw-bold">
+                                                    QUANTITY-MEASURE </label>
+                                                <select class="form-select" id="period" name="feeds_qnty_measure"
+                                                    required>
+                                                    <option value="1000" selected> kg </option>
+                                                    <option value="1"> g </option>
+                                                </select>
                                             </div>
-
-                                        </form>
-
                                     </div>
+
+                                    <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                        <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
+                                            type="button"> cancel </button>
+                                        <button class="btn btn-primary font-monospace" type="submit"> submit form
+                                        </button>
+                                    </div>
+
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
@@ -1803,7 +1828,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('vaccinationTable')"> EXCEL </button>
+                                            onclick="toExcel('feedsTable', 'ANIMAL FEEDS REPORT_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('vaccinationTable')"> PRINT </button>
                                     </div>
@@ -1861,7 +1886,7 @@
                                         <form method="POST" action="/newTimeTable" class="row g-3 needs-validation">
 
                                             <div class="col-md-12">
-                                                <input id="feeds_id" type="number" class="form-control" name="feeds_id"
+                                                <input id="feeds_id" type="number" class="form-control" name="feedsID"
                                                     hidden>
                                             </div>
 
@@ -1911,8 +1936,9 @@
                                                     <option selected="" disabled="" value=""> Choose a period...
                                                     </option>
                                                     <option value="1"> Day </option>
+                                                    <option value="7"> Week </option>
                                                     <option value="30"> Month </option>
-                                                    <option value="360"> Year </option>
+                                                    <option value="365"> Year </option>
                                                 </select>
                                             </div>
 
@@ -1927,7 +1953,8 @@
                                             <div class="col-md-3">
                                                 <label for="feeds-quantity-measure" class="form-label fw-bold">
                                                     Quantity Per Cycle Measure </label>
-                                                <select class="form-select" id="feedQuantityMeasure"
+                                                <select onChange="validateQnty('feeds-quantity','feedQuantityMeasure')"
+                                                    class="form-select" id="feedQuantityMeasure"
                                                     name="feedingQuantityPerCycleUnit" required>
                                                     <option selected="" disabled="" value=""> Choose a unit...</option>
                                                     <option value="1000"> kg </option>
@@ -2045,7 +2072,7 @@
                                     </table>
                                 </div>
 
-                                <div class="row px-4 py-4">
+                                <div class="row px-4 pt-4">
                                     <div class="col-auto me-auto">
                                         <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
                                     </div>
@@ -2091,7 +2118,7 @@
                             <div class="col">
                                 <div class="row px-4">
                                     <!-- Vaccines Form -->
-                                    <table id="generatedTable" class="table table-bordered table-hover table-sm">
+                                    <table id="generatedTable" class="table table-bordered table-hover table-sm table-success table-striped">
                                         <thead class="table-dark">
                                             <tr>
                                                 <th scope="col" class="text-center"> ID </th>
@@ -2101,11 +2128,11 @@
                                                 <th scope="col" class="text-center"> QUANTITY </th>
                                             </tr>
                                         </thead>
-                                        <tbody id="generatedListing"> </tbody>
+                                        <tbody id="ttable"> </tbody>
                                     </table>
                                 </div>
 
-                                <div class="row px-4 py-4">
+                                <div class="row px-4 pt-4">
                                     <div class="col-auto me-auto">
                                         <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
                                     </div>
@@ -2117,7 +2144,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('generatedTable')"> EXCEL </button>
+                                            onclick="toExcel('generatedTable', 'FEEDING SCHEDULES_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('generatedTable')"> PRINT </button>
                                     </div>
@@ -2133,6 +2160,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Add Sick Animal Modal -->
     <div class="modal fade" id="addSickModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -2262,6 +2290,7 @@
         </div>
     </div>
 
+
     <!-- CLEANED -->
     <!-- Sick Animals listing modal -->
     <div class="modal fade" id="sickModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -2309,7 +2338,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('sickTable')"> EXCEL </button>
+                                            onclick="toExcel('sickTable', 'SICK ANIMALS_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('sickTable')"> PRINT </button>
                                     </div>
@@ -2326,6 +2355,7 @@
             </div>
         </div>
     </div>
+
 
     <!--Animal Diseases listing modal -->
     <div class="modal fade" id="diseaseModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -2370,7 +2400,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="toExcel('diseaseTable')"> EXCEL </button>
+                                            onclick="toExcel('diseaseTable', 'DISEASES_')"> EXCEL </button>
                                         <button type="button" class="btn btn-primary btn-sm"
                                             onclick="printReport('dieaseTable')"> PRINT </button>
                                     </div>
@@ -2467,10 +2497,11 @@
         </div>
     </div>
 
+
     <!-- Edit Animal Modal -->
     <div class="modal fade" id="editAnimalModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
         aria-labelledby="editAnimalModalToggleLabel" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content px-2">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold" id="editAnimalModalLabel"> </h5>
@@ -2490,7 +2521,7 @@
 
                         <div class="col-md-6">
                             <label for="edit-gender" class="form-label fw-bold"> Gender </label>
-                            <select class="form-select" name="editGender" required>
+                            <select class="form-select" name="editGender">
                                 <option selected disabled id="edit-gender" value="">Choose...</option>
                                 <option value="Male"> Male </option>
                                 <option value="Female"> Female </option>
@@ -2499,8 +2530,8 @@
 
                         <div class="col-md-6">
                             <label for="edit-dob" class="form-label fw-bold"> Date of Birth </label>
-                            <input onchange="calculateAge()" type="date" class="form-control" name="editDob"
-                                id="edit-dob" required="">
+                            <input onchange="getAge('edit-dob')" type="date" class="form-control" name="editDob"
+                                id="edit-dob">
                         </div>
 
                         <div class="col-md-6">
@@ -2508,7 +2539,7 @@
                                 Registration Date </label>
                             <div class="input-group has-validation">
                                 <input type="date" class="form-control" name="editRegDate" id="edit-registration-date"
-                                    aria-describedby="inputGroupPrepend" required="">
+                                    aria-describedby="inputGroupPrepend">
                             </div>
                         </div>
 
@@ -2519,7 +2550,7 @@
                         </div>
                 </div>
 
-                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                <div class="d-grid gap-2 d-md-flex px-2 pb-4 justify-content-md-end">
                     <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button">
                         cancel </button>
                     <button class="btn btn-primary font-monospace" type="submit"> update </button>
@@ -2632,10 +2663,10 @@
     <!-- Edit Sick Modal -->
     <div class="modal fade" id="editSickModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-hidden="true" aria-labelledby="editSickModalToggleLabel" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content px-2">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="editSickModalLabel"> </h5>
+                    <h5 class="modal-title fw-bold" id="editSickModalLabel"> DETAILS </h5>
                 </div>
                 <div class="modal-body">
 
@@ -2643,7 +2674,7 @@
                     </div>
 
                     <!-- Sick Animal Edit Form -->
-                    <form method="POST" action="/updateSick" class="row g-3">
+                    <form method="POST" action="/confirmation" class="row g-3">
                         <!-- HEALTHY ANIMALS -->
                         <div class="col-md-4">
                             <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG </label>
@@ -2651,7 +2682,8 @@
                                 spellcheck="false" data-ms-editor="true" readonly>
                         </div>
 
-                        <input id="edit-sick-animal-id" type="number" name="edit-sick-animal-id" hidden readonly>
+                        <input id="edit-sick-animal-id" type="number" name="edit_sick_animal_id" hidden>
+                        <input id="update-vet-mail" type="text" name="update_vet_mail" hidden>
 
                         <div class="col-md-4">
                             <label for="edit-reported-date" class="form-label fw-bold"> First Signs
@@ -2664,7 +2696,7 @@
                             <label for="edit-disease-suspected" class="form-label fw-bold"> Suspected Disease
                             </label>
                             <select id="edit-disease-s" class="form-select" name="disease_suspected">
-                                <option selected id="edit-disease-suspected"  value=""></option> 
+                                <option selected id="edit-disease-suspected" value=""></option>
                             </select>
                         </div>
 
@@ -2678,40 +2710,32 @@
                             <h5 class="font-monospace"> TREATMENT APPOINTMENT </h5>
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="update-vet-name" class="form-label fw-bold"> Vet Name </label>
-                            <select id="update-vet-name" class="form-select" name="vetName" >
-                                <option selected id="edit-vet-name"  value=""></option> 
-                            </select>
-                        </div>
-
-                        <input id="edit-sick-vet-id" type="text" name="edit-sick-vet-id" hidden>
-
-                        <div class="col-md-6">
-                            <label for="update-confirmation" class="form-label fw-bold"> confirmed </label>
-                            <select id="update-confirmation" class="form-select" data-live-search="true"
-                                name="updateConfirmation" required> 
-                                <option selected id="update-confirmed"  value=""></option> 
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="edit-appointment_date" class="form-label fw-bold"> Appointment Date </label>
-                            <input min="2022-01-01" onchange="validateDate('edit-appointment_date')" id="edit-appointment_date" type="date" class="form-control" required name="editAppointmentDate">
+                            <input min="2022-01-01" onchange="validateDate('edit-appointment_date')"
+                                id="edit-appointment_date" type="date" class="form-control" required
+                                name="editAppointmentDate">
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="edit-appointment_time" class="form-label fw-bold"> Appointment Time </label>
-                            <input id="edit-appointment_time" type="time" class="form-control" required name="editAppointmentTime">
+                            <input id="edit-appointment_time" type="time" class="form-control" required
+                                name="editAppointmentTime">
                         </div>
 
-                        <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                            <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button">
-                                CANCEL </button>
-                            <button class="btn btn-primary font-monospace" type="submit"> GENERATE
-                            </button>
+                        <div class="col-md-4">
+                            <label for="update-vet-name" class="form-label fw-bold"> Vet Name </label>
+                            <select id="update-vet-name" class="form-select" name="editVetName">
+                                <option selected id="edit-vets" value=""></option>
+                            </select>
                         </div>
 
+                        <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end" id="action_btns">
+                            <button class="btn btn-secondary me-md-2 font-monospace" data-bs-dismiss="modal"
+                                type="button"> CLOSE </button>
+                            <button class="btn btn-primary font-monospace" id="confirm_btn" type="submit"> CONFIRM
+                                APPOINTMENT </button>
+                        </div>
                     </form>
 
 
@@ -2719,6 +2743,76 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Animal Feeds modal -->
+    <div class="modal fade" id="editFeedsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="editFeedModalToggleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div>
+                        <div class="row p-2 mx-auto">
+                            <div class="mx-auto" style="width: auto;">
+                                <h4 class="font-monospace" id="editFeedModalToggleLabel"> UDPATE FEEDS STOCK </h4>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- Feeds Registration Form -->
+                                        <form id="registerForm" class="row g-3 needs-validation" novalidate
+                                            method="POST" action="/updateFeed">
+                                            <div class="col-md-6">
+                                                <label for="edit-feeds_name" class="form-label fw-bold"> FEED NAME
+                                                </label>
+                                                <input id="edit_feeds_name" type="text" class="form-control"
+                                                    name="edit_feeds_name" required>
+                                                <div class="valid-feedback"> Looks good! </div>
+                                            </div>
+
+                                            <input id="edit_feeds_id" type="number" class="form-control" name="edit_feeds_id" hidden>
+
+                                            <div class="col-md-6">
+                                                <label for="edit_feeds_stock_date" class="form-label fw-bold"> STOCK DATE </label>
+                                                <input id="edit_feeds_stock_date" type="date" class="form-control" name="edit_feeds_stock_date">
+                                                <div class="valid-feedback"> Looks good! </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="edit_feeds_qnty" class="form-label fw-bold"> QUANTITY </label>
+                                                <input id="edit_feeds_qnty" type="number" class="form-control" name="edit_feeds_qnty">
+                                                <div class="valid-feedback"> Looks good! </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="edit_feeds_qnty_measure" class="form-label fw-bold">
+                                                    QUANTITY-MEASURE </label>
+                                                <select class="form-select" id="edit_feeds_qnty_measure" name="edit_feeds_qnty_measure">
+                                                    <option value="1000" selected id="qm"> kg </option>
+                                                    <option value="1"> g </option>
+                                                </select>
+                                            </div>
+                                    </div>
+
+                                    <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                        <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
+                                            type="button"> cancel </button>
+                                        <button class="btn btn-primary font-monospace" type="submit"> udpate </button>
+                                    </div>
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="../vendor/jquery/jquery.min.js"></script>
