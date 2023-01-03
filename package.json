@@ -4,7 +4,7 @@
     "body-parser": "^1.20.1",
     "busboy": "^1.6.0",
     "cloudinary": "^1.30.1",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
     "formidable": "^2.0.1",
@@ -25,10 +25,12 @@
   "main": "index.js",
   "scripts": {
     "test": "nodemon last.js",
-    "start": "nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "author": "code-maestro",
   "license": "ISC",
+  "type": "module",
   "devDependencies": {
     "localStorage": "^1.0.4"
   }

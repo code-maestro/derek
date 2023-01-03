@@ -82,3 +82,11 @@
 // const d = new Date();
 // d.setDate(d.getDate() + 283);
 // console.log(d)
+
+import { v4 as uuidv4 } from 'uuid';
+const ii = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+
+
+console.log(ii);
+console.log(ii);
+console.log(ii);

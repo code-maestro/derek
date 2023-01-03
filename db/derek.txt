@@ -1,53 +1,13 @@
-Azure subscription 1
-Resource group
-derek
-Region
-East US
-Database name
-farma
-Server
-(new) derekfarma
-Authentication method
-SQL authentication
-Server admin login
-derek
+mysql server local
+Derek@2022
 
 
+------------------------
+FREESQLDATABASE.com
 
-    // // Regex to name a table to store the registered farmer
-    // const re = /(?<=@).*$/
-    // const from_mail = mail.replace(re, "").replace('@', '');
+Host: sql7.freesqldatabase.com
+Database name: sql7530635
+Database user: sql7530635
+Database password: IKlpJH9d8F
+Port number: 3306
 
-
-GCP
-
-820052256973-b68dvo6d3p3a1qtaulijusk7at0a3hnv.apps.googleusercontent.com
-
-
-
-EMAIL SENDING
-
-const mail = require('@sendgrid/mail');
-
-mail.setApiKey("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")
-
-// eslint-disable-next-line import/no-anonymous-default-export
-export default async (req, res) => {
-    const body = JSON.parse(req.body);
-    const orderValues = Object.values(body);
-
-    const name = `${body.Client_Name}@picasostonerstation.com`.replace(/\s+/g, '');
-    
-    var stringifiedObj = Object.entries(body).map(x => x.join(" : ")).join("<br>");
-
-    await mail.send({
-        to: 'picasostonerstation@gmail.com',
-        from: name,
-        subject: 'NEW ORDER',
-        text: orderValues.toString(),
-        html: stringifiedObj
-    });
-
-    res.status(200).json({ message: "Sent Order", status: 'Ok' })
-
-}

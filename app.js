@@ -10,6 +10,9 @@ const { default: store } = require('store2');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const hbs = require('nodemailer-express-handlebars');
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 // DATABASE CONNECTIONS
 const connection = mysql.createConnection({
@@ -256,7 +259,9 @@ app.get('/getCount/:param', function (request, response) {
     if (farma_id) {
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
-            if (error) throw error;
+            if (error) {
+                console.log(error);
+            };
             response.send({ count: results });
         })
     } else {
@@ -319,6 +324,18 @@ app.get('/getFarma', function (request, response) {
         console.log(" trying to delete with no farma_id 🤣😂 ");
         response.redirect('/');
     }
+
+});
+
+
+// Function to retrieve animal data for table
+app.get('/tables', function (request, response) {
+    const sql_query = `SHOW TABLES;`;
+    connection.query(sql_query, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) throw error;
+        response.send({ farma: results });
+    })
 
 });
 
@@ -449,6 +466,8 @@ app.post('/auth', function (request, response) {
 
             // If the account exists
             if (results.length > 0) {
+                console.log("lolo");
+
                 // Authenticate the user
                 const row = Object.values(JSON.parse(JSON.stringify(results)));
 
@@ -465,6 +484,7 @@ app.post('/auth', function (request, response) {
                 });
 
             } else {
+                console.log("lolo");
                 response.redirect(`/`);
             }
 
@@ -512,7 +532,7 @@ app.post('/newTimeTable', function (req, res) {
     const animal = storage('animal');
 
     // Execute SQL query that'll insert into the feeding_timetable table
-    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, next_feed_date, last_feed_date, feeds_id, farma_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', TIMESTAMPADD(DAY,${req.body.feedingPeriod}, '${req.body.feedingFirstDate}'), '${req.body.feedingLastDate}', ${req.body.feedsID}, '${farma_id}');`,
+    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, next_feed_date, last_feed_date, feeds_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', TIMESTAMPADD(DAY,${req.body.feedingPeriod}, '${req.body.feedingFirstDate}'), '${req.body.feedingLastDate}', ${req.body.feedsID});`,
         function (error, results, fields) {
             if (error) throw error;
         });
@@ -544,7 +564,7 @@ app.post('/updateFeed', function (req, res) {
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`UPDATE feeds SET name = '${req.body.edit_feeds_name}',  description = '${req.body.edit_feeds_name}', quantity = ${req.body.edit_feeds_qnty}, quantity_measure = ${req.body.edit_feeds_qnty_measure}, stock_date  = '${req.body.edit_feeds_stock_date}', animal_type = '${animal}' WHERE farma_id ='${farma_id}' AND id = ${req.body.edit_feeds_id};`,
         function (error, results, fields) {
-            if (error) { 
+            if (error) {
                 // res.redirect(`/animal/${animal}`); 
 
                 console.log(error);

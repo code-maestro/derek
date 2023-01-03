@@ -15,14 +15,19 @@ const viewSchedule = async (param) => {
     if (timetable.id == param) {
 
       let n = timetable.quantity;
+      let the_date = timetable.first_feed_date;
       let id = timetable.id;
 
-      while (n > 0) {
+      do {
+
+        while (condition) {
+          
+        }
         htmlSegment = `
         <tr class="justify-content-center" id="${timetable.id}">
           <td class="text-center"> ${id++} </td>
-          <td class="text-center"> ${dateFrontend(timetable.first_feed_date)} </td>
-          <td class="text-center"> ${dateFrontend(addDays(timetable.first_feed_date, timetable.period++))} </td>
+          <td class="text-center"> ${dateFrontend(the_date)} </td>
+          <td class="text-center"> ${dateFrontend(addDays(the_date, timetable.period))} </td>
           <td class="text-center"> ${n} </td>
         </tr>
       `;
@@ -32,8 +37,26 @@ const viewSchedule = async (param) => {
         console.log(n);
 
         n = n - timetable.quantity_per_cycle;
+        
+      } while (n > 0);
 
-      }
+      // while (n > 0) {
+      //   htmlSegment = `
+      //   <tr class="justify-content-center" id="${timetable.id}">
+      //     <td class="text-center"> ${id++} </td>
+      //     <td class="text-center"> ${dateFrontend(the_date)} </td>
+      //     <td class="text-center"> ${dateFrontend(addDays(the_date, timetable.period++))} </td>
+      //     <td class="text-center"> ${n} </td>
+      //   </tr>
+      // `;
+
+      //   html += htmlSegment;
+
+      //   console.log(n);
+
+      //   n = n - timetable.quantity_per_cycle;
+
+      // }
 
       console.log("😒😊👌💕🤦‍♂️🤦‍♀️😢🎶😎🤞😍😁✌️");
 

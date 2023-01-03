@@ -255,3 +255,29 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+-- TRIGGER TO CREATE FEEDING TIMETABLES
+
+DELIMITER $$
+
+CREATE OR ALTER TRIGGER new_tt_insert
+
+    AFTER INSERT
+
+    ON feeding_timetable
+
+    FOR EACH ROW
+
+        BEGIN
+
+            CALL tat (
+                (SELECT farma_id FROM feeds A, feeding_timetable B WHERE A.id  = NEW.feeds_id AND A.animal_type = NEW.animal_type ORDER BY B.id DESC LIMIT 1), 
+                NEW.animal_type,
+                NEW.tt_name
+            );
+            
+        END$$
+
+DELIMITER ;
