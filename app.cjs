@@ -466,7 +466,7 @@ app.post('/auth', function (request, response) {
 
             // If the account exists
             if (results.length > 0) {
-                console.log("lolo");
+                console.log("loll");
 
                 // Authenticate the user
                 const row = Object.values(JSON.parse(JSON.stringify(results)));
@@ -484,7 +484,7 @@ app.post('/auth', function (request, response) {
                 });
 
             } else {
-                console.log("lolo");
+                console.log("lolo123");
                 response.redirect(`/`);
             }
 
