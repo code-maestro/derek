@@ -1,3 +1,4 @@
+
 {
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -19,18 +20,17 @@
     "store2": "^2.14.2",
     "uuid": "^8.3.2"
   },
-  "name": "auth",
+  "name": "farma",
   "version": "1.0.0",
-  "description": "for auth",
+  "description": "farma ms",
   "main": "index.js",
   "scripts": {
     "test": "nodemon last.js",
-    "start": "node app.cjs",
-    "dev": "nodemon app.cjs"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "author": "code-maestro",
   "license": "ISC",
-  "type": "module",
   "devDependencies": {
     "localStorage": "^1.0.4"
   }
