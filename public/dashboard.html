@@ -285,7 +285,8 @@
 
                     <!-- Nav Item - User Information -->
                     <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
-                        <img class="img-profile rounded-circle" src="/static/images/cow.png" style="width: 50%; height: 50%;">
+                        <img class="img-profile rounded-circle" src="/static/images/cow.png"
+                            style="width: 50%; height: 50%;">
                         <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="animal-details"> ll </span>
                     </div>
 
@@ -331,7 +332,6 @@
                             </div>
                         </li>
 
-
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -356,8 +356,9 @@
                                             download!</span>
                                     </div>
                                 </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All
-                                    Alerts</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">
+                                    Show All Alerts
+                                </a>
                             </div>
                         </li>
 
@@ -574,16 +575,11 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    Cows poo up to 15 times a day, which can be as much as 115 pounds of manure per day, or approximately 21 tons per year.
-                                    The large quantities are often put to good use, though – manure, to fertilizer, to fuel,
+                                    Cows poo up to 15 times a day, which can be as much as 115 pounds of manure per day,
+                                    or approximately 21 tons per year.
+                                    The large quantities are often put to good use, though – manure, to fertilizer, to
+                                    fuel,
                                     or biogas to create electricity and heat for developing parts of the world.
-                                </div>
-                            </div>
-                        </div>
-
-                                    <figure class="highcharts-figure">
-                                        <div id="graph"></div>
-                                    </figure>
                                 </div>
                             </div>
                         </div>
@@ -619,37 +615,48 @@
                         </div>
 
                     </div>
-                </div>
-                <!-- /.container-fluid -->
 
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span id="autoYear"> </span>
+                    <div class="row" id="dynamic">
+                        <figure class="highcharts-figure">
+                            <div id="graph"></div>
+                        </figure>
                     </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
 
-        </div>
-        <!-- End of Content Wrapper -->
-
-        <div class="toast-container mt-3 top-0 start-50 translate-middle-x">
-            <div id="bt" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
-                aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Hello, world! This is a toast message.
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
                 </div>
             </div>
+
         </div>
+    </div>
+    <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <!-- <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span id="autoYear"> </span>
+            </div>
+        </div>
+    </footer> -->
+    <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+    <div class="toast-container mt-3 top-0 start-50 translate-middle-x">
+        <div id="bt" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+            aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Hello, world! This is a toast message.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
 
 
     </div>
@@ -2118,7 +2125,8 @@
                             <div class="col">
                                 <div class="row px-4">
                                     <!-- Vaccines Form -->
-                                    <table id="generatedTable" class="table table-bordered table-hover table-sm table-success table-striped">
+                                    <table id="generatedTable"
+                                        class="table table-bordered table-hover table-sm table-success table-striped">
                                         <thead class="table-dark">
                                             <tr>
                                                 <th scope="col" class="text-center"> ID </th>
@@ -2772,24 +2780,30 @@
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
-                                            <input id="edit_feeds_id" type="number" class="form-control" name="edit_feeds_id" hidden>
+                                            <input id="edit_feeds_id" type="number" class="form-control"
+                                                name="edit_feeds_id" hidden>
 
                                             <div class="col-md-6">
-                                                <label for="edit_feeds_stock_date" class="form-label fw-bold"> STOCK DATE </label>
-                                                <input id="edit_feeds_stock_date" type="date" class="form-control" name="edit_feeds_stock_date">
+                                                <label for="edit_feeds_stock_date" class="form-label fw-bold"> STOCK
+                                                    DATE </label>
+                                                <input id="edit_feeds_stock_date" type="date" class="form-control"
+                                                    name="edit_feeds_stock_date">
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="edit_feeds_qnty" class="form-label fw-bold"> QUANTITY </label>
-                                                <input id="edit_feeds_qnty" type="number" class="form-control" name="edit_feeds_qnty">
+                                                <label for="edit_feeds_qnty" class="form-label fw-bold"> QUANTITY
+                                                </label>
+                                                <input id="edit_feeds_qnty" type="number" class="form-control"
+                                                    name="edit_feeds_qnty">
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <label for="edit_feeds_qnty_measure" class="form-label fw-bold">
                                                     QUANTITY-MEASURE </label>
-                                                <select class="form-select" id="edit_feeds_qnty_measure" name="edit_feeds_qnty_measure">
+                                                <select class="form-select" id="edit_feeds_qnty_measure"
+                                                    name="edit_feeds_qnty_measure">
                                                     <option value="1000" selected id="qm"> kg </option>
                                                     <option value="1"> g </option>
                                                 </select>
