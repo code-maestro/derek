@@ -31,6 +31,68 @@ END //
 DELIMITER ;
 
 
+
+
+
+
+DELIMITER //
+
+CREATE PROCEDURE farma_create_schedule
+ (
+		IN tt_id INT,
+  	IN quantity INT,
+		IN start_dt DATE,
+		IN cycle INT,
+		IN peroid INT,
+	 	IN qty_per_cycle INT,
+	 	OUT total INT
+	)
+
+BEGIN
+
+DECLARE quantity_in_db INT;
+DECLARE effective_dt DATE;
+
+SET @schedule_id = UUID_SHORT();
+SET effective_dt = start_dt;
+
+SET quantity_in_db = (SELECT (quantity*quantity_measure) FROM feeds WHERE farma_id = 'fea8d3cf-d829-4d45-8c89-eb177672e7e9' AND id = 1);
+
+IF quantity_in_db > quantity THEN
+
+    SET total = 0;
+
+    WHILE quantity > 0 DO
+
+				INSERT INTO feeding_schedule ( feeding_tt_id, effective_date, next_date, feeds_quantity, feeds_qnty_pending, schedule_id)
+				VALUES (tt_id, effective_dt, DATE_ADD(effective_dt, INTERVAL peroid DAY), quantity, quantity, @schedule_id );
+ 
+        SET quantity = (quantity - (qty_per_cycle*1000));
+
+				SET effective_dt = DATE_ADD(effective_dt, INTERVAL peroid DAY);
+
+    END WHILE;
+
+ELSE
+
+    SET total = 1;
+
+END IF;
+
+END //
+
+DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
 CALL reschedule(5000, @total);
 
 BEGIN

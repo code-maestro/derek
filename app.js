@@ -229,7 +229,7 @@ app.get('/before-home', function (request, response) {
             });
         })
     } else {
-        console.log("BEFORE-HOME animals listing retrieval oder keine farma_id ");
+        console.log("BEFORE-HOME animals listing retrieval nicht arbeitet viel  du hat keine farma_id ");
         response.redirect('/');
     }
 });
@@ -491,8 +491,11 @@ app.post('/auth', function (request, response) {
             response.end();
 
         });
+
     } else {
+
         response.send('Please enter email and/or Password!');
+
     }
 });
 
@@ -526,13 +529,17 @@ app.post('/addNewBorn', function (req, res) {
     });
 })
 
+
 // Inserting new TimeTable into the DB
 app.post('/newTimeTable', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
+    const rand_id = uuidv4();
+    const rid = rand_id.slice(0,8);
+    console.log(rid);
 
     // Execute SQL query that'll insert into the feeding_timetable table
-    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, next_feed_date, last_feed_date, feeds_id) VALUES ('${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', TIMESTAMPADD(DAY,${req.body.feedingPeriod}, '${req.body.feedingFirstDate}'), '${req.body.feedingLastDate}', ${req.body.feedsID});`,
+    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, next_feed_date, last_feed_date, feeds_id, tt_id) VALUES ( '${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', TIMESTAMPADD(DAY,${req.body.feedingPeriod}, '${req.body.feedingFirstDate}'), '${req.body.feedingLastDate}', ${req.body.feedsID}, '${rand_id}');`,
         function (error, results, fields) {
             if (error) throw error;
         });
