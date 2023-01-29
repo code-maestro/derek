@@ -253,3 +253,6 @@ input[type="checkbox"]:checked ~ .modal-background {
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+body{
+  background-color: rgb(113, 188, 104);
+}

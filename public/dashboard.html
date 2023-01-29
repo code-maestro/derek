@@ -38,8 +38,8 @@
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
     <script defer type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script defer type="text/javascript"
-        src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script defer type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js">
+    </script>
     <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/jquery.table2excel.min.js" defer></script>
 
     <!-- List of animals that belong to the farmer that has signed in -->
@@ -144,12 +144,12 @@
             </li>
 
             <!-- Nav Item - Breeding -->
-            <li class="nav-item" onclick="getBreedAnimals()">
+            <!-- <li class="nav-item" onclick="getBreedAnimals()">
                 <span class="nav-link" data-bs-toggle="modal" href="#breedingAnimalModalToggle" role="button">
                     <i class="fa-solid fa-address-card"></i>
                     <span> Breeding </span>
                 </span>
-            </li>
+            </li> -->
 
 
             <!-- TODO Test the routing created off  at 20220910-1804 -->
@@ -284,13 +284,13 @@
                     </button>
 
                     <!-- Nav Item - User Information -->
-                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                    <!-- <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
                         <img class="img-profile rounded-circle" src="/static/images/cow.png" style="width: 50%; height: 50%;">
                         <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="animal-details"> ll </span>
-                    </div>
+                    </div> -->
 
                     <!-- Topbar Search -->
-                    <form
+                    <!-- <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -301,7 +301,7 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </form> -->
 
                     <!-- <div class="topbar-divider d-none d-sm-block"></div> -->
 
@@ -550,45 +550,15 @@
 
                     <div class="row" id="dynamic">
                         <div class="col-lg-7">
-                            <!-- Dropdown Card Example -->
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary"> GRAPHS </h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header"> ACTIONS </div>
-                                            <span class="dropdown-item"> Refresh </span>
-                                            <div class="dropdown-divider"></div>
-                                            <span class="dropdown-item"> Save </span>
-                                            <div class="dropdown-divider"></div>
-                                            <span class="dropdown-item"> Clear </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    Cows poo up to 15 times a day, which can be as much as 115 pounds of manure per day, or approximately 21 tons per year.
-                                    The large quantities are often put to good use, though – manure, to fertilizer, to fuel,
-                                    or biogas to create electricity and heat for developing parts of the world.
-                                </div>
-                            </div>
+
+                            <figure class="highcharts-figure">
+                                <div id="graph"></div>
+                            </figure>
                         </div>
 
-                                    <figure class="highcharts-figure">
-                                        <div id="graph"></div>
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="col-lg-5">
+
+                        <div class="col-md-5">
                             <!-- Dropdown Card Example -->
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
@@ -617,39 +587,41 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
+
                 </div>
-                <!-- /.container-fluid -->
-
             </div>
-            <!-- End of Main Content -->
+            <!-- /.container-fluid -->
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <!-- <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span id="autoYear"> </span>
                     </div>
                 </div>
-            </footer>
-            <!-- End of Footer -->
+            </footer> -->
+        <!-- End of Footer -->
 
-        </div>
-        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Content Wrapper -->
 
-        <div class="toast-container mt-3 top-0 start-50 translate-middle-x">
-            <div id="bt" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
-                aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Hello, world! This is a toast message.
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
+    <div class="toast-container mt-3 top-0 start-50 translate-middle-x">
+        <div id="bt" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+            aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Hello, world! This is a toast message.
                 </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
             </div>
         </div>
+    </div>
 
 
     </div>
@@ -2118,7 +2090,8 @@
                             <div class="col">
                                 <div class="row px-4">
                                     <!-- Vaccines Form -->
-                                    <table id="generatedTable" class="table table-bordered table-hover table-sm table-success table-striped">
+                                    <table id="generatedTable"
+                                        class="table table-bordered table-hover table-sm table-success table-striped">
                                         <thead class="table-dark">
                                             <tr>
                                                 <th scope="col" class="text-center"> ID </th>
@@ -2772,24 +2745,30 @@
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
-                                            <input id="edit_feeds_id" type="number" class="form-control" name="edit_feeds_id" hidden>
+                                            <input id="edit_feeds_id" type="number" class="form-control"
+                                                name="edit_feeds_id" hidden>
 
                                             <div class="col-md-6">
-                                                <label for="edit_feeds_stock_date" class="form-label fw-bold"> STOCK DATE </label>
-                                                <input id="edit_feeds_stock_date" type="date" class="form-control" name="edit_feeds_stock_date">
+                                                <label for="edit_feeds_stock_date" class="form-label fw-bold"> STOCK
+                                                    DATE </label>
+                                                <input id="edit_feeds_stock_date" type="date" class="form-control"
+                                                    name="edit_feeds_stock_date">
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="edit_feeds_qnty" class="form-label fw-bold"> QUANTITY </label>
-                                                <input id="edit_feeds_qnty" type="number" class="form-control" name="edit_feeds_qnty">
+                                                <label for="edit_feeds_qnty" class="form-label fw-bold"> QUANTITY
+                                                </label>
+                                                <input id="edit_feeds_qnty" type="number" class="form-control"
+                                                    name="edit_feeds_qnty">
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <label for="edit_feeds_qnty_measure" class="form-label fw-bold">
                                                     QUANTITY-MEASURE </label>
-                                                <select class="form-select" id="edit_feeds_qnty_measure" name="edit_feeds_qnty_measure">
+                                                <select class="form-select" id="edit_feeds_qnty_measure"
+                                                    name="edit_feeds_qnty_measure">
                                                     <option value="1000" selected id="qm"> kg </option>
                                                     <option value="1"> g </option>
                                                 </select>
