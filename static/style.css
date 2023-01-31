@@ -256,3 +256,19 @@ input[type="checkbox"]:checked ~ .modal-background {
 body{
   background-color: rgb(113, 188, 104);
 }
+
+/* #logincard {
+  height: 300px;
+}
+
+@media (max-width: 576px) {
+  .card {
+    height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    height: 250px;
+  }
+} */
