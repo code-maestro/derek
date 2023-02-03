@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- loginpage -->
 
 <head>
   <meta charset="UTF-8">
@@ -13,12 +14,12 @@
 </head>
 
 <body>
-  <section class="vh-100 gradient-custom">
-    <div class="container py-5 h-100" id="logincard">
+  <section class="vh-100 gradient-custom" style="background-color: rgb(113, 188, 104);">
+    <div class="container py-2 h-100" id="logincard">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div class="card bg-dark text-white" style="border-radius: 1rem;">
-            <div class="card-body p-5 text-center">
+          <div class="card bg-dark text-white" style="border-radius: 1rem; max-height: 38em;">
+            <div class="card-body p-1 text-center">
 
               <div class="mb-md-5 mt-md-4 pb-5">
 
@@ -31,9 +32,9 @@
                     <input type="email" name="mail" id="typeEmailX" class="form-control form-control-lg" />
                   </div>
 
-                  <div class="form-outline form-white mb-4">
+                  <div class="form-outline form-white mb-4" >
                     <label class="form-label" for="typePasswordX">Password</label>
-                    <input type="password" id="typePasswordX" name="password" class="form-control form-control-lg" />
+                    <input type="password"  id="typePasswordX" name="password" class="form-control form-control-lg" />
                   </div>
 
                   <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>
@@ -41,12 +42,14 @@
                   <button id="login_btn" class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
 
                 </form>
+
+                <div>
+                  <p class="mb-0">Don't have an account? <a href="/register" class="text-white-50 fw-bold">SignUp</a>
+                  </p>
+                </div>
+
               </div>
 
-              <div>
-                <p class="mb-0">Don't have an account? <a href="/register" class="text-white-50 fw-bold">SignUp</a>
-                </p>
-              </div>
 
             </div>
           </div>
