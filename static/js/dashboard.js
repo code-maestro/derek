@@ -173,6 +173,8 @@ const getOtherData = async () => {
     numbers.push(feed.quantity + ' ' + feed.measure);
   });
 
+  console.log(numbers);
+
   const lstd = document.getElementById('feedList');
 
   if (names.includes(lstd.value)) {

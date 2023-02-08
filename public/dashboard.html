@@ -1945,6 +1945,9 @@
                                                     <input id="feeds-quantity" type="text" class="form-control"
                                                         name="feedsQuantity" spellcheck="false" data-ms-editor="true"
                                                         value="" disabled>
+                                                        <input id="feeds-quantity-real" type="text" class="form-control"
+                                                        name="feedsQuantityReal" spellcheck="false" data-ms-editor="true"
+                                                        value="" hidden>
                                                 </div>
 
                                                 <div class="col-md-12">
@@ -1996,7 +1999,6 @@
                                                     <label for="feeds-quantity-measure" class="form-label fw-bold">
                                                         Quantity Per Cycle Measure </label>
                                                     <select
-                                                        onChange="validateQnty('feeds-quantity','feedQuantityMeasure')"
                                                         class="form-select" id="feedQuantityMeasure"
                                                         name="feedingQuantityPerCycleUnit" required>
                                                         <option selected="" disabled="" value=""> Choose a unit...</option>
@@ -2009,7 +2011,8 @@
                                                     <label for="plannedQnty" class="form-label fw-bold"> Planned Quantity </label>
                                                     <input id="plannedQnty" type="number" class="form-control"
                                                         name="plannedQnty" spellcheck="false"
-                                                        data-ms-editor="true" required>
+                                                        data-ms-editor="true" 
+                                                        required>
                                                 </div>
 
                                                 <div class="col-md-3">

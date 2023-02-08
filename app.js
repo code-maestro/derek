@@ -541,8 +541,8 @@ app.post('/newTimeTable', function (req, res) {
 
     // Execute SQL query that'll insert into the feeding_timetable table
     connection.query(
-        `INSERT INTO feeding_timetable ( tt_name,animal_type,cycle,period,quantity_per_cycle,quantity_per_cycle_unit,quantity,quantity_unit,planned_period,first_feed_date,feeds_id,tt_id )
-        VALUES ('${req.body.timetableTitle}','${animal}', ${req.body.feedingCycle},${req.body.feedingPeriod},${req.body.feedingQuantityPerCycle},${req.body.feedingQuantityPerCycleUnit},${req.body.plannedQnty},${req.body.plannedQntyMeasure},${req.body.plannedFeedingPeriod},'${req.body.feedingStartDate}',${req.body.feedsID}, '${rand_id}');`,
+        `INSERT INTO feeding_timetable ( tt_name,animal_type,cycle,period,quantity_per_cycle,quantity_per_cycle_unit,quantity,quantity_unit,first_feed_date,feeds_id,tt_id )
+        VALUES ('${req.body.timetableTitle}','${animal}', ${req.body.feedingCycle},${req.body.feedingPeriod},${req.body.feedingQuantityPerCycle},${req.body.feedingQuantityPerCycleUnit},${req.body.plannedQnty},${req.body.plannedQntyMeasure},'${req.body.feedingStartDate}',${req.body.feedsID}, '${rand_id}');`,
 
         function (error, results, fields) {
             if (error) throw error;

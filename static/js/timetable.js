@@ -77,7 +77,6 @@ const validateQuantity = async (param) => {
   const plannedQnty = document.getElementById('plannedQnty');
   const ogFeedsQnty = document.getElementById('feeds-quantity');
 
-  
 
 }
 
