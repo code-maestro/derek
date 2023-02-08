@@ -14,11 +14,19 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-// DATABASE CONNECTIONS
+// // REMOTE DATABASE CONNECTIONS
+// const connection = mysql.createConnection({
+//     host: 'db4free.net',
+//     user: 'derek_2022',
+//     password: '18ba6a01',
+//     database: 'farma_2022'
+// });
+
+// LOCAL DATABASE CONNECTIONS
 const connection = mysql.createConnection({
-    host: 'db4free.net',
-    user: 'derek_2022',
-    password: '18ba6a01',
+    host: 'localhost',
+    user: 'derek',
+    password: 'pass',
     database: 'farma_2022'
 });
 
@@ -146,11 +154,13 @@ app.get('/', function (request, response) {
     }
 });
 
+
 // Register Page
 app.get('/register', function (request, response) {
     // Render login template
     response.sendFile(path.join(__dirname + '/public/register.html'));
 });
+
 
 // NEW FARMA ANIMAL SELECTION PAGE
 app.get('/selection', function (request, response) {
@@ -174,6 +184,7 @@ app.get('/home', function (request, response) {
     }
 });
 
+
 // DASHBOARD PAGE FOR SELECTED ANIMAL FROM HOME PAGE
 app.get('/animal/:id', function (request, response) {
     const user_id = storage('farma_id');
@@ -189,8 +200,9 @@ app.get('/animal/:id', function (request, response) {
 
     } else {
         response.redirect('/home');
-    }
-})
+    };
+});
+
 
 // Logout
 app.get('/logout', (req, res) => {
@@ -328,19 +340,6 @@ app.get('/getFarma', function (request, response) {
 });
 
 
-// Function to retrieve animal data for table
-app.get('/tables', function (request, response) {
-    const sql_query = `SHOW TABLES;`;
-    connection.query(sql_query, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        response.send({ farma: results });
-    })
-
-});
-
-
-
 //  LISTING END POINTS
 // Cleaned
 app.get('/getListing/:param', function (request, response) {
@@ -396,6 +395,8 @@ app.get('/getMaxId/:param', function (request, response) {
     const user_id = storage('farma_id');
     const animal = storage('animal');
     const param = request.params.param;
+
+    console.log(user_id);
 
     const queries = {
         animal_id: `SELECT MAX(id) AS LAST, animal_type FROM animal  WHERE animal_type='${animal}' AND farma_id = '${user_id}';`,
@@ -535,11 +536,14 @@ app.post('/newTimeTable', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     const rand_id = uuidv4();
-    const rid = rand_id.slice(0,8);
-    console.log(rid);
+
+    console.log(req.body);
 
     // Execute SQL query that'll insert into the feeding_timetable table
-    connection.query(`INSERT INTO feeding_timetable (tt_name, animal_type, cycle, period, quantity_per_cycle, quantity_per_cycle_unit, quantity, quantity_unit, planned_period, planned_period_time, first_feed_date, next_feed_date, last_feed_date, feeds_id, tt_id) VALUES ( '${req.body.timetableTitle}', '${animal}', ${req.body.feedingCycle}, ${req.body.feedingPeriod}, ${req.body.feedingQuantityPerCycle}, ${req.body.feedingQuantityPerCycleUnit}, ${req.body.feedingPeriodQuantity}, ${req.body.feedingPeriodQuantityUnit},  ${req.body.feedingTPeriod}, ${req.body.feedingTime}, '${req.body.feedingFirstDate}', TIMESTAMPADD(DAY,${req.body.feedingPeriod}, '${req.body.feedingFirstDate}'), '${req.body.feedingLastDate}', ${req.body.feedsID}, '${rand_id}');`,
+    connection.query(
+        `INSERT INTO feeding_timetable ( tt_name,animal_type,cycle,period,quantity_per_cycle,quantity_per_cycle_unit,quantity,quantity_unit,planned_period,first_feed_date,feeds_id,tt_id )
+        VALUES ('${req.body.timetableTitle}','${animal}', ${req.body.feedingCycle},${req.body.feedingPeriod},${req.body.feedingQuantityPerCycle},${req.body.feedingQuantityPerCycleUnit},${req.body.plannedQnty},${req.body.plannedQntyMeasure},${req.body.plannedFeedingPeriod},'${req.body.feedingStartDate}',${req.body.feedsID}, '${rand_id}');`,
+
         function (error, results, fields) {
             if (error) throw error;
         });
@@ -723,7 +727,7 @@ app.post('/scheduleVaccination', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_vaccination_date, next_vaccination_date, last_vaccination_date, animal_id, vet_id) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', '${req.body.nextVaccination}', '${req.body.lastVaccination}', ${req.body.animalTag},${req.body.vetID});`,
+    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, next_date, last_date, animal_id, vet_id) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', '${req.body.nextVaccination}', '${req.body.lastVaccination}', ${req.body.animalTag},${req.body.vetID});`,
         function (error, results, fields) {
             if (error) throw error;
         });

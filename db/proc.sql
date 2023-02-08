@@ -8,7 +8,8 @@ BEGIN
 
 DECLARE quantity_in_db INT;
 
-SET quantity_in_db = (SELECT (quantity*quantity_measure) FROM feeds WHERE farma_id = 'fea8d3cf-d829-4d45-8c89-eb177672e7e9' AND id = 1);
+-- SET quantity_in_db = (SELECT (quantity*quantity_measure) FROM feeds WHERE farma_id = 'fea8d3cf-d829-4d45-8c89-eb177672e7e9' AND id = 1);
+SET quantity_in_db = 132;
 
 IF quantity_in_db > quantity THEN
 
@@ -39,12 +40,14 @@ DELIMITER //
 
 CREATE PROCEDURE farma_create_schedule
  (
-		IN tt_id INT,
+		IN tt_id VARCHAR(64),
   	IN quantity INT,
+		IN quantity_measure INT,
 		IN start_dt DATE,
 		IN cycle INT,
 		IN peroid INT,
 	 	IN qty_per_cycle INT,
+		IN qty_pc_measure INT,
 	 	OUT total INT
 	)
 

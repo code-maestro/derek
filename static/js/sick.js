@@ -200,6 +200,23 @@ const getMoreVetData = async () => {
 
 }
 
+
+// SHOWS TOAST 
+const showClear = (param) => {
+  const toastLiveExample = document.getElementById('ttoast');
+  const toast = new bootstrap.Toast(toastLiveExample, { delay: 3500 });
+
+  toast.show();
+
+  console.log(param);
+
+  enteredDateFeild.value = "";
+  document.getElementById('err_msg').innerText = param;
+
+
+}
+
+
 // GLOBAL DATES VALIDATION
 const validateDate = (param) => {
   // VALIDATIG DATES
@@ -207,15 +224,6 @@ const validateDate = (param) => {
   const enteredDateFeild = document.getElementById(`${param}`);
 
   const enteredDate = new Date(`${enteredDateFeild.value}`).toJSON().slice(0, 10);
-
-  const toastLiveExample = document.getElementById('ttoast');
-  const toast = new bootstrap.Toast(toastLiveExample, { delay: 2000 });
-
-  const showClear = (param) => {
-    toast.show();
-    enteredDateFeild.value = "";
-    document.getElementById('err_msg').innerText = param
-  }
 
   if (param == 'reportedDate') {
     currentDate >= enteredDate ? console.log(enteredDate) : showClear("Please Select a date less than today ");

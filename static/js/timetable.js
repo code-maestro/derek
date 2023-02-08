@@ -69,6 +69,18 @@ const viewSchedule = async (param) => {
 }
 
 
+// VALIDATION OF WEIG QNTY
+const validateQuantity = async (param) => {
+
+  console.log(param);
+
+  const plannedQnty = document.getElementById('plannedQnty');
+  const ogFeedsQnty = document.getElementById('feeds-quantity');
+
+  
+
+}
+
 // // DELETING A TABLE ROW
 // function createTimetable(param) {
 //   const url = `/timetable`;

@@ -772,6 +772,7 @@
             </div>
         </div>
 
+
         <!-- Registrated Animals modal -->
         <div class="modal fade" id="registeredAnimalsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="registeredAnimalsModalToggleLabel" aria-hidden="true">
@@ -957,6 +958,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Vaccines modal -->
         <div class="modal fade" id="vaccinesModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -1232,6 +1234,7 @@
             </div>
         </div>
 
+
         <!-- Fully Vaccinated modal -->
         <div class="modal fade" id="fullyVaccinatedModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="fullyVaccinatedModalToggleLabel" aria-hidden="true">
@@ -1394,6 +1397,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- New Borns Modal  -->
         <div class="modal fade" id="newBornsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -1604,6 +1608,7 @@
             </div>
         </div>
 
+
         <!-- All Vets  modal -->
         <div class="modal fade" id="allVetsToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="allVetsToggleLabel" aria-hidden="true">
@@ -1805,6 +1810,7 @@
             </div>
         </div>
 
+
         <!-- Available Feeds modal -->
         <div class="modal fade" id="feedsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="feedsModalToggleLabel" aria-hidden="true">
@@ -1868,6 +1874,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- New Feeding Time Table Modal -->
         <div class="modal fade" id="newFeedingTimetableModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -1948,20 +1955,28 @@
                                                         value="" readonly>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <label for="feeding-cycle" class="form-label fw-bold"> Cycle
+                                                <div class="col-md-4">
+                                                    <label for="feedingStartDate" class="form-label fw-bold"> Feeding Start Date
+                                                    </label>
+                                                    <input id="feedingStartDate" type="date" class="form-control"
+                                                        name="feedingStartDate" spellcheck="false" data-ms-editor="true"
+                                                        onchange="validateDate('feedingStartDate')"
+                                                        required>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="feeding-cycle" class="form-label fw-bold"> Feeding Frequency
                                                     </label>
                                                     <input id="feeding-cycle" type="number" class="form-control"
                                                         name="feedingCycle" spellcheck="false" data-ms-editor="true"
                                                         required>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <label for="period" class="form-label fw-bold"> Every </label>
                                                     <select class="form-select" id="period" name="feedingPeriod"
                                                         required>
-                                                        <option selected="" disabled="" value=""> Choose a period...
-                                                        </option>
+                                                        <option selected="" disabled="" value=""> Choose a period... </option>
                                                         <option value="1"> Day </option>
                                                         <option value="7"> Week </option>
                                                         <option value="30"> Month </option>
@@ -1971,7 +1986,7 @@
 
                                                 <div class="col-md-3">
                                                     <label for="feeds-quantity" class="form-label fw-bold">
-                                                        Quantity Per Cycle </label>
+                                                        Quantity Per Feeding Frequency </label>
                                                     <input id="feeding-quantity" type="number" class="form-control"
                                                         name="feedingQuantityPerCycle" spellcheck="false"
                                                         data-ms-editor="true" required>
@@ -1984,69 +1999,30 @@
                                                         onChange="validateQnty('feeds-quantity','feedQuantityMeasure')"
                                                         class="form-select" id="feedQuantityMeasure"
                                                         name="feedingQuantityPerCycleUnit" required>
-                                                        <option selected="" disabled="" value=""> Choose a unit...
-                                                        </option>
+                                                        <option selected="" disabled="" value=""> Choose a unit...</option>
                                                         <option value="1000"> kg </option>
                                                         <option value="1"> g </option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <label for="period" class="form-label fw-bold"> Planned Quantity
-                                                    </label>
-                                                    <input id="feedingPeriodQuantity" type="number" class="form-control"
-                                                        name="feedingPeriodQuantity" spellcheck="false"
+                                                    <label for="plannedQnty" class="form-label fw-bold"> Planned Quantity </label>
+                                                    <input id="plannedQnty" type="number" class="form-control"
+                                                        name="plannedQnty" spellcheck="false"
                                                         data-ms-editor="true" required>
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <label for="period" class="form-label fw-bold"> Planned Quantity
-                                                        Unit
-                                                    </label>
-                                                    <select class="form-select" id="feedQuantityMeasure"
-                                                        name="feedingPeriodQuantityUnit" required>
-                                                        <option selected="" disabled="" value=""> Choose a unit...
-                                                        </option>
+                                                    <label for="planned-quantity-measure" class="form-label fw-bold">
+                                                        Planned Quantity Measure </label>
+                                                    <select
+                                                        onChange="validateQnty('feeds-quantity','feedQuantityMeasure')"
+                                                        class="form-select" id="plannedQntyMeasure"
+                                                        name="plannedQntyMeasure" required>
+                                                        <option selected="" disabled="" value=""> Choose a unit...</option>
                                                         <option value="1000"> kg </option>
                                                         <option value="1"> g </option>
                                                     </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label for="period" class="form-label fw-bold"> For </label>
-                                                    <input id="feeding-t-period" type="number" class="form-control"
-                                                        name="feedingTPeriod" spellcheck="false" data-ms-editor="true"
-                                                        required>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label for="time" class="form-label fw-bold"> Time </label>
-                                                    <select class="form-select" id="period" name="feedingTime" required>
-                                                        <option selected="" disabled="" value=""> Choose Time Period...
-                                                        </option>
-                                                        <option value="1"> Day(s) </option>
-                                                        <option value="30"> Month(s) </option>
-                                                        <option value="360"> Year(s) </option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <label for="feedingFirstDate" class="form-label fw-bold"> First
-                                                        Feeding
-                                                        Date </label>
-                                                    <input onchange="validateDate('feedingFirstDate')"
-                                                        id="feedingFirstDate" type="date" class="form-control"
-                                                        name="feedingFirstDate" spellcheck="false" data-ms-editor="true"
-                                                        required>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <label for="feedingLastDate" class="form-label fw-bold"> Last
-                                                        Feeding
-                                                        Date </label>
-                                                    <input id="feedingLastDate" type="date" class="form-control"
-                                                        name="feedingLastDate" spellcheck="false" data-ms-editor="true"
-                                                        required>
                                                 </div>
 
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
@@ -2069,6 +2045,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Available Feeding TimeTables modal -->
         <div class="modal fade" id="feedingTimetableModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -2136,6 +2113,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Generated Animal Feeding TimeTable modal -->
         <div class="modal fade" id="generatedModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -2613,6 +2591,7 @@
             </div>
         </div>
 
+
         <!-- Edit Vaccine Modal -->
         <div class="modal fade" id="editVaccineModal" data-bs-backdrop="static" data-bs-keyboard="false"
             aria-hidden="true" aria-labelledby="editVaccineModalToggleLabel" tabindex="-1">
@@ -2713,6 +2692,7 @@
             </div>
         </div>
 
+
         <!-- Edit Sick Modal -->
         <div class="modal fade" id="editSickModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             aria-hidden="true" aria-labelledby="editSickModalToggleLabel" tabindex="-1">
@@ -2797,6 +2777,7 @@
             </div>
         </div>
 
+        
         <!-- Edit Animal Feeds modal -->
         <div class="modal fade" id="editFeedsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="editFeedModalToggleLabel" aria-hidden="true">
