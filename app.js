@@ -453,6 +453,7 @@ app.post('/auth', function (request, response) {
     // Capture the input fields
     let mail = request.body.mail;
     let password = request.body.password;
+    let username = request.body.username;
 
     // Ensure the input fields exists and are not empty
     if (mail && password) {
