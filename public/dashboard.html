@@ -594,7 +594,7 @@
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#collapseOne" aria-expanded="true"
                                                 aria-controls="collapseOne">
-                                               <strong> SYSTEM EVENTS</strong>
+                                                <strong> SYSTEM EVENTS</strong>
                                             </button>
                                         </h2>
                                         <div id="collapseOne" class="accordion-collapse collapse show"
@@ -1945,9 +1945,9 @@
                                                     <input id="feeds-quantity" type="text" class="form-control"
                                                         name="feedsQuantity" spellcheck="false" data-ms-editor="true"
                                                         value="" disabled>
-                                                        <input id="feeds-quantity-real" type="text" class="form-control"
-                                                        name="feedsQuantityReal" spellcheck="false" data-ms-editor="true"
-                                                        value="" hidden>
+                                                    <input id="feeds-quantity-real" type="text" class="form-control"
+                                                        name="feedsQuantityReal" spellcheck="false"
+                                                        data-ms-editor="true" value="" hidden>
                                                 </div>
 
                                                 <div class="col-md-12">
@@ -1959,27 +1959,51 @@
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="feedingStartDate" class="form-label fw-bold"> Feeding Start Date
+                                                    <label for="feedingStartDate" class="form-label fw-bold"> Feeding
+                                                        Start Date
                                                     </label>
                                                     <input id="feedingStartDate" type="date" class="form-control"
                                                         name="feedingStartDate" spellcheck="false" data-ms-editor="true"
-                                                        onchange="validateDate('feedingStartDate')"
+                                                        onchange="validateDate('feedingStartDate')" required>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="plannedQnty" class="form-label fw-bold"> Planned Quantity </label>
+                                                    <input id="plannedQnty" type="number" class="form-control"
+                                                        name="plannedQnty" spellcheck="false" data-ms-editor="true"
                                                         required>
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="feeding-cycle" class="form-label fw-bold"> Feeding Frequency
-                                                    </label>
+                                                    <label for="planned-quantity-measure" class="form-label fw-bold">
+                                                        Planned Quantity Measure </label>
+                                                    <select class="form-select" id="plannedQntyMeasure"
+                                                        onchange="validateQnty('plannedQnty','plannedQntyMeasure', 'feeds-quantity-real')"
+                                                        name="plannedQntyMeasure" required>
+                                                        <option selected="" disabled="" value=""> Choose a unit... </option>
+                                                        <option value="1000"> kg </option>
+                                                        <option value="1"> g </option>
+                                                    </select>
+
+                                                    <input id="plannedQntyReal" type="number" class="form-control"
+                                                    name="plannedQntyReal" spellcheck="false" data-ms-editor="true"
+                                                    hidden>
+
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label for="feeding-cycle" class="form-label fw-bold"> Feeding Frequency </label>
                                                     <input id="feeding-cycle" type="number" class="form-control"
                                                         name="feedingCycle" spellcheck="false" data-ms-editor="true"
                                                         required>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <label for="period" class="form-label fw-bold"> Every </label>
                                                     <select class="form-select" id="period" name="feedingPeriod"
                                                         required>
-                                                        <option selected="" disabled="" value=""> Choose a period... </option>
+                                                        <option selected="" disabled="" value=""> Choose a period...
+                                                        </option>
                                                         <option value="1"> Day </option>
                                                         <option value="7"> Week </option>
                                                         <option value="30"> Month </option>
@@ -1998,31 +2022,11 @@
                                                 <div class="col-md-3">
                                                     <label for="feeds-quantity-measure" class="form-label fw-bold">
                                                         Quantity Per Cycle Measure </label>
-                                                    <select
-                                                        class="form-select" id="feedQuantityMeasure"
+                                                    <select class="form-select" id="feedQuantityMeasure"
+                                                    onchange="validateQnty('feeding-quantity','feedQuantityMeasure', '')"
                                                         name="feedingQuantityPerCycleUnit" required>
-                                                        <option selected="" disabled="" value=""> Choose a unit...</option>
-                                                        <option value="1000"> kg </option>
-                                                        <option value="1"> g </option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label for="plannedQnty" class="form-label fw-bold"> Planned Quantity </label>
-                                                    <input id="plannedQnty" type="number" class="form-control"
-                                                        name="plannedQnty" spellcheck="false"
-                                                        data-ms-editor="true" 
-                                                        required>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label for="planned-quantity-measure" class="form-label fw-bold">
-                                                        Planned Quantity Measure </label>
-                                                    <select
-                                                        onChange="validateQnty('feeds-quantity','feedQuantityMeasure')"
-                                                        class="form-select" id="plannedQntyMeasure"
-                                                        name="plannedQntyMeasure" required>
-                                                        <option selected="" disabled="" value=""> Choose a unit...</option>
+                                                        <option selected="" disabled="" value=""> Choose a unit...
+                                                        </option>
                                                         <option value="1000"> kg </option>
                                                         <option value="1"> g </option>
                                                     </select>
@@ -2780,7 +2784,7 @@
             </div>
         </div>
 
-        
+
         <!-- Edit Animal Feeds modal -->
         <div class="modal fade" id="editFeedsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="editFeedModalToggleLabel" aria-hidden="true">

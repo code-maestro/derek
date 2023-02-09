@@ -164,6 +164,7 @@ const getOtherData = async () => {
   const names = [];
   const desc = [];
   const numbers = [];
+  const math = [];
   const ids = [];
 
   feedsData.listing.forEach(feed => {
@@ -171,9 +172,8 @@ const getOtherData = async () => {
     names.push(feed.name);
     desc.push(feed.description);
     numbers.push(feed.quantity + ' ' + feed.measure);
+    math.push(feed.quantity*feed.quantity_measure);
   });
-
-  console.log(numbers);
 
   const lstd = document.getElementById('feedList');
 
@@ -182,6 +182,7 @@ const getOtherData = async () => {
     let getIndex = names.indexOf(lstd.value);
     document.getElementById('feeds-description').value = desc.at(getIndex);
     document.getElementById('feeds-quantity').value = numbers.at(getIndex);
+    document.getElementById('feeds-quantity-real').value = math.at(getIndex);
     document.getElementById('feeds_id').value = ids.at(getIndex);
   }
 }

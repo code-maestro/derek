@@ -201,24 +201,24 @@ const getMoreVetData = async () => {
 }
 
 
-// SHOWS TOAST 
-const showClear = (param) => {
-  const toastLiveExample = document.getElementById('ttoast');
-  const toast = new bootstrap.Toast(toastLiveExample, { delay: 3500 });
-
-  toast.show();
-
-  console.log(param);
-
-  enteredDateFeild.value = "";
-  document.getElementById('err_msg').innerText = param;
-
-
-}
-
-
 // GLOBAL DATES VALIDATION
 const validateDate = (param) => {
+
+  // SHOWS TOAST 
+  const showClear = (param) => {
+    const toastLiveExample = document.getElementById('ttoast');
+    const toast = new bootstrap.Toast(toastLiveExample, { delay: 3500 });
+
+    toast.show();
+
+    console.log(param);
+
+    enteredDateFeild.value = "";
+    document.getElementById('err_msg').innerText = param;
+
+  }
+
+
   // VALIDATIG DATES
   const currentDate = new Date().toJSON().slice(0, 10);
   const enteredDateFeild = document.getElementById(`${param}`);
