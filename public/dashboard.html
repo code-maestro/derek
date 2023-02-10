@@ -2023,7 +2023,7 @@
                                                     <label for="feeds-quantity-measure" class="form-label fw-bold">
                                                         Quantity Per Cycle Measure </label>
                                                     <select class="form-select" id="feedQuantityMeasure"
-                                                    onchange="validateQnty('feeding-quantity','feedQuantityMeasure', '')"
+                                                    onchange="validateQnty('feeding-quantity','feedQuantityMeasure', 'plannedQntyReal')"
                                                         name="feedingQuantityPerCycleUnit" required>
                                                         <option selected="" disabled="" value=""> Choose a unit...
                                                         </option>
@@ -2079,9 +2079,8 @@
                                                     <th scope="col" class="text-center"> ID </th>
                                                     <th scope="col" class="text-center"> FREQUENCY </th>
                                                     <th scope="col" class="text-center"> QUANTITY PER CYCLE </th>
-                                                    <th scope="col" class="text-center"> FIRST DATE </th>
-                                                    <th scope="col" class="text-center"> NEXT FEEDING DATE </th>
-                                                    <th scope="col" class="text-center"> LAST FEEDING DATE </th>
+                                                    <th scope="col" class="text-center"> QUANTITY REMAINING </th>
+                                                    <th scope="col" class="text-center"> EFFECTIVE DATE </th>
                                                     <th scope="col" class="text-center"> VIEW DETAILS </th>
                                                     <th scope="col" class="text-center"> DELETE </th>
                                                 </tr>
@@ -2141,17 +2140,17 @@
                                     <div class="row px-4">
                                         <!-- Vaccines Form -->
                                         <table id="generatedTable"
-                                            class="table table-bordered table-hover table-sm table-success table-striped">
+                                            class="table table-bordered table-hover table-sm table-striped">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col" class="text-center"> ID </th>
-                                                    <th scope="col" class="text-center"> FIRST DATE </th>
+                                                    <th scope="col" class="text-center"> EFFECTIVE DATE </th>
                                                     <th scope="col" class="text-center"> NEXT DATE </th>
                                                     <th scope="col" class="text-center"> QUANTITY PER CYCLE </th>
                                                     <th scope="col" class="text-center"> QUANTITY </th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="ttable"> </tbody>
+                                            <tbody id="scheduleTable"> </tbody>
                                         </table>
                                     </div>
 

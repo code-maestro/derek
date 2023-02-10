@@ -24,7 +24,14 @@ const validateQnty = (param1, param2, param3) => {
 
     }
 
-    if
-    plannedQnty > dbQnty ? showClear(" PLease a value less than or equal to the amount stocked ") : console.log("🤣🤣🤣🤣🤣🤣🤣🤣🤣");
+    if (plannedQnty > dbQnty) {
+        showClear(" PLease a value less than or equal to the amount stocked ");
+        document.getElementById(`${param1}`).value = '';
+        document.getElementById(`${param2}`).value = '';
+
+    } else {
+        console.log("🤣🤣🤣🤣🤣🤣🤣🤣🤣");
+        document.getElementById(`plannedQntyReal`).value = document.getElementById(`${param1}`).value * document.getElementById(`${param2}`).value;
+    }
 
 }

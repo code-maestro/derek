@@ -362,7 +362,26 @@ app.get('/getListing/:param', function (request, response) {
         pendingAnimals: `SELECT A.id, C.animal_tag, A.first_date, A.next_date, A.last_date, B.no_of_vaccinations, A.no_pending, (SELECT disease_name FROM disease WHERE id=B.disease_id) AS d_name, (SELECT name FROM vaccines WHERE id = A.vaccine_id) AS vaccine_name FROM vaccination_details A, vaccines B, animal C, vets D WHERE A.vet_id = D.vet_id AND A.no_pending > 0 AND A.animal_id = C.id AND A.no_pending IS NOT NULL AND C.animal_type = '${animal_type}' AND C.animal_type = B.animal_type AND B.id = A.vaccine_id AND B.farma_id = C.farma_id AND C.farma_id = '${farma_id}' AND A.last_date > CURDATE();`,
         availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, no_of_vaccinations, cycle, period, injection_area FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
         feeds: `SELECT id, name, description, quantity, quantity_measure, IF(quantity_measure >= 1000, 'kg', 'g') AS measure, stock_date, expected_restock_date FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
-        timetables: `SELECT * FROM feeding_timetable WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${farma_id}') AND animal_type = '${animal_type}';`,
+        timetables: `SELECT 
+        id,tt_name,animal_type,
+        cycle,period,quantity_per_cycle,
+        quantity_per_cycle_unit,quantity,quantity_unit,
+        first_feed_date,feeds_id,tt_id,
+        IF(quantity_per_cycle_unit >= 1000, 'kg', 'g') AS quantity_per_cycle_unit,
+        IF(quantity_unit >= 1000, 'kg', 'g') AS quantity_unit
+        FROM farma_2022.feeding_timetable
+        WHERE feeds_id IN (SELECT id FROM farma_2022.feeds WHERE farma_id = '${farma_id}')
+        AND animal_type = '${animal_type}';`,
+        schedule: `SELECT 
+        id,tt_name,animal_type,
+        cycle,period,quantity_per_cycle,
+        quantity_per_cycle_unit,quantity,quantity_unit,
+        first_feed_date,feeds_id,tt_id,
+        IF(quantity_per_cycle_unit >= 1000, 'kg', 'g') AS quantity_per_cycle_unit,
+        IF(quantity_unit >= 1000, 'kg', 'g') AS quantity_unit
+        FROM farma_2022.feeding_timetable
+        WHERE feeds_id IN (SELECT id FROM farma_2022.feeds WHERE farma_id = '${farma_id}')
+        AND animal_type = '${animal_type}';`,
         fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, V.no_of_vaccinations, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
         vets: `SELECT * FROM vets;`,
         systemAudit: `SELECT action, action_date FROM audit_trail WHERE user_id = '${farma_id}' ORDER BY id DESC;`,
@@ -376,6 +395,36 @@ app.get('/getListing/:param', function (request, response) {
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
+
+            response.send({ listing: results });
+        })
+
+    } else {
+
+        response.redirect('/');
+
+    }
+
+});
+
+
+// Cleaned
+// SCHEDULE LISTINg
+app.get('/getScheduletListing/:param', function (request, response) {
+
+    const user_id = storage('farma_id');
+
+    const param = request.params.param;
+
+    const queries = ` SELECT id,feeding_tt_id,effective_date,next_date, feeds_quantity/qnty_per_cycle_unit as feeds_quantity,IF(qnty_unit >= 1000, 'kg', 'g' ) as unit, feeds_qnty_pending/qnty_unit as feeds_qnty_pending,schedule_id FROM farma_2022.feeding_schedule WHERE feeding_tt_id = '${param}';`
+
+    if (user_id) {
+
+        connection.query(queries, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) throw error;
+
+            console.log(results);
 
             response.send({ listing: results });
         })

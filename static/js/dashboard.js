@@ -21,6 +21,18 @@ async function getListing(param) {
   }
 }
 
+
+// Getting schedule listings from backend
+async function getScheduleListing(param) {
+  let url = `/getScheduletListing/${param}`;
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // Getting all animals listings from backend
 async function getMaxId(param) {
   let url = `/getMaxId/${param}`;
@@ -306,22 +318,24 @@ const getTimetables = async () => {
   const con = document.getElementById('feedingTimetableListing');
 
   timetables.listing.forEach(timetable => {
+
+    console.log(timetable.tt_id);
+
     htmlSegment = `
     <tr class="justify-content-center" id="${timetable.id}">
       <td class="text-center"> ${timetable.id} </td>   
       <td class="text-center"> ${timetable.cycle} </td> 
-      <td class="text-center"> ${timetable.quantity_per_cycle} </td> 
+      <td class="text-center"> ${timetable.quantity_per_cycle} ${timetable.quantity_per_cycle_unit}  </td>
+      <td class="text-center"> ${timetable.quantity} ${timetable.quantity_unit}  </td>
       <td class="text-center"> ${dateFrontend(timetable.first_feed_date)} </td> 
-      <td class="text-center"> ${dateFrontend(timetable.next_feed_date)} </td> 
-      <td class="text-center"> ${dateFrontend(timetable.last_feed_date)}</td>
 
-      <td class="text-center noprint" data-bs-target="#generatedModalToggle" data-bs-toggle="modal"  onclick="viewSchedule(${timetable.id})">
+      <td class="text-center noprint" data-bs-target="#generatedModalToggle" data-bs-toggle="modal"  onclick="viewSchedule('${timetable.tt_id}')">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
           <path d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3h4v-.5A1.5 1.5 0 0 0 5.5 1h-1zM7 4v1h2V4h4v.882a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V13H9v-1.5a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5V13H1V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882V4h4zM1 14v.5A1.5 1.5 0 0 0 2.5 16h3A1.5 1.5 0 0 0 7 14.5V14H1zm8 0v.5a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5V14H9zm4-11H9v-.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5V3z"/>
         </svg>
       </td>
 
-      <td class="text-center noprint" onclick="deleteFromList('timetable', '${timetable.id}')">
+      <td class="text-center noprint" onclick="deleteFromList('timetable', '${timetable.tt_id}')">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
           <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
         </svg>
