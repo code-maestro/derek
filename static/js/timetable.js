@@ -2,69 +2,37 @@
 // CREATING THE SCHEDULE
 const viewSchedule = async (param) => {
 
-  const timetables = await getListing('timetables');
+  console.log("param" + param);
+
+  const schedules = await getScheduleListing(`${param}`);
+
+  console.log(schedules);
+
   let html = "";
   let htmlSegment = "";
 
-  const con = document.getElementById('ttable');
+  const con = document.getElementById('scheduleTable');
 
-  timetables.listing.forEach(timetable => {
-    
-    console.log(timetable);
+  schedules.listing.forEach(schedule => {
 
-    if (timetable.id == param) {
+    console.log(schedule.tt_id);
 
-      let n = timetable.quantity;
-      let the_date = timetable.first_feed_date;
-      let id = timetable.id;
+    htmlSegment = `
+    <tr class="justify-content-center" id="${schedule.id}">
+      <td class="text-center"> ${schedule.id} </td>   
+      <td class="text-center"> ${dateFrontend(schedule.effective_date)} </td> 
+      <td class="text-center"> ${dateFrontend(schedule.next_date)} </td> 
+      <td class="text-center"> ${schedule.feeds_quantity} ${schedule.unit} </td>
+      <td class="text-center"> ${schedule.feeds_qnty_pending}  ${schedule.unit} </td>
+    </tr>
+  `;
 
-      do {
+    html += htmlSegment;
 
-        while (condition) {
-          
-        }
-        htmlSegment = `
-        <tr class="justify-content-center" id="${timetable.id}">
-          <td class="text-center"> ${id++} </td>
-          <td class="text-center"> ${dateFrontend(the_date)} </td>
-          <td class="text-center"> ${dateFrontend(addDays(the_date, timetable.period))} </td>
-          <td class="text-center"> ${n} </td>
-        </tr>
-      `;
-
-        html += htmlSegment;
-
-        console.log(n);
-
-        n = n - timetable.quantity_per_cycle;
-        
-      } while (n > 0);
-
-      // while (n > 0) {
-      //   htmlSegment = `
-      //   <tr class="justify-content-center" id="${timetable.id}">
-      //     <td class="text-center"> ${id++} </td>
-      //     <td class="text-center"> ${dateFrontend(the_date)} </td>
-      //     <td class="text-center"> ${dateFrontend(addDays(the_date, timetable.period++))} </td>
-      //     <td class="text-center"> ${n} </td>
-      //   </tr>
-      // `;
-
-      //   html += htmlSegment;
-
-      //   console.log(n);
-
-      //   n = n - timetable.quantity_per_cycle;
-
-      // }
-
-      console.log("😒😊👌💕🤦‍♂️🤦‍♀️😢🎶😎🤞😍😁✌️");
-
-    }
-
-  })
+  });
 
   con.innerHTML = html;
+
 
 }
 
@@ -77,13 +45,12 @@ const validateQuantity = async (param) => {
   const plannedQnty = document.getElementById('plannedQnty');
   const ogFeedsQnty = document.getElementById('feeds-quantity');
 
-  
 
 }
 
 // // DELETING A TABLE ROW
-// function createTimetable(param) {
-//   const url = `/timetable`;
+// function createschedule(param) {
+//   const url = `/schedule`;
 //   // post body data
 //   const user = {
 //     id: param
@@ -116,4 +83,4 @@ const validateQuantity = async (param) => {
 
 // }
 
-// Function to get All timetables
+// Function to get All schedules

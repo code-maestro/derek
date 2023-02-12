@@ -201,31 +201,30 @@ const getMoreVetData = async () => {
 }
 
 
-// SHOWS TOAST 
-const showClear = (param) => {
-  const toastLiveExample = document.getElementById('ttoast');
-  const toast = new bootstrap.Toast(toastLiveExample, { delay: 3500 });
-
-  toast.show();
-
-  console.log(param);
-
-  enteredDateFeild.value = "";
-  document.getElementById('err_msg').innerText = param;
-
-
-}
-
-
 // GLOBAL DATES VALIDATION
-const validateDate = (param) => {
+const validateDate = (parameter) => {
+
+  console.log(parameter);
+
   // VALIDATIG DATES
   const currentDate = new Date().toJSON().slice(0, 10);
-  const enteredDateFeild = document.getElementById(`${param}`);
+  const enteredDateFeild = document.getElementById(`${parameter}`);
+  
+  // SHOWS TOAST 
+  const showClear = (param) => {
+    const toastLiveExample = document.getElementById('ttoast');
+    const toast = new bootstrap.Toast(toastLiveExample, { delay: 3500 });
+
+    toast.show();
+
+    enteredDateFeild.value = "";
+    document.getElementById('err_msg').innerText = param;
+
+  }
 
   const enteredDate = new Date(`${enteredDateFeild.value}`).toJSON().slice(0, 10);
 
-  if (param == 'reportedDate') {
+  if (parameter == 'reportedDate') {
     currentDate >= enteredDate ? console.log(enteredDate) : showClear("Please Select a date less than today ");
   } else {
     currentDate >= enteredDate ? showClear("Please Select a date greater than today") : console.log(enteredDate);

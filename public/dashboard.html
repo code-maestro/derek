@@ -57,6 +57,8 @@
         <script src="../js/excel.js" defer></script>
         <script src="../js/graphs.js" defer></script>
         <script src="../js/calculations.js" defer></script>
+        <script src="../js/alerting.js" defer></script>
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"
@@ -89,8 +91,8 @@
 
 
                 <!-- Nav Item - home -->
-                <li class="nav-item" onclick="goHome()">
-                    <span class="nav-link">
+                <li class="nav-item">
+                    <span class="nav-link" onclick="gohome()">
                         <i class="fa-solid fa-gauge"></i>
                         <span> Home </span>
                     </span>
@@ -594,7 +596,7 @@
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#collapseOne" aria-expanded="true"
                                                 aria-controls="collapseOne">
-                                               <strong> SYSTEM EVENTS</strong>
+                                                <strong> SYSTEM EVENTS</strong>
                                             </button>
                                         </h2>
                                         <div id="collapseOne" class="accordion-collapse collapse show"
@@ -655,6 +657,34 @@
 
         </div>
         <!-- End of Page Wrapper -->
+
+
+
+        <!-- Prompt Modal -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            You're about to delete 
+                            <span id="timetable">
+                                2233
+                            </span>
+                            and all it's corresponding feeding schedules
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
 
         <!-- Logout Modal-->
         <div class="modal" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -1126,22 +1156,6 @@
                                                     <input id="scheduled_first_date" type="date" class="form-control"
                                                         name="scheduled_first_date" spellcheck="false"
                                                         data-ms-editor="true">
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <label for="pending-next-vaccination" class="form-label fw-bold">
-                                                        Next
-                                                        Vaccination Date </label>
-                                                    <input id="next-vaccination" type="date" class="form-control"
-                                                        name="nextVaccination" spellcheck="false" data-ms-editor="true">
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <label for="last-vaccination" class="form-label fw-bold">
-                                                        Last
-                                                        Vaccination Date </label>
-                                                    <input id="last-vaccination" type="date" class="form-control"
-                                                        name="lastVaccination" spellcheck="false" data-ms-editor="true">
                                                 </div>
 
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
@@ -1818,6 +1832,25 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="container">
+
+                            <div class="toast-container position-absolute p-3 bottom-1000 start-50 translate-middle-x"
+                                style="z-index: 5">
+                                <div class="toast align-items-center text-white bg-light border-0" role="alert"
+                                    id="ttoast" aria-live="assertive" aria-atomic="true">
+                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-exclamation-triangle me-3"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+                                            <path
+                                                d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
+                                        </svg>
+                                        <div id="error_msg"> </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row px-2">
                                 <div class="mx-auto" style="width: auto;">
                                     <h5 class="font-monospace" id="feedsModalLabel"> AVAILABLE FEEDS
@@ -1885,10 +1918,9 @@
                         <div class="container" id="tt">
 
                             <div class="toast-container position-absolute p-3 bottom-1000 start-50 translate-middle-x"
-                                style="z-index: 11">
+                                style="z-index: 12">
                                 <div class="toast align-items-center text-white bg-light border-0" role="alert"
                                     id="ttoast" aria-live="assertive" aria-atomic="true">
-
                                     <div class="alert alert-danger d-flex align-items-center" role="alert">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-exclamation-triangle me-3"
@@ -1945,6 +1977,9 @@
                                                     <input id="feeds-quantity" type="text" class="form-control"
                                                         name="feedsQuantity" spellcheck="false" data-ms-editor="true"
                                                         value="" disabled>
+                                                    <input id="feeds-quantity-real" type="text" class="form-control"
+                                                        name="feedsQuantityReal" spellcheck="false"
+                                                        data-ms-editor="true" value="" hidden>
                                                 </div>
 
                                                 <div class="col-md-12">
@@ -1956,27 +1991,54 @@
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="feedingStartDate" class="form-label fw-bold"> Feeding Start Date
+                                                    <label for="feedingStartDate" class="form-label fw-bold"> Feeding
+                                                        Start Date
                                                     </label>
                                                     <input id="feedingStartDate" type="date" class="form-control"
                                                         name="feedingStartDate" spellcheck="false" data-ms-editor="true"
-                                                        onchange="validateDate('feedingStartDate')"
+                                                        onchange="validateDate('feedingStartDate')" required>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="plannedQnty" class="form-label fw-bold"> Planned
+                                                        Quantity </label>
+                                                    <input id="plannedQnty" type="number" class="form-control"
+                                                        name="plannedQnty" spellcheck="false" data-ms-editor="true"
                                                         required>
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="feeding-cycle" class="form-label fw-bold"> Feeding Frequency
-                                                    </label>
+                                                    <label for="planned-quantity-measure" class="form-label fw-bold">
+                                                        Planned Quantity Measure </label>
+                                                    <select class="form-select" id="plannedQntyMeasure"
+                                                        onchange="validateQnty('plannedQnty','plannedQntyMeasure', 'feeds-quantity-real')"
+                                                        name="plannedQntyMeasure" required>
+                                                        <option selected="" disabled="" value=""> Choose a unit...
+                                                        </option>
+                                                        <option value="1000"> kg </option>
+                                                        <option value="1"> g </option>
+                                                    </select>
+
+                                                    <input id="plannedQntyReal" type="number" class="form-control"
+                                                        name="plannedQntyReal" spellcheck="false" data-ms-editor="true"
+                                                        hidden>
+
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label for="feeding-cycle" class="form-label fw-bold"> Feeding
+                                                        Frequency </label>
                                                     <input id="feeding-cycle" type="number" class="form-control"
                                                         name="feedingCycle" spellcheck="false" data-ms-editor="true"
                                                         required>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <label for="period" class="form-label fw-bold"> Every </label>
                                                     <select class="form-select" id="period" name="feedingPeriod"
                                                         required>
-                                                        <option selected="" disabled="" value=""> Choose a period... </option>
+                                                        <option selected="" disabled="" value=""> Choose a period...
+                                                        </option>
                                                         <option value="1"> Day </option>
                                                         <option value="7"> Week </option>
                                                         <option value="30"> Month </option>
@@ -1995,31 +2057,11 @@
                                                 <div class="col-md-3">
                                                     <label for="feeds-quantity-measure" class="form-label fw-bold">
                                                         Quantity Per Cycle Measure </label>
-                                                    <select
-                                                        onChange="validateQnty('feeds-quantity','feedQuantityMeasure')"
-                                                        class="form-select" id="feedQuantityMeasure"
+                                                    <select class="form-select" id="feedQuantityMeasure"
+                                                        onchange="validateQnty('feeding-quantity','feedQuantityMeasure', 'plannedQntyReal')"
                                                         name="feedingQuantityPerCycleUnit" required>
-                                                        <option selected="" disabled="" value=""> Choose a unit...</option>
-                                                        <option value="1000"> kg </option>
-                                                        <option value="1"> g </option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label for="plannedQnty" class="form-label fw-bold"> Planned Quantity </label>
-                                                    <input id="plannedQnty" type="number" class="form-control"
-                                                        name="plannedQnty" spellcheck="false"
-                                                        data-ms-editor="true" required>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label for="planned-quantity-measure" class="form-label fw-bold">
-                                                        Planned Quantity Measure </label>
-                                                    <select
-                                                        onChange="validateQnty('feeds-quantity','feedQuantityMeasure')"
-                                                        class="form-select" id="plannedQntyMeasure"
-                                                        name="plannedQntyMeasure" required>
-                                                        <option selected="" disabled="" value=""> Choose a unit...</option>
+                                                        <option selected="" disabled="" value=""> Choose a unit...
+                                                        </option>
                                                         <option value="1000"> kg </option>
                                                         <option value="1"> g </option>
                                                     </select>
@@ -2054,6 +2096,25 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="container">
+
+                            <div class="toast-container position-absolute p-3 bottom-1000 start-50 translate-middle-x"
+                                style="z-index: 5">
+                                <div class="toast align-items-center text-white bg-light border-0" role="alert"
+                                    id="ttoast" aria-live="assertive" aria-atomic="true">
+                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-exclamation-triangle me-3"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+                                            <path
+                                                d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
+                                        </svg>
+                                        <div id="error_msg"> </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row px-2 py-2">
                                 <div class="mx-auto" style="width: auto;">
                                     <h5 class="font-monospace" id="feedingTimetableModalLabel"> ON GOING FEEDING TIME
@@ -2072,9 +2133,8 @@
                                                     <th scope="col" class="text-center"> ID </th>
                                                     <th scope="col" class="text-center"> FREQUENCY </th>
                                                     <th scope="col" class="text-center"> QUANTITY PER CYCLE </th>
-                                                    <th scope="col" class="text-center"> FIRST DATE </th>
-                                                    <th scope="col" class="text-center"> NEXT FEEDING DATE </th>
-                                                    <th scope="col" class="text-center"> LAST FEEDING DATE </th>
+                                                    <th scope="col" class="text-center"> QUANTITY REMAINING </th>
+                                                    <th scope="col" class="text-center"> EFFECTIVE DATE </th>
                                                     <th scope="col" class="text-center"> VIEW DETAILS </th>
                                                     <th scope="col" class="text-center"> DELETE </th>
                                                 </tr>
@@ -2083,6 +2143,7 @@
 
                                             </tbody>
                                         </table>
+
                                     </div>
 
                                     <div class="row px-4 pt-4">
@@ -2134,17 +2195,17 @@
                                     <div class="row px-4">
                                         <!-- Vaccines Form -->
                                         <table id="generatedTable"
-                                            class="table table-bordered table-hover table-sm table-success table-striped">
+                                            class="table table-bordered table-hover table-sm table-striped">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col" class="text-center"> ID </th>
-                                                    <th scope="col" class="text-center"> FIRST DATE </th>
+                                                    <th scope="col" class="text-center"> EFFECTIVE DATE </th>
                                                     <th scope="col" class="text-center"> NEXT DATE </th>
                                                     <th scope="col" class="text-center"> QUANTITY PER CYCLE </th>
                                                     <th scope="col" class="text-center"> QUANTITY </th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="ttable"> </tbody>
+                                            <tbody id="scheduleTable"> </tbody>
                                         </table>
                                     </div>
 
@@ -2201,7 +2262,7 @@
                                             <path
                                                 d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
                                         </svg>
-                                        <div id="err_msg"> </div>
+                                        <div id="error_msg"> </div>
                                     </div>
                                 </div>
                             </div>
@@ -2777,7 +2838,7 @@
             </div>
         </div>
 
-        
+
         <!-- Edit Animal Feeds modal -->
         <div class="modal fade" id="editFeedsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="editFeedModalToggleLabel" aria-hidden="true">
