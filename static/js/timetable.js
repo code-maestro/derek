@@ -2,11 +2,7 @@
 // CREATING THE SCHEDULE
 const viewSchedule = async (param) => {
 
-  console.log("param" + param);
-
   const schedules = await getScheduleListing(`${param}`);
-
-  console.log(schedules);
 
   let html = "";
   let htmlSegment = "";
@@ -14,8 +10,6 @@ const viewSchedule = async (param) => {
   const con = document.getElementById('scheduleTable');
 
   schedules.listing.forEach(schedule => {
-
-    console.log(schedule.tt_id);
 
     htmlSegment = `
     <tr class="justify-content-center" id="${schedule.id}">

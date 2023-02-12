@@ -57,8 +57,6 @@
         <script src="../js/excel.js" defer></script>
         <script src="../js/graphs.js" defer></script>
         <script src="../js/calculations.js" defer></script>
-        <script src="../js/alerting.js" defer></script>
-
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"
@@ -202,13 +200,13 @@
 
                 <!-- TODO implement function - viewDiseases() to handle the click event -->
                 <!-- Nav Item - Diseases -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <span class="nav-link collapsed" data-toggle="modal" data-target="#diseaseModalToggle"
                         aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-disease"></i>
                         <span> Diseases </span>
                     </span>
-                </li>
+                </li> -->
 
                 <!-- TODO edit a sick animal -->
                 <!-- Nav Item - Symptoms -->
@@ -659,33 +657,6 @@
         <!-- End of Page Wrapper -->
 
 
-
-        <!-- Prompt Modal -->
-        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="confirmModalLabel">Modal title</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            You're about to delete 
-                            <span id="timetable">
-                                2233
-                            </span>
-                            and all it's corresponding feeding schedules
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-
         <!-- Logout Modal-->
         <div class="modal" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -883,7 +854,7 @@
 
                             <div class="row p-3  mx-auto">
                                 <div class="mx-auto" style="width: auto;">
-                                    <h5 class="font-monospace" id="newVaccineModalLabel"> ADD NEW VACCINE </h5>
+                                    <h5 class="font-monospace" id="newVaccineModalToggleLabel"> ADD NEW VACCINE </h5>
                                 </div>
                             </div>
 
@@ -999,7 +970,7 @@
                         <div class="container">
                             <div class="row px-2 pt-4">
                                 <div class="mx-auto" style="width: auto;">
-                                    <h5 class="font-monospace" id="availableVaccinesModalLabel"> AVAILABLE VACCINES
+                                    <h5 class="font-monospace" id="vaccinesModalToggleLabel"> AVAILABLE VACCINES
                                     </h5>
                                 </div>
                             </div>
@@ -1051,6 +1022,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -1150,7 +1122,7 @@
                                                         disabled>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-12">
                                                     <label for="scheduled_first_date" class="form-label fw-bold"> First
                                                         Vaccination Date </label>
                                                     <input id="scheduled_first_date" type="date" class="form-control"
@@ -2454,11 +2426,11 @@
                         <div class="container">
                             <div class="row p-2 mx-auto">
                                 <div class="mx-auto" style="width: auto;">
-                                    <h5 class="font-monospace" id="diseaseModalLabel"> </h5>
+                                    <h5 class="font-monospace" id="diseaseModalLabel"> DISEASES LISTING </h5>
                                 </div>
                             </div>
 
-                            <div class="row mt-4">
+                            <div class="row mt-2">
                                 <div class="col">
                                     <div class="row px-4">
                                         <!-- Symptoms Table -->
@@ -2506,7 +2478,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- Edt Vet Modal -->
         <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -2909,6 +2880,44 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Approval modal -->
+        <div class="modal fade" id="approveModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="approveModalToggleLabel" aria-hidden="true">
+            <div class="modal-dialog modal-ms">
+                <div class="modal-content">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="90" fill="currentColor"
+                                    class="bi bi-exclamation-triangle btn-outline-danger" viewBox="0 0 16 16">
+                                    <path
+                                        d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+                                    <path
+                                        d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
+                                </svg>
+                            </div>
+
+                            <h5 class="card-title mb-2" id="alles">
+
+                            </h5>
+
+                            <h5 class="mb-2">
+                                Do you want to proceed ?
+                            </h5>
+
+                        </div>
+                        <div class="card-footer d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary mx-2 font-monospace" data-bs-dismiss="modal"
+                                onclick="localStorage.removeItem('delete')"> CANCEL </button>
+                            <button type="button" class="btn btn-danger font-monospace" data-bs-dismiss="modal"
+                                onclick="deletionList()"> DELETE </button>
                         </div>
                     </div>
                 </div>
