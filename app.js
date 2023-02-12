@@ -67,6 +67,7 @@ const uploadImage = multer({
     }
 }).single('animal_image');
 
+
 // Check File Type
 function checkFileType(file, cb) {
     // Allowed ext
@@ -372,16 +373,6 @@ app.get('/getListing/:param', function (request, response) {
         FROM farma_2022.feeding_timetable
         WHERE feeds_id IN (SELECT id FROM farma_2022.feeds WHERE farma_id = '${farma_id}')
         AND animal_type = '${animal_type}';`,
-        schedule: `SELECT 
-        id,tt_name,animal_type,
-        cycle,period,quantity_per_cycle,
-        quantity_per_cycle_unit,quantity,quantity_unit,
-        first_feed_date,feeds_id,tt_id,
-        IF(quantity_per_cycle_unit >= 1000, 'kg', 'g') AS quantity_per_cycle_unit,
-        IF(quantity_unit >= 1000, 'kg', 'g') AS quantity_unit
-        FROM farma_2022.feeding_timetable
-        WHERE feeds_id IN (SELECT id FROM farma_2022.feeds WHERE farma_id = '${farma_id}')
-        AND animal_type = '${animal_type}';`,
         fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, V.no_of_vaccinations, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
         vets: `SELECT * FROM vets;`,
         systemAudit: `SELECT action, action_date FROM audit_trail WHERE user_id = '${farma_id}' ORDER BY id DESC;`,
@@ -423,9 +414,6 @@ app.get('/getScheduletListing/:param', function (request, response) {
         connection.query(queries, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
-
-            console.log(results);
-
             response.send({ listing: results });
         })
 
@@ -773,17 +761,20 @@ app.post('/confirmation', function (req, res) {
 
 // Inserting Vaccines into the DB
 app.post('/scheduleVaccination', function (req, res) {
-    const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, next_date, last_date, animal_id, vet_id) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', '${req.body.nextVaccination}', '${req.body.lastVaccination}', ${req.body.animalTag},${req.body.vetID});`,
+    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', ${req.body.animalTag},${req.body.vetID});`,
         function (error, results, fields) {
             if (error) throw error;
+
+            console.log(results);
+
         });
 
     res.redirect(`/animal/${animal}`);
     return;
 })
+
 
 // Updating Farma Profile Data
 app.post('/updateFarma', function (req, res) {
@@ -869,6 +860,7 @@ app.post('/save', async (req, res) => {
     );
 });
 
+
 // End Point adding new animal
 app.post('/addAnimal', (request, response) => {
     uploadImage(request, response, (err) => {
@@ -915,14 +907,13 @@ app.post('/addAnimal', (request, response) => {
     });
 });
 
+
 // Function to delete data from animal
 app.post('/delete/:param', function (request, response) {
     const par = request.params.param;
     const user_id = storage('farma_id');
     const param_id = request.body.id;
     const animal = storage('animal');
-
-    console.log(param_id + user_id + animal);
 
     const queries = {
         vaccine: `DELETE FROM vaccines WHERE id = ${param_id};`,
@@ -937,6 +928,8 @@ app.post('/delete/:param', function (request, response) {
         connection.query(queries[par], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
+
+            results.affectedRows >= 1 ? response.send({message: "GOOD"}) : response.send({message: "BAD"});
 
         })
 
