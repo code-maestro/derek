@@ -1,9 +1,8 @@
 node_modules
+login_templates
 
 test_dir
 
 .env
 
 equiweb.sql
-
-new-login-templates

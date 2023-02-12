@@ -97,7 +97,7 @@ const sendmail = async (params) => {
         service: 'gmail',
         auth: {
             user: 'ell889lle@gmail.com',
-            pass: 'hfzpdceyryganpcy'
+            pass: 'lcmdbftpznmgfqft'
         }
     });
 
@@ -648,6 +648,7 @@ app.post('/newFeed', function (req, res) {
         function (error, results, fields) {
             if (error) throw error;
             console.log(results);
+            console.log(fields);
         });
     res.redirect(`/animal/${animal}`);
     return;

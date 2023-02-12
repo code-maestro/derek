@@ -51,9 +51,6 @@ async function getAnimalTableData() {
   let last = await getMaxId('animal_id');
   let list = await getListing('allAnimals');
 
-
-  console.log(last);
-
   if (last === undefined) {
 
     console.log(browserUrl);
@@ -98,7 +95,7 @@ async function getAnimalTableData() {
             </svg>
           </td>
 
-          <td class="text-center noprint"  data-bs-toggle="modal" data-bs-target="#confirmModal"> onclick="console.log('SIT ON MY FACE')">
+          <td class="text-center noprint" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('animal', '${animal.id}', '${animal.animal_tag}')">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
               <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
             </svg>
@@ -141,7 +138,7 @@ const getFeedsTableData = async () => {
             </svg>
           </td>
 
-          <td class="text-center noprint" onclick="deleteFromList('feed', '${feed.id}')">
+          <td class="text-center noprint"  data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('feed', '${feed.id}', '${feed.name}')">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
               <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
             </svg>
@@ -325,7 +322,11 @@ const getOtherVetData = async () => {
 
 // Function invoked on changes
 const getTimetables = async () => {
+
   const timetables = await getListing('timetables');
+
+  console.log("timetables");
+  console.log(timetables);
 
   let html = '';
   let htmlSegment = '';
@@ -348,7 +349,7 @@ const getTimetables = async () => {
         </svg>
       </td>
 
-      <td class="text-center noprint" onclick="deleteFromList('timetable','${timetable.id}')">
+      <td class="text-center noprint" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('timetable', '${timetable.id}', '${timetable.tt_name}')" >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
           <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
         </svg>
@@ -364,7 +365,9 @@ const getTimetables = async () => {
 
 }
 
+
 // Function to get available vaccines
+//  onclick="deleteFromList('vaccine', '${vaccine.id}')">
 const getAvailableVaccines = async () => {
   const vaccines = await getListing('availableVaccines');
 
@@ -385,7 +388,7 @@ const getAvailableVaccines = async () => {
       <td class="text-center"> ${vaccine.period} </td>
       <td class="text-center"> ${vaccine.injection_area} </td>
 
-      <td class="text-center noprint" onclick="deleteFromList('vaccine', '${vaccine.id}')">
+      <td class="text-center noprint" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('vaccine', '${vaccine.id}', '${vaccine.name}')" >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
           <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
         </svg>
@@ -428,7 +431,7 @@ const getPendingVaccinations = async () => {
           </svg>
         </td>
 
-        <td class="text-center noprint" onclick="deleteFromList('pendingAnimal', '${vaxed.id}')">
+        <td class="text-center noprint" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="deleteFromList('pendingAnimal', '${vaxed.id}', '${vaxed.animal_tag}')">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
           </svg>
@@ -444,6 +447,7 @@ const getPendingVaccinations = async () => {
   con.innerHTML = html;
 
 }
+
 
 // Function to get available vaccines
 const getFullyVaccinated = async () => {
@@ -478,6 +482,7 @@ const getFullyVaccinated = async () => {
 
 }
 
+
 // Funciton to retrieve vets listing
 const getVets = async () => {
   const vets = await getListing('vets');
@@ -502,7 +507,7 @@ const getVets = async () => {
         </svg>
       </td>
 
-      <td class="text-center noprint" onclick="deleteFromList('vet', '${vet.vet_id}')">
+      <td class="text-center noprint" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('vet', '${vet.vet_id}', '${vet.lname + ' ' + vet.fname}')">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
           <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
         </svg>
@@ -518,7 +523,6 @@ const getVets = async () => {
   con.innerHTML = html;
 
 }
-
 
 
 // FRONT END LOGIC FUNCTIONS
@@ -581,6 +585,37 @@ const deleteFromList = async (param1, param2) => {
       console.log(error);
 
     });
+
+}
+
+
+// for deletion
+const sendData = async (param1, param2, param3) => {
+
+  const item = {
+    name: param1,
+    id: param2,
+    anon: param3
+  }
+
+  localStorage.setItem('delete', JSON.stringify(item));
+
+  document.getElementById("alles").innerHTML = `You're about to delete <strong> ${param3} </strong> <br>`;
+
+}
+
+
+// DELETING A TABLE ROW
+const deletionList = async () => {
+
+  const cat = JSON.parse(localStorage.getItem('delete'));
+
+  console.log(cat.name);
+  console.log(cat.id);
+
+  deleteFromList(cat.name, cat.id);
+
+  localStorage.removeItem("delete");
 
 }
 
