@@ -43,4 +43,4 @@ const getAuditTrail = async () => {
 }
 
 
-setInterval(getAuditTrail, 50000);
+// setInterval(getAuditTrail, 1000);

@@ -278,6 +278,32 @@ CREATE OR ALTER TRIGGER new_tt_insert
                 NEW.tt_name
             );
             
+            
         END$$
 
 DELIMITER ;
+
+
+
+-- TRIGGER TO CREATE FEEDING TIMETABLES
+
+DELIMITER $$
+
+CREATE OR ALTER TRIGGER create_feeding_schedule
+
+    AFTER INSERT
+
+    ON feeding_timetable
+
+    FOR EACH ROW
+
+        BEGIN
+
+            CALL farma_create_schedule ( NEW.tt_id, NEW.quantity, NEW.first_feed_date, NEW.cycle, NEW.cycle, NEW.quantity_per_cycle, @total ); 
+            
+        END$$
+
+DELIMITER ;
+
+
+

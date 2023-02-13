@@ -21,6 +21,18 @@ async function getListing(param) {
   }
 }
 
+
+// Getting schedule listings from backend
+async function getScheduleListing(param) {
+  let url = `/getScheduletListing/${param}`;
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // Getting all animals listings from backend
 async function getMaxId(param) {
   let url = `/getMaxId/${param}`;
@@ -32,17 +44,27 @@ async function getMaxId(param) {
   }
 }
 
+
 // FOR REGISTERED ANIMALS MODAL
 // Table data for all animals
 async function getAnimalTableData() {
   let last = await getMaxId('animal_id');
   let list = await getListing('allAnimals');
 
-  last.last_id.forEach(id => {
-    document.getElementById("animal-tag").setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-000${id.LAST + 1}`);
-  });
+  if (last === undefined) {
 
-  let html = ""; 
+    console.log(browserUrl);
+
+    document.getElementById("animal-tag").setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-0001`);
+  } else {
+    last.last_id.forEach(id => {
+      document.getElementById("animal-tag").setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-000${id.LAST + 1}`);
+    });
+
+  }
+
+
+  let html = "";
   let htmlSegment = "";
 
   const con = document.getElementById('animalListing');
@@ -73,7 +95,7 @@ async function getAnimalTableData() {
             </svg>
           </td>
 
-          <td class="text-center noprint" onclick="deleteFromList('animal', '${animal.id}')">
+          <td class="text-center noprint" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('animal', '${animal.id}', '${animal.animal_tag}')">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
               <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
             </svg>
@@ -92,8 +114,10 @@ async function getAnimalTableData() {
 
 // Function to get All feeds
 const getFeedsTableData = async () => {
+
   const feedsData = await getListing('feeds');
-  let html =""; 
+
+  let html = "";
   let htmlSegment = "";
 
   const con = document.getElementById('feedsListing');
@@ -114,7 +138,7 @@ const getFeedsTableData = async () => {
             </svg>
           </td>
 
-          <td class="text-center noprint" onclick="deleteFromList('feed', '${feed.id}')">
+          <td class="text-center noprint"  data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('feed', '${feed.id}', '${feed.name}')">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
               <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
             </svg>
@@ -135,8 +159,10 @@ const getFeedsListData = async () => {
   const feedsData = await getListing('feeds');
   let last = await getMaxId('timetable_id');
 
+  console.log(last);
+
   last.last_id.forEach(id => {
-    document.getElementById("timetableTitle").setAttribute('value', `${id.animal_type.toUpperCase()}-FEEDING-000${id.LAST + 1}`);
+    document.getElementById("timetableTitle").setAttribute('value', `${((id.animal_type) == null ? "" : (id.animal_type)).toUpperCase()}-FEEDING-000${id.LAST + 1}`);
   });
 
 
@@ -162,6 +188,7 @@ const getOtherData = async () => {
   const names = [];
   const desc = [];
   const numbers = [];
+  const math = [];
   const ids = [];
 
   feedsData.listing.forEach(feed => {
@@ -169,6 +196,7 @@ const getOtherData = async () => {
     names.push(feed.name);
     desc.push(feed.description);
     numbers.push(feed.quantity + ' ' + feed.measure);
+    math.push(feed.quantity * feed.quantity_measure);
   });
 
   const lstd = document.getElementById('feedList');
@@ -178,6 +206,7 @@ const getOtherData = async () => {
     let getIndex = names.indexOf(lstd.value);
     document.getElementById('feeds-description').value = desc.at(getIndex);
     document.getElementById('feeds-quantity').value = numbers.at(getIndex);
+    document.getElementById('feeds-quantity-real').value = math.at(getIndex);
     document.getElementById('feeds_id').value = ids.at(getIndex);
   }
 }
@@ -209,7 +238,7 @@ const getAllVaccines = async () => {
   });
 
   vets.listing.forEach(vet => {
-    vetListed = ` <option id="${vet.id}" value="${vet.fname + ' '+ vet.lname}">  ${vet.fname + ' ' + vet.lname} </option> `;
+    vetListed = ` <option id="${vet.id}" value="${vet.fname + ' ' + vet.lname}">  ${vet.fname + ' ' + vet.lname} </option> `;
     vetList += vetListed;
   });
 
@@ -230,7 +259,7 @@ const getOtherVaccineData = async () => {
   const vaxNames = [];
   const noVaxs = [];
   const vaxCycles = [];
-  
+
   // PUSHING TO VACCINES ARRAY
   vaccines.listing.forEach(vaccine => {
 
@@ -240,7 +269,7 @@ const getOtherVaccineData = async () => {
     vaxIds.push(vaccine.id);
     vaxNames.push(vaccine.name);
     noVaxs.push(vaccine.no_of_vaccinations);
-    vaxCycles.push(vax_cycle + ' ' + vax_period );
+    vaxCycles.push(vax_cycle + ' ' + vax_period);
 
   });
 
@@ -291,9 +320,13 @@ const getOtherVetData = async () => {
 }
 
 
-// Funciton invoked on changes
+// Function invoked on changes
 const getTimetables = async () => {
+
   const timetables = await getListing('timetables');
+
+  console.log("timetables");
+  console.log(timetables);
 
   let html = '';
   let htmlSegment = '';
@@ -301,22 +334,22 @@ const getTimetables = async () => {
   const con = document.getElementById('feedingTimetableListing');
 
   timetables.listing.forEach(timetable => {
+
     htmlSegment = `
     <tr class="justify-content-center" id="${timetable.id}">
       <td class="text-center"> ${timetable.id} </td>   
       <td class="text-center"> ${timetable.cycle} </td> 
-      <td class="text-center"> ${timetable.quantity_per_cycle} </td> 
+      <td class="text-center"> ${timetable.quantity_per_cycle} ${timetable.quantity_per_cycle_unit}  </td>
+      <td class="text-center"> ${timetable.quantity} ${timetable.quantity_unit}  </td>
       <td class="text-center"> ${dateFrontend(timetable.first_feed_date)} </td> 
-      <td class="text-center"> ${dateFrontend(timetable.next_feed_date)} </td> 
-      <td class="text-center"> ${dateFrontend(timetable.last_feed_date)}</td>
 
-      <td class="text-center noprint" data-bs-target="#generatedModalToggle" data-bs-toggle="modal"  onclick="viewSchedule(${timetable.id})">
+      <td class="text-center noprint" data-bs-target="#generatedModalToggle" data-bs-toggle="modal"  onclick="viewSchedule('${timetable.tt_id}')">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
           <path d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3h4v-.5A1.5 1.5 0 0 0 5.5 1h-1zM7 4v1h2V4h4v.882a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V13H9v-1.5a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5V13H1V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882V4h4zM1 14v.5A1.5 1.5 0 0 0 2.5 16h3A1.5 1.5 0 0 0 7 14.5V14H1zm8 0v.5a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5V14H9zm4-11H9v-.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5V3z"/>
         </svg>
       </td>
 
-      <td class="text-center noprint" onclick="deleteFromList('timetable', '${timetable.id}')">
+      <td class="text-center noprint" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('timetable', '${timetable.id}', '${timetable.tt_name}')" >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
           <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
         </svg>
@@ -332,7 +365,9 @@ const getTimetables = async () => {
 
 }
 
+
 // Function to get available vaccines
+//  onclick="deleteFromList('vaccine', '${vaccine.id}')">
 const getAvailableVaccines = async () => {
   const vaccines = await getListing('availableVaccines');
 
@@ -353,7 +388,7 @@ const getAvailableVaccines = async () => {
       <td class="text-center"> ${vaccine.period} </td>
       <td class="text-center"> ${vaccine.injection_area} </td>
 
-      <td class="text-center noprint" onclick="deleteFromList('vaccine', '${vaccine.id}')">
+      <td class="text-center noprint" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('vaccine', '${vaccine.id}', '${vaccine.name}')" >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
           <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
         </svg>
@@ -396,7 +431,7 @@ const getPendingVaccinations = async () => {
           </svg>
         </td>
 
-        <td class="text-center noprint" onclick="deleteFromList('pendingAnimal', '${vaxed.id}')">
+        <td class="text-center noprint" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="deleteFromList('pendingAnimal', '${vaxed.id}', '${vaxed.animal_tag}')">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
           </svg>
@@ -413,8 +448,10 @@ const getPendingVaccinations = async () => {
 
 }
 
+
 // Function to get available vaccines
 const getFullyVaccinated = async () => {
+
   const vaccinated = await getListing('fullyVaxedAnimals');
 
   console.log(vaccinated);
@@ -445,6 +482,7 @@ const getFullyVaccinated = async () => {
 
 }
 
+
 // Funciton to retrieve vets listing
 const getVets = async () => {
   const vets = await getListing('vets');
@@ -469,7 +507,7 @@ const getVets = async () => {
         </svg>
       </td>
 
-      <td class="text-center noprint" onclick="deleteFromList('vet', '${vet.vet_id}')">
+      <td class="text-center noprint" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('vet', '${vet.vet_id}', '${vet.lname + ' ' + vet.fname}')">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
           <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
         </svg>
@@ -489,8 +527,24 @@ const getVets = async () => {
 
 // FRONT END LOGIC FUNCTIONS
 // DELETING A TABLE ROW
-function deleteFromList(param1, param2) {
+const deleteFromList = async (param1, param2) => {
+
+  // SHOWS TOAST 
+  const showClear = (param) => {
+    const toastLiveExample = document.getElementById('ttoast');
+    const toast = new bootstrap.Toast(toastLiveExample, { delay: 3500 });
+
+    toast.show();
+
+    console.log(param);
+
+    document.getElementById('error_msg').innerText = param;
+
+  }
+
   const url = `/delete/${param1}`;
+
+
   // post body data 
   const user = {
     id: param2
@@ -511,21 +565,60 @@ function deleteFromList(param1, param2) {
         throw Error(response.statusText);
       } else {
         console.log("😎😎😎😜");
+
+        // alert('Nice, you triggered this alert message!', 'success');
+        showClear('Nice, you triggered this alert message');
+
       }
+
       return response;
+
     }).then(function (response) {
+
       console.log("ok");
-      console.log(response);
+      const element = document.getElementById(`${param2}`);
+      console.log(element);
+      element.remove();
 
     }).catch(function (error) {
+
       console.log(error);
+
     });
 
-  const element = document.getElementById(`${param2}`);
-  console.log(element);
-  element.remove();
+}
+
+
+// for deletion
+const sendData = async (param1, param2, param3) => {
+
+  const item = {
+    name: param1,
+    id: param2,
+    anon: param3
+  }
+
+  localStorage.setItem('delete', JSON.stringify(item));
+
+  document.getElementById("alles").innerHTML = `You're about to delete <strong> ${param3} </strong> <br>`;
 
 }
+
+
+// DELETING A TABLE ROW
+const deletionList = async () => {
+
+  const cat = JSON.parse(localStorage.getItem('delete'));
+
+  console.log(cat.name);
+  console.log(cat.id);
+
+  deleteFromList(cat.name, cat.id);
+
+  localStorage.removeItem("delete");
+
+}
+
 
 // Removes the table card
 function deleteFromDom(param) {
@@ -690,7 +783,7 @@ async function editFeed(param) {
   const qnty_measure = document.getElementById("qm");
 
   let list = await getListing('feeds');
-  
+
   list.listing.every(feed => {
     if (feed.id == param) {
       editid.setAttribute("value", param)
@@ -731,7 +824,7 @@ async function editVaccine(param) {
 }
 
 // Editing veterinary
-async function editVet(param) {  
+async function editVet(param) {
   const fname = document.getElementById("edit-vet-fname");
   const lname = document.getElementById("edit-vet-lname");
   const phone = document.getElementById("edit-vet-phone");
@@ -740,7 +833,7 @@ async function editVet(param) {
   const vet_uuid = document.getElementById("edit-vet-uuid");
 
   let vets = await getListing('vets');
-  
+
   console.log("vets");
   console.log(vets);
 

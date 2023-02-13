@@ -24,7 +24,7 @@ const viewSick = async () => {
          </svg>
        </td>
 
-       <td class="text-center noprint" onclick="deleteFromList('sickAnimal', '${sick.id}')">
+       <td class="text-center noprint" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="deleteFromList('sickAnimal', '${sick.id}', '${sick.ANIMAL_TAG}')">
          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
          </svg>
@@ -200,24 +200,31 @@ const getMoreVetData = async () => {
 
 }
 
+
 // GLOBAL DATES VALIDATION
-const validateDate = (param) => {
+const validateDate = (parameter) => {
+
+  console.log(parameter);
+
   // VALIDATIG DATES
   const currentDate = new Date().toJSON().slice(0, 10);
-  const enteredDateFeild = document.getElementById(`${param}`);
+  const enteredDateFeild = document.getElementById(`${parameter}`);
+  
+  // SHOWS TOAST 
+  const showClear = (param) => {
+    const toastLiveExample = document.getElementById('ttoast');
+    const toast = new bootstrap.Toast(toastLiveExample, { delay: 3500 });
+
+    toast.show();
+
+    enteredDateFeild.value = "";
+    document.getElementById('err_msg').innerText = param;
+
+  }
 
   const enteredDate = new Date(`${enteredDateFeild.value}`).toJSON().slice(0, 10);
 
-  const toastLiveExample = document.getElementById('ttoast');
-  const toast = new bootstrap.Toast(toastLiveExample, { delay: 2000 });
-
-  const showClear = (param) => {
-    toast.show();
-    enteredDateFeild.value = "";
-    document.getElementById('err_msg').innerText = param
-  }
-
-  if (param == 'reportedDate') {
+  if (parameter == 'reportedDate') {
     currentDate >= enteredDate ? console.log(enteredDate) : showClear("Please Select a date less than today ");
   } else {
     currentDate >= enteredDate ? showClear("Please Select a date greater than today") : console.log(enteredDate);

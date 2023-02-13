@@ -22,7 +22,7 @@ const showGraphs = async () => {
             type: 'column'
         },
         title: {
-            text: 'GRAPHICAL STATISTICS'
+            text: '<strong>GRAPHICAL STATISTICS</strong>'
         },
         xAxis: {
             categories: [
