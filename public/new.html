@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="/css/login.css">
+
+    <title> Farma </title>
+
+  </head>
+
+  <body>
+
+    <div class="content">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-md-6">
+            <img src="/images/left_cow.svg" alt="Image" class="img-fluid">
+          </div>
+
+          <div class="col-md-6 contents">
+            <div class="row justify-content-center">
+              <div class="col-md-8">
+
+                <div class="mb-4">
+                  <div class="d-flex align-items-center">
+
+                    <div class="flex-shrink-0">
+                      <img src="/images/LOGO.png" width="150" height="120" alt="FARMA MANAGEMENT SYSTEM V1 LOGO">
+                    </div>
+
+                    <div class="flex-shrink-0">
+                      <h2 class="d-flex justify-content-start"> <strong> farma </strong></h2>
+                      <p class="mb-4"> Welcome Back </p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <form action="/auth" method="post">
+
+                  <div class="form-group first">
+                    <!-- <label for="username">Username</label> -->
+                    <input type="email" class="form-control" id="email" name="mail" placeholder="Enter email" required>
+                  </div>
+
+                  <div class="form-group last mb-4">
+                    <!-- <label for="password">Password</label> -->
+                    <input type="password" class="form-control" id="password" name="password"
+                      placeholder="Enter password" required>
+                  </div>
+
+                  <input type="submit" value="Log In" class="btn text-white btn-block btn-primary">
+
+                  <div class="d-flex my-3 align-items-center justify-content-between">
+                    <span>
+                      <a href="#" class="forgot-pass">Forgot Password</a>
+                    </span>
+
+                    <span>
+                      <a href="#" class="forgot-pass"> SIGN UP </a>
+                    </span>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+</html>

@@ -151,7 +151,7 @@ app.get('/', function (request, response) {
     if (data) {
         response.redirect('/home');
     } else {
-        response.sendFile(path.join(__dirname + '/public/login.html'));
+        response.sendFile(path.join(__dirname + '/public/new.html'));
     }
 });
 
@@ -174,6 +174,7 @@ app.get('/selection', function (request, response) {
     }
 });
 
+
 // HOME PAGE
 app.get('/home', function (request, response) {
     // Get saved data from sessionStorage
@@ -181,6 +182,7 @@ app.get('/home', function (request, response) {
     if (user_id) {
         response.sendFile(path.join(__dirname + '/public/home.html'));
     } else {
+        console.log(user_id);
         response.redirect('/');
     }
 });
@@ -212,6 +214,7 @@ app.get('/logout', (req, res) => {
     storage.remove('farma_id');
     storage.clear();
     storage.clearAll();
+    console.log(storage.get('farma_id'));
     res.redirect('/');
 });
 
@@ -468,12 +471,13 @@ app.post('/register', function (request, response) {
     const fname = request.body.fname;
     const lname = request.body.lname;
     const mail = request.body.mail;
+    const phone = request.body.phone;
     const password = request.body.password;
     const password2 = request.body.password2;
 
     if (mail !== null && password2 !== null) {
         // Execute SQL query that'll insert into the farma table
-        connection.query(`CALL farma_registration('${f_id}', '${fname}', '${lname}' , '${mail}', '${password}')`, function (error, results, fields) {
+        connection.query(`CALL farma_registration('${f_id}', '${fname}', '${lname}' , '${mail}', '${phone}', '${password2}')`, function (error, results, fields) {
             if (error) throw error;
             // If the account exists
             response.redirect('/');
@@ -486,11 +490,23 @@ app.post('/register', function (request, response) {
     }
 });
 
+
+// Registering a user
+app.post('/testPost', function (request, response) {
+
+    console.log(request.body);
+
+    response.send({data: request.body});
+
+});
+
+
 // login authentication
 app.post('/auth', function (request, response) {
     // Capture the input fields
     let mail = request.body.mail;
     let password = request.body.password;
+    let username = request.body.username;
 
     // Ensure the input fields exists and are not empty
     if (mail && password) {
@@ -522,7 +538,7 @@ app.post('/auth', function (request, response) {
                 });
 
             } else {
-                console.log("lolo123");
+                console.log("WRONG PASSWORD OR EMAIL");
                 response.redirect(`/`);
             }
 
@@ -536,6 +552,7 @@ app.post('/auth', function (request, response) {
 
     }
 });
+
 
 // Registering a new animal
 app.post('/newAnimal', function (req, res) {
@@ -590,6 +607,7 @@ app.post('/newTimeTable', function (req, res) {
     return;
 })
 
+
 // Updating animal data
 app.post('/updateAnimalData', function (req, res) {
     const farma_id = storage('farma_id');
@@ -603,6 +621,7 @@ app.post('/updateAnimalData', function (req, res) {
         return;
     });
 })
+
 
 // Inserting Feeds into the DB
 app.post('/updateFeed', function (req, res) {
@@ -702,6 +721,7 @@ app.post('/updateVet', function (req, res) {
     return;
 })
 
+
 // // Inserting Vaccines into the DB
 // app.post('/updateSick', function (req, res) {
 //     const animal = storage('animal');
@@ -796,6 +816,7 @@ app.post('/updateFarma', function (req, res) {
     res.redirect(`/animal/${animal}`);
 
 })
+
 
 // Reportinsg Sick animals into the DB
 app.post('/addSick', function (req, res) {
@@ -930,7 +951,7 @@ app.post('/delete/:param', function (request, response) {
             // If there is an issue with the query, output the error
             if (error) throw error;
 
-            results.affectedRows >= 1 ? response.send({message: "GOOD"}) : response.send({message: "BAD"});
+            results.affectedRows >= 1 ? response.send({ message: "GOOD" }) : response.send({ message: "BAD" });
 
         })
 
