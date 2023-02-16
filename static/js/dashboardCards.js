@@ -11,18 +11,6 @@ async function getCount(param) {
 }
 
 
-// // ALEDGED OPTIMISED ATTEMPT
-// // Get Total Count of the animals from backend endpoint
-// async function getCount() {
-//   let url = `/getCount`;
-//   try {
-//     let res = await fetch(url);
-//     return res.json();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
 // Get number of animals' products from backend endpoint
 async function getAnimalType() {
   let url = `/getType`;
@@ -37,13 +25,16 @@ async function getAnimalType() {
 
 // RENDERS DATA TO THE BI DASHBOARD CARDS LIVE STATISTICS
 async function renderAnimals() {
-  const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'newBorns', 'vaccinatedAnimals',  'pendingAnimals', 'allFeeds', 'allProducts']
+  const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'newBorns', 'vaccinatedAnimals', 'pendingAnimals', 'allFeeds', 'allProducts']
 
   for (const number of cardsCount) {
+
     const animalCount = await getCount(number);
+
     animalCount.count.forEach(count => {
       document.getElementById(number).innerText = count.COUNT || 0;
     })
+
   }
 }
 
@@ -87,7 +78,7 @@ function clicked(param) {
           `;
           break;
 
-          // Sick Animals Card and dashboard table
+        // Sick Animals Card and dashboard table
         case 'sick':
           getSickAnimals();
           container.innerHTML = `
@@ -372,7 +363,7 @@ async function getExpectingAnimals() {
   heavyAnimals.listing.forEach(heavy => {
 
     console.log(heavy);
-    
+
     htmlSegment = `
         <tr class="justify-content-center" id="${heavy.id}">
           <th scope="row" class="text-center"> ${heavy.id} </th>
@@ -407,7 +398,7 @@ async function getAnimalProducts() {
           <td scope="col" class="text-center"> ${product.id} </td>
           <td scope="col" class="text-center"> ${product.animal_tag} </td>
           <td scope="col" class="text-center"> ${product.name} </td>
-          <td scope="col" class="text-center"> ${product.quantity + product.measure } </td>
+          <td scope="col" class="text-center"> ${product.quantity + product.measure} </td>
           <td scope="col" class="text-center"> ${product.expected_qnty + product.measure} </td>
         </tr>
       `;
@@ -437,7 +428,7 @@ async function getAnimalFeeds() {
           <td scope="col" class="text-center"> ${feed.name} </td>
           <td scope="col" class="text-center"> ${feed.quantity + ' ' + feed.measure} </td>
           <td scope="col" class="text-center"> ${dateFrontend(feed.stock_date)} </td>
-          <td scope="col" class="text-center"> ${dateFrontend(feed.expected_restock_date) == 'Invalid Date' ? '-' : dateFrontend(feed.expected_restock_date) } </td>
+          <td scope="col" class="text-center"> ${dateFrontend(feed.expected_restock_date) == 'Invalid Date' ? '-' : dateFrontend(feed.expected_restock_date)} </td>
         </tr>
       `;
 
@@ -461,7 +452,7 @@ async function getNewBornAnimals() {
   babies.listing.forEach(baby => {
 
     const dobYear = new Date(Date.parse(baby.dob));
-    
+
     htmlSegment = `
         <tr class="justify-content-center" id="${baby.id}">
           <td scope="col" class="text-center"> ${baby.id} </td>

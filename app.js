@@ -11,6 +11,7 @@ const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const hbs = require('nodemailer-express-handlebars');
 const dotenv = require("dotenv");
+const cron = require('node-cron');
 
 dotenv.config();
 
@@ -136,6 +137,13 @@ const sendmail = async (params) => {
         }
     });
 }
+
+
+// Schedule tasks to be run on the server.
+cron.schedule('*/150 * * * * *', function () {
+    console.log('running a task every minute');
+});
+
 
 
 /*
@@ -286,34 +294,6 @@ app.get('/getCount/:param', function (request, response) {
     }
 
 });
-
-
-// // COUNT END POINTS
-// // OPTIMISED COUNT SOLUTION
-// // Cleaned Function to retrieve dashboard data count
-// app.get('/getCount', function (request, response) {
-//     const animal_type = storage('animal');
-//     const farma_id = storage('farma_id');
-
-//     if (farma_id) {
-//         const query = `CALL getCount('${farma_id}', '${animal_type}');`;
-//         connection.query(query, function (error, results, fields) {
-//             // If there is an issue with the query, output the error
-//             if (error) throw error;
-
-//             console.log(results);
-//             response.send({ count: results });
-
-//         })
-
-//     } else {
-
-//         console.log(" trying to delete with no farma_id 🤣😂 ");
-//         response.redirect('/');
-
-//     }
-
-// });
 
 
 // Function to return animal type dashboard data count
@@ -496,7 +476,7 @@ app.post('/testPost', function (request, response) {
 
     console.log(request.body);
 
-    response.send({data: request.body});
+    response.send({ data: request.body });
 
 });
 
