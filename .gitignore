@@ -6,3 +6,5 @@ test_dir
 .env
 
 equiweb.sql
+
+test.js
