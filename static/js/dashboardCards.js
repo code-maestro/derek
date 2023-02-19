@@ -25,7 +25,8 @@ async function getAnimalType() {
 
 // RENDERS DATA TO THE BI DASHBOARD CARDS LIVE STATISTICS
 async function renderAnimals() {
-  const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'newBorns', 'vaccinatedAnimals', 'pendingAnimals', 'allFeeds', 'allProducts']
+  
+  const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'newBorns', 'vaccinatedAnimals', 'pendingAnimals', 'allFeeds', 'allProducts'];
 
   for (const number of cardsCount) {
 

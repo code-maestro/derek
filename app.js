@@ -1,5 +1,5 @@
 // GLOBAL CONFIGURATIONS/variables
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
@@ -28,7 +28,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'derek',
     password: 'pass',
-    database: 'farma_2022'
+    database: 'farma'
 });
 
 // EXPRESS HOUSEKEEPING
@@ -141,8 +141,29 @@ const sendmail = async (params) => {
 
 // Schedule tasks to be run on the server.
 cron.schedule('*/150 * * * * *', function () {
+
     console.log('running a task every minute');
+
+
+
 });
+
+
+// Get data from backend endpoint
+async function getUsers() {
+
+    const queries = ` SELECT * FROM farma;`
+
+    connection.query(queries, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) { 
+            return error;
+        } else {
+            console.log(results);
+        }
+    })
+}
+
 
 
 
@@ -198,19 +219,29 @@ app.get('/home', function (request, response) {
 
 // DASHBOARD PAGE FOR SELECTED ANIMAL FROM HOME PAGE
 app.get('/animal/:id', function (request, response) {
+
     const user_id = storage('farma_id');
+
     if (user_id) {
+
         const animal_name = request.params.id;
+
         storage('animal', animal_name);
-        const all_animals = storage('all-animals');
+
+        const all_animals = storage('animal-names');
+
         const isSelected = all_animals.includes(animal_name);
 
         if (isSelected == true) {
+
             response.sendFile(path.join(__dirname + '/public/dashboard.html'));
+        
         }
 
     } else {
+
         response.redirect('/home');
+
     };
 });
 
@@ -237,7 +268,11 @@ app.get('/logout', (req, res) => {
 
 // Filtering cards to be shown
 app.get('/before-home', function (request, response) {
+
     const user_id = storage('farma_id');
+
+    const animalNames = [];
+
     if (user_id) {
         connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
             // If there is an issue with the query, output the error
@@ -247,15 +282,30 @@ app.get('/before-home', function (request, response) {
                 if (element.list_of_animals == null) {
                     console.log("😒😒😒😒😒");
                 } else {
+                    
                     storage('all-animals', JSON.parse(JSON.stringify(element.list_of_animals)));
+
+                    (element.list_of_animals).forEach(named => {
+                        animalNames.push(named.name);
+                    })
+
+                    console.log(animalNames);
+
+                    storage('animal-names', animalNames);
+
                     response.send(JSON.parse(JSON.stringify(element.list_of_animals)));
+
                 }
             });
         })
     } else {
+
         console.log("BEFORE-HOME animals listing retrieval nicht arbeitet viel  du hat keine farma_id ");
+        
         response.redirect('/');
+
     }
+
 });
 
 
@@ -488,6 +538,10 @@ app.post('/auth', function (request, response) {
     let password = request.body.password;
     let username = request.body.username;
 
+    console.log(mail);
+    console.log(password);
+    console.log(username);
+
     // Ensure the input fields exists and are not empty
     if (mail && password) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
@@ -495,12 +549,17 @@ app.post('/auth', function (request, response) {
             // connection.query('SELECT farma_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
+
                 response.redirect(`/`);
-            }
+
+            } 
+
+            console.log(results);
 
             // If the account exists
             if (results.length > 0) {
-                console.log("loll");
+
+                console.log("SUCCESSFULLY AUTHENTICATED");
 
                 // Authenticate the user
                 const row = Object.values(JSON.parse(JSON.stringify(results)));
@@ -518,8 +577,11 @@ app.post('/auth', function (request, response) {
                 });
 
             } else {
+
                 console.log("WRONG PASSWORD OR EMAIL");
+
                 response.redirect(`/`);
+
             }
 
             response.end();

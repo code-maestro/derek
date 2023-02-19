@@ -19,12 +19,19 @@ async function renderUsers() {
   let container = document.querySelector('#ddaa');
 
   if (![false, 0, "", null, undefined, NaN].includes(users)) {
+
     const animals_at_farm = JSON.parse(JSON.stringify(users));
+    
+    console.log(animals_at_farm);
+
     animals_at_farm.forEach(animal => {
+      
+      console.log(animal.name);
+
       htmlSegment = `
-        <!-- animal card -->
+        <!-- animal card onclick="seeDetails()"-->
           <a class="col-auto mb-4" href="/animal/${animal.name}">
-            <div onclick="seeDetails(${animal})">
+            <div >
               <div class="rounded shadow-sm py-5 px-4" id="${animal.name}s">
                 <img src="${animal.image_url}" alt="${animal.name}'s image" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                 <h5 class="mb-0"> ${animal.name} </h5>
