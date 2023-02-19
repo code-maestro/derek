@@ -139,14 +139,12 @@ const sendmail = async (params) => {
 }
 
 
-// Schedule tasks to be run on the server.
-cron.schedule('*/150 * * * * *', function () {
+// // Schedule tasks to be run on the server.
+// cron.schedule('*/150 * * * * *', function () {
 
-    console.log('running a task every minute');
+//     console.log('running a task every minute');
 
-
-
-});
+// });
 
 
 // Get data from backend endpoint
@@ -206,14 +204,16 @@ app.get('/selection', function (request, response) {
 
 // HOME PAGE
 app.get('/home', function (request, response) {
+
     // Get saved data from sessionStorage
     const user_id = storage('farma_id');
+    
     if (user_id) {
         response.sendFile(path.join(__dirname + '/public/home.html'));
     } else {
-        console.log(user_id);
         response.redirect('/');
     }
+
 });
 
 
@@ -276,7 +276,10 @@ app.get('/before-home', function (request, response) {
     if (user_id) {
         connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
             // If there is an issue with the query, output the error
-            if (error) throw error;
+            
+            if (error) {
+                console.log(error);
+            }
 
             results.forEach(element => {
                 if (element.list_of_animals == null) {
@@ -288,8 +291,6 @@ app.get('/before-home', function (request, response) {
                     (element.list_of_animals).forEach(named => {
                         animalNames.push(named.name);
                     })
-
-                    console.log(animalNames);
 
                     storage('animal-names', animalNames);
 
@@ -403,8 +404,8 @@ app.get('/getListing/:param', function (request, response) {
         first_feed_date,feeds_id,tt_id,
         IF(quantity_per_cycle_unit >= 1000, 'kg', 'g') AS quantity_per_cycle_unit,
         IF(quantity_unit >= 1000, 'kg', 'g') AS quantity_unit
-        FROM farma_2022.feeding_timetable
-        WHERE feeds_id IN (SELECT id FROM farma_2022.feeds WHERE farma_id = '${farma_id}')
+        FROM feeding_timetable
+        WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${farma_id}')
         AND animal_type = '${animal_type}';`,
         fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, V.no_of_vaccinations, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
         vets: `SELECT * FROM vets;`,
@@ -440,7 +441,7 @@ app.get('/getScheduletListing/:param', function (request, response) {
 
     const param = request.params.param;
 
-    const queries = ` SELECT id,feeding_tt_id,effective_date,next_date, feeds_quantity/qnty_per_cycle_unit as feeds_quantity,IF(qnty_unit >= 1000, 'kg', 'g' ) as unit, feeds_qnty_pending/qnty_unit as feeds_qnty_pending,schedule_id FROM farma_2022.feeding_schedule WHERE feeding_tt_id = '${param}';`
+    const queries = `SELECT id,feeding_tt_id,effective_date,next_date, feeds_quantity/qnty_per_cycle_unit as feeds_quantity,IF(qnty_unit >= 1000, 'kg', 'g' ) as unit, feeds_qnty_pending/qnty_unit as feeds_qnty_pending,schedule_id FROM feeding_schedule WHERE feeding_tt_id = '${param}';`
 
     if (user_id) {
 
@@ -538,23 +539,16 @@ app.post('/auth', function (request, response) {
     let password = request.body.password;
     let username = request.body.username;
 
-    console.log(mail);
-    console.log(password);
-    console.log(username);
-
     // Ensure the input fields exists and are not empty
     if (mail && password) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
         connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, a.password, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${mail}' AND (AES_DECRYPT(FROM_BASE64(a.password), a.farma_id)) =  '${password}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
-            // connection.query('SELECT farma_id, mail, password FROM farma WHERE mail = ? AND password = ?', [mail, password], function (error, results, fields) {
+            
             // If there is an issue with the query, output the error
             if (error) {
-
+                console.log(error);
                 response.redirect(`/`);
-
-            } 
-
-            console.log(results);
+            }
 
             // If the account exists
             if (results.length > 0) {
