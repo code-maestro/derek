@@ -112,6 +112,7 @@ async function getAnimalTableData() {
 
 }
 
+
 // Function to get All feeds
 const getFeedsTableData = async () => {
 
@@ -154,6 +155,7 @@ const getFeedsTableData = async () => {
 
 }
 
+
 // Function to get All feeds
 const getFeedsListData = async () => {
   const feedsData = await getListing('feeds');
@@ -182,6 +184,7 @@ const getFeedsListData = async () => {
 
 }
 
+
 // Funciton invoked on changes
 const getOtherData = async () => {
   const feedsData = await getListing('feeds');
@@ -209,6 +212,26 @@ const getOtherData = async () => {
     document.getElementById('feeds-quantity-real').value = math.at(getIndex);
     document.getElementById('feeds_id').value = ids.at(getIndex);
   }
+}
+
+
+// Function to get All Diseases
+const getAllDiseases = async () => {
+
+  const diseases = await getListing('allDiseases');
+
+  let diseaseListed = '';
+  let diseaseList = `<option selected disabled> Choose a disease ...</option>`;
+
+  const disease_lstd = document.getElementById('disease-name');
+
+  diseases.listing.forEach(disease => {
+    diseaseListed = ` <option id="${disease.id}" value="${disease.id}">  ${disease.disease_name} </option> `;
+    diseaseList += diseaseListed;
+  });
+
+  disease_lstd.innerHTML = diseaseList;
+
 }
 
 
@@ -286,6 +309,7 @@ const getOtherVaccineData = async () => {
   }
 
 }
+
 
 // VET DR DATA
 const getOtherVetData = async () => {
@@ -369,6 +393,7 @@ const getTimetables = async () => {
 // Function to get available vaccines
 //  onclick="deleteFromList('vaccine', '${vaccine.id}')">
 const getAvailableVaccines = async () => {
+
   const vaccines = await getListing('availableVaccines');
 
   let html = '';
@@ -405,6 +430,7 @@ const getAvailableVaccines = async () => {
 
 }
 
+
 // Function to get available vaccines
 const getPendingVaccinations = async () => {
   const vaccinated = await getListing('pendingAnimals');
@@ -419,11 +445,8 @@ const getPendingVaccinations = async () => {
       <tr class="justify-content-center" id="${vaxed.id}">
         <td class="text-center"> ${vaxed.id} </td>
         <td class="text-center"> ${vaxed.animal_tag} </td>
-        <td class="text-center"> ${dateFrontend(vaxed.first_date)} </td>
-        <td class="text-center"> ${dateFrontend(vaxed.next_date)} </td>
-        <td class="text-center"> ${dateFrontend(vaxed.last_date)} </td>
+        <td class="text-center"> ${dateFrontend(vaxed.effective_date)} </td>
         <td class="text-center"> ${vaxed.no_of_vaccinations} </td>
-        <td class="text-center"> ${vaxed.no_pending} </td>
 
         <td class="text-center noprint" onclick="viewPendingDetails('${vaxed.id}')">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">

@@ -20,7 +20,8 @@
         <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
          
-        <link rel="stylesheet" href="../style.css" type="text/css" />
+        <link rel="stylesheet" href="../css/style.css" type="text/css" />
+        
         <link rel="stylesheet" href="https://fonts.googleapis.com/css" type="text/css" />
         <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
         <link href="../vendor/fontawesome/css/fontawesome.css" rel="stylesheet" type="text/css" />
@@ -132,7 +133,7 @@
                     <div id="vaccines" class="collapse" aria-labelledby="headingUtilities"
                         data-parent="#accordionSidebar">
                         <div class="bg-white collapse-inner rounded">
-                            <span class="collapse-item" onclick="getAvailableVaccines()" data-bs-toggle="modal"
+                            <span class="collapse-item" onclick="getAllDiseases()" data-bs-toggle="modal"
                                 href="#newVaccineModalToggle" role="button">
                                 Add a Vaccine </span>
                             <span class="collapse-item" onclick="getAvailableVaccines()" data-bs-toggle="modal"
@@ -867,15 +868,28 @@
                                             <!-- Vaccines Form -->
                                             <form class="row g-3 needs-validation" novalidate method="POST"
                                                 action="/newVaccine">
-                                                <div class="col-md-6">
-                                                    <label for="vaccine-name" class="form-label fw-bold"> Vaccine Name
-                                                    </label>
+
+                                                <div class="col-md-3">
+                                                    <label for="vaccine-name" class="form-label fw-bold"> Vaccine Name </label>
                                                     <input id="vaccine-name" type="text" class="form-control"
                                                         name="vaccineName" spellcheck="false" data-ms-editor="true"
                                                         value="">
                                                 </div>
 
                                                 <div class="col-md-6">
+                                                    <label for="vaccine-description" class="form-label fw-bold">
+                                                        Vaccine Description </label>
+                                                    <input id="vaccine-description" type="text" class="form-control"
+                                                        name="vaccineDescription" spellcheck="false"
+                                                        data-ms-editor="true" value="">
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label for="disease-name" class="form-label fw-bold"> Intended for Disease </label>
+                                                    <select id="disease-name" class="form-select" name="diseaseID" required> </select>
+                                                </div>
+
+                                                <div class="col-md-3">
                                                     <label for="vaccine-quantity" class="form-label fw-bold">
                                                         Quantity </label>
                                                     <input id="vaccine-quantity" type="number" class="form-control"
@@ -883,8 +897,7 @@
                                                         value="">
                                                 </div>
 
-
-                                                <div class="col-md-6">
+                                                <div class="col-md-3">
                                                     <label for="period" class="form-label fw-bold"> Quantity Measure
                                                     </label>
                                                     <select class="form-select" id="quantity-measure"
@@ -896,31 +909,14 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    <label for="vaccine-description" class="form-label fw-bold">
-                                                        Vaccine Description </label>
-                                                    <input id="vaccine-description" type="text" class="form-control"
-                                                        name="vaccineDescription" spellcheck="false"
-                                                        data-ms-editor="true" value="">
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <label for="no-vaccinations" class="form-label fw-bold"> Number
-                                                        of Vaccinations </label>
-                                                    <input id="no-vaccinations" type="text" class="form-control"
-                                                        name="noVaccinations" spellcheck="false" data-ms-editor="true"
-                                                        value="">
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <label for="vaccination-cycle" class="form-label fw-bold"> Cycle
-                                                    </label>
+                                                <div class="col-md-3">
+                                                    <label for="vaccination-cycle" class="form-label fw-bold"> Cycle </label>
                                                     <input id="vaccination-cycle" type="number" class="form-control"
                                                         name="vaccineCycle" spellcheck="false" data-ms-editor="true"
                                                         value="">
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-3">
                                                     <label for="period" class="form-label fw-bold"> Every </label>
                                                     <select class="form-select" id="period" name="vaccinePeriod"
                                                         required="">
@@ -933,7 +929,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <label for="injection-area" class="form-label fw-bold">
                                                         Injection Area </label>
                                                     <input id="injection-area" type="text" class="form-control"
@@ -1177,11 +1173,7 @@
                                                     <th scope="col" class="text-center"> ID </th>
                                                     <th scope="col" class="text-center"> ANIMAL TAG </th>
                                                     <th scope="col" class="text-center"> FIRST DATE </th>
-                                                    <th scope="col" class="text-center"> NEXT DATE </th>
-                                                    <th scope="col" class="text-center"> LAST DATE </th>
                                                     <th scope="col" class="text-center"> No OF VACCINATIONS </th>
-                                                    <th scope="col" class="text-center"> No OF PENDING VACCINATIONS
-                                                    </th>
                                                     <th scope="col" class="text-center"> VIEW </th>
                                                     <th scope="col" class="text-center"> DELETE </th>
                                                 </tr>
