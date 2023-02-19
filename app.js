@@ -13,6 +13,7 @@ const hbs = require('nodemailer-express-handlebars');
 const dotenv = require("dotenv");
 const cron = require('node-cron');
 
+
 dotenv.config();
 
 // // REMOTE DATABASE CONNECTIONS
@@ -154,7 +155,7 @@ async function getUsers() {
 
     connection.query(queries, function (error, results, fields) {
         // If there is an issue with the query, output the error
-        if (error) { 
+        if (error) {
             return error;
         } else {
             console.log(results);
@@ -163,6 +164,65 @@ async function getUsers() {
 }
 
 
+//send email
+function sendEmail(email, token) {
+
+    var email = email;
+    var token = token;
+
+    var mail = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'ell889lle@gmail.com',
+            pass: 'lcmdbftpznmgfqft'
+        }
+    });
+
+    // var mailOptions = {
+    //     from: 'ell889lle@gmail.com',
+    //     to: email,
+    //     subject: 'ETEST',
+    //     html: '<p>You requested for email verification, kindly use this <a href="http://localhost:3000/verify-email?token=' + token + '">link</a> to verify your email address</p>'
+
+    // };
+
+    const handlebarOptions = {
+        viewEngine: {
+            extName: ".handlebars",
+            partialsDir: path.resolve('./public/views'),
+            defaultLayout: false,
+        },
+        viewPath: path.resolve('./public/views'),
+        extName: ".handlebars",
+    }
+
+    mail.use('compile', hbs(handlebarOptions));
+
+    var mailOptions = {
+        from: 'NO REPLY',
+        to: email,
+        subject: `params.subject`,
+        template: 'confirm',
+        context: {
+            heading: `params.heading}`,
+            vet_name: `params.vet_name}`,
+            message: `arams.message}`,
+            farma_name: `params.farma_name}`,
+            vet_email: `params.vet_mail}`
+        }
+
+    };
+
+    mail.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+            return 1
+        } else {
+            console.log("EMAIL SENT SUCCESSFULLY");
+            return 0
+        }
+    });
+}
 
 
 /*
@@ -207,7 +267,7 @@ app.get('/home', function (request, response) {
 
     // Get saved data from sessionStorage
     const user_id = storage('farma_id');
-    
+
     if (user_id) {
         response.sendFile(path.join(__dirname + '/public/home.html'));
     } else {
@@ -235,7 +295,7 @@ app.get('/animal/:id', function (request, response) {
         if (isSelected == true) {
 
             response.sendFile(path.join(__dirname + '/public/dashboard.html'));
-        
+
         }
 
     } else {
@@ -276,7 +336,7 @@ app.get('/before-home', function (request, response) {
     if (user_id) {
         connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id=(?)`, [user_id], function (error, results, fields) {
             // If there is an issue with the query, output the error
-            
+
             if (error) {
                 console.log(error);
             }
@@ -285,7 +345,7 @@ app.get('/before-home', function (request, response) {
                 if (element.list_of_animals == null) {
                     console.log("😒😒😒😒😒");
                 } else {
-                    
+
                     storage('all-animals', JSON.parse(JSON.stringify(element.list_of_animals)));
 
                     (element.list_of_animals).forEach(named => {
@@ -302,7 +362,7 @@ app.get('/before-home', function (request, response) {
     } else {
 
         console.log("BEFORE-HOME animals listing retrieval nicht arbeitet viel  du hat keine farma_id ");
-        
+
         response.redirect('/');
 
     }
@@ -394,7 +454,7 @@ app.get('/getListing/:param', function (request, response) {
         editSickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT symptom_name FROM symptom WHERE disease = (SELECT id FROM disease WHERE id = SA.disease_id))AS SS, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, (SELECT email FROM vets WHERE vet_id = SA.vet_id) AS VET_MAIL, SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id, SA.vet_id FROM sick_animals SA, animal A WHERE A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
         babies: `SELECT NB.id, NB.new_born_tag, NB.dob, A.animal_tag FROM new_born NB, animal A WHERE NB.parent_id = A.id AND  A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
-        pendingAnimals: `SELECT id, (SELECT animal_tag FROM animal WHERE id = vaccination_details.animal_id) AS animal_tag, first_date AS effective_date, (SELECT cycle*period FROM vaccines WHERE id = vaccination_details.vaccine_id) AS no_of_vaccinations, (SELECT name FROM vaccines WHERE id = vaccination_details.vaccine_id) AS vaccine_name FROM vaccination_details WHERE (SELECT animal_type FROM animal WHERE id = vaccination_details.animal_id) = '${animal_type}' AND (SELECT farma_id FROM farma WHERE farma_id ='${farma_id}') = '${farma_id}';`,
+        pendingAnimals: `SELECT id, (SELECT animal_tag FROM animal WHERE id = vaccination_details.animal_id) AS animal_tag, first_date AS effective_date, (SELECT cycle*period FROM vaccines WHERE id = vaccination_details.vaccine_id) AS no_of_vaccinations, (SELECT name FROM vaccines WHERE id = vaccination_details.vaccine_id) AS vaccine_name FROM vaccination_details WHERE (SELECT animal_type FROM animal WHERE id = vaccination_details.animal_id) = '${animal_type}' AND (SELECT farma_id FROM farma WHERE farma_id ='${farma_id}') = '${farma_id}' AND confirmed = 'N';`,
         availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, cycle, period, injection_area, (cycle*period) AS no_of_vaccinations FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
         feeds: `SELECT id, name, description, quantity, quantity_measure, IF(quantity_measure >= 1000, 'kg', 'g') AS measure, stock_date, expected_restock_date FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}';`,
         timetables: `SELECT 
@@ -488,6 +548,51 @@ app.get('/getMaxId/:param', function (request, response) {
 });
 
 
+// TODO test this extensively
+/* send verification link */
+app.get('/verify-email', function (req, res, next) {
+
+// query to return the tokens
+    connection.query('SELECT * FROM triggered_emails WHERE token ="' + req.query.token + '"', function (err, result) {
+        if (err) throw err;
+
+        var type
+        var msg
+
+        console.log(result[0].verify);
+
+        if (result[0].verify == 0) {
+            if (result.length > 0) {
+
+                var data = {
+                    verify: 1
+                }
+
+                connection.query('UPDATE verifications SET ? WHERE email ="' + result[0].email + '"', data, function (err, result) {
+                    if (err) throw err
+
+                });
+
+                type = 'success';
+                msg = 'Your email has been verified';
+
+            } else {
+                console.log('2');
+                type = 'success';
+                msg = 'The email has already verified';
+
+            }
+        } else {
+            type = 'error';
+            msg = 'The email has been already verified';
+        }
+
+        req.flash(type, msg);
+        res.redirect('/');
+    });
+})
+
+
 
 /*
     
@@ -543,7 +648,7 @@ app.post('/auth', function (request, response) {
     if (mail && password) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
         connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, a.password, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${mail}' AND (AES_DECRYPT(FROM_BASE64(a.password), a.farma_id)) =  '${password}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
-            
+
             // If there is an issue with the query, output the error
             if (error) {
                 console.log(error);
@@ -780,7 +885,9 @@ app.post('/updateVet', function (req, res) {
 
 // Confirming appointment
 app.post('/confirmation', function (req, res) {
+
     const animal = storage('animal');
+
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`UPDATE sick_animals SET confirmed = 'Y' WHERE id = '${req.body.edit_sick_animal_id}';`,
         function (error, results, fields) {
@@ -820,11 +927,11 @@ app.post('/confirmation', function (req, res) {
 app.post('/scheduleVaccination', function (req, res) {
     const animal = storage('animal');
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', ${req.body.animalTag},${req.body.vetID});`,
+    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id, confirmed) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', ${req.body.animalTag}, '${req.body.vetID}', 'N');`,
         function (error, results, fields) {
             if (error) throw error;
 
-            console.log(results);
+            results.affectedRows != 1 ? console.log("FAILED TO CREATE SCHEDULE") : sendEmail("2018bit020@std.must.ac.ug", "LALLA");
 
         });
 
@@ -997,6 +1104,63 @@ app.post('/delete/:param', function (request, response) {
         response.redirect('/');
     }
 });
+
+
+// TODO test this also 
+/* send verification link */
+app.post('/send-email', function (req, res, next) {
+
+    var email = req.body.email;
+
+    //console.log(sendEmail(email, fullUrl));
+
+    connection.query('SELECT * FROM triggered_emails WHERE email ="' + email + '"', function (err, result) {
+        if (err) throw err;
+
+        var type = 'success'
+        var msg = 'Email already verified'
+
+        console.log(result[0]);
+
+        // if (result.length > 0) {
+
+        //     var token = randtoken.generate(20);
+
+        //     if (result[0].verify == 0) {
+        //         var sent = sendEmail(email, subject, user_name, token);
+        //         if (sent != '0') {
+
+        //             var data = {
+        //                 token: token
+        //             }
+
+        //             connection.query('UPDATE verifications SET ? WHERE email ="' + email + '"', data, function (err, result) {
+        //                 if (err) throw err
+
+        //             })
+
+        //             type = 'success';
+        //             msg = 'The verification link has been sent to your email address';
+
+        //         } else {
+        //             type = 'error';
+        //             msg = 'Something goes to wrong. Please try again';
+        //         }
+        //     }
+
+
+        // } else {
+        //     console.log('2');
+        //     type = 'error';
+        //     msg = 'The Email is not registered with us';
+
+        // }
+
+        // req.flash(type, msg);
+        res.redirect('/');
+    });
+});
+
 
 
 app.listen(3000, function () {

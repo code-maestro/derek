@@ -19,9 +19,9 @@
             type="text/css" />
         <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
-         
+
         <link rel="stylesheet" href="../css/style.css" type="text/css" />
-        
+
         <link rel="stylesheet" href="https://fonts.googleapis.com/css" type="text/css" />
         <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
         <link href="../vendor/fontawesome/css/fontawesome.css" rel="stylesheet" type="text/css" />
@@ -870,7 +870,8 @@
                                                 action="/newVaccine">
 
                                                 <div class="col-md-3">
-                                                    <label for="vaccine-name" class="form-label fw-bold"> Vaccine Name </label>
+                                                    <label for="vaccine-name" class="form-label fw-bold"> Vaccine Name
+                                                    </label>
                                                     <input id="vaccine-name" type="text" class="form-control"
                                                         name="vaccineName" spellcheck="false" data-ms-editor="true"
                                                         value="">
@@ -885,8 +886,10 @@
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <label for="disease-name" class="form-label fw-bold"> Intended for Disease </label>
-                                                    <select id="disease-name" class="form-select" name="diseaseID" required> </select>
+                                                    <label for="disease-name" class="form-label fw-bold"> Intended for
+                                                        Disease </label>
+                                                    <select id="disease-name" class="form-select" name="diseaseID"
+                                                        required> </select>
                                                 </div>
 
                                                 <div class="col-md-3">
@@ -910,7 +913,8 @@
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <label for="vaccination-cycle" class="form-label fw-bold"> Cycle </label>
+                                                    <label for="vaccination-cycle" class="form-label fw-bold"> Cycle
+                                                    </label>
                                                     <input id="vaccination-cycle" type="number" class="form-control"
                                                         name="vaccineCycle" spellcheck="false" data-ms-editor="true"
                                                         value="">
@@ -1095,7 +1099,7 @@
                                                     </select>
                                                 </div>
 
-                                                <input id="vetID" type="number" name="vetID" hidden>
+                                                <input id="vetID" type="text" name="vetID" hidden >
 
                                                 <div class="col-md-3">
                                                     <label for="vet-hospital" class="form-label fw-bold"> Station
@@ -2473,6 +2477,7 @@
             </div>
         </div>
 
+
         <!-- Edt Vet Modal -->
         <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aaria-labelledby="editVetToggleLabel" aria-hidden="true">
@@ -2734,6 +2739,92 @@
 
                         <!-- Sick Animal Edit Form -->
                         <form method="POST" action="/confirmation" class="row g-3">
+                            <!-- HEALTHY ANIMALS -->
+                            <div class="col-md-4">
+                                <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG </label>
+                                <input id="edit-sick-animal-tag" type="text" class="form-control" name="editSickTag"
+                                    spellcheck="false" data-ms-editor="true" readonly>
+                            </div>
+
+                            <input id="edit-sick-animal-id" type="number" name="edit_sick_animal_id" hidden>
+                            <input id="update-vet-mail" type="text" name="update_vet_mail" hidden>
+
+                            <div class="col-md-4">
+                                <label for="edit-reported-date" class="form-label fw-bold"> First Signs
+                                    Date </label>
+                                <input onchange="valDate()" id="edit-reported-date" type="date" class="form-control"
+                                    name="editReportedDate" spellcheck="false" data-ms-editor="true">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="edit-disease-suspected" class="form-label fw-bold"> Suspected Disease
+                                </label>
+                                <select id="edit-disease-s" class="form-select" name="disease_suspected">
+                                    <option selected id="edit-disease-suspected" value=""></option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="signs_and_symptoms" class="form-label fw-bold"> Signs and Symptoms </label>
+                                <textarea class="form-control" name="editSSText" id="edit-ss-text" rows="3"></textarea>
+                            </div>
+
+                            <!-- SCHEDULE A TREATMENT APPOINTMENT -->
+                            <div class="col-md-12 pt-4">
+                                <h5 class="font-monospace"> TREATMENT APPOINTMENT </h5>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="edit-appointment_date" class="form-label fw-bold"> Appointment Date </label>
+                                <input min="2022-01-01" onchange="validateDate('edit-appointment_date')"
+                                    id="edit-appointment_date" type="date" class="form-control" required
+                                    name="editAppointmentDate">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="edit-appointment_time" class="form-label fw-bold"> Appointment Time </label>
+                                <input id="edit-appointment_time" type="time" class="form-control" required
+                                    name="editAppointmentTime">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="update-vet-name" class="form-label fw-bold"> Vet Name </label>
+                                <select id="update-vet-name" class="form-select" name="editVetName">
+                                    <option selected id="edit-vets" value=""></option>
+                                </select>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end" id="action_btns">
+                                <button class="btn btn-secondary me-md-2 font-monospace" data-bs-dismiss="modal"
+                                    type="button"> CLOSE </button>
+                                <button class="btn btn-primary font-monospace" id="confirm_btn" type="submit"> CONFIRM
+                                    APPOINTMENT </button>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Edit Pending Modal -->
+        <div class="modal fade" id="editPendingModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
+            aria-hidden="true" aria-labelledby="editPendingModalToggle" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content px-2">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold" id="editPendingModalLabel"> PENDING VACCINACTION  </h5>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                        </div>
+
+                        <!-- Sick Animal Edit Form -->
+                        <form method="POST" action="/send-email" class="row g-3">
                             <!-- HEALTHY ANIMALS -->
                             <div class="col-md-4">
                                 <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG </label>
