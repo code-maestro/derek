@@ -165,10 +165,7 @@ async function getUsers() {
 
 
 //send email
-function sendEmail(email, token) {
-
-    var email = email;
-    var token = token;
+function sendEmail(email) {
 
     var mail = nodemailer.createTransport({
         service: 'gmail',
@@ -200,15 +197,15 @@ function sendEmail(email, token) {
 
     var mailOptions = {
         from: 'NO REPLY',
-        to: email,
-        subject: `params.subject`,
+        to: email.email_address,
+        subject: email.email_subject,
         template: 'confirm',
         context: {
-            heading: `params.heading}`,
-            vet_name: `params.vet_name}`,
-            message: `arams.message}`,
-            farma_name: `params.farma_name}`,
-            vet_email: `params.vet_mail}`
+            heading: email.email_subject,
+            vet_name: email.vet_name,
+            message: email.email_body,
+            farma_name: email.email_farma_name,
+            vet_email: email.email_address
         }
 
     };
@@ -216,12 +213,31 @@ function sendEmail(email, token) {
     mail.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
-            return 1
+            return ({ message: `FAILED TO SEND EMAIL TO  ${email.email_address} ` });
         } else {
-            console.log("EMAIL SENT SUCCESSFULLY");
-            return 0
+
+            console.log(`EMAIL TO ${email.email_address} SENT SUCCESSFULLY`);
+
+            // Execute SQL query that'll insert into the vaccines table
+            connection.query(`UPDATE triggered_emails SET status = 'Y' WHERE email_address = '${email.email_address}' AND confirmation_id = '${email.email_confirmation_id}';`, function (error, results, fields) {
+
+                if (error) {
+
+                    console.log(error);
+
+                } else {
+
+                    console.log(results);
+
+                }
+
+            });
+
+            return ({ message: `EMAIL TO ${email} SENT SUCCESSFULLY` });
         }
+
     });
+
 }
 
 
@@ -552,7 +568,7 @@ app.get('/getMaxId/:param', function (request, response) {
 /* send verification link */
 app.get('/verify-email', function (req, res, next) {
 
-// query to return the tokens
+    // query to return the tokens
     connection.query('SELECT * FROM triggered_emails WHERE token ="' + req.query.token + '"', function (err, result) {
         if (err) throw err;
 
@@ -925,18 +941,64 @@ app.post('/confirmation', function (req, res) {
 
 // Inserting Vaccines into the DB
 app.post('/scheduleVaccination', function (req, res) {
+
     const animal = storage('animal');
+
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id, confirmed) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', ${req.body.animalTag}, '${req.body.vetID}', 'N');`,
+
         function (error, results, fields) {
-            if (error) throw error;
 
-            results.affectedRows != 1 ? console.log("FAILED TO CREATE SCHEDULE") : sendEmail("2018bit020@std.must.ac.ug", "LALLA");
+            if (error) {
 
+                console.log(error);
+
+            } else {
+
+                if (results.affectedRows != 1) {
+
+                    console.log("FAILED TO CREATE SCHEDULE")
+
+                } else {
+
+                    // Execute SQL query that'll insert into the vaccines table
+                    connection.query(`SELECT * FROM triggered_emails WHERE status = 'N'`, function (error, results, fields) {
+
+                        if (error) {
+
+                            console.log(error);
+
+                        } else {
+
+                            results.forEach(email => {
+
+                                const email_content = {
+                                    email_address: email.email_address != null ? email.email_address : "",
+                                    email_subject: email.subject != null ? email.subject : "",
+                                    email_body: email.body != null ? email.body : "",
+                                    email_vet_name: email.vet_name != null ? email.vet_name : "",
+                                    email_farma_name: email.farma_name != null ? email.farma_name : "",
+                                    email_animal_tag: email.animal_tag != null ? email.animal_tag : "",
+                                    email_confirmation_id: email.confirmation_id != null ? email.confirmation_id : " "
+                                }
+
+                                sendEmail(email_content);
+
+                            })
+
+                        }
+
+                    });
+
+                }
+
+            }
         });
 
     res.redirect(`/animal/${animal}`);
+
     return;
+
 })
 
 

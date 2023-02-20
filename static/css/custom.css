@@ -33,17 +33,21 @@
   -moz-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
+
 .Neon-input-text h3 {
   margin: 0;
   font-size: 18px;
 }
+
 .Neon-input-text span {
   font-size: 12px;
 }
+
 .Neon-input-choose-btn.blue {
   color: #008BFF;
   border: 1px solid #008BFF;
 }
+
 .Neon-input-choose-btn {
   display: inline-block;
   padding: 8px 14px;
@@ -59,7 +63,7 @@
   border: 1px solid #c6c6c6;
   vertical-align: middle;
   background-color: #fff;
-  box-shadow: 0px 1px 5px rgba(0,0,0,0.05);
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.05);
   -webkit-transition: all 0.2s;
   -moz-transition: all 0.2s;
   transition: all 0.2s;
@@ -67,51 +71,75 @@
 
 body {
   font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  background-color: rgb(113, 188, 104);}
+  /* background-color: rgb(101 171 93); */
+}
 
 p {
   color: #b3b3b3;
-  font-weight: 300; }
+  font-weight: 300;
+}
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
 
-a, a:hover {
-  text-decoration: none !important; }
+a,
+a:hover {
+  text-decoration: none !important;
+}
 
 .content {
-  padding: 7rem 0; }
+  padding: 7rem 0;
+}
 
 h2 {
-  font-size: 20px; }
+  font-size: 20px;
+}
 
 .chosen-container-multi {
-  border: none; }
-  .chosen-container-multi .chosen-choices {
-    background-image: none;
-    padding: 7px;
-    border: none !important;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1) !important;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1) !important; }
-    .chosen-container-multi .chosen-choices li.search-choice {
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      padding-top: 7px;
-      padding-bottom: 7px;
-      padding-left: 10px;
-      padding-right: 26px;
-      border: none;
-      background-image: none; }
+  border: none;
+}
+
+.chosen-container-multi .chosen-choices {
+  background-image: none;
+  padding: 7px;
+  border: none !important;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+.chosen-container-multi .chosen-choices li.search-choice {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 10px;
+  padding-right: 26px;
+  border: none;
+  background-image: none;
+}
 
 .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
   top: 9px;
-  right: 8px; }
+  right: 8px;
+}
 
 .chosen-container-multi .chosen-choices li.search-field input[type="text"] {
   height: 32px;
-  font-size: 14px; }
+  font-size: 14px;
+}
 
 .chosen-container .chosen-drop {
   border: none !important;
@@ -120,15 +148,18 @@ h2 {
   margin-top: 3px;
   border-radius: 4px;
   -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2) !important;
-  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2) !important; }
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2) !important;
+}
 
 /*Colors*/
 .color-1 .chosen-container-multi .chosen-choices li.search-choice {
-  background-color: #e5e4cc; }
+  background-color: #e5e4cc;
+}
 
 .color-2 .chosen-container-multi .chosen-choices li.search-choice {
-  background-color: #c7f0db; }
+  background-color: #c7f0db;
+}
 
 .color-3 .chosen-container-multi .chosen-choices li.search-choice {
-  background-color: #d3f4ff; }
-
+  background-color: #d3f4ff;
+}
