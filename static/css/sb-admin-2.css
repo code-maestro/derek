@@ -1744,7 +1744,7 @@ pre code {
 
 .table-dark {
   color: #fff;
-  background-color: #5a5c69;
+  background-color: #466D1D;
 }
 
 .table-dark th,
@@ -2357,7 +2357,7 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #4e73df;
+  background-color: #466D1D;
   border-color: #4e73df;
 }
 
@@ -3188,7 +3188,7 @@ input[type="button"].btn-block {
 .dropdown-item {
   display: block;
   width: 100%;
-  padding: 0.25rem 1.5rem;
+  /* padding: 0.25rem 1.5rem; */
   clear: both;
   font-weight: 400;
   color: #3a3b45;
@@ -9592,7 +9592,7 @@ button.bg-dark:focus {
 }
 
 .text-primary {
-  color: #4e73df !important;
+  color: rgb(12 117 0) !important;
 }
 
 a.text-primary:hover, a.text-primary:focus {
@@ -9901,8 +9901,8 @@ a:focus {
 }
 
 .bg-gradient-primary {
-  background-color: #4e73df;
-  background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+  background-color: #85BB65;
+  background-image: linear-gradient(180deg,  rgb(19 130 7) 10%, rgb(12 117 0) 100%);
   background-size: cover;
 }
 
@@ -10232,7 +10232,7 @@ a:focus {
 }
 
 .topbar .dropdown-list .dropdown-header {
-  background-color: #4e73df;
+  background-color: rgb(12 117 0);
   border: 1px solid #4e73df;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -10367,7 +10367,7 @@ a:focus {
 
 .sidebar .nav-item .collapse .collapse-inner,
 .sidebar .nav-item .collapsing .collapse-inner {
-  padding: .5rem 0;
+  padding: .25rem 0;
   min-width: 10rem;
   font-size: 0.85rem;
   margin: 0 0 1rem 0;
@@ -10386,10 +10386,10 @@ a:focus {
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item,
 .sidebar .nav-item .collapsing .collapse-inner .collapse-item {
-  padding: 0.5rem 1rem;
-  margin: 0 0.5rem;
+  padding: 0.4rem 1rem;
+  /* margin: 0 0.5rem; */
   display: block;
-  color: #3a3b45;
+  color: #3b933b;
   text-decoration: none;
   border-radius: 0.35rem;
   white-space: nowrap;

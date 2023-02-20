@@ -79,12 +79,15 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <span class="sidebar-brand d-flex align-items-center justify-content-center">
-                    <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-laugh-wink"></i>
+                <span class="sidebar-brand d-flex align-items-center justify-content-start">
+                    <div class="sidebar-brand-icon">
+
+                        <img width="60" src="/../images/LOGO.png" />
+
+                        <!-- <i class="fas fa-laugh-wink"></i> -->
                         <!-- <i class="fas fa-sheep"></i> -->
                     </div>
-                    <div class="sidebar-brand-text mx-3"> farma <sup> beta </sup></div>
+                    <div class="sidebar-brand-text mr-2"> farma <sup> v1 </sup></div>
                 </span>
 
                 <!-- Divider -->
@@ -92,7 +95,7 @@
 
 
                 <!-- Nav Item - home -->
-                <li class="nav-item">
+                <li class="nav-item font-weight-bold">
                     <span class="nav-link" onclick="gohome()">
                         <i class="fa-solid fa-gauge"></i>
                         <span> Home </span>
@@ -107,7 +110,7 @@
                 </div>
 
                 <!-- Nav Item -  Register -->
-                <li class="nav-item" onclick="getAnimalTableData()">
+                <li class="nav-item font-weight-bold font-weight-bold" onclick="getAnimalTableData()">
                     <span class="nav-link collapsed" data-toggle="collapse" data-target="#reg" aria-expanded="true"
                         aria-controls="reg">
                         <i class="fa-solid fa-address-card"></i>
@@ -124,7 +127,7 @@
                 </li>
 
                 <!-- Nav Item - Vaccination -->
-                <li class="nav-item">
+                <li class="nav-item font-weight-bold">
                     <span class="nav-link collapsed" data-toggle="collapse" data-target="#vaccines" aria-expanded="true"
                         aria-controls="vaccines">
                         <i class="fa-solid fa-address-card"></i>
@@ -150,7 +153,7 @@
                 </li>
 
                 <!-- Nav Item - Breeding -->
-                <li class="nav-item" onclick="getBreedAnimals()">
+                <li class="nav-item font-weight-bold" onclick="getBreedAnimals()">
                     <span class="nav-link" data-bs-toggle="modal" href="#breedingAnimalModalToggle" role="button">
                         <i class="fa-solid fa-address-card"></i>
                         <span> Breeding </span>
@@ -160,7 +163,7 @@
 
                 <!-- TODO Test the routing created off  at 20220910-1804 -->
                 <!-- Nav Item - New Borns -->
-                <li class="nav-item" onclick="getFeedsTableData()">
+                <li class="nav-item font-weight-bold" onclick="getFeedsTableData()">
                     <span class="nav-link collapsed" data-toggle="collapse" data-target="#babies" aria-expanded="true"
                         aria-controls="babies">
                         <i class="fa-solid fa-address-card"></i>
@@ -185,7 +188,7 @@
 
                 <!-- TODO implement function - populateGraphs() -->
                 <!-- Nav Item - Charts -->
-                <li class="nav-item">
+                <li class="nav-item font-weight-bold">
                     <span class="nav-link collapsed" data-toggle="collapse" data-target="#charts" aria-expanded="true"
                         aria-controls="charts">
                         <i class="fas fa-fw fa-chart-area"></i>
@@ -203,7 +206,7 @@
 
                 <!-- TODO implement function - viewDiseases() to handle the click event -->
                 <!-- Nav Item - Diseases -->
-                <!-- <li class="nav-item">
+                <!-- <li class="nav-item font-weight-bold">
                     <span class="nav-link collapsed" data-toggle="modal" data-target="#diseaseModalToggle"
                         aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="fas fa-disease"></i>
@@ -213,7 +216,7 @@
 
                 <!-- TODO edit a sick animal -->
                 <!-- Nav Item - Symptoms -->
-                <li class="nav-item">
+                <li class="nav-item font-weight-bold">
                     <span class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#sick"
                         aria-expanded="true" aria-controls="sick">
                         <i class="fas fa-flag"></i>
@@ -239,7 +242,7 @@
                 </div>
 
                 <!-- Nav Item - Vets -->
-                <li class="nav-item">
+                <li class="nav-item font-weight-bold">
                     <span class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#vets"
                         aria-expanded="true" aria-controls="vets">
                         <i class="fas fa-flag"></i>
@@ -267,7 +270,7 @@
                 </div>
 
                 <!-- Nav Item -Profile Update -->
-                <li class="nav-item">
+                <li class="nav-item font-weight-bold">
                     <span onclick="renderFarma()" class="nav-link" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                         <i class="fa-solid fa-address-card"></i>
@@ -318,7 +321,7 @@
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
                             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                            <li class="nav-item dropdown no-arrow d-sm-none">
+                            <li class="nav-item font-weight-bold dropdown no-arrow d-sm-none">
                                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-search fa-fw"></i>
@@ -342,7 +345,7 @@
                             </li>
 
                             <!-- Nav Item - Alerts -->
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="nav-item font-weight-bold dropdown no-arrow mx-1">
                                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-bell fa-fw"></i>
@@ -372,7 +375,7 @@
                             </li>
 
                             <!-- Nav Item - Logout -->
-                            <li class="nav-item">
+                            <li class="nav-item font-weight-bold">
                                 <span class="nav-link" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fa-solid fa-power-off"></i>
                                 </span>
@@ -1099,7 +1102,7 @@
                                                     </select>
                                                 </div>
 
-                                                <input id="vetID" type="text" name="vetID" hidden >
+                                                <input id="vetID" type="text" name="vetID" hidden>
 
                                                 <div class="col-md-3">
                                                     <label for="vet-hospital" class="form-label fw-bold"> Station
@@ -2816,7 +2819,7 @@
                 <div class="modal-content px-2">
 
                     <div class="modal-header">
-                        <h5 class="modal-title fw-bold" id="editPendingModalLabel"> PENDING VACCINACTION  </h5>
+                        <h5 class="modal-title fw-bold" id="editPendingModalLabel"> PENDING VACCINACTION </h5>
                     </div>
                     <div class="modal-body">
 
