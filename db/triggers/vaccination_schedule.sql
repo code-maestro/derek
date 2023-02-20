@@ -19,10 +19,10 @@ BEGIN
             (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = (SELECT farma_id FROM animal WHERE id = NEW.animal_id)),
             CONCAT((SELECT CONCAT(first_name, ' ', last_name) FROM farma
                         WHERE farma_id = (SELECT farma_id FROM animal WHERE id = NEW.animal_id)),
-                'has scheduled a vaccination of their ',
+                ' has scheduled a vaccination of their ',
                 (SELECT animal_tag FROM animal WHERE id = NEW.animal_id),
-                'against ', (SELECT disease_name FROM disease WHERE id IN (SELECT disease_id FROM vaccines WHERE id = NEW.vaccine_id )),
-                'on the ', NEW.first_date, ' for details call',
+                ' against ', (SELECT disease_name FROM disease WHERE id IN (SELECT disease_id FROM vaccines WHERE id = NEW.vaccine_id )),
+                ' on the ',  NEW.first_date, '  for details call ',
                 (SELECT phone FROM farma WHERE farma_id = (SELECT farma_id FROM animal WHERE id = NEW.animal_id))),
             (SELECT animal_tag FROM animal WHERE id = NEW.animal_id),
             UUID());
