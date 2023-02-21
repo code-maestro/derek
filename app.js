@@ -93,52 +93,6 @@ function checkFileType(file, cb) {
     }
 }
 
-// function to send email
-const sendmail = async (params) => {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'ell889lle@gmail.com',
-            pass: 'lcmdbftpznmgfqft'
-        }
-    });
-
-    const handlebarOptions = {
-        viewEngine: {
-            extName: ".handlebars",
-            partialsDir: path.resolve('./public/views'),
-            defaultLayout: false,
-        },
-        viewPath: path.resolve('./public/views'),
-        extName: ".handlebars",
-    }
-
-    transporter.use('compile', hbs(handlebarOptions));
-
-    var mailOptions = {
-        from: 'ell889lle@gmail.com',
-        to: `${params.vet_mail}`,
-        subject: `${params.subject}`,
-        template: 'email',
-        context: {
-            heading: `${params.heading}`,
-            vet_name: `${params.vet_name}`,
-            message: `${params.message}`,
-            farma_name: `${params.farma_name}`,
-            vet_email: `${params.vet_mail}`
-        }
-
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-}
-
 
 // // Schedule tasks to be run on the server.
 // cron.schedule('*/150 * * * * *', function () {
@@ -164,7 +118,7 @@ async function getUsers() {
 }
 
 
-//send email
+//sFUNCTION TO SEND EMAILS 
 function sendEmail(email) {
 
     var mail = nodemailer.createTransport({
@@ -174,14 +128,6 @@ function sendEmail(email) {
             pass: 'lcmdbftpznmgfqft'
         }
     });
-
-    // var mailOptions = {
-    //     from: 'ell889lle@gmail.com',
-    //     to: email,
-    //     subject: 'ETEST',
-    //     html: '<p>You requested for email verification, kindly use this <a href="http://localhost:3000/verify-email?token=' + token + '">link</a> to verify your email address</p>'
-
-    // };
 
     const handlebarOptions = {
         viewEngine: {
@@ -205,7 +151,9 @@ function sendEmail(email) {
             vet_name: email.vet_name,
             message: email.email_body,
             farma_name: email.email_farma_name,
-            vet_email: email.email_address
+            vet_email: email.email_address,
+            conff: email.confirmation_id,
+            confirmation_link: `http://localhost:3000/confirm?token="${email.email_confirmation_id}"`
         }
 
     };
@@ -566,45 +514,43 @@ app.get('/getMaxId/:param', function (request, response) {
 
 // TODO test this extensively
 /* send verification link */
-app.get('/verify-email', function (req, res, next) {
+app.get('/confirm', function (req, res) {
 
     // query to return the tokens
-    connection.query('SELECT * FROM triggered_emails WHERE token ="' + req.query.token + '"', function (err, result) {
-        if (err) throw err;
+    connection.query(`SELECT * FROM triggered_emails WHERE confirmation_id = ${req.query.token}`, function (err, result) {
 
-        var type
-        var msg
-
-        console.log(result[0].verify);
-
-        if (result[0].verify == 0) {
-            if (result.length > 0) {
-
-                var data = {
-                    verify: 1
-                }
-
-                connection.query('UPDATE verifications SET ? WHERE email ="' + result[0].email + '"', data, function (err, result) {
-                    if (err) throw err
-
-                });
-
-                type = 'success';
-                msg = 'Your email has been verified';
-
-            } else {
-                console.log('2');
-                type = 'success';
-                msg = 'The email has already verified';
-
-            }
+        if (err) {
+            console.log(err);
+            res.send({ message: " NOOOO LOL " });
         } else {
-            type = 'error';
-            msg = 'The email has been already verified';
+            console.log(result[0]);
+
+            res.send({ message: "we have seen" });
         }
 
-        req.flash(type, msg);
-        res.redirect('/');
+        // if (result[0].verify == 0) {
+        //     if (result.length > 0) {
+        //         connection.query('UPDATE verifications SET ? WHERE email ="' + result[0].email + '"', data, function (err, result) {
+        //             if (err) throw err
+
+        //         });
+
+        //         type = 'success';
+        //         msg = 'Your email has been verified';
+
+        //     } else {
+        //         console.log('2');
+        //         type = 'success';
+        //         msg = 'The email has already verified';
+
+        //     }
+        // } else {
+        //     type = 'error';
+        //     msg = 'The email has been already verified';
+        // }
+
+        // req.flash(type, msg);
+        // res.redirect('/');
     });
 })
 
@@ -916,6 +862,7 @@ app.post('/confirmation', function (req, res) {
             }
 
             if (results.affectedRows === 1) {
+
                 console.log(results.affectedRows);
                 console.log(req.body.edit_sick_animal_id);
 
@@ -928,7 +875,7 @@ app.post('/confirmation', function (req, res) {
                     vet_mail: `${req.body.update_vet_mail}`
                 };
 
-                sendmail(params);
+                // sendmail(params);
             }
 
         });
@@ -979,7 +926,8 @@ app.post('/scheduleVaccination', function (req, res) {
                                     email_vet_name: email.vet_name != null ? email.vet_name : "",
                                     email_farma_name: email.farma_name != null ? email.farma_name : "",
                                     email_animal_tag: email.animal_tag != null ? email.animal_tag : "",
-                                    email_confirmation_id: email.confirmation_id != null ? email.confirmation_id : " "
+                                    email_confirmation_id: email.confirmation_id != null ? email.confirmation_id : " ",
+                                    email_type: "confirmation"
                                 }
 
                                 sendEmail(email_content);
