@@ -129,7 +129,7 @@ const formatTime = (param) => {
 
 // Function to get Required data to report a sick animal
 const getRequiredData = async () => {
-  const diseases = await getListing('diseases');
+  const diseases = await getListing('allDiseases');
   const animals = await getListing('healthyAnimals');
   const vets = await getListing('vets');
 
