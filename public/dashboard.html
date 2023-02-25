@@ -1154,6 +1154,7 @@
             </div>
         </div>
 
+
         <!-- Pending Vaccinations Modal  -->
         <div class="modal fade" id="pendingVaccinationsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="vaccinationModalToggleLabel" aria-hidden="true">
@@ -1688,10 +1689,13 @@
                                     disabled>
                             </div>
 
-                            <input type="number" class="form-control" id="breeding_animal_id" name="breeding_animal_id"
-                                hidden>
-                            <input type="text" class="form-control" id="gestation_period" name="gestation_period"
-                                hidden>
+                                <input type="number" class="form-control" id="breeding_animal_id"
+                                    name="breeding_animal_id" hidden>
+
+                            <div class="col-md-6">
+                                <label for="breeding_gender" class="form-label fw-bold"> gestation_period </label>
+                                <input type="text" class="form-control" id="gestation_period" name="gestation_period" readonly>
+                            </div>
 
                             <div class="col-md-6">
                                 <label for="breeding_date" class="form-label fw-bold"> Breeding Date </label>
@@ -1699,12 +1703,12 @@
                                     id="breeding_date" required>
                             </div>
 
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <label for="expected_delivery_date" class="form-label fw-bold"> Expected Delivery Date
                                 </label>
                                 <input type="date" class="form-control" name="expected_due_date" id="expected_due_date"
                                     readonly>
-                            </div>
+                            </div> -->
 
                             <div class="d-grid gap-2 d-md-flex px-2 pt-4 justify-content-md-end">
                                 <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
@@ -3025,6 +3029,7 @@
         <!-- Page level plugins -->
         <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
 
+        
     </body>
 
 </html>

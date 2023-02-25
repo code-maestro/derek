@@ -109,7 +109,6 @@ const formatDate = (param) => {
 }
 
 // Function to farmat the dates for html form
-
 function padTo2Digits(num) {
   return num.toString().padStart(2, '0');
 }
