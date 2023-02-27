@@ -33,6 +33,8 @@ async function getScheduleListing(param) {
   }
 }
 
+
+
 // Getting all animals listings from backend
 async function getMaxId(param) {
   let url = `/getMaxId/${param}`;
@@ -47,40 +49,62 @@ async function getMaxId(param) {
 
 // FOR REGISTERED ANIMALS MODAL
 // Table data for all animals
-async function getAnimalTableData() {
+async function getAnimalTableData(inputID) {
+
   let last = await getMaxId('animal_id');
-  let list = await getListing('allAnimals');
 
   if (last === undefined) {
 
     console.log(browserUrl);
 
-    document.getElementById("animal-tag").setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-0001`);
+    document.getElementById(`${inputID}`).setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-0001`);
   } else {
     last.last_id.forEach(id => {
-      document.getElementById("animal-tag").setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-000${id.LAST + 1}`);
+      document.getElementById(`${inputID}`).setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-000${id.LAST + 1}`);
     });
 
   }
 
+  if (inputID === 'new-born-tag') {
 
-  let html = "";
-  let htmlSegment = "";
+    let listed = await getListing('expectingToday');
 
-  const con = document.getElementById('animalListing');
+    console.log(listed);
 
-  list.listing.forEach(animal => {
+    let heavyListed = '';
+    let heavyList = `<option selected disabled> Choose a Parent Animal ... </option>`;
 
-    const dobYear = new Date(Date.parse(animal.dob));
-    const regDate = new Date(Date.parse(animal.reg_date));
+    const heavy_lstd = document.getElementById('parent-tag');
 
-    // AGE CALCULATION
-    const ageYears = today.getFullYear() - dobYear.getFullYear();
-    const ageMonths = today.getMonth() - dobYear.getMonth();
-    // const ageDays = today.getDay() - dobYear.getDay();
-    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
+    listed.listing.forEach(heavy => {
+      heavyListed = ` <option id="${heavy.id}" value="${heavy.animal_tag}">  ${heavy.animal_tag} </option> `;
+      heavyList += heavyListed;
+    });
 
-    htmlSegment = `
+    heavy_lstd.innerHTML = heavyList;
+
+  }
+
+  else {
+    let list = await getListing('allAnimals');
+
+    let html = "";
+    let htmlSegment = "";
+
+    const con = document.getElementById('animalListing');
+
+    list.listing.forEach(animal => {
+
+      const dobYear = new Date(Date.parse(animal.dob));
+      const regDate = new Date(Date.parse(animal.reg_date));
+
+      // AGE CALCULATION
+      const ageYears = today.getFullYear() - dobYear.getFullYear();
+      const ageMonths = today.getMonth() - dobYear.getMonth();
+      // const ageDays = today.getDay() - dobYear.getDay();
+      const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
+
+      htmlSegment = `
         <tr class="justify-content-center" id="${animal.id}">
           <th scope="row" class="text-center" id="id"> ${animal.id} </th>
           <td class="text-center"> ${animal.animal_tag} </td>
@@ -104,11 +128,12 @@ async function getAnimalTableData() {
         </tr>
       `;
 
-    html += htmlSegment;
+      html += htmlSegment;
 
-  });
+    });
 
-  con.innerHTML = html;
+    con.innerHTML = html;
+  }
 
 }
 

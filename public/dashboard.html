@@ -110,7 +110,7 @@
                 </div>
 
                 <!-- Nav Item -  Register -->
-                <li class="nav-item font-weight-bold font-weight-bold" onclick="getAnimalTableData()">
+                <li class="nav-item font-weight-bold font-weight-bold" onclick="getAnimalTableData('animal-tag')">
                     <span class="nav-link collapsed" data-toggle="collapse" data-target="#reg" aria-expanded="true"
                         aria-controls="reg">
                         <i class="fa-solid fa-address-card"></i>
@@ -161,16 +161,41 @@
                 </li>
 
 
-                <!-- TODO Test the routing created off  at 20220910-1804 -->
                 <!-- Nav Item - New Borns -->
+                <li class="nav-item font-weight-bold" onclick="getExpectedNewBorns()">
+                    <span class="nav-link" data-bs-toggle="modal" href="#newBornsModalToggle" role="button">
+                        <i class="fa-solid fa-address-card"></i>
+                        <span> Expected New Borns </span>
+                    </span>
+                </li>
+
+
+                <!-- Nav Item -  New Borns -->
+                <li class="nav-item font-weight-bold font-weight-bold">
+                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#regNewBorn"
+                        aria-expanded="true" aria-controls="regNewBorn">
+                        <i class="fa-solid fa-address-card"></i>
+                        <span> New Borns </span>
+                    </span>
+                    <div id="regNewBorn" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white collapse-inner rounded">
+                            <span class="collapse-item" data-bs-toggle="modal" href="#registerNewBornModalToggle" onclick="getAnimalTableData('new-born-tag')" role="button"> Register a New Born </span>
+                            <span class="collapse-item" data-bs-toggle="modal" href="#newBornsModalToggle" onclick="getExpectedNewBorns()" role="button"> Expected New Borns </span>
+                        </div>
+                    </div>
+                </li>
+
+
+                <!-- TODO Test the routing created off  at 20220910-1804 -->
+                <!-- Nav Item - Feeds -->
                 <li class="nav-item font-weight-bold" onclick="getFeedsTableData()">
-                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#babies" aria-expanded="true"
-                        aria-controls="babies">
+                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#feeds" aria-expanded="true"
+                        aria-controls="feeds">
                         <i class="fa-solid fa-address-card"></i>
                         <span> Feeds </span>
                     </span>
-                    <div id="babies" class="collapse" aria-labelledby="headingUtilities"
-                        data-parent="#accordionSidebar">
+                    <div id="feeds" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                         <div class="bg-white collapse-inner rounded">
                             <span class="collapse-item" data-bs-toggle="modal" href="#registerFeedStockModalToggle"
                                 role="button"> Register Feeds Stock </span>
@@ -185,6 +210,7 @@
                         </div>
                     </div>
                 </li>
+
 
                 <!-- TODO implement function - populateGraphs() -->
                 <!-- Nav Item - Charts -->
@@ -213,6 +239,7 @@
                         <span> Diseases </span>
                     </span>
                 </li> -->
+
 
                 <!-- TODO edit a sick animal -->
                 <!-- Nav Item - Symptoms -->
@@ -707,7 +734,7 @@
                                                     <label for="animal-tag" class="form-label fw-bold"> ANIMAL TAG
                                                     </label>
                                                     <input id="animal-tag" type="text" placeholder="Disabled input"
-                                                        class="form-control" name="animalTag" id="animal-tag">
+                                                        class="form-control" name="animalTag" id="animal-tag" readonly>
                                                     <div class="valid-feedback"> Looks good! </div>
                                                 </div>
 
@@ -1301,42 +1328,35 @@
                         <div class="container">
 
                             <div class="row px-2 py-4">
-                                <div class="col-auto me-auto fw-bold" id="newBornModalToggleLabel"> </div>
+                                <div class="col-auto me-auto fw-bold" id="newBornModalToggleLabel"> NEW BORN
+                                    REGISTRATION FORM </div>
                             </div>
 
                             <div class="row mt-4">
                                 <div class="col">
                                     <div class="card">
                                         <div class="card-body">
-                                            <!-- Vaccination Form -->
-                                            <form class="row g-3 needs-validation" novalidate method="POST" action="">
-                                                <!-- Vaccination Records -->
-                                                <div class="col-md-12">
-                                                    <label for="age-years" class="form-label fw-bold"> NEW BORN
-                                                        REGISTRATION FORM </label>
-                                                </div>
+                                            <!-- New Born Form -->
+                                            <form class="row g-3 needs-validation" novalidate method="POST" action="/addNewBorn">
 
                                                 <div class="col-md-6">
-                                                    <label for="new-born-tag" class="form-label fw-bold"> New Born
-                                                        Tag </label>
+                                                    <label for="new-born-tag" class="form-label fw-bold"> New Born Tag
+                                                    </label>
                                                     <input id="new-born-tag" type="text" class="form-control"
                                                         name="newBornTag" spellcheck="false" data-ms-editor="true"
                                                         value="">
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label for="parent-tag" class="form-label fw-bold"> Parent Tag
-                                                    </label>
-                                                    <input id="parent-tag" type="text" class="form-control"
-                                                        name="parentTag" spellcheck="false" data-ms-editor="true"
-                                                        value="">
+                                                    <label for="parent-tag" class="form-label fw-bold"> Parent Tag </label>
+                                                    <select id="parent-tag" class="form-select" name="parentTag" readonly> </select>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <label for="new-born-gender" class="form-label fw-bold"> Gender
                                                     </label>
                                                     <select class="form-select" id="new-born-gender"
-                                                        name="newBornGender" required="">
+                                                        name="newBornGender" required>
                                                         <option selected="" disabled="" value=""> Choose a gender
                                                             ...</option>
                                                         <option value="Male"> Male </option>
@@ -1344,7 +1364,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <label for="new-born-dob" class="form-label fw-bold"> Date of
                                                         Birth </label>
                                                     <input id="new-born-dob" type="date" class="form-control"
@@ -1352,15 +1372,7 @@
                                                         value="">
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    <label for="new-born-age" class="form-label fw-bold"> Date of
-                                                        Birth </label>
-                                                    <input id="new-born-age" type="number" class="form-control"
-                                                        name="newBornAge" spellcheck="false" data-ms-editor="true"
-                                                        value="">
-                                                </div>
-
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <label for="new-born-reg-date" class="form-label fw-bold">
                                                         Registration Date </label>
                                                     <input id="new-born-dob-reg-date" type="date" class="form-control"
@@ -1396,14 +1408,15 @@
                         <div class="container">
 
                             <div class="row px-2 py-4">
-                                <div class="col-auto me-auto fw-bold" id="newBornsModalToggleLabel"> </div>
+                                <div class="col-auto me-auto fw-bold" id="newBornsModalToggleLabel"> List of New Borns
+                                </div>
                             </div>
 
                             <div class="row mt-4">
                                 <div class="col">
                                     <div class="row px-4">
                                         <!-- New Borns Form -->
-                                        <h6 class="fw-bold px-0"> List of new born animals </h6>
+                                        <!-- <h6 class="fw-bold px-0"> List of new born animals </h6> -->
                                         <table id="newBornsTable" class="table table-bordered table-hover table-sm">
                                             <thead class="table-dark">
                                                 <tr>
@@ -1689,12 +1702,13 @@
                                     disabled>
                             </div>
 
-                                <input type="number" class="form-control" id="breeding_animal_id"
-                                    name="breeding_animal_id" hidden>
+                            <input type="number" class="form-control" id="breeding_animal_id" name="breeding_animal_id"
+                                hidden>
 
                             <div class="col-md-6">
                                 <label for="breeding_gender" class="form-label fw-bold"> gestation_period </label>
-                                <input type="text" class="form-control" id="gestation_period" name="gestation_period" readonly>
+                                <input type="text" class="form-control" id="gestation_period" name="gestation_period"
+                                    readonly>
                             </div>
 
                             <div class="col-md-6">
@@ -3029,7 +3043,7 @@
         <!-- Page level plugins -->
         <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
 
-        
+
     </body>
 
 </html>

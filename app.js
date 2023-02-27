@@ -449,13 +449,15 @@ app.get('/getListing/:param', function (request, response) {
                           AND A.gender = 'Female'
                           AND A.animal_type = GP.animal_type AND A.farma_id = '${farma_id}';`,
 
+        expectingToday: `SELECT A.id, A.animal_tag, B.breeding_date, B.expected_due_date, TIMESTAMPDIFF(DAY, CURDATE(), B.expected_due_date) AS DAYS FROM animal A, breeding B WHERE A.id = B.animal_id AND TIMESTAMPDIFF(DAY, CURDATE(), B.expected_due_date) = 0 AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}';`,
+
         expectingAnimals: `SELECT A.id, A.animal_tag, B.breeding_date, B.expected_due_date, TIMESTAMPDIFF(DAY, CURDATE(), B.expected_due_date) AS DAYS FROM animal A, breeding B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}';`,
 
         sickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.vet_id, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
 
         editSickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT symptom_name FROM symptom WHERE disease = (SELECT id FROM disease WHERE id = SA.disease_id))AS SS, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, (SELECT email FROM vets WHERE vet_id = SA.vet_id) AS VET_MAIL, SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id, SA.vet_id FROM sick_animals SA, animal A WHERE A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
 
-        babies: `SELECT NB.id, NB.new_born_tag, NB.dob, A.animal_tag FROM new_born NB, animal A WHERE NB.parent_id = A.id AND  A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
+        new_borns: `SELECT NB.id, NB.new_born_tag, NB.dob, A.animal_tag, NB.created_at FROM new_born NB, animal A WHERE NB.parent_id = A.id AND  A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
 
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
 
@@ -739,7 +741,7 @@ app.post('/addNewBorn', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, parent_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
+    connection.query(`INSERT INTO animal (animal_tag, parent_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${req.body.newBornTag}', '${req.body.parentTag}', '${req.body.newBornGender}', '${req.body.newBornDOB}', '${req.body.newBornRegDate}', '${animal}', '${farma_id}', 'Y');`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
         // If the account exists
@@ -953,7 +955,7 @@ app.post('/scheduleVaccination', function (req, res) {
     const animal = storage('animal');
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id, confirmed) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', ${req.body.animalTag}, '${req.body.vetID}', 'N');`,
+    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id, confirmed) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', ${req.body.animalTag}, '${req.body.vetID}', 'N', UUID());`,
 
         function (error, results, fields) {
 
