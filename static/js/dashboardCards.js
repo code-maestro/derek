@@ -26,7 +26,7 @@ async function getAnimalType() {
 // RENDERS DATA TO THE BI DASHBOARD CARDS LIVE STATISTICS
 async function renderAnimals() {
   
-  const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'newBorns', 'vaccinatedAnimals', 'pendingAnimals', 'allFeeds', 'allProducts'];
+  const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'babies', 'vaccinatedAnimals', 'pendingAnimals', 'allFeeds', 'allProducts'];
 
   for (const number of cardsCount) {
 
@@ -180,8 +180,7 @@ function clicked(param) {
                           <th scope="col" class="text-center"> VACCINE </th>
                           <th scope="col" class="text-center"> DISEASE </th>
                           <th scope="col" class="text-center"> No OF VACCINATIONS </th>
-                          <th scope="col" class="text-center"> REMAINING VACCINATIONS </th>
-                          <th scope="col" class="text-center"> NEXT VACCINAION DATE </th>
+                          <th scope="col" class="text-center"> FIRST VACCINAION DATE </th>
                         </tr>
                       </thead>
                       <tbody id="pendingAnimalListing"> </tbody>
@@ -457,9 +456,9 @@ async function getNewBornAnimals() {
     htmlSegment = `
         <tr class="justify-content-center" id="${baby.id}">
           <td scope="col" class="text-center"> ${baby.id} </td>
-          <td scope="col" class="text-center"> ${baby.new_born_tag} </td>
-          <td scope="col" class="text-center"> ${dobYear.toLocaleDateString()} </td>
           <td scope="col" class="text-center"> ${baby.animal_tag} </td>
+          <td scope="col" class="text-center"> ${dobYear.toLocaleDateString()} </td>
+          <td scope="col" class="text-center"> ${baby.parent_tag} </td>
         </tr>
       `;
 
@@ -555,16 +554,15 @@ async function getPendingVaccinationsListing() {
   const con = document.getElementById('pendingAnimalListing');
 
   list.listing.forEach(animal => {
-    const d_date = new Date(Date.parse(animal.next_date));
+    const d_date = new Date(Date.parse(animal.first_date));
 
     htmlSegment = `
         <tr class="justify-content-center" id="${animal.id}">
           <th scope="row" class="text-center" id="id"> ${animal.id} </th>
           <td class="text-center"> ${animal.animal_tag} </td>
           <td class="text-center"> ${animal.vaccine_name} </td>
-          <td class="text-center"> ${animal.d_name} </td>
+          <td class="text-center"> ${animal.disease_name} </td>
           <td class="text-center"> ${animal.no_of_vaccinations} </td>
-          <td class="text-center"> ${animal.no_pending} </td>
           <td class="text-center"> ${d_date.toDateString()} </td>
         </tr>
       `;

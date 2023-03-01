@@ -21,7 +21,7 @@ const getBreedAnimals = async () => {
 // Funciton to retrieve new borns animals
 const getExpectedNewBorns = async () => {
 
-    const new_borns = await getListing('new_borns');
+    const new_borns = await getListing('babies');
   
     let html = '';
     let htmlSegment = '';
@@ -29,8 +29,6 @@ const getExpectedNewBorns = async () => {
     const con = document.getElementById('newBornsListing');
   
     new_borns.listing.forEach(baby => {
-
-      console.log(baby);
 
       htmlSegment = `
       <tr class="justify-content-center" id="${baby.id}">
