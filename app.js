@@ -107,8 +107,6 @@ cron.schedule('*/45 * * * * *', function () {
 // Get data from backend endpoint
 async function getTriggeredEmails() {
 
-    console.log("INTO");
-
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`SELECT * FROM triggered_emails WHERE status = 'N'`, function (error, results, fields) {
 
@@ -127,7 +125,7 @@ async function getTriggeredEmails() {
                     email_vet_name: email.vet_name != null ? email.vet_name : "",
                     email_farma_name: email.farma_name != null ? email.farma_name : "",
                     email_animal_tag: email.animal_tag != null ? email.animal_tag : "",
-                    email_confirmation_id: email.confirmation_id != null ? email.confirmation_id : " ",
+                    email_confirmation_id: email.confirmation_id != null ? email.confirmation_id : "",
                     email_type: "confirmation"
                 }
 
@@ -139,7 +137,6 @@ async function getTriggeredEmails() {
 
     });
 
-    console.log("OUT");
 }
 
 
@@ -184,9 +181,13 @@ function sendEmail(email) {
     };
 
     mail.sendMail(mailOptions, function (error, info) {
+        
         if (error) {
+            
             console.log(error);
+            
             return ({ message: `FAILED TO SEND EMAIL TO  ${email.email_address} ` });
+        
         } else {
 
             console.log(`EMAIL TO ${email.email_address} SENT SUCCESSFULLY`);
@@ -368,16 +369,27 @@ app.get('/getCount/:param', function (request, response) {
 
     const queries = {
         allAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND confirmed = 'Y';`,
+        
         oldAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND YEAR(reg_date) < YEAR(CURDATE());`,
+        
         newAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND YEAR(reg_date) > YEAR(CURDATE());`,
+        
         yearAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND YEAR(reg_date) = YEAR(CURDATE());`,
+        
         sickAnimals: `SELECT COUNT(SA.id) as COUNT FROM sick_animals SA, animal A WHERE A.id = SA.animal_id AND A.animal_type ='${animal_type}' AND A.farma_id='${farma_id}';`,
+        
         babies: `SELECT COUNT(id) as COUNT FROM animal WHERE farma_id = '${farma_id}' AND animal_type='${animal_type}' AND parent_tag IS NOT NULL AND confirmed = 'N';`,
+        
         vaccinatedAnimals: `SELECT COUNT(VD.id) AS COUNT FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
+        
         heavyAnimals: `SELECT COUNT(A.id) AS COUNT FROM animal A, breeding B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}' AND B.expected_due_date >= CURDATE();`,
+        
         pendingAnimals: `SELECT COUNT(A.id) AS COUNT FROM vaccination_details A, animal C WHERE A.animal_id = C.id AND C.animal_type = '${animal_type}' AND C.farma_id = '${farma_id}' AND C.confirmed = 'Y' AND A.confirmed = 'Y';`,
+        
         allFeeds: `SELECT COUNT(*) as COUNT FROM feeds WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND quantity > 0;`,
+        
         allProducts: `SELECT COUNT(B.id) as COUNT FROM animal A, products B WHERE B.animal_id = A.id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
+    
     }
 
     if (farma_id) {

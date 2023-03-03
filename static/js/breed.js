@@ -33,10 +33,10 @@ const getExpectedNewBorns = async () => {
       htmlSegment = `
       <tr class="justify-content-center" id="${baby.id}">
         <td class="text-center"> ${baby.id} </td>   
-        <td class="text-center"> ${baby.new_born_tag} </td> 
         <td class="text-center"> ${baby.animal_tag} </td> 
-        <td class="text-center"> ${baby.dob} </td>
-        <td class="text-center"> ${baby.created_at} </td>
+        <td class="text-center"> ${baby.parent_tag} </td> 
+        <td class="text-center"> ${dateFrontend(baby.dob)} </td>
+        <td class="text-center"> ${dateFrontend(baby.created_date)} </td>
   
         <td class="text-center noprint" data-bs-target="#editVetToggle" data-bs-toggle="modal" >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
