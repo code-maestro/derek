@@ -34,6 +34,18 @@ async function getScheduleListing(param) {
 }
 
 
+// Getting new born animal to verify from backend
+async function verifiedAnimal(param) {
+  let url = `/verifyAnimal/${param}`;
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 
 // Getting all animals listings from backend
 async function getMaxId(param) {
@@ -456,6 +468,7 @@ const getAvailableVaccines = async () => {
 
 // Function to get available vaccines
 const getPendingVaccinations = async () => {
+
   const vaccinated = await getListing('pendingAnimals');
 
   let html = '';
@@ -464,11 +477,14 @@ const getPendingVaccinations = async () => {
   const con = document.getElementById('pendingAnimalsListing');
 
   vaccinated.listing.forEach(vaxed => {
+
+    console.log(vaxed);
+
     htmlSegment = `
       <tr class="justify-content-center" id="${vaxed.id}">
         <td class="text-center"> ${vaxed.id} </td>
         <td class="text-center"> ${vaxed.animal_tag} </td>
-        <td class="text-center"> ${dateFrontend(vaxed.effective_date)} </td>
+        <td class="text-center"> ${dateFrontend(vaxed.first_date)} </td>
         <td class="text-center"> ${vaxed.no_of_vaccinations} </td>
 
         <td class="text-center noprint" data-bs-target="#editPendingModalToggle" data-bs-toggle="modal">

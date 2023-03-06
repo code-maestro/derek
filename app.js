@@ -95,9 +95,7 @@ function checkFileType(file, cb) {
 
 
 // Schedule tasks to be run on the server.
-cron.schedule('*/45 * * * * *', function () {
-
-    console.log('EVERY 45 SECONDS ');
+cron.schedule('*/145 * * * * *', function () {
 
     getTriggeredEmails();
 
@@ -174,20 +172,19 @@ function sendEmail(email) {
             message: email.email_body,
             farma_name: email.email_farma_name,
             vet_email: email.email_address,
-            conff: email.confirmation_id,
-            confirmation_link: `http://localhost:3000/confirm?token="${email.email_confirmation_id}"`
+            confirmation_link: email.email_confirmation_id === "" ? null : `http://localhost:3000/confirm?token="${email.email_confirmation_id}"`
         }
 
     };
 
     mail.sendMail(mailOptions, function (error, info) {
-        
+
         if (error) {
-            
+
             console.log(error);
-            
+
             return ({ message: `FAILED TO SEND EMAIL TO  ${email.email_address} ` });
-        
+
         } else {
 
             console.log(`EMAIL TO ${email.email_address} SENT SUCCESSFULLY`);
@@ -369,27 +366,27 @@ app.get('/getCount/:param', function (request, response) {
 
     const queries = {
         allAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND confirmed = 'Y';`,
-        
+
         oldAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND YEAR(reg_date) < YEAR(CURDATE());`,
-        
+
         newAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND YEAR(reg_date) > YEAR(CURDATE());`,
-        
+
         yearAnimals: `SELECT COUNT(id) AS COUNT FROM animal WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND YEAR(reg_date) = YEAR(CURDATE());`,
-        
+
         sickAnimals: `SELECT COUNT(SA.id) as COUNT FROM sick_animals SA, animal A WHERE A.id = SA.animal_id AND A.animal_type ='${animal_type}' AND A.farma_id='${farma_id}';`,
-        
+
         babies: `SELECT COUNT(id) as COUNT FROM animal WHERE farma_id = '${farma_id}' AND animal_type='${animal_type}' AND parent_tag IS NOT NULL AND confirmed = 'N';`,
-        
+
         vaccinatedAnimals: `SELECT COUNT(VD.id) AS COUNT FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
-        
+
         heavyAnimals: `SELECT COUNT(A.id) AS COUNT FROM animal A, breeding B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}' AND B.expected_due_date >= CURDATE();`,
-        
+
         pendingAnimals: `SELECT COUNT(A.id) AS COUNT FROM vaccination_details A, animal C WHERE A.animal_id = C.id AND C.animal_type = '${animal_type}' AND C.farma_id = '${farma_id}' AND C.confirmed = 'Y' AND A.confirmed = 'Y';`,
-        
+
         allFeeds: `SELECT COUNT(*) as COUNT FROM feeds WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND quantity > 0;`,
-        
+
         allProducts: `SELECT COUNT(B.id) as COUNT FROM animal A, products B WHERE B.animal_id = A.id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
-    
+
     }
 
     if (farma_id) {
@@ -471,6 +468,8 @@ app.get('/getListing/:param', function (request, response) {
 
         babies: `SELECT id, animal_tag, dob, parent_tag, created_date FROM animal WHERE farma_id = '${farma_id}' AND animal_type='${animal_type}' AND parent_tag IS NOT NULL AND confirmed = 'N';`,
 
+        newBorns: `SELECT id, new_born_tag, dob, (SELECT animal_tag FROM animal WHERE id = parent_id) as parent_tag, created_at FROM new_born WHERE parent_id IN (SELECT id FROM animal WHERE farma_id = '${farma_id}')`,
+
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
 
         pendingAnimals: ` SELECT A.id, C.animal_tag, A.first_date, (SELECT name FROM vaccines WHERE id = A.vaccine_id) AS vaccine_name, 
@@ -506,11 +505,14 @@ app.get('/getListing/:param', function (request, response) {
 
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
-            if (error) throw error;
+            if (error) {
+                response.send({ listing: "error" });
+            } else {
 
-            console.log();
+                response.send({ listing: results });
 
-            response.send({ listing: results });
+            }
+
         })
 
     } else {
@@ -536,8 +538,12 @@ app.get('/getScheduletListing/:param', function (request, response) {
 
         connection.query(queries, function (error, results, fields) {
             // If there is an issue with the query, output the error
-            if (error) throw error;
-            response.send({ listing: results });
+            if (error) {
+                response.send({ error_message: "an error happened" + error });
+            } else {
+                response.send({ listing: results });
+            }
+
         })
 
     } else {
@@ -547,6 +553,41 @@ app.get('/getScheduletListing/:param', function (request, response) {
     }
 
 });
+
+
+
+app.get('/verifyAnimal/:param', function (request, response) {
+
+    const user_id = storage('farma_id');
+
+    const param = request.params.param;
+
+    const queries = `SELECT * FROM animal WHERE farma_id = '${user_id}' AND id = '${param}';`
+
+    if (user_id) {
+
+        connection.query(queries, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) {
+
+                response.send({ error_message: "an error happened" + error });
+
+            } else {
+
+                response.send({ listing: results });
+
+            }
+
+        })
+
+    } else {
+
+        response.redirect('/');
+
+    }
+
+});
+
 
 
 // Cleaned 
@@ -591,47 +632,28 @@ app.get('/confirm', function (req, res) {
 
             console.log(result[0]);
 
-            // if (result[0].verify == 0) {
-            //     if (result.length > 0) {
-            //         // connection.query('UPDATE verifications SET ? WHERE email ="' + result[0].email + '"', data, function (err, result) {
-            //         //     if (err) throw err
-            //         // });
+            if (result[0].confirmation_id !== null) {
 
-            //         console.log("we are here");
+                connection.query(`UPDATE vaccination_details SET confirmed = 'Y' WHERE confirmed_id = '${result[0].confirmation_id}'`, function (err, result) {
+                    if (err) {
+                        console.log(err)
+                        res.send({ message: "UPDATE FAILED/CONFIRMATOIN" });
+                    } else {
 
-            //     } else {
-            //         console.log('2');
-            //     }
-            // } else {
-            //     if (result[0].verify == 0) {
-            //         if (result.length > 0) {
-            //             connection.query('UPDATE verifications SET ? WHERE email ="' + result[0].email + '"', data, function (err, result) {
-            //                 if (err) throw err
+                        res.sendFile(path.join(__dirname + '/public/views/sucess.html'));
 
-            //             });
+                        // res.send({ message: "UPDATE SUCCESSFULLY" });
+                    }
 
-            //             type = 'success';
-            //             msg = 'Your email has been verified';
+                });
 
-            //         } else {
-            //             console.log('2');
-            //             type = 'success';
-            //             msg = 'The email has already verified';
+            } else {
 
-            //         }
-            //     } else {
-            //         type = 'error';
-            //         msg = 'The email has been already verified';
-            //     }
+                res.send({ message: "CONFIRMATIO TOKEN INVALID" });
 
-            //     type = 'error';
-            //     msg = 'The email has been already verified';
-            // }
-
-            response.sendFile(path.join(__dirname + '/public/views/sucess.html'));
+            }
         }
 
-        // res.redirect('/');
     });
 })
 
@@ -743,7 +765,7 @@ app.post('/newAnimal', function (req, res) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}');`, function (error, results, fields) {
+    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}', 'Y');`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
         // If the account exists
@@ -973,7 +995,7 @@ app.post('/scheduleVaccination', function (req, res) {
     const animal = storage('animal');
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id, confirmed) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', ${req.body.animalTag}, '${req.body.vetID}', 'N', UUID());`,
+    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id, confirmed, confirmed_id) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', ${req.body.animalTag}, '${req.body.vetID}', 'N', UUID());`,
 
         function (error, results, fields) {
 

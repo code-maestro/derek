@@ -1,5 +1,5 @@
 
-// CREATING THE SCHEDULE
+// viewing THE SCHEDULE
 const viewSchedule = async (param) => {
 
   const schedules = await getScheduleListing(`${param}`);
@@ -26,7 +26,6 @@ const viewSchedule = async (param) => {
   });
 
   con.innerHTML = html;
-
 
 }
 

@@ -1,0 +1,174 @@
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+
+  <tbody>
+    <!-- START HEADER/BANNER -->
+    <tr>
+      <td align="center">
+        <table class="col-600" width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <td align="center" valign="top" style="background-size:cover; background-position:top;" height="300">
+
+                <table class="col-600" width="600" height="300" border="0" align="center" cellpadding="0"
+                  cellspacing="0">
+
+                  <tbody>
+                    <tr>
+                      <td height="20"></td>
+                    </tr>
+
+                    <tr>
+                      <td align="center" style="line-height: 0px;">
+                        <img style="display:block; line-height:0px; font-size:0px; border:0px;"
+                          src="https://ucarecdn.com/83a17366-5e2f-46c2-afc8-987a47ee8345/" width="150" height="163"
+                          alt="logo">
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td align="center"
+                        style="font-family: 'Raleway', sans-serif; font-size:37px; color:#094a1b; line-height:24px; font-weight: bold; letter-spacing: 7px;">
+                        FARMA
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td align="center"
+                        style="font-family: 'Lato', sans-serif; font-size:15px; color:#094a1b; line-height:24px; font-weight: 300;">
+                        email alert service
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td height="20"></td>
+                    </tr>
+
+                  </tbody>
+
+                </table>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <!-- END HEADER/BANNER -->
+
+
+    <!-- EMAIL BODY -->
+    <tr>
+      <td align="center">
+        <table class="col-600" width="600" border="0" align="center" cellpadding="0" cellspacing="0"
+          style="margin-left:20px; margin-right:20px;">
+          <tbody>
+
+            <tr>
+              <td height="35"></td>
+            </tr>
+
+            <tr>
+              <td align="center"
+                style="font-family: 'Raleway', sans-serif; font-size:22px; font-weight: bold; color:#099d49;">
+                {{heading}}</td>
+            </tr>
+
+            <tr>
+              <td height="10"></td>
+            </tr>
+
+            <tr>
+              <td align="center"
+                style="font-family: 'Lexend', sans-serif; font-size:16px; color:#022a06; line-height:24px; font-weight: 500;">
+                {{message}}<br>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <!-- END EMAIL BODY -->
+
+
+    <!-- VACCINATION SCHEDULE CONFIRMATION -->
+    <tr>
+      <td align="center">
+        <table class="col-600" width="600" border="0" align="center" cellpadding="0" cellspacing="0"
+          style="margin-left:20px; margin-right:20px;">
+          <tbody>
+
+            <tr>
+              <td height="20"></td>
+            </tr>
+
+            {{#if confirmation_link}}
+
+            <tr>
+              <td align="center"
+                style="font-family: 'Lexend', sans-serif; font-size:16px; color:#022a06; line-height:24px; font-weight: 500;">
+                Please Confirm Appointment <br> <a href="{{confirmation_link}}"> CONFIRMATION LINK </a> <br>
+              </td>
+            </tr>
+            {{else}}
+            <tr>
+              <td align="center"
+                style="font-family: 'Lexend', sans-serif; font-size:16px; color:#022a06; line-height:24px; font-weight: 500;">
+                else part
+              </td>
+            </tr>
+            {{/if}}
+
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <!-- VACCINATION SCHEDULE CONFIRMATION -->
+
+
+    <!-- EMAIL FOOTER -->
+    <tr>
+      <td align="center">
+        <table align="center" width="600" border="0" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td height="20"></td>
+            </tr>
+
+            <tr>
+              <td align="center" bgcolor="#099d49"
+                style="border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem;">
+                <table class="col-600" width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+                  <tbody>
+                    <tr>
+                      <td height="15"></td>
+                    </tr>
+
+                    <tr>
+                      <td align="center"
+                        style="font-family: 'Raleway', sans-serif; font-size:14px; color:#064e0d; line-height:24px; font-weight: bold;">
+                        This email was intended for {{vet_name}} <br> {{vet_email}} </td>
+                    </tr>
+
+                    <tr>
+                      <td align="center"
+                        style="font-family: 'Raleway', sans-serif; font-size:14px; color:#064e0d; line-height:20px; font-weight: bold;">
+                        unsubcribe </td>
+                    </tr>
+
+                    <tr>
+                      <td height="10"></td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <!-- EMAIL FOOTER -->
+
+  </tbody>
+</table>

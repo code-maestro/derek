@@ -1345,14 +1345,13 @@
                                                     </label>
                                                     <input id="new-born-tag" type="text" class="form-control"
                                                         name="newBornTag" spellcheck="false" data-ms-editor="true"
-                                                        value="">
+                                                        readonly required>
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label for="parent-tag" class="form-label fw-bold"> Parent Tag
-                                                    </label>
+                                                    <label for="parent-tag" class="form-label fw-bold"> Parent Tag </label>
                                                     <select id="parent-tag" class="form-select" name="parentTag"
-                                                        readonly> </select>
+                                                        readonly required> </select>
                                                 </div>
 
                                                 <div class="col-md-4">
@@ -2580,6 +2579,81 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- Verify New Born Animal Modal -->
+        <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aaria-labelledby="editVetToggleLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="container">
+
+                            <div class="row p-3  mx-auto">
+                                <div class="mx-auto" style="width: auto;">
+                                    <h5 class="font-monospace" id="editVetModalLabel"> CONFIRM NEW BORN ANIMAL </h5>
+                                </div>
+                            </div>
+
+                            <div class="row ">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <!-- New Vet Form -->
+                                            <form class="row g-3 needs-validation" novalidate method="POST" action="/verifyNewBorn">
+                                                <div class="col-md-6">
+                                                    <label for="new-born-animal-tag" class="form-label fw-bold"> NewBorn Animal Tag </label>
+                                                    <input id="new-born-animal-tag" type="text" class="form-control"
+                                                        name="newBornAnimalTag" spellcheck="false" data-ms-editor="true">
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label for="new-born-parent-tag" class="form-label fw-bold"> Parent Tag </label>
+                                                    <input id="new-born-parent-tag" type="text" class="form-control" 
+                                                        name="newBornParentTag" spellcheck="false" data-ms-editor="true">
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="new-born-animal-reg" class="form-label fw-bold"> Registraion Date </label>
+                                                    <input id="new-born-animal-reg" type="date" class="form-control"
+                                                        name="newBornAnimalReg" spellcheck="false" data-ms-editor="true">
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="new-born-animal-dob" class="form-label fw-bold"> Date of Birth </label>
+                                                    <input id="new-born-animal-dob" type="date" class="form-control"
+                                                        name="newBornAnimalDOB" spellcheck="false" data-ms-editor="true">
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="new-born-animal-age" class="form-label fw-bold"> Age </label>
+                                                    <input id="new-born-animal-age" type="number" class="form-control"
+                                                        name="newBornAnimalTag" spellcheck="false" data-ms-editor="true">
+                                                </div>
+
+                                                <input id="new-born-animal-id" type="text" name="newBornAnimalID" hidden>
+
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                    <button class="btn btn-light me-md-2 font-monospace"
+                                                        data-bs-dismiss="modal" type="button">
+                                                        cancel </button>
+                                                    <button class="btn btn-primary font-monospace" type="submit"> submit
+                                                        form </button>
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
         <!-- Edit Animal Modal -->

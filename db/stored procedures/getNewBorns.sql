@@ -1,8 +1,6 @@
-DELIMITER $$
-
-CREATE PROCEDURE getNewBorns()
-
-    BEGIN
+create
+    definer = derek@localhost procedure getNewBorns()
+BEGIN
 
         DECLARE finished INTEGER DEFAULT 0;
         DECLARE animalID varchar(10);
@@ -32,22 +30,19 @@ CREATE PROCEDURE getNewBorns()
                     SET @animal_type = (SELECT animal_type FROM animal WHERE id = animalID);
                     SET @farma_id = (SELECT farma_id FROM animal WHERE id = animalID);
                     SET @new_max_id = (SELECT MAX(id) FROM animal WHERE farma_id = @farma_id AND animal_type = @animal_type);
-                    SET @new_born_tag = (SELECT CONCAT(UPPER(animal_type),'-000',(@new_max_id +1)) FROM animal WHERE id = animalID);
-
-                SELECT animalID;
-                SELECT @parent_tag;
-                SELECT @farma_id;
-                SELECT @new_max_id;
-                SELECT @new_born_tag;
+                    SET @new_born_tag = (SELECT CONCAT(UPPER(animal_type),'-000',(@new_max_id ++ 1)) FROM animal WHERE id = animalID);
 
                     -- 3. insert into new_born table
-                    INSERT INTO animal(animal_tag,parent_tag,dob,reg_date,animal_type,farma_id,confirmed)
-                    VALUES(@new_born_tag, @parent_tag, CURDATE(), CURDATE(), @animal_type, @farma_id, 'N' );
+                    -- INSERT INTO animal(animal_tag,parent_tag,dob,reg_date,animal_type,farma_id,confirmed)
+                    -- VALUES(@new_born_tag, @parent_tag, CURDATE(), CURDATE(), @animal_type, @farma_id, 'N' );
+
+                    -- insert into new_born table
+                    INSERT INTO new_born(new_born_tag,parent_id,dob)
+                    VALUES((SELECT CONCAT(UPPER(animal_type),'-000',(@new_max_id ++ 1)) FROM animal WHERE id = animalID), animalID, CURDATE());
 
             END LOOP getAnimalID;
 
 	    CLOSE animalIDs;
 
-    END$$
+    END;
 
-    DELIMITER ;
