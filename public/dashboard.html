@@ -104,6 +104,7 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
+
                 <!-- Heading -->
                 <div id="ssd" class="sidebar-heading">
                     Bio-data
@@ -126,6 +127,7 @@
                     </div>
                 </li>
 
+
                 <!-- Nav Item - Vaccination -->
                 <li class="nav-item font-weight-bold">
                     <span class="nav-link collapsed" data-toggle="collapse" data-target="#vaccines" aria-expanded="true"
@@ -133,8 +135,7 @@
                         <i class="fa-solid fa-address-card"></i>
                         <span> Vaccination </span>
                     </span>
-                    <div id="vaccines" class="collapse" aria-labelledby="headingUtilities"
-                        data-parent="#accordionSidebar">
+                    <div id="vaccines" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                         <div class="bg-white collapse-inner rounded">
                             <span class="collapse-item" onclick="getAllDiseases()" data-bs-toggle="modal"
                                 href="#newVaccineModalToggle" role="button">
@@ -162,7 +163,7 @@
                 </li>
 
 
-                <!-- Nav Item -  New Borns -->
+                <!-- Nav Item - New Borns -->
                 <li class="nav-item font-weight-bold font-weight-bold">
                     <span class="nav-link collapsed" data-toggle="collapse" data-target="#regNewBorn"
                         aria-expanded="true" aria-controls="regNewBorn">
@@ -1658,14 +1659,11 @@
                                             <h6 class="fw-bold py-2"> Export your data to </h6>
                                         </div>
                                         <div class="col-auto">
-                                            <button type="button" class="btn btn-primary btn-sm"
-                                                onclick="toExcel('vetsTable', 'VETERINARY DOCTORS_')"> EXCEL </button>
-                                            <button type="button" class="btn btn-primary btn-sm"
-                                                onclick="printReport('vaccinationTable')"> PRINT </button>
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="toExcel('vetsTable', 'VETERINARY DOCTORS_')"> EXCEL </button>
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="printReport('vaccinationTable')"> PRINT </button>
                                         </div>
                                         <div class="col-auto">
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
-                                                aria-label="Close"> CLOSE </button>
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal" aria-label="Close"> CLOSE </button>
                                         </div>
                                     </div>
                                 </div>
@@ -2582,8 +2580,7 @@
 
 
         <!-- Verify New Born Animal Modal -->
-        <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aaria-labelledby="editVetToggleLabel" aria-hidden="true">
+        <div class="modal fade" id="verifyAnimalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editVetToggleLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -2601,16 +2598,27 @@
                                         <div class="card-body">
                                             <!-- New Vet Form -->
                                             <form class="row g-3 needs-validation" novalidate method="POST" action="/verifyNewBorn">
-                                                <div class="col-md-6">
-                                                    <label for="new-born-animal-tag" class="form-label fw-bold"> NewBorn Animal Tag </label>
+                                                <div class="col-md-4">
+                                                    <label for="new-born-animal-tag" class="form-label fw-bold"> New Born Animal Tag </label>
                                                     <input id="new-born-animal-tag" type="text" class="form-control"
-                                                        name="newBornAnimalTag" spellcheck="false" data-ms-editor="true">
+                                                        name="newBornAnimalTag" spellcheck="false" data-ms-editor="true" >
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <label for="new-born-parent-tag" class="form-label fw-bold"> Parent Tag </label>
                                                     <input id="new-born-parent-tag" type="text" class="form-control" 
                                                         name="newBornParentTag" spellcheck="false" data-ms-editor="true">
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="new-born-animal-gender" class="form-label fw-bold"> Gender
+                                                    </label>
+                                                    <select class="form-select" id="new-born-animal-gender"
+                                                        name="newBornAnimalGender" required>
+                                                        <option selected="" disabled="" value=""> Choose a gender ...</option>
+                                                        <option value="Male"> Male </option>
+                                                        <option value="Female"> Female </option>
+                                                    </select>
                                                 </div>
 
                                                 <div class="col-md-4">
@@ -2628,10 +2636,8 @@
                                                 <div class="col-md-4">
                                                     <label for="new-born-animal-age" class="form-label fw-bold"> Age </label>
                                                     <input id="new-born-animal-age" type="number" class="form-control"
-                                                        name="newBornAnimalTag" spellcheck="false" data-ms-editor="true">
+                                                        name="newBornAnimalAge" value="" >
                                                 </div>
-
-                                                <input id="new-born-animal-id" type="text" name="newBornAnimalID" hidden>
 
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
@@ -2655,7 +2661,6 @@
         </div>
 
 
-
         <!-- Edit Animal Modal -->
         <div class="modal fade" id="editAnimalModal" data-bs-backdrop="static" data-bs-keyboard="false"
             aria-hidden="true" aria-labelledby="editAnimalModalToggleLabel" tabindex="-1">
@@ -2669,8 +2674,7 @@
                         <div class="row">
                         </div>
 
-                        <form id="editAnimalForm" class="row g-3 needs-validation px-4" novalidate="" method="POST"
-                            action="/updateAnimalData">
+                        <form id="editAnimalForm" class="row g-3 needs-validation px-4" novalidate="" method="POST" action="/updateAnimalData">
                             <div class="col-md-6">
                                 <label for="edit-animal-tag" class="form-label fw-bold"> Animal Tag </label>
                                 <input id="edit-animal-tag" type="text" placeholder="Disabled input"

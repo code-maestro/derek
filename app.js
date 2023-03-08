@@ -84,7 +84,7 @@ function checkFileType(file, cb) {
     console.log('cb');
     console.log(file);
 
-    storage('img_name', `http://localhost:3000/images/${file.originalname}`);
+    storage('img_name', `http://localhost:4200/images/${file.originalname}`);
 
     if (mimetype && extname) {
         return cb(null, true);
@@ -95,7 +95,7 @@ function checkFileType(file, cb) {
 
 
 // Schedule tasks to be run on the server.
-cron.schedule('*/145 * * * * *', function () {
+cron.schedule('*/15 * * * * *', function () {
 
     getTriggeredEmails();
 
@@ -124,7 +124,7 @@ async function getTriggeredEmails() {
                     email_farma_name: email.farma_name != null ? email.farma_name : "",
                     email_animal_tag: email.animal_tag != null ? email.animal_tag : "",
                     email_confirmation_id: email.confirmation_id != null ? email.confirmation_id : "",
-                    email_type: "confirmation"
+                    email_template_name: email.template_name != null ? email.template_name : "",
                 }
 
                 sendEmail(email_content);
@@ -165,14 +165,14 @@ function sendEmail(email) {
         from: 'NO REPLY',
         to: email.email_address,
         subject: email.email_subject,
-        template: 'confirmation',
+        template: email.email_template_name,
         context: {
             heading: email.email_subject,
             vet_name: email.vet_name,
             message: email.email_body,
             farma_name: email.email_farma_name,
             vet_email: email.email_address,
-            confirmation_link: email.email_confirmation_id === "" ? null : `http://localhost:3000/confirm?token="${email.email_confirmation_id}"`
+            confirmation_link: email.email_confirmation_id === "" ? null : `http://localhost:4200/confirm?token="${email.email_confirmation_id}"`
         }
 
     };
@@ -468,7 +468,7 @@ app.get('/getListing/:param', function (request, response) {
 
         babies: `SELECT id, animal_tag, dob, parent_tag, created_date FROM animal WHERE farma_id = '${farma_id}' AND animal_type='${animal_type}' AND parent_tag IS NOT NULL AND confirmed = 'N';`,
 
-        newBorns: `SELECT id, new_born_tag, dob, (SELECT animal_tag FROM animal WHERE id = parent_id) as parent_tag, created_at FROM new_born WHERE parent_id IN (SELECT id FROM animal WHERE farma_id = '${farma_id}')`,
+        newBorns: `SELECT id, new_born_tag, dob, (SELECT animal_tag FROM animal WHERE id = parent_id) as parent_tag, created_at FROM new_born WHERE parent_id IN (SELECT id FROM animal WHERE farma_id = '${farma_id}');`,
 
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
 
@@ -476,7 +476,7 @@ app.get('/getListing/:param', function (request, response) {
                           (SELECT disease_name FROM disease WHERE id = (SELECT disease_id FROM vaccines WHERE id = A.vaccine_id)) AS disease_name,
                           (SELECT (cycle*period) FROM vaccines WHERE id = A.vaccine_id) AS no_of_vaccinations
                           FROM vaccination_details A, animal C WHERE A.animal_id = C.id AND C.animal_type = '${animal_type}' 
-                          AND C.farma_id = '${farma_id}' AND C.confirmed = 'Y' AND A.confirmed = 'Y';`,
+                          AND C.farma_id = '${farma_id}' AND C.confirmed = 'Y' AND A.confirmed = 'N';`,
 
         availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, cycle, period, injection_area, (cycle*period) AS no_of_vaccinations, (SELECT disease_name FROM disease WHERE id = vaccines.disease_id) AS disease_name FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
 
@@ -562,13 +562,17 @@ app.get('/verifyAnimal/:param', function (request, response) {
 
     const param = request.params.param;
 
-    const queries = `SELECT * FROM animal WHERE farma_id = '${user_id}' AND id = '${param}';`
+    console.log(user_id + ' ' + param);
+
+    const queries = `SELECT animal_tag, parent_tag, reg_date, dob, (DATEDIFF(CURDATE(), dob)) as age FROM animal WHERE farma_id = '${user_id}' AND animal_tag = '${param}' AND confirmed = 'N';`
 
     if (user_id) {
 
         connection.query(queries, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
+
+                console.log(error);
 
                 response.send({ error_message: "an error happened" + error });
 
@@ -587,7 +591,6 @@ app.get('/verifyAnimal/:param', function (request, response) {
     }
 
 });
-
 
 
 // Cleaned 
@@ -989,6 +992,45 @@ app.post('/confirmation', function (req, res) {
 })
 
 
+//  Verifying new born animal
+app.post('/verifyNewBorn', function (request, response) {
+
+    const user_id = storage('farma_id');
+    const animal = storage('animal');
+
+    const queries = `UPDATE animal SET confirmed = 'Y', gender = '${request.body.newBornAnimalGender}' WHERE farma_id = '${user_id}' AND animal_tag = '${request.body.newBornAnimalTag}' AND parent_tag = '${request.body.newBornParentTag}' AND confirmed = 'N';`
+
+    if (user_id) {
+
+        connection.query(queries, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) {
+
+                console.log(error);
+
+                response.send({ error_message: "an error happened" + error });
+
+            } else {
+
+                console.log(results);
+
+                // response.send({ listing: results });
+
+                response.redirect(`/animal/${animal}`);
+
+            }
+
+        })
+
+    } else {
+
+        response.redirect('/');
+
+    }
+
+});
+
+
 // Inserting Vaccines into the DB
 app.post('/scheduleVaccination', function (req, res) {
 
@@ -1132,7 +1174,7 @@ app.post('/addAnimal', (request, response) => {
                 const animal_name = request.body.animal_type;
                 const animal_count = request.body.count;
                 const animal_description = request.body.desc;
-                const image_url = `http://localhost:3000/images/${storage('img_url')}`;
+                const image_url = `http://localhost:4200/images/${storage('img_url')}`;
 
                 // Query to update the list of animals for all the farmer
                 connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', JSON_OBJECT("name" , "${animal_name}", "desc" , "${animal_description}", "image_url" , "${image_url}")) WHERE farma_id = '${f_id}';`,
@@ -1159,10 +1201,12 @@ app.post('/addAnimal', (request, response) => {
 
 
 // Function to delete data from animal
-app.post('/delete/:param', function (request, response) {
-    const par = request.params.param;
-    const user_id = storage('farma_id');
+app.post('/delete', function (request, response) {
+
     const param_id = request.body.id;
+    const par = request.body.type;
+
+    const user_id = storage('farma_id');
     const animal = storage('animal');
 
     const queries = {
@@ -1177,9 +1221,11 @@ app.post('/delete/:param', function (request, response) {
     if (user_id) {
         connection.query(queries[par], function (error, results, fields) {
             // If there is an issue with the query, output the error
-            if (error) throw error;
-
-            results.affectedRows >= 1 ? response.send({ message: "GOOD" }) : response.send({ message: "BAD" });
+            if (error) {
+                console.log(error);
+            } else {
+                results.affectedRows >= 1 ? response.send({ message: "GOOD" }) : response.send({ message: "BAD" });
+            }
 
         })
 
@@ -1191,6 +1237,6 @@ app.post('/delete/:param', function (request, response) {
 });
 
 
-app.listen(3000, function () {
-    console.log('Server is running at port: ', 3000);
+app.listen(4200, function () {
+    console.log('Server is running at port: ', 4200);
 });

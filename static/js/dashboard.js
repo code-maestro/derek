@@ -6,7 +6,7 @@ const container = document.querySelector('#dynamic');
 
 // GOHOME
 const gohome = async () => {
-  window.location.replace(" http://localhost:3000/home");
+  window.location.replace(" http://localhost:4200/home");
 }
 
 
@@ -44,7 +44,6 @@ async function verifiedAnimal(param) {
     console.log(error);
   }
 }
-
 
 
 // Getting all animals listings from backend
@@ -98,6 +97,7 @@ async function getAnimalTableData(inputID) {
   }
 
   else {
+
     let list = await getListing('allAnimals');
 
     let html = "";
@@ -477,9 +477,7 @@ const getPendingVaccinations = async () => {
   const con = document.getElementById('pendingAnimalsListing');
 
   vaccinated.listing.forEach(vaxed => {
-
-    console.log(vaxed);
-
+    
     htmlSegment = `
       <tr class="justify-content-center" id="${vaxed.id}">
         <td class="text-center"> ${vaxed.id} </td>
@@ -487,7 +485,7 @@ const getPendingVaccinations = async () => {
         <td class="text-center"> ${dateFrontend(vaxed.first_date)} </td>
         <td class="text-center"> ${vaxed.no_of_vaccinations} </td>
 
-        <td class="text-center noprint" data-bs-target="#editPendingModalToggle" data-bs-toggle="modal">
+        <td class="text-center noprint" data-bs-target="#editPendingModalToggle" data-bs-toggle="modal" onclick="">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
             <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
           </svg>
@@ -604,12 +602,10 @@ const deleteFromList = async (param1, param2) => {
 
   }
 
-  const url = `/delete/${param1}`;
-
-
   // post body data 
   const user = {
-    id: param2
+    id: param2,
+    type: param1
   };
 
   // request options
@@ -621,7 +617,7 @@ const deleteFromList = async (param1, param2) => {
     }
   }
 
-  fetch(url, options)
+  fetch(`/delete`, options)
     .then(function (response) {
       if (!response.ok) {
         throw Error(response.statusText);

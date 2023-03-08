@@ -1,4 +1,3 @@
-
 // Function to get All feeds
 const getBreedAnimals = async () => {
   const animals = await getListing('notHeavyAnimals');
@@ -21,7 +20,7 @@ const getBreedAnimals = async () => {
 // Funciton to retrieve new borns animals
 const getExpectedNewBorns = async () => {
 
-  const new_borns = await getListing('newBorns');
+  const new_borns = await getListing('babies');
 
   let html = '';
   let htmlSegment = '';
@@ -30,17 +29,15 @@ const getExpectedNewBorns = async () => {
 
   new_borns.listing.forEach(baby => {
 
-    console.log(baby);
-
     htmlSegment = `
       <tr class="justify-content-center" id="${baby.id}">
         <td class="text-center"> ${baby.id} </td>   
-        <td class="text-center"> ${baby.new_born_tag} </td> 
+        <td class="text-center"> ${baby.animal_tag} </td> 
         <td class="text-center"> ${baby.parent_tag} </td> 
         <td class="text-center"> ${dateFrontend(baby.dob)} </td>
-        <td class="text-center"> ${dateFrontend(baby.created_at)} </td>
+        <td class="text-center"> ${dateFrontend(baby.created_date)} </td>
   
-        <td class="text-center noprint" data-bs-target="#verifyAnimalToggle" data-bs-toggle="modal" onclick="verifyAnimal('${baby.id}')" >
+        <td class="text-center noprint" data-bs-target="#verifyAnimalToggle" data-bs-toggle="modal" onclick="verifyAnimal('${baby.animal_tag}')" >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
             <path d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3h4v-.5A1.5 1.5 0 0 0 5.5 1h-1zM7 4v1h2V4h4v.882a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V13H9v-1.5a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5V13H1V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882V4h4zM1 14v.5A1.5 1.5 0 0 0 2.5 16h3A1.5 1.5 0 0 0 7 14.5V14H1zm8 0v.5a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5V14H9zm4-11H9v-.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5V3z"/>
           </svg>
@@ -68,30 +65,38 @@ const getExpectedNewBorns = async () => {
 // CREATING THE SCHEDULE
 const verifyAnimal = async (param) => {
 
-  const schedules = await verifiedAnimal(`${param}`);
+  console.log(param);
 
-  let html = "";
-  let htmlSegment = "";
+  const newAnimals = await verifiedAnimal(`${param}`);
 
-  const con = document.getElementById('scheduleTable');
+  console.log(newAnimals);
+  
+  const new_born_tag = document.getElementById("new-born-animal-tag");
+  const parent_tag = document.getElementById("new-born-parent-tag");
+  const reg_date = document.getElementById("new-born-animal-reg");
+  const dob = document.getElementById("new-born-animal-dob");
+  const age = document.getElementById("new-born-animal-age");
 
-  schedules.listing.forEach(schedule => {
+  newAnimals.listing.forEach(animal => {
 
-    htmlSegment = `
-    <tr class="justify-content-center" id="${schedule.id}">
-      <td class="text-center"> ${schedule.id} </td>   
-      <td class="text-center"> ${dateFrontend(schedule.effective_date)} </td> 
-      <td class="text-center"> ${dateFrontend(schedule.next_date)} </td> 
-      <td class="text-center"> ${schedule.feeds_quantity} ${schedule.unit} </td>
-      <td class="text-center"> ${schedule.feeds_qnty_pending}  ${schedule.unit} </td>
-    </tr>
-  `;
+    console.log(animal);
 
-    html += htmlSegment;
+    if (animal.animal_tag == param) {
 
+      new_born_tag.setAttribute('value', animal.animal_tag)
+      parent_tag.setAttribute('value', animal.parent_tag);
+      reg_date.setAttribute('value', new Date(animal.reg_date).toISOString().slice(0, 10));
+      dob.setAttribute('value', new Date(animal.dob).toISOString().slice(0, 10));
+      age.setAttribute('value', animal.age);
+
+      console.log(new_born_tag.value);
+      return false;
+  
+    }
+  
+    return true;
+  
   });
-
-  con.innerHTML = html;
 
 }
 
@@ -153,6 +158,7 @@ const calcDueDate = () => {
   document.getElementById('expected_due_date').value = formatDate(new Date(due_date.setDate(due_date.getDate() + parseInt(document.getElementById('gestation_period').value))));
 
 }
+
 
 function addDgays(date, days) {
   var result = new Date(date);
