@@ -125,6 +125,7 @@ async function getTriggeredEmails() {
                     email_animal_tag: email.animal_tag != null ? email.animal_tag : "",
                     email_confirmation_id: email.confirmation_id != null ? email.confirmation_id : "",
                     email_template_name: email.template_name != null ? email.template_name : "",
+                    email_type: email.type != null ? email.type : "",
                 }
 
                 sendEmail(email_content);
@@ -172,7 +173,7 @@ function sendEmail(email) {
             message: email.email_body,
             farma_name: email.email_farma_name,
             vet_email: email.email_address,
-            confirmation_link: email.email_confirmation_id === "" ? null : `http://localhost:4200/confirm?token="${email.email_confirmation_id}"`
+            confirmation_link: email.email_confirmation_id === "" ? null : `http://localhost:4200/confirm/${email.email_type}?token="${email.email_confirmation_id}"`
         }
 
     };
@@ -623,7 +624,13 @@ app.get('/getMaxId/:param', function (request, response) {
 
 // TODO test this extensively
 /* send verification link */
-app.get('/confirm', function (req, res) {
+app.get('/confirm/:param', function (req, res) {
+
+    console.log(req.params.param);
+
+    const param = req.params.param === 'vaccination' ? 'vaccination_details' : 'sick_animals';
+
+    console.log(param);
 
     // query to return the tokens
     connection.query(`SELECT * FROM triggered_emails WHERE confirmation_id = ${req.query.token}`, function (err, result) {
@@ -637,7 +644,7 @@ app.get('/confirm', function (req, res) {
 
             if (result[0].confirmation_id !== null) {
 
-                connection.query(`UPDATE vaccination_details SET confirmed = 'Y' WHERE confirmed_id = '${result[0].confirmation_id}'`, function (err, result) {
+                connection.query(`UPDATE ${param} SET confirmed = 'Y' WHERE confirmed_id = '${result[0].confirmation_id}'`, function (err, result) {
                     if (err) {
                         console.log(err)
                         res.send({ message: "UPDATE FAILED/CONFIRMATOIN" });
@@ -652,12 +659,13 @@ app.get('/confirm', function (req, res) {
 
             } else {
 
-                res.send({ message: "CONFIRMATIO TOKEN INVALID" });
+                res.send({ message: "CONFIRMATION TOKEN INVALID" });
 
             }
         }
 
     });
+
 })
 
 
