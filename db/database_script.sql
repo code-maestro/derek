@@ -420,6 +420,22 @@ create table signup_otp
     column_name      int         null
 );
 
+create definer = derek@localhost trigger verified_farma
+    after update
+    on signup_otp
+    for each row
+BEGIN
+
+        CALL farma_registration(
+            NEW.pending_id,
+            (SELECT first_name FROM pending_farma WHERE farma_id = NEW.pending_id),
+            (SELECT last_name FROM pending_farma WHERE farma_id = NEW.pending_id),
+            (SELECT mail FROM pending_farma WHERE farma_id = NEW.pending_id),
+            (SELECT phone FROM pending_farma WHERE farma_id = NEW.pending_id),
+            (SELECT password FROM pending_farma WHERE farma_id = NEW.pending_id));
+
+    END;
+
 create table symptom
 (
     id           int auto_increment
@@ -552,7 +568,7 @@ create table vets
 );
 
 create
-    definer = derek@localhost procedure GetAll() deterministic
+    definer = derek@`%` procedure GetAll() deterministic
 BEGIN
     SELECT
 		*
@@ -566,7 +582,7 @@ BEGIN
 END;
 
 create
-    definer = derek@localhost procedure GetData()
+    definer = derek@`%` procedure GetData()
 BEGIN
     SELECT * FROM vets;
     SELECT * FROM animal LIMIT 10;
@@ -629,7 +645,7 @@ BEGIN
 END;
 
 create
-    definer = derek@localhost procedure findAll()
+    definer = derek@`%` procedure findAll()
 BEGIN
     SELECT * FROM vets;
     SELECT * FROM animal LIMIT 10;
@@ -695,7 +711,7 @@ BEGIN
 END;
 
 create
-    definer = derek@localhost procedure procesDates(IN dates varchar(50), IN animal_kind varchar(50), IN the_id int,
+    definer = derek@`%` procedure procesDates(IN dates varchar(50), IN animal_kind varchar(50), IN the_id int,
                                               IN the_date date, IN animal_type varchar(25), IN animal_id int)
 BEGIN
 
@@ -722,7 +738,7 @@ BEGIN
 END;
 
 create
-    definer = derek@localhost procedure reschedule(IN quantity int, OUT total int)
+    definer = derek@`%` procedure reschedule(IN quantity int, OUT total int)
 BEGIN
 
 DECLARE quantity_in_db INT;
@@ -786,7 +802,7 @@ BEGIN
 END;
 
 create
-    definer = derek@localhost procedure update_sick(IN animalID int, IN reportedDate date, IN vetID varchar(100),
+    definer = derek@`%` procedure update_sick(IN animalID int, IN reportedDate date, IN vetID varchar(100),
                                               IN appointmentDate varchar(50), IN diseaseID int,
                                               IN symptomName varchar(200))
 BEGIN

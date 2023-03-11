@@ -9,13 +9,27 @@ async function getFarmaData() {
   }
 }
 
+
+const showFarma = async () => {
+  let farma_data = await getFarmaData();
+
+  farma_data.farma.forEach(f => {
+    document.getElementById("farma-details").innerText = f.first_name + "  " + f.last_name;
+  });
+
+  console.log(document.getElementById("farma-details"));
+
+}
+
+showFarma();
+
+
 const renderFarma = async () => {
 
   let farma_data = await getFarmaData();
 
-  console.log(farma_data);
-  
   farma_data.farma.forEach(f => {
+
     document.getElementById("validation01").setAttribute('value', f.first_name == null ? "" : f.first_name);
     document.getElementById("validation02").setAttribute('value', f.last_name == null ? "" : f.last_name);
     document.getElementById("validation03").setAttribute('value', f.phone == null ? "" : f.phone);
