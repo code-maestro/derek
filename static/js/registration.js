@@ -48,7 +48,7 @@ function validateForm() {
 }
 
 
-
+// FUNCTION TO CALL API END POINT TO REGISTER FARMA
 async function registerFarma() {
 
   try {
@@ -72,7 +72,7 @@ async function registerFarma() {
       }
     }
 
-    const response = await fetch(`/testPost`, options);
+    const response = await fetch(`/register-farma`, options);
 
     if (!response.ok) {
 
@@ -81,26 +81,99 @@ async function registerFarma() {
     } else {
 
       const data = await response.json();
-      console.log("lalal33");
-      console.log(data);
-      
-  // const myModal = new bootstrap.Modal('#OTP');
-  // myModal.show();
 
-  // const modalToggle = document.getElementById('OTP');
-  // myModal.show(modalToggle);
+      console.log(data.status);
 
-      // setTimeout(lala(data.url), 3000);
+      if (data.status == 200) {
 
-      // function lala(param) {
-      //   if (param === 'error') {
-      //     document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
-      //   }
-      //   else {
-      //     document.getElementById("wrongCredentials").innerText = `Successful Login`;
-      //     window.location.href = param;
-      //   }
-      // }
+        document.getElementById("err").innerHTML = `
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+          <strong> ${data.message}!</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`;
+
+        document.getElementById("uuid").setAttribute("value", data.user_id);
+
+        const myModal = new bootstrap.Modal('#OTP');
+        myModal.show();
+
+        const modalToggle = document.getElementById('OTP');
+        myModal.show(modalToggle);
+
+      } else if (data.status == 400) {
+
+        document.getElementById("err").innerHTML = `
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+          <strong> ${data.message}!</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`;
+
+      } else {
+
+        document.getElementById("err").innerHTML = `
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+          <strong> ${data.message}!</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`;
+
+      }
+
+    }
+
+  }
+
+  catch (error) {
+    console.log(`${error}`);
+  }
+
+}
+
+
+// Function to call api end point to fetch and Authenticate OTP
+async function verifyOTP() {
+
+  try {
+    // query parameters
+    const code = document.getElementById('confirm_otp').value;
+    const userId = document.getElementById('uuid').value;
+
+    // request options
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/verify-otp?code=${code}&userId=${userId}`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      if (data.status == 200) {
+
+        document.getElementById("otp-msg").innerText = ` ${data.message} ! `;
+
+        // window.location.href = `/selection?userId=${userId}`;
+        window.location.href = `/selection`;
+
+      } else if (data.status == 400) {
+
+        document.getElementById("otp-msg").innerText = ` ${data.message} ! `;
+
+      } else {
+
+        document.getElementById("otp-msg").innerText = ` ${data.message} ! `;
+
+      }
 
     }
 

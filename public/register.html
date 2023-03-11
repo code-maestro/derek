@@ -34,7 +34,7 @@
     <!-- <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" /> -->
     <link href="../css/custom.css" rel="stylesheet" type="text/css" />
 
-    <!-- js --> 
+    <!-- js -->
     <script src="../js/registration.js" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -47,6 +47,14 @@
 
     <div class="content">
       <div class="container">
+
+
+        <div class="row">
+          <div class="col-md-12" id="err">
+
+          </div>
+        </div>
+
         <div class="row">
 
           <div class="col-md-12 contents">
@@ -67,40 +75,42 @@
 
                   <div class="form-group mb-4">
                     <label for="username" id="fname" class="alerts"> </label>
-                    <input type="text" maxlength="20" class="form-control" id="first-name" name="fname" placeholder="Enter First Name" >
+                    <input type="text" maxlength="20" class="form-control" id="first-name" name="fname"
+                      placeholder="Enter First Name">
                   </div>
 
                   <div class="form-group mb-4">
                     <label for="password" id="lname" class="alerts"> </label>
-                    <input type="text" maxlength="20" class="form-control" id="last-name" name="lname" placeholder="Enter Last Name"
-                      >
+                    <input type="text" maxlength="20" class="form-control" id="last-name" name="lname"
+                      placeholder="Enter Last Name">
                   </div>
 
                   <div class="form-group mb-4">
                     <label for="username" id="mail" class="alerts"> </label>
-                    <input type="email" class="form-control" id="email" name="mail" placeholder="Enter Email"  >
+                    <input type="email" class="form-control" id="email" name="mail" placeholder="Enter Email">
                   </div>
 
                   <div class="form-group mb-4">
                     <label for="phone" id="phone" class="alerts"> </label>
-                    <input type="tel" class="form-control" id="phone-number" name="phone" placeholder="Enter Phone Number"
-                      >
+                    <input type="tel" class="form-control" id="phone-number" name="phone"
+                      placeholder="Enter Phone Number">
                   </div>
 
                   <div class="form-group last mb-4">
                     <label for="password" id="password" class="alerts"> </label>
-                    <input type="password" class="form-control" minlength="8" id="pass" name="password" placeholder="Enter Password"
-                      >
+                    <input type="password" class="form-control" minlength="8" id="pass" name="password"
+                      placeholder="Enter Password">
                   </div>
 
                   <div class="form-group last mb-4">
                     <label for="password2" id="password2" class="alerts"> </label>
-                    <input type="password" class="form-control" onchange="validatePassword()" minlength="8"
-                      id="pass2" name="password2" placeholder="Confirm Password" >
+                    <input type="password" class="form-control" onchange="validatePassword()" minlength="8" id="pass2"
+                      name="password2" placeholder="Confirm Password">
                   </div>
 
-                  <input type="button" onclick="validateForm()" value="REGISTER" class="my-4 btn text-white btn-block btn-primary" >
-                    <!-- data-bs-toggle="modal" href="#OTP" role="button"> -->
+                  <input type="button" onclick="validateForm()" value="REGISTER"
+                    class="my-4 btn text-white btn-block btn-primary">
+                  <!-- data-bs-toggle="modal" href="#OTP" role="button"> -->
 
                   <div class="mt-5">
                     <a href="/" class="d-flex justify-content-center"> LOGIN </a>
@@ -116,8 +126,8 @@
 
 
     <!-- OTP Modal -->
-    <div class="modal fade" id="OTP" data-bs-keyboard="true" aria-hidden="true"
-      aria-labelledby="OTPLabel" tabindex="-1">
+    <div class="modal fade" id="OTP" data-bs-keyboard="true" aria-hidden="true" aria-labelledby="OTPLabel"
+      tabindex="-1">
       <div class="modal-dialog modal-sm">
         <div class="modal-content px-2">
           <div class="modal-header  justify-content-center">
@@ -127,7 +137,15 @@
           <div class="modal-body">
             <label for="edit-reported-date" class="form-label fw-bold"> Enter the Single Use OTP code that has been
               sent to your email </label>
-            <input onchange="confirmOTP()" id="confirm_otp" type="number" class="form-control my-4" name="confirm_otp">
+            <input onchange="verifyOTP()" id="confirm_otp" type="number" class="form-control my-4" name="confirm_otp">
+
+            <input id="uuid" type="text" name="uuid" hidden>
+
+            <strong>
+              <span class="text-danger mt-03" id="otp-msg">
+                ** OTP Code expires after 5 minutes **
+              </span>
+            </strong>
 
           </div>
         </div>

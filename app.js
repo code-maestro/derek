@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const hbs = require('nodemailer-express-handlebars');
 const dotenv = require("dotenv");
 const cron = require('node-cron');
+const { isNullOrUndefined } = require('util');
 
 
 dotenv.config();
@@ -53,7 +54,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 // Set The Storage Engine
 const upload = multer.diskStorage({
     destination: 'static/images/',
-    filename: function (req, file, cb) {
+    filename: function (request, file, cb) {
         console.log(Date.now() + path.extname(file.originalname));
         storage('img_url', Date.now() + path.extname(file.originalname));
         cb(null, Date.now() + path.extname(file.originalname));
@@ -64,7 +65,7 @@ const upload = multer.diskStorage({
 const uploadImage = multer({
     storage: upload,
     limits: { fileSize: 1000000 },
-    fileFilter: function (req, file, cb) {
+    fileFilter: function (request, file, cb) {
         checkFileType(file, cb);
     }
 }).single('animal_image');
@@ -94,12 +95,12 @@ function checkFileType(file, cb) {
 }
 
 
-// Schedule tasks to be run on the server.
-cron.schedule('*/15 * * * * *', function () {
+// // Schedule tasks to be run on the server.
+// cron.schedule('*/15 * * * * *', function () {
 
-    getTriggeredEmails();
+//     getTriggeredEmails();
 
-});
+// });
 
 
 // Get data from backend endpoint
@@ -241,7 +242,7 @@ app.get('/register', function (request, response) {
 // NEW FARMA ANIMAL SELECTION PAGE
 app.get('/selection', function (request, response) {
     // Get saved data from sessionStorage
-    const user_id = storage('farma_id');
+    const user_id = storage('farma_id') === undefined || storage('farma_id') === null ? request.query.userId : storage('farma_id');
     if (user_id) {
         response.sendFile(path.join(__dirname + '/public/nohome.html'));
     } else {
@@ -252,16 +253,13 @@ app.get('/selection', function (request, response) {
 
 // HOME PAGE
 app.get('/home', function (request, response) {
-
     // Get saved data from sessionStorage
     const user_id = storage('farma_id');
-
     if (user_id) {
         response.sendFile(path.join(__dirname + '/public/home.html'));
     } else {
         response.redirect('/');
     }
-
 });
 
 
@@ -295,14 +293,14 @@ app.get('/animal/:id', function (request, response) {
 
 
 // Logout
-app.get('/logout', (req, res) => {
-    // req.session.destroy();
+app.get('/logout', (request, response) => {
+    // request.session.destroy();
     // Remove all saved data from sessionStorage
     storage.remove('farma_id');
     storage.clear();
     storage.clearAll();
     console.log(storage.get('farma_id'));
-    res.redirect('/');
+    response.redirect('/');
 });
 
 
@@ -624,20 +622,20 @@ app.get('/getMaxId/:param', function (request, response) {
 
 // TODO test this extensively
 /* send verification link */
-app.get('/confirm/:param', function (req, res) {
+app.get('/confirm/:param', function (request, response) {
 
-    console.log(req.params.param);
+    console.log(request.params.param);
 
-    const param = req.params.param === 'vaccination' ? 'vaccination_details' : 'sick_animals';
+    const param = request.params.param === 'vaccination' ? 'vaccination_details' : 'sick_animals';
 
     console.log(param);
 
     // query to return the tokens
-    connection.query(`SELECT * FROM triggered_emails WHERE confirmation_id = ${req.query.token}`, function (err, result) {
+    connection.query(`SELECT * FROM triggered_emails WHERE confirmation_id = ${request.query.token}`, function (err, result) {
 
         if (err) {
             console.log(err);
-            res.send({ message: " NOOOO LOL " });
+            response.send({ message: " NOOOO LOL " });
         } else {
 
             console.log(result[0]);
@@ -647,19 +645,19 @@ app.get('/confirm/:param', function (req, res) {
                 connection.query(`UPDATE ${param} SET confirmed = 'Y' WHERE confirmed_id = '${result[0].confirmation_id}'`, function (err, result) {
                     if (err) {
                         console.log(err)
-                        res.send({ message: "UPDATE FAILED/CONFIRMATOIN" });
+                        response.send({ message: "UPDATE FAILED/CONFIRMATOIN" });
                     } else {
 
-                        res.sendFile(path.join(__dirname + '/public/views/sucess.html'));
+                        response.sendFile(path.join(__dirname + '/public/views/sucess.html'));
 
-                        // res.send({ message: "UPDATE SUCCESSFULLY" });
+                        // response.send({ message: "UPDATE SUCCESSFULLY" });
                     }
 
                 });
 
             } else {
 
-                res.send({ message: "CONFIRMATION TOKEN INVALID" });
+                response.send({ message: "CONFIRMATION TOKEN INVALID" });
 
             }
         }
@@ -667,6 +665,50 @@ app.get('/confirm/:param', function (req, res) {
     });
 
 })
+
+
+// OTP verification
+app.get('/verify-otp', async (request, res) => {
+    try {
+        const code = request.query.code;
+        const userId = request.query.userId;
+
+        console.log("CODE => " + code );
+        console.log("ISER_ID => " + userId );
+
+        storage('farma_id', userId);
+
+        console.log(storage('farma_id'));
+
+        // query to return the tokens
+        connection.query(`CALL verify_otp ('${userId}', '${code}', @user_id);`, function (err, result) {
+            if (err) {
+                console.log(err);
+                response.send({ message: " NOOOO LOL " });
+            } else {
+
+                console.log(result);
+
+                const data = {
+                    status: 200,
+                    message: 'OTP authenticated successfully.'
+                };
+
+                res.json(data);
+
+            }
+
+        });
+
+    } catch (error) {
+
+        console.log(`${error}`);
+
+        res.status(500).send('Internal server error');
+
+    }
+
+});
 
 
 
@@ -699,6 +741,41 @@ app.post('/registerFarma', function (request, response) {
     } else {
         alert(' EMPTY DATA FEILDS !');
         response.end();
+    }
+});
+
+
+
+// Registering a farma
+app.post('/register-farma', function (request, response) {
+    // Capture the input fields
+    const f_id = uuidv4();
+    const fname = request.body.fname;
+    const lname = request.body.lname;
+    const mail = request.body.mail;
+    const phone = request.body.phone;
+    const password = request.body.password;
+    const password2 = request.body.password2;
+
+    console.log(request.body);
+
+    if (mail !== null && password2 !== null) {
+        // Execute SQL query that'll insert into the farma table
+        connection.query(`CALL pending_farma_registration('${f_id}', '${fname}', '${lname}' , '${mail}', '${phone}', '${password2}')`, function (error, results, fields) {
+            if (error) {
+                console.log(error);
+                //response.redirect(`/`);
+                return response.status(500).json({ status: 500, message: 'SQL Error. Refresh and Try Again.' + error });
+            } else {
+                return response.status(200).json({ status: 200, message: 'User Registration Successfuly.', user_id: `${f_id}` });
+            }
+
+        });
+
+    } else {
+
+        return response.status(400).json({ status: 500, message: 'EMPTY EMAIL & PASSWORD' });
+
     }
 });
 
@@ -741,15 +818,15 @@ app.post('/authenticate', function (request, response) {
                     storage('farma_name', element.first_name + ' ' + element.last_name);
 
                     if (element.list_of_animals == null) {
-                        response.send({'url':'/selection'});
+                        response.send({ url: '/selection' });
                     } else {
-                        response.send({"url": '/home'});
+                        response.send({ url: '/home' });
                     }
                 });
 
             } else {
 
-                response.send({"url": 'error'});
+                response.send({ url: 'error' });
 
             }
 
@@ -766,15 +843,15 @@ app.post('/authenticate', function (request, response) {
 
 
 // Registering a new animal
-app.post('/newAnimal', function (req, res) {
+app.post('/newAnimal', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${req.body.animalTag}', '${req.body.gender}', '${req.body.dob}', '${req.body.regDate}', '${animal}', '${farma_id}', 'Y');`, function (error, results, fields) {
+    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${request.body.animalTag}', '${request.body.gender}', '${request.body.dob}', '${request.body.regDate}', '${animal}', '${farma_id}', 'Y');`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
         // If the account exists
-        res.redirect(`/animal/${animal}`);
+        response.redirect(`/animal/${animal}`);
         return;
     });
 })
@@ -782,205 +859,205 @@ app.post('/newAnimal', function (req, res) {
 
 // TODO test new born registration
 // Registering a new animal
-app.post('/addNewBorn', function (req, res) {
+app.post('/addNewBorn', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, parent_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${req.body.newBornTag}', '${req.body.parentTag}', '${req.body.newBornGender}', '${req.body.newBornDOB}', '${req.body.newBornRegDate}', '${animal}', '${farma_id}', 'Y');`, function (error, results, fields) {
+    connection.query(`INSERT INTO animal (animal_tag, parent_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${request.body.newBornTag}', '${request.body.parentTag}', '${request.body.newBornGender}', '${request.body.newBornDOB}', '${request.body.newBornRegDate}', '${animal}', '${farma_id}', 'Y');`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
         // If the account exists
-        res.redirect(`/animal/${animal}`);
+        response.redirect(`/animal/${animal}`);
         return;
     });
 })
 
 
 // Inserting new TimeTable into the DB
-app.post('/newTimeTable', function (req, res) {
+app.post('/newTimeTable', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     const rand_id = uuidv4();
 
-    console.log(req.body);
+    console.log(request.body);
 
     // Execute SQL query that'll insert into the feeding_timetable table
     connection.query(
         `INSERT INTO feeding_timetable ( tt_name,animal_type,cycle,period,quantity_per_cycle,quantity_per_cycle_unit,quantity,quantity_unit,first_feed_date,feeds_id,tt_id )
-        VALUES ('${req.body.timetableTitle}','${animal}', ${req.body.feedingCycle},${req.body.feedingPeriod},${req.body.feedingQuantityPerCycle},${req.body.feedingQuantityPerCycleUnit},${req.body.plannedQnty},${req.body.plannedQntyMeasure},'${req.body.feedingStartDate}',${req.body.feedsID}, '${rand_id}');`,
+        VALUES ('${request.body.timetableTitle}','${animal}', ${request.body.feedingCycle},${request.body.feedingPeriod},${request.body.feedingQuantityPerCycle},${request.body.feedingQuantityPerCycleUnit},${request.body.plannedQnty},${request.body.plannedQntyMeasure},'${request.body.feedingStartDate}',${request.body.feedsID}, '${rand_id}');`,
 
         function (error, results, fields) {
             if (error) throw error;
         });
 
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
 
     return;
 })
 
 
 // Updating animal data
-app.post('/updateAnimalData', function (req, res) {
+app.post('/updateAnimalData', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
-    connection.query(`UPDATE animal SET animal_tag = '${req.body.editAnimalTag}', gender = '${req.body.editGender}', dob = '${req.body.editDob}', reg_date = '${req.body.editRegDate}' WHERE animal_type ='${animal}' AND farma_id = '${farma_id}' AND id='${req.body.editid}';`, function (error, results, fields) {
+    connection.query(`UPDATE animal SET animal_tag = '${request.body.editAnimalTag}', gender = '${request.body.editGender}', dob = '${request.body.editDob}', reg_date = '${request.body.editRegDate}' WHERE animal_type ='${animal}' AND farma_id = '${farma_id}' AND id='${request.body.editid}';`, function (error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
         // If the account exists
-        res.redirect(`/animal/${animal}`);
+        response.redirect(`/animal/${animal}`);
         return;
     });
 })
 
 
 // Inserting Feeds into the DB
-app.post('/updateFeed', function (req, res) {
+app.post('/updateFeed', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`UPDATE feeds SET name = '${req.body.edit_feeds_name}',  description = '${req.body.edit_feeds_name}', quantity = ${req.body.edit_feeds_qnty}, quantity_measure = ${req.body.edit_feeds_qnty_measure}, stock_date  = '${req.body.edit_feeds_stock_date}', animal_type = '${animal}' WHERE farma_id ='${farma_id}' AND id = ${req.body.edit_feeds_id};`,
+    connection.query(`UPDATE feeds SET name = '${request.body.edit_feeds_name}',  description = '${request.body.edit_feeds_name}', quantity = ${request.body.edit_feeds_qnty}, quantity_measure = ${request.body.edit_feeds_qnty_measure}, stock_date  = '${request.body.edit_feeds_stock_date}', animal_type = '${animal}' WHERE farma_id ='${farma_id}' AND id = ${request.body.edit_feeds_id};`,
         function (error, results, fields) {
             if (error) {
-                // res.redirect(`/animal/${animal}`); 
+                // response.redirect(`/animal/${animal}`); 
 
                 console.log(error);
             }
         });
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
     return;
 });
 
 
 // Inserting Vaccines into the DB
-app.post('/newVaccine', function (req, res) {
+app.post('/newVaccine', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, cycle, period, injection_area, disease_id, animal_type, farma_id) VALUES ('${req.body.vaccineName}', ${req.body.vaccineQuantity}, '${req.body.quantityMeasure}', '${req.body.vaccineDescription}', ${req.body.vaccineCycle}, ${req.body.vaccinePeriod}, '${req.body.injectionArea}', '${req.body.diseaseID}', '${animal}', '${farma_id}');`,
+    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, cycle, period, injection_area, disease_id, animal_type, farma_id) VALUES ('${request.body.vaccineName}', ${request.body.vaccineQuantity}, '${request.body.quantityMeasure}', '${request.body.vaccineDescription}', ${request.body.vaccineCycle}, ${request.body.vaccinePeriod}, '${request.body.injectionArea}', '${request.body.diseaseID}', '${animal}', '${farma_id}');`,
         function (error, results, fields) {
             if (error) throw error;
         });
 
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
     return;
 });
 
 
 // Inserting Feeds into the DB
-app.post('/newFeed', function (req, res) {
+app.post('/newFeed', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO feeds (name, description, quantity, quantity_measure, stock_date, animal_type, farma_id) VALUES ('${req.body.feeds_name}','${req.body.feeds_name}',${req.body.feeds_qnty},${req.body.feeds_qnty_measure},'${req.body.feeds_stock_date}', '${animal}','${farma_id}');`,
+    connection.query(`INSERT INTO feeds (name, description, quantity, quantity_measure, stock_date, animal_type, farma_id) VALUES ('${request.body.feeds_name}','${request.body.feeds_name}',${request.body.feeds_qnty},${request.body.feeds_qnty_measure},'${request.body.feeds_stock_date}', '${animal}','${farma_id}');`,
         function (error, results, fields) {
             if (error) throw error;
             console.log(results);
             console.log(fields);
         });
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
     return;
 });
 
 
 // Inserting Animals that have been fvcked (Insemination/Mating/Breeding) into the DB
-app.post('/newBred', function (req, res) {
+app.post('/newBred', function (request, response) {
     const animal = storage('animal');
     const breeding_uuid = uuidv4();
 
-    console.log(req.body);
+    console.log(request.body);
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO breeding (animal_id, breeding_date, expected_due_date, breeding_uuid) VALUES ('${req.body.breeding_animal_id}','${req.body.breeding_date}', DATE_ADD('${req.body.breeding_date}', INTERVAL ${req.body.gestation_period} DAY), '${breeding_uuid}');`,
+    connection.query(`INSERT INTO breeding (animal_id, breeding_date, expected_due_date, breeding_uuid) VALUES ('${request.body.breeding_animal_id}','${request.body.breeding_date}', DATE_ADD('${request.body.breeding_date}', INTERVAL ${request.body.gestation_period} DAY), '${breeding_uuid}');`,
         function (error, results, fields) {
             if (error) throw error;
             console.log(results);
         });
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
     return;
 });
 
 
 // Inserting Vaccines into the DB
-app.post('/newVet', function (req, res) {
+app.post('/newVet', function (request, response) {
     const animal = storage('animal');
     const vet_uuid = uuidv4();
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vets (fname, lname, email, phone, station, vet_id) VALUES ('${req.body.vetFname}', '${req.body.vetLname}', '${req.body.vetEmail}', '${req.body.vetPhone}', '${req.body.vetStation}', '${vet_uuid}');`,
+    connection.query(`INSERT INTO vets (fname, lname, email, phone, station, vet_id) VALUES ('${request.body.vetFname}', '${request.body.vetLname}', '${request.body.vetEmail}', '${request.body.vetPhone}', '${request.body.vetStation}', '${vet_uuid}');`,
         function (error, results, fields) {
             if (error) throw error;
         });
 
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
     return;
 })
 
 
 // Inserting Vaccines into the DB
-app.post('/updateVet', function (req, res) {
+app.post('/updateVet', function (request, response) {
     const animal = storage('animal');
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`UPDATE vets SET fname = '${req.body.editVetFname}', lname = '${req.body.editVetLname}', email = '${req.body.editVetEmail}', phone = '${req.body.editVetPhone}', station = '${req.body.editVetStation}' WHERE vet_id = '${req.body.editVetID}';`,
+    connection.query(`UPDATE vets SET fname = '${request.body.editVetFname}', lname = '${request.body.editVetLname}', email = '${request.body.editVetEmail}', phone = '${request.body.editVetPhone}', station = '${request.body.editVetStation}' WHERE vet_id = '${request.body.editVetID}';`,
         function (error, results, fields) {
             if (error) throw error;
         });
 
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
     return;
 })
 
 
 // // Inserting Vaccines into the DB
-// app.post('/updateSick', function (req, res) {
+// app.post('/updateSick', function (request, response) {
 //     const animal = storage('animal');
 //     // Execute SQL query that'll insert into the vaccines table
-//     connection.query(`CALL update_sick('${req.body.edit_sick_animal_id}', '${req.body.editReportedDate}', '${req.body.editVetName}', '${req.body.editAppointmentDate + ' ' + req.body.editAppointmentTime}', '${req.body.disease_suspected}', '${req.body.editSSText}' )`,
+//     connection.query(`CALL update_sick('${request.body.edit_sick_animal_id}', '${request.body.editReportedDate}', '${request.body.editVetName}', '${request.body.editAppointmentDate + ' ' + request.body.editAppointmentTime}', '${request.body.disease_suspected}', '${request.body.editSSText}' )`,
 //         function (error, results, fields) {
 //             if (error) {
 //                 console.log(error);
 //                 console.log(error.errno);
 //                 console.log(error.message);
 //                 console.log(error.name);
-//                 res.redirect(`/animal/rabbbit`);
+//                 response.redirect(`/animal/rabbbit`);
 //             }
 //         });
 
-//     res.redirect(`/animal/${animal}`);
+//     response.redirect(`/animal/${animal}`);
 //     return;
 // })
 
 
 // Confirming appointment
-app.post('/confirmation', function (req, res) {
+app.post('/confirmation', function (request, response) {
 
     const animal = storage('animal');
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`UPDATE sick_animals SET confirmed = 'Y' WHERE id = '${req.body.edit_sick_animal_id}';`,
+    connection.query(`UPDATE sick_animals SET confirmed = 'Y' WHERE id = '${request.body.edit_sick_animal_id}';`,
         function (error, results, fields) {
             if (error) {
                 console.log(error);
                 console.log(error.errno);
                 console.log(error.message);
                 console.log(error.name);
-                res.redirect(`/animal/${animal}`);
+                response.redirect(`/animal/${animal}`);
             }
 
             if (results.affectedRows === 1) {
 
                 console.log(results.affectedRows);
-                console.log(req.body.edit_sick_animal_id);
+                console.log(request.body.edit_sick_animal_id);
 
                 const params = {
                     subject: 'FARMA ALERTS: CONFIRMATION OF TREATMENT APPOINTMENT',
-                    vet_name: `${req.body.editVetName}`,
-                    heading: `TREATMENT APPOINTMENT CONFIRMATION FOR ${req.body.editSickTag}`,
-                    message: `Treatment Appointment for ${storage('farma_name')}'s ${animal} tagged ${req.body.editSickTag} has been confirmed. `,
+                    vet_name: `${request.body.editVetName}`,
+                    heading: `TREATMENT APPOINTMENT CONFIRMATION FOR ${request.body.editSickTag}`,
+                    message: `Treatment Appointment for ${storage('farma_name')}'s ${animal} tagged ${request.body.editSickTag} has been confirmed. `,
                     farma_name: `${storage('farma_name')}`,
-                    vet_mail: `${req.body.update_vet_mail}`
+                    vet_mail: `${request.body.update_vet_mail}`
                 };
 
                 // sendmail(params);
@@ -988,7 +1065,7 @@ app.post('/confirmation', function (req, res) {
 
         });
 
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
 
     return;
 })
@@ -1034,12 +1111,12 @@ app.post('/verifyNewBorn', function (request, response) {
 
 
 // Inserting Vaccines into the DB
-app.post('/scheduleVaccination', function (req, res) {
+app.post('/scheduleVaccination', function (request, response) {
 
     const animal = storage('animal');
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id, confirmed, confirmed_id) VALUES (${req.body.vaxID}, '${req.body.scheduled_first_date}', ${req.body.animalTag}, '${req.body.vetID}', 'N', UUID());`,
+    connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id, confirmed, confirmed_id) VALUES (${request.body.vaxID}, '${request.body.scheduled_first_date}', ${request.body.animalTag}, '${request.body.vetID}', 'N', UUID());`,
 
         function (error, results, fields) {
 
@@ -1062,7 +1139,7 @@ app.post('/scheduleVaccination', function (req, res) {
             }
         });
 
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
 
     return;
 
@@ -1070,10 +1147,10 @@ app.post('/scheduleVaccination', function (req, res) {
 
 
 // Updating Farma Profile Data
-app.post('/updateFarma', function (req, res) {
+app.post('/updateFarma', function (request, response) {
     const animal = storage('animal');
     const farma_id = storage('farma_id');
-    const data = req.body;
+    const data = request.body;
     console.log(data);
     // Execute SQL query that'll insert into the farma table
     connection.query(`UPDATE farma SET first_name = '${data.fname}', last_name = '${data.lname}', phone = '${data.phone}', mail = '${data.mail}' WHERE farma_id = '${farma_id}';`, function (error, results, fields) {
@@ -1085,22 +1162,22 @@ app.post('/updateFarma', function (req, res) {
         return;
     });
 
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
 
 })
 
 
 // Reportinsg Sick animals into the DB
-app.post('/addSick', function (req, res) {
+app.post('/addSick', function (request, response) {
     const animal = storage('animal');
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`CALL recordSick(${req.body.healthyAnimals}, '${req.body.reportedDate}', '${req.body.vets_id}', '${req.body.appointment_date}', ${req.body.suspected_disease}, '${req.body.ssText}');`,
+    connection.query(`CALL recordSick(${request.body.healthyAnimals}, '${request.body.reportedDate}', '${request.body.vets_id}', '${request.body.appointment_date}', ${request.body.suspected_disease}, '${request.body.ssText}');`,
         function (error, results, fields) {
             if (error) throw error;
         });
 
-    res.redirect(`/animal/${animal}`);
+    response.redirect(`/animal/${animal}`);
 
     return;
 
@@ -1109,8 +1186,8 @@ app.post('/addSick', function (req, res) {
 
 // DON'T TOUCH
 // Add animals at the farm to DB
-app.post('/save', async (req, res) => {
-    const getDetails = JSON.parse(JSON.stringify(req.body))
+app.post('/save', async (request, response) => {
+    const getDetails = JSON.parse(JSON.stringify(request.body))
 
     console.log("NAME FROM FRONTEND  " + getDetails.name);
     console.log(" URL " + getDetails.image_url);
@@ -1147,8 +1224,8 @@ app.post('/save', async (req, res) => {
                 }
             });
 
-            res.redirect('/');
-            res.end();
+            response.redirect('/');
+            response.end();
 
         }
     );

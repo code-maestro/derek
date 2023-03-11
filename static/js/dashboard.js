@@ -900,7 +900,7 @@ async function editVet(param) {
   vets.listing.every(vet => {
 
     if (vet.vet_id == param) {
-      fname.setAttribute("value", vet.fname)
+      fname.setAttribute("value", vet.fname);
       lname.setAttribute('value', vet.lname);
       phone.setAttribute("value", vet.phone);
       mail.setAttribute('value', vet.email);
