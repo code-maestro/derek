@@ -13,6 +13,9 @@
     <!-- Style -->
     <link rel="stylesheet" href="/css/login.css" type="text/css">
 
+    <!-- JS -->
+    <script src="../js/auth.js" defer></script>
+
     <title> Farma </title>
 
   </head>
@@ -21,6 +24,13 @@
 
     <div class="content">
       <div class="container">
+
+        <div class="row">
+          <div class="col-md-12" id="started">
+
+          </div>
+        </div>
+
         <div class="row">
 
           <div class="col-md-6 contents">
@@ -43,7 +53,8 @@
 
                 </div>
 
-                <form action="/auth" method="post">
+                <!-- action="/auth"  -->
+                <form method="post">
 
                   <div class="form-group first">
                     <!-- <label for="username">Username</label> -->
@@ -57,9 +68,11 @@
                       placeholder="Enter password" required>
                   </div>
 
-                  <input type="submit" value="Log In" class="btn text-white btn-block btn-primary">
+                  <input type="button" onclick="authenticateUser()" value="Log In"
+                    class="btn text-white btn-block btn-primary">
+                  <p class="fw-bold d-flex justify-content-center my-2 text-danger" id="wrongCredentials" > </p>
 
-                  <div class="d-flex my-3 align-items-center justify-content-between">
+                  <div class="d-flex my-1 align-items-center justify-content-between">
                     <span>
                       <a href="#" class="forgot-pass">Forgot Password</a>
                     </span>

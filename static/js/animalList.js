@@ -22,12 +22,8 @@ async function renderUsers() {
 
     const animals_at_farm = JSON.parse(JSON.stringify(users));
     
-    console.log(animals_at_farm);
-
     animals_at_farm.forEach(animal => {
       
-      console.log(animal.name);
-
       htmlSegment = `
         <!-- animal card onclick="seeDetails()"-->
           <a class="col-auto mb-4" href="/animal/${animal.name}">

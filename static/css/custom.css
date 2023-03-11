@@ -163,3 +163,7 @@ h2 {
 .color-3 .chosen-container-multi .chosen-choices li.search-choice {
   background-color: #d3f4ff;
 }
+
+.alerts {
+  display: none;
+}

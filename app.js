@@ -677,7 +677,7 @@ app.get('/confirm/:param', function (req, res) {
 */
 
 // Registering a user
-app.post('/register', function (request, response) {
+app.post('/registerFarma', function (request, response) {
     // Capture the input fields
     const f_id = uuidv4();
     const fname = request.body.fname;
@@ -689,7 +689,7 @@ app.post('/register', function (request, response) {
 
     if (mail !== null && password2 !== null) {
         // Execute SQL query that'll insert into the farma table
-        connection.query(`CALL farma_registration('${f_id}', '${fname}', '${lname}' , '${mail}', '${phone}', '${password2}')`, function (error, results, fields) {
+        connection.query(`CALL pending_farma_registration('${f_id}', '${fname}', '${lname}' , '${mail}', '${phone}', '${password2}')`, function (error, results, fields) {
             if (error) throw error;
             // If the account exists
             response.redirect('/');
@@ -714,16 +714,12 @@ app.post('/testPost', function (request, response) {
 
 
 // login authentication
-app.post('/auth', function (request, response) {
-    // Capture the input fields
-    let mail = request.body.mail;
-    let password = request.body.password;
-    let username = request.body.username;
+app.post('/authenticate', function (request, response) {
 
     // Ensure the input fields exists and are not empty
-    if (mail && password) {
+    if (request.body.mail && request.body.pass) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
-        connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, a.password, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${mail}' AND (AES_DECRYPT(FROM_BASE64(a.password), a.farma_id)) =  '${password}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
+        connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, a.password, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${request.body.mail}' AND (AES_DECRYPT(FROM_BASE64(a.password), a.farma_id)) =  '${request.body.pass}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
 
             // If there is an issue with the query, output the error
             if (error) {
@@ -745,17 +741,15 @@ app.post('/auth', function (request, response) {
                     storage('farma_name', element.first_name + ' ' + element.last_name);
 
                     if (element.list_of_animals == null) {
-                        response.redirect('/selection');
+                        response.send({'url':'/selection'});
                     } else {
-                        response.redirect('/home');
+                        response.send({"url": '/home'});
                     }
                 });
 
             } else {
 
-                console.log("WRONG PASSWORD OR EMAIL");
-
-                response.redirect(`/`);
+                response.send({"url": 'error'});
 
             }
 
