@@ -12,13 +12,9 @@ async function getFarmaData() {
 
 const showFarma = async () => {
   let farma_data = await getFarmaData();
-
   farma_data.farma.forEach(f => {
     document.getElementById("farma-details").innerText = f.first_name + "  " + f.last_name;
   });
-
-  console.log(document.getElementById("farma-details"));
-
 }
 
 showFarma();
