@@ -51,6 +51,7 @@ async function getMaxId(param) {
   let url = `/getMaxId/${param}`;
   try {
     let res = await fetch(url);
+
     return await res.json();
   } catch (error) {
     console.log(error);
@@ -64,17 +65,10 @@ async function getAnimalTableData(inputID) {
 
   let last = await getMaxId('animal_id');
 
-  if (last === undefined) {
+  console.log("browserUrl" + browserUrl);
 
-    console.log(browserUrl);
+  document.getElementById(`${inputID}`).setAttribute('value', `${last.animalType.toUpperCase()}-000${last.last_id}`);
 
-    document.getElementById(`${inputID}`).setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-0001`);
-  } else {
-    last.last_id.forEach(id => {
-      document.getElementById(`${inputID}`).setAttribute('value', id.animal_type === null ? "" : `${id.animal_type.toUpperCase()}-000${id.LAST + 1}`);
-    });
-
-  }
 
   if (inputID === 'new-born-tag') {
 
@@ -477,7 +471,7 @@ const getPendingVaccinations = async () => {
   const con = document.getElementById('pendingAnimalsListing');
 
   vaccinated.listing.forEach(vaxed => {
-    
+
     htmlSegment = `
       <tr class="justify-content-center" id="${vaxed.id}">
         <td class="text-center"> ${vaxed.id} </td>

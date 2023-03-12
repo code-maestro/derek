@@ -308,12 +308,12 @@ create definer = derek@localhost trigger pending_farma_confirmation
     for each row
 BEGIN
 
-    INSERT INTO signup_otp (otp, otp_id, pending_id, status, expiry_timestamp)
+    INSERT INTO otp (otp, otp_id, pending_id, status, expiry_timestamp)
 	VALUES (TO_BASE64(AES_ENCRYPT((SELECT LEFT(CAST(RAND()*1000000000+999999 AS UNSIGNED),6)), NEW.farma_id)), UUID(), NEW.farma_id, 'A', DATE_ADD(NOW(), INTERVAL 5 MINUTE));
 
     INSERT INTO triggered_emails (email_address,status,subject,farma_name,body,confirmation_id,template_name)
     VALUES (NEW.mail, 'N','CONFIRMATION OTP CODE', CONCAT(NEW.first_name, ' ', NEW.last_name),
-            CONCAT('Please Enter this single-use OTP code : ', (SELECT (AES_DECRYPT(FROM_BASE64(otp), pending_id)) FROM signup_otp WHERE pending_id = NEW.farma_id)),  (SELECT otp_id FROM signup_otp WHERE pending_id = NEW.farma_id), 'reminder');
+            CONCAT('Please Enter this single-use OTP code : ', (SELECT (AES_DECRYPT(FROM_BASE64(otp), pending_id)) FROM otp WHERE pending_id = NEW.farma_id)),  (SELECT otp_id FROM otp WHERE pending_id = NEW.farma_id), 'reminder');
 
 END;
 
@@ -409,7 +409,7 @@ BEGIN
 
 END;
 
-create table signup_otp
+create table otp
 (
     otp              varchar(60) not null
         primary key,
@@ -422,7 +422,7 @@ create table signup_otp
 
 create definer = derek@localhost trigger verified_farma
     after update
-    on signup_otp
+    on otp
     for each row
 BEGIN
 
@@ -774,7 +774,7 @@ BEGIN
     DECLARE done INT DEFAULT FALSE;
     DECLARE otpid VARCHAR(60);
     DECLARE expiry_time DATETIME;
-    DECLARE cur CURSOR FOR SELECT otp_id, expiry_timestamp FROM signup_otp WHERE expiry_timestamp <= NOW() AND status = 'A';
+    DECLARE cur CURSOR FOR SELECT otp_id, expiry_timestamp FROM otp WHERE expiry_timestamp <= NOW() AND status = 'A';
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
     OPEN cur;
     read_loop: LOOP
@@ -783,7 +783,7 @@ BEGIN
             LEAVE read_loop;
         END IF;
 
-        DELETE FROM signup_otp WHERE otp_id = otpid;
+        DELETE FROM otp WHERE otp_id = otpid;
 
     END LOOP;
 
@@ -795,7 +795,7 @@ create
     definer = derek@localhost procedure testing_output(OUT tess int)
 BEGIN
 
-    SET tess = (SELECT COUNT(*) FROM signup_otp);
+    SET tess = (SELECT COUNT(*) FROM otp);
 
     SELECT tess;
 
@@ -825,11 +825,11 @@ create
                                                    OUT VERIFIED varchar(60))
 BEGIN
 
-        SET VERIFIED = IFNULL((SELECT pending_id FROM signup_otp WHERE status = 'A' AND (AES_DECRYPT(FROM_BASE64(otp), FARMA_ID)) = SINGLE_OTP), 'FAILED');
+        SET VERIFIED = IFNULL((SELECT pending_id FROM otp WHERE status = 'A' AND (AES_DECRYPT(FROM_BASE64(otp), FARMA_ID)) = SINGLE_OTP), 'FAILED');
 
         IF VERIFIED != 'FAILED' THEN
             SELECT VERIFIED;
-            UPDATE signup_otp SET status = 'I' WHERE pending_id = VERIFIED AND status= 'A';
+            UPDATE otp SET status = 'I' WHERE pending_id = VERIFIED AND status= 'A';
         END IF;
 
         SELECT VERIFIED;

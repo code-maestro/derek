@@ -599,18 +599,20 @@ app.get('/getMaxId/:param', function (request, response) {
     const animal = storage('animal');
     const param = request.params.param;
 
-    console.log(user_id);
+    console.log(user_id + "  " + animal );
 
     const queries = {
-        animal_id: `SELECT MAX(id) AS LAST, animal_type FROM animal  WHERE animal_type='${animal}' AND farma_id = '${user_id}';`,
-        timetable_id: `SELECT MAX(id) AS LAST, animal_type FROM feeding_timetable WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${user_id}') AND animal_type = '${animal}';`
+        animal_id: `SELECT COUNT(id) AS LAST, animal_type FROM animal  WHERE animal_type='${animal}' AND farma_id = '${user_id}';`,
+        timetable_id: `SELECT COUNT(id) AS LAST, animal_type FROM feeding_timetable WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${user_id}') AND animal_type = '${animal}';`
     }
 
     if (user_id) {
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
-            response.send({ last_id: results });
+
+            // console.log(results[0]);
+            response.send({ last_id: results[0].LAST != null ? results[0].LAST + 1 : 0001, animalType: results[0].animal_type != null ? results[0].animal_type : animal });
         })
     } else {
         console.log(" trying to delete with no farma_id 🤣😂 ");
