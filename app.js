@@ -95,12 +95,10 @@ function checkFileType(file, cb) {
 }
 
 
-// // Schedule tasks to be run on the server.
-// cron.schedule('*/15 * * * * *', function () {
-
-//     getTriggeredEmails();
-
-// });
+// Schedule tasks to be run on the server.
+cron.schedule('*/15 * * * * *', function () {
+    getTriggeredEmails();
+});
 
 
 // Get data from backend endpoint
