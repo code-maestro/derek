@@ -189,15 +189,12 @@ const getFeedsTableData = async () => {
 
 // Function to get All feeds
 const getFeedsListData = async () => {
+
   const feedsData = await getListing('feeds');
+
   let last = await getMaxId('timetable_id');
 
-  console.log(last);
-
-  last.last_id.forEach(id => {
-    document.getElementById("timetableTitle").setAttribute('value', `${((id.animal_type) == null ? "" : (id.animal_type)).toUpperCase()}-FEEDING-000${id.LAST + 1}`);
-  });
-
+  document.getElementById("timetableTitle").setAttribute('value', `${last.animalType.toUpperCase()}-000${last.last_id}`);
 
   let listed = '';
   let forlist = `<option selected disabled> Choose a Feed ...</option>`;

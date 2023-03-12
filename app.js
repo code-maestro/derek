@@ -453,7 +453,9 @@ app.get('/getListing/:param', function (request, response) {
                            WHERE A.id NOT IN (SELECT animal_id FROM breeding) AND A.animal_type='${animal_type}'
                            AND GP.animal_type = '${animal_type}'
                            AND A.gender = 'Female'
-                           AND A.animal_type = GP.animal_type AND A.farma_id = '${farma_id}';`,
+                           AND A.animal_type = GP.animal_type
+                           AND  DATEDIFF(NOW(),A.dob) >= GP.ready_after
+                           AND A.farma_id = '${farma_id}';`,
 
         expectingToday: `SELECT A.id, A.animal_tag, B.breeding_date, B.expected_due_date, TIMESTAMPDIFF(DAY, CURDATE(), B.expected_due_date) AS DAYS FROM animal A, breeding B WHERE A.id = B.animal_id AND TIMESTAMPDIFF(DAY, CURDATE(), B.expected_due_date) = 0 AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}';`,
 
@@ -529,7 +531,15 @@ app.get('/getScheduletListing/:param', function (request, response) {
 
     const param = request.params.param;
 
-    const queries = `SELECT id,feeding_tt_id,effective_date,next_date, feeds_quantity/qnty_per_cycle_unit as feeds_quantity,IF(qnty_unit >= 1000, 'kg', 'g' ) as unit, feeds_qnty_pending/qnty_unit as feeds_qnty_pending,schedule_id FROM feeding_schedule WHERE feeding_tt_id = '${param}';`
+    console.log(param);
+
+    const queries = `SELECT id,feeding_tt_id,
+                        effective_date,next_date,
+                        FORMAT(((feeds_quantity*feeding_schedule.qnty_unit) / qnty_per_cycle_unit), 2) as feeds_quantity,
+                        FORMAT(((feeds_qnty_pending*feeding_schedule.qnty_unit)/qnty_unit), 2) as feeds_qnty_pending,
+                        IF(qnty_unit >= 1000, 'kg', 'g' ) as unit,
+                        schedule_id
+                        FROM feeding_schedule WHERE feeding_tt_id = '${param}';`
 
     if (user_id) {
 
@@ -552,7 +562,7 @@ app.get('/getScheduletListing/:param', function (request, response) {
 });
 
 
-
+// Verify animal has been born
 app.get('/verifyAnimal/:param', function (request, response) {
 
     const user_id = storage('farma_id');
