@@ -60,8 +60,6 @@ async function registerFarma() {
       phone: document.getElementById('phone-number').value,
       pass: document.getElementById('pass2').value
     };
-    console.log("lalal22");
-    console.log(farmaData);
 
     // request options
     const options = {
@@ -81,8 +79,6 @@ async function registerFarma() {
     } else {
 
       const data = await response.json();
-
-      console.log(data.status);
 
       if (data.status == 200) {
 

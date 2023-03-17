@@ -18,6 +18,16 @@
 
     <title> Farma </title>
 
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"
+      defer></script>
+
   </head>
 
   <body>
@@ -70,16 +80,12 @@
 
                   <input type="button" onclick="authenticateUser()" value="Log In"
                     class="btn text-white btn-block btn-primary">
-                  <p class="fw-bold d-flex justify-content-center my-2 text-danger" id="wrongCredentials" > </p>
+                  <p class="fw-bold d-flex justify-content-center my-2 text-danger" id="wrongCredentials"> </p>
 
                   <div class="d-flex my-1 align-items-center justify-content-between">
-                    <span>
-                      <a href="#" class="forgot-pass">Forgot Password</a>
-                    </span>
-
-                    <span>
-                      <a href="/register" class="forgot-pass"> SIGN UP </a>
-                    </span>
+                    <span class="forgot-pass" data-bs-toggle="modal" href="#pwdResetModalToggle" role="button"> Forgot
+                      Password ? </span>
+                    <span> <a href="/register" class="forgot-pass"> SIGN UP </a> </span>
                   </div>
 
                 </form>
@@ -88,8 +94,8 @@
           </div>
 
           <div class="col-md-6">
-            <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_6wA0Oc.json" background="transparent"
-              speed="1" style="width: 350px; height: 350px;" loop autoplay></lottie-player>
+            <!-- <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_6wA0Oc.json" background="transparent"
+              speed="1" style="width: 350px; height: 350px;" loop autoplay></lottie-player> -->
 
             <!-- <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_CgexnTerux.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop autoplay></lottie-player> -->
           </div>
@@ -98,7 +104,95 @@
       </div>
     </div>
 
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <!-- Email to reset Password Modal -->
+    <div class="modal fade" id="pwdResetModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="pwdResetModalToggleLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title py-2" style="background-color: #38d39f;">
+                <strong>
+                  PASSWORD RESET
+                </strong>
+              </h5>
+
+              <form method="post">
+                <p class="card-text"> Please your email where the OTP will be sent to reset your passowrd.</p>
+
+                <div class="form-group last mb-4">
+                  <input type="email" class="form-control px-2" id="reset-email" name="reset-email"
+                    placeholder="Enter your email" required>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-end mb-3">
+                  <button type="button" class="btn btn-sm btn-danger mr-3" data-bs-dismiss="modal" aria-label="Close">
+                    cancel
+                  </button>
+                  <button class="btn btn-primary" onclick="sendOTP()" type="button"> reset password </button>
+                </div>
+
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- OTP set new password Modal -->
+    <div class="modal fade" id="newPwdModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="newPwdModalToggleLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title py-2" style="background-color: #38d39f;">
+                <strong>
+                  Enter OTP
+                </strong>
+              </h5>
+              <p class="card-text"> Please enter the OTP that was sent to your email.</p>
+
+              <div class="form-group last mb-4">
+                <input type="number" class="form-control px-2" id="reset-otp" name="reset-otp"
+                  placeholder="Enter your OTP code " required>
+              </div>
+
+              <!-- Appear after OTP is verified -->
+              <div class="correctOTP">
+
+                <div class="form-group last mb-4">
+                  <input type="password" class="form-control px-2" id="reset-pass" name="reset-pass"
+                    placeholder="Enter New Password" required>
+                </div>
+
+                <div class="form-group last mb-4">
+                  <input type="password" class="form-control px-2" id="reset-pass2" name="reset-pass2"
+                    placeholder="Confirm New Password" required>
+                </div>
+
+              </div>
+
+              <div class="d-grid gap-2 d-md-flex justify-content-end mb-3">
+                <button type="button" class="btn btn-secondary mr-3" data-bs-dismiss="modal" aria-label="Close">
+                  cancel
+                </button>
+                <button class="btn btn-primary" type="button"> reset password </button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script> -->
 
   </body>
 

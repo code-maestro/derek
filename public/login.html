@@ -38,7 +38,8 @@
                       <input type="password" id="typePasswordX" name="password" class="form-control form-control-lg" />
                     </div>
 
-                    <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>
+                    <p class="small mb-5 pb-lg-2" data-bs-toggle="modal" href="#pwd-reset" role="button"> Forgot
+                      password?</p>
 
                     <button id="login_btn" class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
 
@@ -59,6 +60,28 @@
         </div>
       </div>
     </section>
+
+    <div class="modal" id="pwd-reset" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+          </div>
+          <div class="modal-body">
+            <div class="bd-callout bd-callout-warning">
+              <p>
+                <code>offset</code> To keep backwards compatibility, we will continue to parse a given
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
   </body>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
