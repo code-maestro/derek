@@ -104,8 +104,10 @@ cron.schedule('*/15 * * * * *', function () {
 // Get data from backend endpoint
 async function getTriggeredEmails() {
 
+    const sql_query = `SELECT id, user_name, email_address, status, subject, farma_name, body, animal_tag, confirmation_id, template_name, (SELECT AES_DECRYPT(FROM_BASE64(type),(SELECT A.pending_id FROM otp A WHERE A.otp_id = confirmation_id))) as suotp FROM triggered_emails WHERE status = 'N';`
+
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`SELECT * FROM triggered_emails WHERE status = 'N'`, function (error, results, fields) {
+    connection.query(sql_query, function (error, results, fields) {
 
         if (error) {
 
@@ -113,7 +115,11 @@ async function getTriggeredEmails() {
 
         } else {
 
+            console.log(results);
+
             results.forEach(email => {
+
+                console.log(email);
 
                 const email_content = {
                     email_address: email.email_address != null ? email.email_address : "",
@@ -124,8 +130,10 @@ async function getTriggeredEmails() {
                     email_animal_tag: email.animal_tag != null ? email.animal_tag : "",
                     email_confirmation_id: email.confirmation_id != null ? email.confirmation_id : "",
                     email_template_name: email.template_name != null ? email.template_name : "",
-                    email_type: email.type != null ? email.type : "",
+                    email_type: email.suotp != null ? email.suotp : "NOTHING",
                 }
+
+                console.log(email_content);
 
                 sendEmail(email_content);
 
@@ -145,7 +153,7 @@ function sendEmail(email) {
         service: 'gmail',
         auth: {
             user: 'ell889lle@gmail.com',
-            pass: 'lcmdbftpznmgfqft'
+            pass: 'rheghissjvmagdyv'
         }
     });
 
@@ -702,14 +710,27 @@ app.get('/verify-otp', async (request, res) => {
                 response.send({ message: " NOOOO LOL " });
             } else {
 
-                console.log(result);
+                console.log(result[0][0].VERIFIED);
 
-                const data = {
-                    status: 200,
-                    message: 'OTP authenticated successfully.'
-                };
+                if (result[0][0].VERIFIED === 'FAILED') {
+                    
+                    const data = {
+                        status: 400,
+                        message: 'WRONG OTP '
+                    };
 
-                res.json(data);
+                    res.json(data);
+
+                } else {
+
+                    const data = {
+                        status: 200,
+                        message: 'OTP authenticated successfully.'
+                    };
+
+                    res.json(data);
+
+                }
 
             }
 
@@ -1245,35 +1266,44 @@ app.post('/save', async (request, response) => {
 
     const f_id = storage('farma_id');
 
+    console.log(f_id);
+
     connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id = '${f_id}';`,
         function (error, results, fields) {
             // If there is an issue with the query, output the error
-            if (error) throw error;
-            // If the account exists
+            if (error) {
+                console.log(error);
+            } else {
 
-            results.forEach(element => {
-                if (element.list_of_animals == null) {
-                    // Query to update the list of animals for the farmer with no animals
-                    connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY(JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}")) WHERE farma_id = '${f_id}';`,
-                        function (error, results, fields) {
-                            // If there is an issue with the query, output the error
-                            if (error) throw error;
-                            // If the account exists
-                            return;
-                        }
-                    );
-                } else {
-                    // Query to update the list of animals for all the farmer
-                    connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}")) WHERE farma_id = '${f_id}';`,
-                        function (error, results, fields) {
-                            // If there is an issue with the query, output the error
-                            if (error) throw error;
-                            // If the account exists
-                            return;
-                        }
-                    );
-                }
-            });
+                console.log(results);
+
+                // If the account exists
+
+                results.forEach(element => {
+                    if (element.list_of_animals == null) {
+                        // Query to update the list of animals for the farmer with no animals
+                        connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY(JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}")) WHERE farma_id = '${f_id}';`,
+                            function (error, results, fields) {
+                                // If there is an issue with the query, output the error
+                                if (error) throw error;
+                                // If the account exists
+                                return;
+                            }
+                        );
+                    } else {
+                        // Query to update the list of animals for all the farmer
+                        connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}")) WHERE farma_id = '${f_id}';`,
+                            function (error, results, fields) {
+                                // If there is an issue with the query, output the error
+                                if (error) throw error;
+                                // If the account exists
+                                return;
+                            }
+                        );
+                    }
+                });
+
+            }
 
             response.redirect('/');
             response.end();

@@ -131,6 +131,8 @@ async function registerFarma() {
 // Function to call api end point to fetch and Authenticate OTP
 async function verifyOTP() {
 
+  console.log("entering here");
+
   try {
     // query parameters
     const code = document.getElementById('confirm_otp').value;
@@ -153,6 +155,8 @@ async function verifyOTP() {
     } else {
 
       const data = await response.json();
+
+      console.log("data"+data);
 
       if (data.status == 200) {
 

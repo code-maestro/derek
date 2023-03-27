@@ -88,7 +88,7 @@
                 <div class="rounded shadow-sm py-5 px-4" id="cows">
                   <img id="cow-img" src="images/C.jpg" alt="" width="100"
                     class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                  <h5 class="mb-0"> CATTLASSASASE </h5>
+                  <h5 class="mb-0"> CATTLE </h5>
                   <span class="small text-uppercase text-muted" id="cowss"> </span>
                 </div>
               </div>
@@ -269,6 +269,8 @@
             }];
 
             const toDB = JSON.stringify(animal_at_farm_details);
+
+            console.log(toDB);
 
             // POST request using fetch()
             fetch("/save", {

@@ -568,7 +568,7 @@ create table vets
 );
 
 create
-    definer = derek@`%` procedure GetAll() deterministic
+    definer =derek@localhost procedure GetAll() deterministic
 BEGIN
     SELECT
 		*
@@ -582,7 +582,7 @@ BEGIN
 END;
 
 create
-    definer = derek@`%` procedure GetData()
+    definer =derek@localhost procedure GetData()
 BEGIN
     SELECT * FROM vets;
     SELECT * FROM animal LIMIT 10;
@@ -645,7 +645,7 @@ BEGIN
 END;
 
 create
-    definer = derek@`%` procedure findAll()
+    definer =derek@localhost procedure findAll()
 BEGIN
     SELECT * FROM vets;
     SELECT * FROM animal LIMIT 10;
@@ -711,7 +711,7 @@ BEGIN
 END;
 
 create
-    definer = derek@`%` procedure procesDates(IN dates varchar(50), IN animal_kind varchar(50), IN the_id int,
+    definer =derek@localhost procedure procesDates(IN dates varchar(50), IN animal_kind varchar(50), IN the_id int,
                                               IN the_date date, IN animal_type varchar(25), IN animal_id int)
 BEGIN
 
@@ -738,7 +738,7 @@ BEGIN
 END;
 
 create
-    definer = derek@`%` procedure reschedule(IN quantity int, OUT total int)
+    definer =derek@localhost procedure reschedule(IN quantity int, OUT total int)
 BEGIN
 
 DECLARE quantity_in_db INT;
@@ -802,7 +802,7 @@ BEGIN
 END;
 
 create
-    definer = derek@`%` procedure update_sick(IN animalID int, IN reportedDate date, IN vetID varchar(100),
+    definer =derek@localhost procedure update_sick(IN animalID int, IN reportedDate date, IN vetID varchar(100),
                                               IN appointmentDate varchar(50), IN diseaseID int,
                                               IN symptomName varchar(200))
 BEGIN
