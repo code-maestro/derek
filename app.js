@@ -172,6 +172,7 @@ function sendEmail(email) {
             message: email.email_body,
             farma_name: email.email_farma_name,
             vet_email: email.email_address,
+            email_type: email.email_type,
             confirmation_link: email.email_confirmation_id === "" ? null : `http://localhost:4200/confirm/${email.email_type}?token="${email.email_confirmation_id}"`
         }
 
@@ -253,11 +254,15 @@ app.get('/selection', function (request, response) {
 app.get('/home', function (request, response) {
     // Get saved data from sessionStorage
     const user_id = storage('farma_id');
+
+    console.log(user_id);
+
     if (user_id) {
         response.sendFile(path.join(__dirname + '/public/home.html'));
     } else {
         response.redirect('/');
     }
+
 });
 
 
@@ -607,7 +612,7 @@ app.get('/getMaxId/:param', function (request, response) {
     const animal = storage('animal');
     const param = request.params.param;
 
-    console.log(user_id + "  " + animal );
+    console.log(user_id + "  " + animal);
 
     const queries = {
         animal_id: `SELECT COUNT(id) AS LAST, animal_type FROM animal  WHERE animal_type='${animal}' AND farma_id = '${user_id}';`,
@@ -683,8 +688,8 @@ app.get('/verify-otp', async (request, res) => {
         const code = request.query.code;
         const userId = request.query.userId;
 
-        console.log("CODE => " + code );
-        console.log("ISER_ID => " + userId );
+        console.log("CODE => " + code);
+        console.log("ISER_ID => " + userId);
 
         storage('farma_id', userId);
 
@@ -1192,6 +1197,42 @@ app.post('/addSick', function (request, response) {
     return;
 
 })
+
+
+// send-reset-otp
+app.post('/send_reset_otp', async (request, response) => {
+
+    connection.query(`CALL seedOTP('${request.body.mail}');`, function (error, results, fields) {
+
+        if (error) {
+
+            console.log(error);
+
+            return response.status(500).json({ status: 500, message: 'SQL Error. Refresh and Try Again.' + error });
+
+        } else {
+
+            console.log(results);
+
+            if (results.length > 0) {
+
+                // results.forEach(element => {
+                //     console.log(element);
+                // });
+
+                return response.status(200).json({ status: 200, message: `HERE IS THE OTP CODE ${results[0]}` });
+
+            } else {
+
+                return response.status(400).json({ status: 400, message: 'NO OTP CODE GENERATED' });
+
+            }
+
+        }
+
+    });
+
+});
 
 
 // DON'T TOUCH
