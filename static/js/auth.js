@@ -28,6 +28,8 @@ async function authenticateUser() {
 
       const data = await response.json();
 
+      console.log(data);
+
       setTimeout(lala(data.url), 3000);
 
       function lala(param) {

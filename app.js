@@ -791,9 +791,10 @@ app.post('/register-farma', function (request, response) {
     const mail = request.body.mail;
     const phone = request.body.phone;
     const password = request.body.password;
-    const password2 = request.body.password2;
+    const password2 = request.body.pass;
 
-    console.log(request.body);
+    console.log(request.body.pass);
+    console.log(f_id);
 
     if (mail !== null && password2 !== null) {
         // Execute SQL query that'll insert into the farma table
@@ -829,6 +830,8 @@ app.post('/testPost', function (request, response) {
 // login authentication
 app.post('/authenticate', function (request, response) {
 
+    console.log(request.body);
+
     // Ensure the input fields exists and are not empty
     if (request.body.mail && request.body.pass) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
@@ -840,13 +843,19 @@ app.post('/authenticate', function (request, response) {
                 response.redirect(`/`);
             }
 
+            console.log(results);
+
             // If the account exists
             if (results.length > 0) {
+
+                console.log(results);
 
                 console.log("SUCCESSFULLY AUTHENTICATED");
 
                 // Authenticate the user
                 const row = Object.values(JSON.parse(JSON.stringify(results)));
+
+                console.log(row);
 
                 row.forEach(element => {
                     // Save data to sessionStorage
