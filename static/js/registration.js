@@ -30,7 +30,7 @@ function validateForm() {
 
       const some = document.getElementById(`${field}`);
       some.classList.remove("alerts");
-      some.innerText = "lorddd";
+      some.innerText = "Passwords do not match!";
 
       return false;
 
