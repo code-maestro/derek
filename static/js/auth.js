@@ -22,7 +22,7 @@ async function authenticateUser() {
 
     if (!response.ok) {
 
-      console.log(`HTTP error: ${response.status}`);
+      console.log(`WRONG EMAIL: ${response.json()}`);
 
     } else {
 

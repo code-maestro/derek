@@ -567,26 +567,6 @@ create table vets
     vet_id  varchar(120) null
 );
 
-create
-    definer =derek@localhost procedure GetAll() deterministic
-BEGIN
-    SELECT
-		*
-    FROM vets;
-
-    SELECT
-		animal_tag
-    FROM animal
-    WHERE id = 43;
-
-END;
-
-create
-    definer =derek@localhost procedure GetData()
-BEGIN
-    SELECT * FROM vets;
-    SELECT * FROM animal LIMIT 10;
-END;
 
 create
     definer = derek@localhost procedure farma_create_schedule(IN tt_id varchar(64), IN quantity int,
@@ -644,12 +624,6 @@ BEGIN
 
 END;
 
-create
-    definer =derek@localhost procedure findAll()
-BEGIN
-    SELECT * FROM vets;
-    SELECT * FROM animal LIMIT 10;
-END;
 
 create
     definer = derek@localhost procedure getNewBorns()

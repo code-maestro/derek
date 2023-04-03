@@ -115,11 +115,7 @@ async function getTriggeredEmails() {
 
         } else {
 
-            console.log(results);
-
             results.forEach(email => {
-
-                console.log(email);
 
                 const email_content = {
                     email_address: email.email_address != null ? email.email_address : "",
@@ -132,8 +128,6 @@ async function getTriggeredEmails() {
                     email_template_name: email.template_name != null ? email.template_name : "",
                     email_type: email.suotp != null ? email.suotp : "NOTHING",
                 }
-
-                console.log(email_content);
 
                 sendEmail(email_content);
 
@@ -691,7 +685,7 @@ app.get('/confirm/:param', function (request, response) {
 
 
 // OTP verification
-app.get('/verify-otp', async (request, res) => {
+app.get('/verify-otp', async (request, response) => {
     try {
         const code = request.query.code;
         const userId = request.query.userId;
@@ -707,7 +701,7 @@ app.get('/verify-otp', async (request, res) => {
         connection.query(`CALL verify_otp ('${userId}', '${code}', @user_id);`, function (err, result) {
             if (err) {
                 console.log(err);
-                response.send({ message: " NOOOO LOL " });
+                response.send({ status: 500, message: " NOOOO LOL " });
             } else {
 
                 console.log(result[0][0].VERIFIED);
@@ -719,7 +713,7 @@ app.get('/verify-otp', async (request, res) => {
                         message: 'WRONG OTP '
                     };
 
-                    res.json(data);
+                    response.json(data);
 
                 } else {
 
@@ -728,7 +722,7 @@ app.get('/verify-otp', async (request, res) => {
                         message: 'OTP authenticated successfully.'
                     };
 
-                    res.json(data);
+                    response.json(data);
 
                 }
 
@@ -740,7 +734,7 @@ app.get('/verify-otp', async (request, res) => {
 
         console.log(`${error}`);
 
-        res.status(500).send('Internal server error');
+        response.json({status: 500, message: `INTERNAL SERVER ERROR ${error}`});
 
     }
 
@@ -754,33 +748,6 @@ app.get('/verify-otp', async (request, res) => {
 
 */
 
-// Registering a user
-app.post('/registerFarma', function (request, response) {
-    // Capture the input fields
-    const f_id = uuidv4();
-    const fname = request.body.fname;
-    const lname = request.body.lname;
-    const mail = request.body.mail;
-    const phone = request.body.phone;
-    const password = request.body.password;
-    const password2 = request.body.password2;
-
-    if (mail !== null && password2 !== null) {
-        // Execute SQL query that'll insert into the farma table
-        connection.query(`CALL pending_farma_registration('${f_id}', '${fname}', '${lname}' , '${mail}', '${phone}', '${password2}')`, function (error, results, fields) {
-            if (error) throw error;
-            // If the account exists
-            response.redirect('/');
-            response.end();
-        });
-
-    } else {
-        alert(' EMPTY DATA FEILDS !');
-        response.end();
-    }
-});
-
-
 
 // Registering a farma
 app.post('/register-farma', function (request, response) {
@@ -790,30 +757,30 @@ app.post('/register-farma', function (request, response) {
     const lname = request.body.lname;
     const mail = request.body.mail;
     const phone = request.body.phone;
-    const password = request.body.password;
     const password2 = request.body.pass;
-
-    console.log(request.body.pass);
-    console.log(f_id);
 
     if (mail !== null && password2 !== null) {
         // Execute SQL query that'll insert into the farma table
         connection.query(`CALL pending_farma_registration('${f_id}', '${fname}', '${lname}' , '${mail}', '${phone}', '${password2}')`, function (error, results, fields) {
+            
             if (error) {
-                console.log(error);
-                //response.redirect(`/`);
-                return response.status(500).json({ status: 500, message: 'SQL Error. Refresh and Try Again.' + error });
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
             } else {
-                return response.status(200).json({ status: 200, message: 'User Registration Successfuly.', user_id: `${f_id}` });
+
+                return response.json({ status: 200, message: 'User Registration Successfuly.', user_id: `${f_id}` });
+
             }
 
         });
 
     } else {
 
-        return response.status(400).json({ status: 500, message: 'EMPTY EMAIL & PASSWORD' });
+        return response.json({ status: 500, message: 'EMPTY EMAIL & PASSWORD' });
 
     }
+
 });
 
 
@@ -980,7 +947,7 @@ app.post('/newVaccine', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, cycle, period, injection_area, disease_id, animal_type, farma_id) VALUES ('${request.body.vaccineName}', ${request.body.vaccineQuantity}, '${request.body.quantityMeasure}', '${request.body.vaccineDescription}', ${request.body.vaccineCycle}, ${request.body.vaccinePeriod}, '${request.body.injectionArea}', '${request.body.diseaseID}', '${animal}', '${farma_id}');`,
+    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, cycle, period, injection_area, disease_id, animal_type, farma_id) VALUES ('${request.body.vaccineName}', ${request.body.vaccineQuantity}, '${request.body.quantityMeasure}', '${request.body.vaccineDescription}', ${request.body.vaccineCycle}, ${request.body.vaccinePeriod}, '${request.body.injectionArea}', IFNULL('${request.body.diseaseID}',NULL), '${animal}', '${farma_id}');`,
         function (error, results, fields) {
             if (error) throw error;
         });
@@ -1238,7 +1205,7 @@ app.post('/send_reset_otp', async (request, response) => {
 
             console.log(error);
 
-            return response.status(500).json({ status: 500, message: 'SQL Error. Refresh and Try Again.' + error });
+            return response.json({ status: 500, message: 'SQL Error. Refresh and Try Again.' + error });
 
         } else {
 
@@ -1250,11 +1217,11 @@ app.post('/send_reset_otp', async (request, response) => {
                 //     console.log(element);
                 // });
 
-                return response.status(200).json({ status: 200, message: `HERE IS THE OTP CODE ${results[0]}` });
+                return response.json({ status: 200, message: `HERE IS THE OTP CODE ${results[0]}` });
 
             } else {
 
-                return response.status(400).json({ status: 400, message: 'NO OTP CODE GENERATED' });
+                return response.json({ status: 400, message: 'NO OTP CODE GENERATED' });
 
             }
 

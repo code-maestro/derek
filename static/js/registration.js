@@ -74,7 +74,8 @@ async function registerFarma() {
 
     if (!response.ok) {
 
-      console.log(`HTTP error: ${response.status}`);
+      console.log(`HTTP error status: ${response.status}`);
+      console.log(`HTTP error: ${response.message}`);
 
     } else {
 
@@ -101,7 +102,7 @@ async function registerFarma() {
 
         document.getElementById("err").innerHTML = `
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+          <svg class="bi flex-shrink-0" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
           <strong> ${data.message}!</strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`;
