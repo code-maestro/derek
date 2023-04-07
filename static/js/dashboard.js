@@ -947,8 +947,8 @@ async function recordVaccine() {
 
         console.log(browserUrl);
 
-        // $('#newVaccineModalToggle').hide();
-        $('#newVaccineModalToggle').modal('hide');
+        // $('#newVaccineModalToggle').modal('hide');
+        $('#successModalToggle').modal('show');
         // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
 
       } else {
