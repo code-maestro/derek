@@ -249,7 +249,7 @@ const getAllDiseases = async () => {
   const diseases = await getListing('allDiseases');
 
   let diseaseListed = '';
-  let diseaseList = `<option selected disabled> Choose a disease ...</option>`;
+  let diseaseList = `<option id="0" selected disabled value="0"> Choose a disease ...</option>`;
 
   const disease_lstd = document.getElementById('disease-name');
 
@@ -910,8 +910,14 @@ async function recordVaccine() {
 
     // post body data 
     const userCredentials = {
-      mail: document.getElementById('email').value,
-      pass: document.getElementById('password').value
+      vaccineName: document.getElementById('vaccine-name').value,
+      vaccineDesc: document.getElementById('vaccine-description').value,
+      diseaseID: document.getElementById('disease-name').value,
+      vaccineQuantity: document.getElementById('vaccine-quantity').value,
+      quantityMeasure: document.getElementById('quantity-measure').value,
+      vaccineCycle: document.getElementById('vaccination-cycle').value,
+      vaccinePeriod: document.getElementById('period').value,
+      injectionArea: document.getElementById('injection-area').value
     };
 
     console.log(userCredentials);
@@ -925,7 +931,7 @@ async function recordVaccine() {
       }
     }
 
-    const response = await fetch(`/authenticate`, options);
+    const response = await fetch(`/newVaccine`, options);
 
     if (!response.ok) {
 
@@ -937,16 +943,20 @@ async function recordVaccine() {
 
       console.log(data);
 
-      setTimeout(lala(data.url), 3000);
+      if (data.status == 200) {
 
-      function lala(param) {
-        if (param === 'error') {
-          document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
-        }
-        else {
-          document.getElementById("wrongCredentials").innerText = `Successful Login`;
-          window.location.href = param;
-        }
+        console.log(browserUrl);
+
+        // $('#newVaccineModalToggle').hide();
+        $('#newVaccineModalToggle').modal('hide');
+        // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
+
+      } else {
+
+        // document.getElementById("wrongCredentials").innerText = `Successful Login`;
+        console.log(browserUrl + "LOGIC");
+        // window.location.href = param;
+
       }
 
     }
@@ -955,8 +965,24 @@ async function recordVaccine() {
 
   catch (error) {
 
-    console.log(`${error}`);
+    console.log(error);
 
   }
 
 }
+
+const newForm = document.forms.namedItem("fileinfo");
+
+newForm.addEventListener("submit", (event) => {
+
+  recordVaccine();
+  // const output = document.querySelector("#output");
+  // const formDataEntries = new FormData(newForm).entries();
+  // console.log(Object.fromEntries(formDataEntries));
+
+  event.preventDefault();
+},
+
+  false
+
+);

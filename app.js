@@ -707,7 +707,7 @@ app.get('/verify-otp', async (request, response) => {
                 console.log(result[0][0].VERIFIED);
 
                 if (result[0][0].VERIFIED === 'FAILED') {
-                    
+
                     const data = {
                         status: 400,
                         message: 'WRONG OTP '
@@ -734,7 +734,7 @@ app.get('/verify-otp', async (request, response) => {
 
         console.log(`${error}`);
 
-        response.json({status: 500, message: `INTERNAL SERVER ERROR ${error}`});
+        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
 
     }
 
@@ -762,7 +762,7 @@ app.post('/register-farma', function (request, response) {
     if (mail !== null && password2 !== null) {
         // Execute SQL query that'll insert into the farma table
         connection.query(`CALL pending_farma_registration('${f_id}', '${fname}', '${lname}' , '${mail}', '${phone}', '${password2}')`, function (error, results, fields) {
-            
+
             if (error) {
 
                 return response.json({ status: 500, message: error.sqlMessage });
@@ -802,7 +802,7 @@ app.post('/authenticate', function (request, response) {
     // Ensure the input fields exists and are not empty
     if (request.body.mail && request.body.pass) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
-        connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, a.password, b.list_of_animals FROM farma a, animals_at_farm b WHERE a.mail = '${request.body.mail}' AND (AES_DECRYPT(FROM_BASE64(a.password), a.farma_id)) =  '${request.body.pass}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
+        connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, (SELECT password FROM pwd WHERE farma_id = a.farma_id) AS pwd, b.list_of_animals FROM farma a,  animals_at_farm b WHERE a.mail = '${request.body.mail}' AND (AES_DECRYPT(FROM_BASE64((SELECT password FROM pwd WHERE farma_id = a.farma_id) ), a.farma_id)) = '${request.body.pass}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
 
             // If there is an issue with the query, output the error
             if (error) {
@@ -848,9 +848,10 @@ app.post('/authenticate', function (request, response) {
 
     } else {
 
-        response.send('Please enter email and/or Password!');
+        response.send({ message: 'Please enter email and/or Password!' });
 
     }
+
 });
 
 
@@ -946,14 +947,39 @@ app.post('/updateFeed', function (request, response) {
 app.post('/newVaccine', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
-    // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, cycle, period, injection_area, disease_id, animal_type, farma_id) VALUES ('${request.body.vaccineName}', ${request.body.vaccineQuantity}, '${request.body.quantityMeasure}', '${request.body.vaccineDescription}', ${request.body.vaccineCycle}, ${request.body.vaccinePeriod}, '${request.body.injectionArea}', IFNULL('${request.body.diseaseID}',NULL), '${animal}', '${farma_id}');`,
-        function (error, results, fields) {
-            if (error) throw error;
-        });
 
-    response.redirect(`/animal/${animal}`);
-    return;
+    const disease_id = request.body.diseaseID === undefined ? 0 : request.body.diseaseID;
+
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, cycle, period, injection_area, disease_id, animal_type, farma_id) VALUES ('${request.body.vaccineName}', ${request.body.vaccineQuantity}, '${request.body.quantityMeasure}', '${request.body.vaccineDesc}', ${request.body.vaccineCycle}, ${request.body.vaccinePeriod}, '${request.body.injectionArea}', '${disease_id}', '${animal}', '${farma_id}');`,
+        function (error, results, fields) {
+
+            if (error) {
+
+                console.log(error);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: 'Vaccine Added Successfuly.' });
+
+                } else {
+
+                    return response.json({ status: 400, message: 'Failed' });
+
+                }
+
+            }
+
+        }
+
+    );
+
 });
 
 
@@ -1210,8 +1236,9 @@ app.post('/send_reset_otp', async (request, response) => {
         } else {
 
             console.log(results);
+            console.log(results.affectedRows);
 
-            if (results.length > 0) {
+            if (results.affectedRows = 1) {
 
                 // results.forEach(element => {
                 //     console.log(element);

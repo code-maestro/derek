@@ -34,10 +34,10 @@ async function authenticateUser() {
 
       function lala(param) {
         if (param === 'error') {
-          document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
+          document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password ! `;
         }
         else {
-          document.getElementById("wrongCredentials").innerText = `Successful Login`;
+          document.getElementById("wrongCredentials").innerText = ` LOGGED IN SUCCESSFULLY ! `;
           window.location.href = param;
         }
       }

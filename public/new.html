@@ -97,7 +97,10 @@
             <!-- <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_6wA0Oc.json" background="transparent"
               speed="1" style="width: 350px; height: 350px;" loop autoplay></lottie-player> -->
 
-            <!-- <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_CgexnTerux.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop autoplay></lottie-player> -->
+            <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_CgexnTerux.json"  
+              background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop autoplay>
+            </lottie-player>
+
           </div>
 
         </div>
@@ -158,7 +161,13 @@
               <p class="card-text"> Please enter the OTP that was sent to your email.</p>
 
               <div class="form-group last mb-4">
-                <input type="number" class="form-control px-2" id="reset-otp" name="reset-otp" placeholder="Enter your OTP code" oncha required>
+                <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+                <input type="number" class="form-control px-2" id="reset-otp" name="reset-otp" placeholder="Enter your OTP code" onchange="" required>
+              </div>
+
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <button class="input-group-text" type="button" onclick="console.log('asdasdfasdfsadf')"> VERIFY OTP </button>
               </div>
 
               <!-- Appear after OTP is verified -->
@@ -166,12 +175,12 @@
 
                 <div class="form-group last mb-4">
                   <input type="password" class="form-control px-2" id="reset-pass" name="reset-pass"
-                    placeholder="Enter New Password" required>
+                    placeholder="Enter New Password" readonly required>
                 </div>
 
                 <div class="form-group last mb-4">
                   <input type="password" class="form-control px-2" id="reset-pass2" name="reset-pass2"
-                    placeholder="Confirm New Password" required>
+                    placeholder="Confirm New Password" readonly required>
                 </div>
 
               </div>

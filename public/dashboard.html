@@ -141,6 +141,9 @@
                             <span class="collapse-item" onclick="getAllDiseases()" data-bs-toggle="modal"
                                 href="#newVaccineModalToggle" role="button">
                                 Add a Vaccine </span>
+                            <span class="collapse-item" onclick="getAllDiseases()" data-bs-toggle="modal"
+                                href="#newVaccineToggle" role="button">
+                                Add a Vax </span>
                             <span class="collapse-item" onclick="getAvailableVaccines()" data-bs-toggle="modal"
                                 href="#vaccinesModalToggle" role="button"> Available Vaccines </span>
                             <span onclick="getAllVaccines()" class="collapse-item" data-bs-toggle="modal"
@@ -904,89 +907,92 @@
                                 <div class="col">
                                     <div class="card">
                                         <div class="card-body">
-                                            <!-- Vaccines Form -->
+                                            <!-- Vaccines Form 
                                             <form class="row g-3 needs-validation" novalidate method="POST"
-                                                action="/newVaccine">
+                                                action="/newVaccine"> -->
 
-                                                <div class="col-md-3">
-                                                    <label for="vaccine-name" class="form-label fw-bold"> Vaccine Name
-                                                    </label>
-                                                    <input id="vaccine-name" type="text" class="form-control"
-                                                        name="vaccineName" spellcheck="false" data-ms-editor="true"
-                                                        value="">
-                                                </div>
+                                            <form class="row g-3 needs-validation" enctype="multipart/form-data"
+                                                method="post" name="fileinfo">
 
-                                                <div class="col-md-6">
-                                                    <label for="vaccine-description" class="form-label fw-bold">
-                                                        Vaccine Description </label>
-                                                    <input id="vaccine-description" type="text" class="form-control"
-                                                        name="vaccineDescription" spellcheck="false"
-                                                        data-ms-editor="true" value="">
-                                                </div>
+                                            <div class="col-md-3">
+                                                <label for="vaccine-name" class="form-label fw-bold"> Vaccine Name
+                                                </label>
+                                                <input id="vaccine-name" type="text" class="form-control"
+                                                    name="vaccineName" spellcheck="false" data-ms-editor="true"
+                                                    value="">
+                                            </div>
 
-                                                <div class="col-md-3">
-                                                    <label for="disease-name" class="form-label fw-bold"> Intended for
-                                                        Disease </label>
-                                                    <select id="disease-name" class="form-select" name="diseaseID"
-                                                        required> </select>
-                                                </div>
+                                            <div class="col-md-6">
+                                                <label for="vaccine-description" class="form-label fw-bold">
+                                                    Vaccine Description </label>
+                                                <input id="vaccine-description" type="text" class="form-control"
+                                                    name="vaccineDescription" spellcheck="false" data-ms-editor="true"
+                                                    value="">
+                                            </div>
 
-                                                <div class="col-md-3">
-                                                    <label for="vaccine-quantity" class="form-label fw-bold">
-                                                        Quantity </label>
-                                                    <input id="vaccine-quantity" type="number" class="form-control"
-                                                        name="vaccineQuantity" spellcheck="false" data-ms-editor="true"
-                                                        value="">
-                                                </div>
+                                            <div class="col-md-3">
+                                                <label for="disease-name" class="form-label fw-bold"> Intended for
+                                                    Disease </label>
+                                                <select id="disease-name" class="form-select" name="diseaseID" required>
+                                                </select>
+                                            </div>
 
-                                                <div class="col-md-3">
-                                                    <label for="period" class="form-label fw-bold"> Quantity Measure
-                                                    </label>
-                                                    <select class="form-select" id="quantity-measure"
-                                                        name="quantityMeasure" required="">
-                                                        <option selected="" disabled="" value=""> Choose a measure
-                                                            ...</option>
-                                                        <option value="1000"> milli litre(s) </option>
-                                                        <option value="1"> litre(s) </option>
-                                                    </select>
-                                                </div>
+                                            <div class="col-md-3">
+                                                <label for="vaccine-quantity" class="form-label fw-bold">
+                                                    Quantity </label>
+                                                <input id="vaccine-quantity" type="number" class="form-control"
+                                                    name="vaccineQuantity" spellcheck="false" data-ms-editor="true"
+                                                    value="">
+                                            </div>
 
-                                                <div class="col-md-3">
-                                                    <label for="vaccination-cycle" class="form-label fw-bold"> Cycle
-                                                    </label>
-                                                    <input id="vaccination-cycle" type="number" class="form-control"
-                                                        name="vaccineCycle" spellcheck="false" data-ms-editor="true"
-                                                        value="">
-                                                </div>
+                                            <div class="col-md-3">
+                                                <label for="period" class="form-label fw-bold"> Quantity Measure
+                                                </label>
+                                                <select class="form-select" id="quantity-measure" name="quantityMeasure"
+                                                    required="">
+                                                    <option selected="" disabled="" value=""> Choose a measure
+                                                        ...</option>
+                                                    <option value="1000"> milli litre(s) </option>
+                                                    <option value="1"> litre(s) </option>
+                                                </select>
+                                            </div>
 
-                                                <div class="col-md-3">
-                                                    <label for="period" class="form-label fw-bold"> Every </label>
-                                                    <select class="form-select" id="period" name="vaccinePeriod"
-                                                        required="">
-                                                        <option selected="" disabled="" value=""> Choose a period
-                                                            ...</option>
-                                                        <option value="1"> Day(s) </option>
-                                                        <option value="7"> Week(s) </option>
-                                                        <option value="30"> Month(s) </option>
-                                                        <option value="360"> Year(s) </option>
-                                                    </select>
-                                                </div>
+                                            <div class="col-md-3">
+                                                <label for="vaccination-cycle" class="form-label fw-bold"> Cycle
+                                                </label>
+                                                <input id="vaccination-cycle" type="number" class="form-control"
+                                                    name="vaccineCycle" spellcheck="false" data-ms-editor="true"
+                                                    value="">
+                                            </div>
 
-                                                <div class="col-md-12">
-                                                    <label for="injection-area" class="form-label fw-bold">
-                                                        Injection Area </label>
-                                                    <input id="injection-area" type="text" class="form-control"
-                                                        name="injectionArea" spellcheck="false" data-ms-editor="true"
-                                                        value="">
-                                                </div>
+                                            <div class="col-md-3">
+                                                <label for="period" class="form-label fw-bold"> Every </label>
+                                                <select class="form-select" id="period" name="vaccinePeriod"
+                                                    required="">
+                                                    <option selected="" disabled="" value=""> Choose a period
+                                                        ...</option>
+                                                    <option value="1"> Day(s) </option>
+                                                    <option value="7"> Week(s) </option>
+                                                    <option value="30"> Month(s) </option>
+                                                    <option value="360"> Year(s) </option>
+                                                </select>
+                                            </div>
 
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                                                    <button class="btn btn-light me-md-2 font-monospace"
-                                                        data-bs-dismiss="modal" type="button">
-                                                        cancel </button>
-                                                    <button class="btn btn-primary font-monospace" type="submit"> submit
-                                                        form </button>
-                                                </div>
+                                            <div class="col-md-12">
+                                                <label for="injection-area" class="form-label fw-bold">
+                                                    Injection Area </label>
+                                                <input id="injection-area" type="text" class="form-control"
+                                                    name="injectionArea" spellcheck="false" data-ms-editor="true"
+                                                    value="">
+                                            </div>
+
+                                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <button class="btn btn-light me-md-2 font-monospace"
+                                                    data-bs-dismiss="modal" type="button">
+                                                    cancel </button>
+                                                <button class="btn btn-primary font-monospace" type="submit"> submit
+                                                    form </button>
+                                            </div>
 
                                             </form>
 
