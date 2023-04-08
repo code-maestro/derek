@@ -167,3 +167,8 @@ h2 {
 .alerts {
   display: none;
 }
+
+.prompt {
+  display: flex;
+  justify-content: center;
+}

@@ -970,7 +970,7 @@ app.post('/newVaccine', function (request, response) {
 
                 } else {
 
-                    return response.json({ status: 400, message: 'Failed' });
+                    return response.json({ status: 400, message: 'Adding new Vaccine Failed' });
 
                 }
 

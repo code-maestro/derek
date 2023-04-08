@@ -944,18 +944,17 @@ async function recordVaccine() {
       console.log(data);
 
       if (data.status == 200) {
-
-        console.log(browserUrl);
-
-        // $('#newVaccineModalToggle').modal('hide');
+        
         $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+        $('#newVaccineModalToggle').modal('hide');
         // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
 
       } else {
 
-        // document.getElementById("wrongCredentials").innerText = `Successful Login`;
-        console.log(browserUrl + "LOGIC");
-        // window.location.href = param;
+        $('#errModalToggle').modal('show');
+
+        document.getElementById('errors-msg').innerText = data.message ;
 
       }
 
@@ -971,16 +970,16 @@ async function recordVaccine() {
 
 }
 
+
+
 const newForm = document.forms.namedItem("fileinfo");
 
 newForm.addEventListener("submit", (event) => {
 
   recordVaccine();
-  // const output = document.querySelector("#output");
-  // const formDataEntries = new FormData(newForm).entries();
-  // console.log(Object.fromEntries(formDataEntries));
 
   event.preventDefault();
+
 },
 
   false
