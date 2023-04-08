@@ -737,14 +737,14 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- Registration Form -->
-                                            <form id="registerForm" class="row g-3 needs-validation" novalidate
-                                                method="POST" action="/newAnimal">
+                                            <form class="row g-3 " enctype="multipart/form-data" method="post" id="registerNewAnimalForm" name="registerAnimalForm">
+
                                                 <div class="col-md-6">
                                                     <label for="animal-tag" class="form-label fw-bold"> ANIMAL TAG
                                                     </label>
                                                     <input id="animal-tag" type="text" placeholder="Disabled input"
                                                         class="form-control" name="animalTag" id="animal-tag" readonly>
-                                                    <div class="valid-feedback"> Looks good! </div>
+                                                    
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -784,7 +784,7 @@
                                                     <input type="text" class="form-control" id="age-years"
                                                         name="ageYears" readonly>
                                                     <div class="invalid-feedback"> Enter Age </div>
-                                                    <div class="valid-feedback"> Looks good! </div>
+                                                    
                                                 </div>
 
                                                 <div class="col-md-12">
@@ -793,14 +793,13 @@
                                                             <input type="text" class="form-control" id="age-days"
                                                                 name="ageDays" readonly>
                                                             <div class="invalid-feedback"> Enter Age </div>
-                                                            <div class="valid-feedback"> Looks good! </div> -->
+                                                             -->
                                                 </div>
 
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button"> cancel </button>
-                                                    <button class="btn btn-primary font-monospace" type="submit"> submit
-                                                        form </button>
+                                                    <button class="btn btn-primary font-monospace" type="submit"> submit form </button>
                                                 </div>
 
                                             </form>
@@ -905,26 +904,22 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- Vaccines Form 
-                                            <form class="row g-3 needs-validation" novalidate method="POST"
+                                            <form class="row g-3 " novalidate method="POST"
                                                 action="/newVaccine"> -->
 
-                                            <form class="row g-3 needs-validation" enctype="multipart/form-data"
-                                                method="post" name="fileinfo">
+                                            <form class="row g-3 " enctype="multipart/form-data" method="post" id="recordNewVaccine" name="recordVaccine">
 
                                                 <div class="col-md-3">
                                                     <label for="vaccine-name" class="form-label fw-bold"> Vaccine Name
                                                     </label>
                                                     <input id="vaccine-name" type="text" class="form-control"
-                                                        name="vaccineName" spellcheck="false" data-ms-editor="true"
+                                                        name="vaccineName" spellcheck="false" 
                                                         value="">
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label for="vaccine-description" class="form-label fw-bold">
-                                                        Vaccine Description </label>
-                                                    <input id="vaccine-description" type="text" class="form-control"
-                                                        name="vaccineDescription" spellcheck="false"
-                                                        data-ms-editor="true" value="">
+                                                    <label for="vaccine-description" class="form-label fw-bold"> Vaccine Description </label>
+                                                    <input id="vaccine-description" type="text" class="form-control" name="vaccineDescription" spellcheck="false" value="">
                                                 </div>
 
                                                 <div class="col-md-3">
@@ -939,7 +934,7 @@
                                                     <label for="vaccine-quantity" class="form-label fw-bold">
                                                         Quantity </label>
                                                     <input id="vaccine-quantity" type="number" class="form-control"
-                                                        name="vaccineQuantity" spellcheck="false" data-ms-editor="true"
+                                                        name="vaccineQuantity" spellcheck="false" 
                                                         value="">
                                                 </div>
 
@@ -959,7 +954,7 @@
                                                     <label for="vaccination-cycle" class="form-label fw-bold"> Cycle
                                                     </label>
                                                     <input id="vaccination-cycle" type="number" class="form-control"
-                                                        name="vaccineCycle" spellcheck="false" data-ms-editor="true"
+                                                        name="vaccineCycle" spellcheck="false" 
                                                         value="">
                                                 </div>
 
@@ -980,7 +975,7 @@
                                                     <label for="injection-area" class="form-label fw-bold">
                                                         Injection Area </label>
                                                     <input id="injection-area" type="text" class="form-control"
-                                                        name="injectionArea" spellcheck="false" data-ms-editor="true"
+                                                        name="injectionArea" spellcheck="false" 
                                                         value="">
                                                 </div>
 
@@ -1095,8 +1090,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- Vaccination Form -->
-                                            <form class="row g-3 needs-validation" novalidate method="POST"
-                                                action="/scheduleVaccination">
+                                            <form class="row g-3" enctype="multipart/form-data" method="post" id="recordVaxSchedule" name="recordSchedule">
 
                                                 <div class="col-md-3">
                                                     <label for="all-animals-tag" class="form-label fw-bold"> Animal
@@ -1121,24 +1115,21 @@
                                                     <label for="no-vaccinations" class="form-label fw-bold"> Number of
                                                         Vaccinations </label>
                                                     <input id="no-vax" type="number" class="form-control"
-                                                        name="noVaccinations" spellcheck="false" data-ms-editor="true"
+                                                        name="noVaccinations" spellcheck="false" 
                                                         disabled>
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <label for="cycle-vaccinations" class="form-label fw-bold">
-                                                        Vaccination
-                                                        cycle </label>
+                                                    <label for="cycle-vaccinations" class="form-label fw-bold"> Vaccination cycle </label>
                                                     <input id="cycle-vaccinations" type="text" class="form-control"
                                                         name="cycleVaccinations" spellcheck="false"
-                                                        data-ms-editor="true" disabled>
+                                                         disabled>
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label for="vet-name" class="form-label fw-bold"> Vet Name </label>
                                                     <select onChange="getOtherVetData()" id="vet-name"
-                                                        class="form-select" data-live-search="true" name="vetName"
-                                                        required>
+                                                        class="form-select" data-live-search="true" name="vetName" required>
                                                     </select>
                                                 </div>
 
@@ -1148,31 +1139,23 @@
                                                     <label for="vet-hospital" class="form-label fw-bold"> Station
                                                     </label>
                                                     <input id="vet-hospital" type="text" class="form-control"
-                                                        name="vetHospital" spellcheck="false" data-ms-editor="true"
-                                                        disabled>
+                                                        name="vetHospital" spellcheck="false"  disabled>
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label for="vet-email" class="form-label fw-bold"> Email </label>
                                                     <input id="vet-email" type="email" class="form-control"
-                                                        name="vetEmail" spellcheck="false" data-ms-editor="true"
-                                                        disabled>
+                                                        name="vetEmail" spellcheck="false"  disabled>
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <label for="vet-phone" class="form-label fw-bold"> Phone
-                                                    </label>
-                                                    <input id="vet-phone" type="tel" class="form-control"
-                                                        name="vetPhone" spellcheck="false" data-ms-editor="true"
-                                                        disabled>
+                                                    <label for="vet-phone" class="form-label fw-bold"> Phone </label>
+                                                    <input id="vet-phone" type="tel" class="form-control" name="vetPhone" spellcheck="false" disabled>
                                                 </div>
 
                                                 <div class="col-md-12">
-                                                    <label for="scheduled_first_date" class="form-label fw-bold"> First
-                                                        Vaccination Date </label>
-                                                    <input id="scheduled_first_date" type="date" class="form-control"
-                                                        name="scheduled_first_date" spellcheck="false"
-                                                        data-ms-editor="true">
+                                                    <label for="scheduled_first_date" class="form-label fw-bold"> First Vaccination Date </label>
+                                                    <input id="scheduled_first_date" type="date" class="form-control" name="scheduled_first_date" spellcheck="false" >
                                                 </div>
 
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
@@ -1350,14 +1333,14 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- New Born Form -->
-                                            <form class="row g-3 needs-validation" novalidate method="POST"
-                                                action="/addNewBorn">
+
+                                                <form class="row g-3 " enctype="multipart/form-data" method="post" id="" name="recordNewborn" >
 
                                                 <div class="col-md-6">
                                                     <label for="new-born-tag" class="form-label fw-bold"> New Born Tag
                                                     </label>
                                                     <input id="new-born-tag" type="text" class="form-control"
-                                                        name="newBornTag" spellcheck="false" data-ms-editor="true"
+                                                        name="newBornTag" spellcheck="false" 
                                                         readonly required>
                                                 </div>
 
@@ -1384,7 +1367,7 @@
                                                     <label for="new-born-dob" class="form-label fw-bold"> Date of
                                                         Birth </label>
                                                     <input id="new-born-dob" type="date" class="form-control"
-                                                        name="newBornDOB" spellcheck="false" data-ms-editor="true"
+                                                        name="newBornDOB" spellcheck="false" 
                                                         value="">
                                                 </div>
 
@@ -1392,7 +1375,7 @@
                                                     <label for="new-born-reg-date" class="form-label fw-bold">
                                                         Registration Date </label>
                                                     <input id="new-born-dob-reg-date" type="date" class="form-control"
-                                                        name="newBornRegDate" spellcheck="false" data-ms-editor="true"
+                                                        name="newBornRegDate" spellcheck="false" 
                                                         value="">
                                                 </div>
 
@@ -1491,7 +1474,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col align-self-center">
-                            <form class="row g-4 needs-validation" id="updateFarmaProfileForm" novalidate method="POST"
+                            <form class="row g-4 " id="updateFarmaProfileForm" novalidate method="POST"
                                 action="/updateFarma">
                                 <div class="col-md-12">
                                     <div class="Neon Neon-theme-dragdropbox">
@@ -1515,28 +1498,28 @@
                                     <label for="validation04" id="mail" class="form-label"> Email </label>
                                     <input type="email" class="form-control" name="mail" id="validation04" value=""
                                         required>
-                                    <div class="valid-feedback"> Looks good! </div>
+                                    
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="validation01" class="form-label"> First name </label>
                                     <input type="text" class="form-control" name="fname" id="validation01" value=""
                                         required>
-                                    <div class="valid-feedback"> Looks good! </div>
+                                    
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="validation02" class="form-label">Last name</label>
                                     <input type="text" class="form-control" name="lname" id="validation02" value=""
                                         required>
-                                    <div class="valid-feedback"> Looks good! </div>
+                                    
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="validation03" class="form-label"> Phone Number </label>
                                     <input type="phone" class="form-control" name="phone" id="validation03" value=""
                                         required>
-                                    <div class="valid-feedback"> Looks good! </div>
+                                    
                                 </div>
                                 <div class="col-12">
                                     <div class="d-grid gap-2">
@@ -1559,50 +1542,54 @@
                     <div class="modal-body">
                         <div class="container">
 
-                            <div class="row p-3  mx-auto">
-                                <div class="mx-auto" style="width: auto;">
-                                    <h5 class="font-monospace" id="newVetModalLabel"> ADD NEW VETERINARY DOCTOR </h5>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card bg-gradient-primary">
+                                        <div class="mx-auto "  style="border-radius: 0.15rem; width: auto; color: white;">
+                                            <h4 class="font-monospace font-weight-bold" id="newVetModalLabel"> ADD NEW VETERINARY DOCTOR </h4>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row ">
+                            <div class="row pt-4">
                                 <div class="col">
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- New Vet Form -->
-                                            <form class="row g-3 needs-validation" novalidate method="POST"
-                                                action="/newVet">
+
+                                                <form class="row g-3 " enctype="multipart/form-data" method="post" id="" name="recordVet">
                                                 <div class="col-md-6">
                                                     <label for="vet-fname" class="form-label fw-bold"> First
                                                         Name</label>
                                                     <input id="vet-fname" type="text" class="form-control"
-                                                        name="vetFname" spellcheck="false" data-ms-editor="true">
+                                                        name="vetFname" spellcheck="false" >
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label for="vet-lname" class="form-label fw-bold"> Last Name</label>
                                                     <input id="vet-lname" type="text" class="form-control"
-                                                        name="vetLname" spellcheck="false" data-ms-editor="true">
+                                                        name="vetLname" spellcheck="false" >
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label for="vet-phone" class="form-label fw-bold"> Phone Number
                                                     </label>
                                                     <input id="vet-phone" type="phone" class="form-control"
-                                                        name="vetPhone" spellcheck="false" data-ms-editor="true">
+                                                        name="vetPhone" spellcheck="false" >
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label for="vet-mail" class="form-label fw-bold"> Email </label>
                                                     <input id="vet-mail" type="email" class="form-control"
-                                                        name="vetEmail" spellcheck="false" data-ms-editor="true">
+                                                        name="vetEmail" spellcheck="false" >
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <label for="vet-station" class="form-label fw-bold"> Station
                                                     </label>
                                                     <input id="vet-station" type="text" class="form-control"
-                                                        name="vetStation" spellcheck="false" data-ms-editor="true">
+                                                        name="vetStation" spellcheck="false" >
                                                 </div>
 
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
@@ -1633,15 +1620,20 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="container">
-                            <div class="row px-2 pt-4">
-                                <div class="mx-auto" style="width: auto;">
-                                    <h5 class="font-monospace" id="allVetsToggleLabel"> SAVED VETERINARY DOCTORS </h5>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card bg-gradient-primary">
+                                        <div class="mx-auto "  style="border-radius: 0.15rem; width: auto; color: white;">
+                                            <h4 class="font-monospace font-weight-bold" id="registerFeedStockModalLabel"> SAVED VETERINARY DOCTORS </h4>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="row mt-4">
                                 <div class="col">
-                                    <div class="row px-4">
+                                    <div class="card">
                                         <!-- Vets Table -->
                                         <table id="vetsTable" class="table table-bordered table-hover table-sm">
                                             <thead class="table-dark">
@@ -1704,7 +1696,7 @@
                         <div class="row">
                         </div>
 
-                        <form id="breedingAnimalForm" class="row g-3 needs-validation px-4" method="POST"
+                        <form id="breedingAnimalForm" class="row g-3  px-4" method="POST"
                             action="/newBred">
                             <div class="col-md-6">
                                 <label for="breading_animal" class="form-label fw-bold"> Animal Tag </label>
@@ -1765,25 +1757,29 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div>
-                            <div class="row p-2 mx-auto">
-                                <div class="mx-auto" style="width: auto;">
-                                    <h4 class="font-monospace" id="registerFeedStockModalLabel"> REGISTER FEEDS STOCK
-                                    </h4>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card bg-gradient-primary">
+                                        <div class="mx-auto "  style="border-radius: 0.15rem; width: auto; color: white;">
+                                            <h4 class="font-monospace font-weight-bold" id="registerFeedStockModalLabel"> REGISTER FEEDS STOCK
+                                            </h4>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row p-3">
+                            <div class="row pt-4">
                                 <div class="col">
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- Feeds Registration Form -->
-                                            <form id="registerForm" class="row g-3 needs-validation" novalidate
-                                                method="POST" action="/newFeed">
+                                            <form class="row g-3 " enctype="multipart/form-data" method="post" id="recordNewFeed" name="recordFeed" >
                                                 <div class="col-md-6">
                                                     <label for="feeds_name" class="form-label fw-bold"> NAME </label>
                                                     <input id="feeds_name" type="text" class="form-control"
                                                         name="feeds_name" required>
-                                                    <div class="valid-feedback"> Looks good! </div>
+                                                    
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -1791,7 +1787,7 @@
                                                     </label>
                                                     <input id="feeds_stock_date" type="datetime-local"
                                                         class="form-control" name="feeds_stock_date" required>
-                                                    <div class="valid-feedback"> Looks good! </div>
+                                                    
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -1799,13 +1795,13 @@
                                                     </label>
                                                     <input id="feeds_qnty" type="number" class="form-control"
                                                         name="feeds_qnty" required>
-                                                    <div class="valid-feedback"> Looks good! </div>
+                                                    
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label for="feeds_qnty_measure" class="form-label fw-bold">
                                                         QUANTITY-MEASURE </label>
-                                                    <select class="form-select" id="period" name="feeds_qnty_measure"
+                                                    <select class="form-select" id="feeds_qnty_m" name="feeds_qnty_measure"
                                                         required>
                                                         <option value="1000" selected> kg </option>
                                                         <option value="1"> g </option>
@@ -1825,6 +1821,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -1954,7 +1951,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- New Feeds Form -->
-                                            <form method="POST" action="/newTimeTable" class="row g-3 needs-validation">
+                                            <form method="POST" action="/newTimeTable" class="row g-3 ">
 
                                                 <div class="col-md-12">
                                                     <input id="feeds_id" type="number" class="form-control"
@@ -1965,7 +1962,7 @@
                                                     <label for="timetableTitle" class="form-label fw-bold">
                                                         TimeTable Title </label>
                                                     <input id="timetableTitle" type="text" class="form-control"
-                                                        name="timetableTitle" spellcheck="false" data-ms-editor="true"
+                                                        name="timetableTitle" spellcheck="false" 
                                                         readonly>
                                                 </div>
 
@@ -1982,18 +1979,18 @@
                                                     <label for="feeds-quantity" class="form-label fw-bold">
                                                         Quantity </label>
                                                     <input id="feeds-quantity" type="text" class="form-control"
-                                                        name="feedsQuantity" spellcheck="false" data-ms-editor="true"
+                                                        name="feedsQuantity" spellcheck="false" 
                                                         value="" disabled>
                                                     <input id="feeds-quantity-real" type="text" class="form-control"
                                                         name="feedsQuantityReal" spellcheck="false"
-                                                        data-ms-editor="true" value="" hidden>
+                                                         value="" hidden>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <label for="feeds-description" class="form-label fw-bold">
                                                         Description </label>
                                                     <input id="feeds-description" type="text" class="form-control"
-                                                        name="feedsDescription" spellcheck="false" data-ms-editor="true"
+                                                        name="feedsDescription" spellcheck="false" 
                                                         value="" readonly>
                                                 </div>
 
@@ -2002,7 +1999,7 @@
                                                         Start Date
                                                     </label>
                                                     <input id="feedingStartDate" type="date" class="form-control"
-                                                        name="feedingStartDate" spellcheck="false" data-ms-editor="true"
+                                                        name="feedingStartDate" spellcheck="false" 
                                                         onchange="validateDate('feedingStartDate')" required>
                                                 </div>
 
@@ -2010,7 +2007,7 @@
                                                     <label for="plannedQnty" class="form-label fw-bold"> Planned
                                                         Quantity </label>
                                                     <input id="plannedQnty" type="number" class="form-control"
-                                                        name="plannedQnty" spellcheck="false" data-ms-editor="true"
+                                                        name="plannedQnty" spellcheck="false" 
                                                         required>
                                                 </div>
 
@@ -2027,7 +2024,7 @@
                                                     </select>
 
                                                     <input id="plannedQntyReal" type="number" class="form-control"
-                                                        name="plannedQntyReal" spellcheck="false" data-ms-editor="true"
+                                                        name="plannedQntyReal" spellcheck="false" 
                                                         hidden>
 
                                                 </div>
@@ -2036,7 +2033,7 @@
                                                     <label for="feeding-cycle" class="form-label fw-bold"> Feeding
                                                         Frequency </label>
                                                     <input id="feeding-cycle" type="number" class="form-control"
-                                                        name="feedingCycle" spellcheck="false" data-ms-editor="true"
+                                                        name="feedingCycle" spellcheck="false" 
                                                         required>
                                                 </div>
 
@@ -2058,7 +2055,7 @@
                                                         Quantity Per Feeding Frequency </label>
                                                     <input id="feeding-quantity" type="number" class="form-control"
                                                         name="feedingQuantityPerCycle" spellcheck="false"
-                                                        data-ms-editor="true" required>
+                                                         required>
                                                 </div>
 
                                                 <div class="col-md-3">
@@ -2300,7 +2297,7 @@
                                                         Date </label>
                                                     <input onchange="validateDate('reportedDate')" id="reportedDate"
                                                         type="date" class="form-control" name="reportedDate"
-                                                        spellcheck="false" data-ms-editor="true" required>
+                                                        spellcheck="false"  required>
                                                 </div>
 
                                                 <div class="col-md-4">
@@ -2336,21 +2333,21 @@
                                                     <label for="vet-hospital" class="form-label fw-bold"> Station
                                                     </label>
                                                     <input id="vets-hospital" type="text" class="form-control"
-                                                        name="vetHospital" spellcheck="false" data-ms-editor="true"
+                                                        name="vetHospital" spellcheck="false" 
                                                         readonly>
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label for="vet-email" class="form-label fw-bold"> Email </label>
                                                     <input id="vets-email" type="email" class="form-control"
-                                                        name="vetEmail" spellcheck="false" data-ms-editor="true"
+                                                        name="vetEmail" spellcheck="false" 
                                                         readonly>
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label for="vet-phone" class="form-label fw-bold"> Phone </label>
                                                     <input id="vets-phone" type="tel" class="form-control"
-                                                        name="vetPhone" spellcheck="false" data-ms-editor="true"
+                                                        name="vetPhone" spellcheck="false" 
                                                         readonly>
                                                 </div>
 
@@ -2361,7 +2358,7 @@
                                                     <input onchange="validateDate('appointment_date')"
                                                         id="appointment_date" type="datetime-local" class="form-control"
                                                         required name="appointment_date" spellcheck="false"
-                                                        data-ms-editor="true">
+                                                        >
                                                 </div>
 
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
@@ -2534,41 +2531,41 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- New Vet Form -->
-                                            <form class="row g-3 needs-validation" novalidate method="POST"
+                                            <form class="row g-3 " novalidate method="POST"
                                                 action="/updateVet">
                                                 <div class="col-md-6">
                                                     <label for="edit-vet-fname" class="form-label fw-bold"> First
                                                         Name</label>
                                                     <input id="edit-vet-fname" type="text" class="form-control"
-                                                        name="editVetFname" spellcheck="false" data-ms-editor="true">
+                                                        name="editVetFname" spellcheck="false" >
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label for="edit-vet-lname" class="form-label fw-bold"> Last
                                                         Name</label>
                                                     <input id="edit-vet-lname" type="text" class="form-control"
-                                                        name="editVetLname" spellcheck="false" data-ms-editor="true">
+                                                        name="editVetLname" spellcheck="false" >
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label for="edit-vet-phone" class="form-label fw-bold"> Phone Number
                                                     </label>
                                                     <input id="edit-vet-phone" type="phone" class="form-control"
-                                                        name="editVetPhone" spellcheck="false" data-ms-editor="true">
+                                                        name="editVetPhone" spellcheck="false" >
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label for="edit-vet-mail" class="form-label fw-bold"> Email
                                                     </label>
                                                     <input id="edit-vet-mail" type="email" class="form-control"
-                                                        name="editVetEmail" spellcheck="false" data-ms-editor="true">
+                                                        name="editVetEmail" spellcheck="false" >
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <label for="edit-vet-station" class="form-label fw-bold"> Station
                                                     </label>
                                                     <input id="edit-vet-station" type="text" class="form-control"
-                                                        name="editVetStation" spellcheck="false" data-ms-editor="true">
+                                                        name="editVetStation" spellcheck="false" >
                                                 </div>
 
                                                 <input id="edit-vet-uuid" type="text" name="editVetID" hidden>
@@ -2614,14 +2611,14 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- New Vet Form -->
-                                            <form class="row g-3 needs-validation" novalidate method="POST"
+                                            <form class="row g-3 " novalidate method="POST"
                                                 action="/verifyNewBorn">
                                                 <div class="col-md-4">
                                                     <label for="new-born-animal-tag" class="form-label fw-bold"> New
                                                         Born Animal Tag </label>
                                                     <input id="new-born-animal-tag" type="text" class="form-control"
                                                         name="newBornAnimalTag" spellcheck="false"
-                                                        data-ms-editor="true">
+                                                        >
                                                 </div>
 
                                                 <div class="col-md-4">
@@ -2629,7 +2626,7 @@
                                                         Tag </label>
                                                     <input id="new-born-parent-tag" type="text" class="form-control"
                                                         name="newBornParentTag" spellcheck="false"
-                                                        data-ms-editor="true">
+                                                        >
                                                 </div>
 
                                                 <div class="col-md-4">
@@ -2650,7 +2647,7 @@
                                                         Registraion Date </label>
                                                     <input id="new-born-animal-reg" type="date" class="form-control"
                                                         name="newBornAnimalReg" spellcheck="false"
-                                                        data-ms-editor="true">
+                                                        >
                                                 </div>
 
                                                 <div class="col-md-4">
@@ -2658,7 +2655,7 @@
                                                         Birth </label>
                                                     <input id="new-born-animal-dob" type="date" class="form-control"
                                                         name="newBornAnimalDOB" spellcheck="false"
-                                                        data-ms-editor="true">
+                                                        >
                                                 </div>
 
                                                 <div class="col-md-4">
@@ -2703,12 +2700,12 @@
                         <div class="row">
                         </div>
 
-                        <form id="editAnimalForm" class="row g-3 needs-validation px-4" novalidate="" method="POST"
+                        <form id="editAnimalForm" class="row g-3  px-4" novalidate="" method="POST"
                             action="/updateAnimalData">
                             <div class="col-md-6">
                                 <label for="edit-animal-tag" class="form-label fw-bold"> Animal Tag </label>
                                 <input id="edit-animal-tag" type="text" placeholder="Disabled input"
-                                    class="form-control" name="editAnimalTag" spellcheck="false" data-ms-editor="true"
+                                    class="form-control" name="editAnimalTag" spellcheck="false" 
                                     value="">
                             </div>
 
@@ -2769,7 +2766,7 @@
                         </div>
 
                         <!-- Vaccination Form -->
-                        <form class="row g-3 needs-validation" novalidate method="POST" action="/editVaccine">
+                        <form class="row g-3 " novalidate method="POST" action="/editVaccine">
                             <!-- Vaccination Records -->
                             <div class="col-md-12">
                                 <label for="edit-vaccine-form" class="form-label fw-bold"> EDIT
@@ -2780,14 +2777,14 @@
                                 <label for="edit-vaccine-name" class="form-label fw-bold"> Vaccine
                                     Name </label>
                                 <input id="edit-vaccine-name" type="text" class="form-control" name="editVaccineName"
-                                    spellcheck="false" data-ms-editor="true" value="">
+                                    spellcheck="false"  value="">
                             </div>
 
                             <div class="col-md-6">
                                 <label for="edit-vaccine-quantity" class="form-label fw-bold">
                                     Quantity </label>
                                 <input id="edit-vaccine-quantity" type="number" class="form-control"
-                                    name="editVaccineQuantity" spellcheck="false" data-ms-editor="true" value="">
+                                    name="editVaccineQuantity" spellcheck="false"  value="">
                             </div>
 
 
@@ -2807,21 +2804,21 @@
                                 <label for="edit-vaccine-description" class="form-label fw-bold">
                                     Vaccine Description </label>
                                 <input id="edit-vaccine-description" type="text" class="form-control"
-                                    name="editVaccineDescription" spellcheck="false" data-ms-editor="true" value="">
+                                    name="editVaccineDescription" spellcheck="false"  value="">
                             </div>
 
                             <div class="col-md-6">
                                 <label for="edit-no-vaccinations" class="form-label fw-bold"> Number
                                     of Vaccinations </label>
                                 <input id="edit-no-vaccinations" type="text" class="form-control"
-                                    name="editNoVaccinations" spellcheck="false" data-ms-editor="true" value="">
+                                    name="editNoVaccinations" spellcheck="false"  value="">
                             </div>
 
                             <div class="col-md-6">
                                 <label for="edit-vaccination-cycle" class="form-label fw-bold"> Cycle
                                 </label>
                                 <input id="edit-vaccination-cycle" type="number" class="form-control"
-                                    name="editVaccineCycle" spellcheck="false" data-ms-editor="true" value="">
+                                    name="editVaccineCycle" spellcheck="false"  value="">
                             </div>
 
                             <div class="col-md-6">
@@ -2839,7 +2836,7 @@
                                 <label for="edit-injection-area" class="form-label fw-bold">
                                     Injection Area </label>
                                 <input id="edit-injection-area" type="text" class="form-control"
-                                    name="editInjectionArea" spellcheck="false" data-ms-editor="true" value="">
+                                    name="editInjectionArea" spellcheck="false"  value="">
                             </div>
 
                             <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
@@ -2875,7 +2872,7 @@
                             <div class="col-md-4">
                                 <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG </label>
                                 <input id="edit-sick-animal-tag" type="text" class="form-control" name="editSickTag"
-                                    spellcheck="false" data-ms-editor="true" readonly>
+                                    spellcheck="false"  readonly>
                             </div>
 
                             <input id="edit-sick-animal-id" type="number" name="edit_sick_animal_id" hidden>
@@ -2885,7 +2882,7 @@
                                 <label for="edit-reported-date" class="form-label fw-bold"> First Signs
                                     Date </label>
                                 <input onchange="valDate()" id="edit-reported-date" type="date" class="form-control"
-                                    name="editReportedDate" spellcheck="false" data-ms-editor="true">
+                                    name="editReportedDate" spellcheck="false" >
                             </div>
 
                             <div class="col-md-4">
@@ -2961,7 +2958,7 @@
                             <div class="col-md-4">
                                 <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG </label>
                                 <input id="edit-sick-animal-tag" type="text" class="form-control" name="editSickTag"
-                                    spellcheck="false" data-ms-editor="true" readonly>
+                                    spellcheck="false"  readonly>
                             </div>
 
                             <input id="edit-sick-animal-id" type="number" name="edit_sick_animal_id" hidden>
@@ -2971,7 +2968,7 @@
                                 <label for="edit-reported-date" class="form-label fw-bold"> First Signs
                                     Date </label>
                                 <input onchange="valDate()" id="edit-reported-date" type="date" class="form-control"
-                                    name="editReportedDate" spellcheck="false" data-ms-editor="true">
+                                    name="editReportedDate" spellcheck="false" >
                             </div>
 
                             <div class="col-md-4">
@@ -3045,14 +3042,14 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- Feeds Registration Form -->
-                                            <form id="registerForm" class="row g-3 needs-validation" novalidate
+                                            <form id="registerForm" class="row g-3 " novalidate
                                                 method="POST" action="/updateFeed">
                                                 <div class="col-md-6">
                                                     <label for="edit-feeds_name" class="form-label fw-bold"> FEED NAME
                                                     </label>
                                                     <input id="edit_feeds_name" type="text" class="form-control"
                                                         name="edit_feeds_name" required>
-                                                    <div class="valid-feedback"> Looks good! </div>
+                                                    
                                                 </div>
 
                                                 <input id="edit_feeds_id" type="number" class="form-control"
@@ -3063,7 +3060,7 @@
                                                         DATE </label>
                                                     <input id="edit_feeds_stock_date" type="date" class="form-control"
                                                         name="edit_feeds_stock_date">
-                                                    <div class="valid-feedback"> Looks good! </div>
+                                                    
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -3071,7 +3068,7 @@
                                                     </label>
                                                     <input id="edit_feeds_qnty" type="number" class="form-control"
                                                         name="edit_feeds_qnty">
-                                                    <div class="valid-feedback"> Looks good! </div>
+                                                    
                                                 </div>
 
                                                 <div class="col-md-6">

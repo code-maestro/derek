@@ -70,7 +70,7 @@ const verifyAnimal = async (param) => {
   const newAnimals = await verifiedAnimal(`${param}`);
 
   console.log(newAnimals);
-  
+
   const new_born_tag = document.getElementById("new-born-animal-tag");
   const parent_tag = document.getElementById("new-born-parent-tag");
   const reg_date = document.getElementById("new-born-animal-reg");
@@ -91,11 +91,11 @@ const verifyAnimal = async (param) => {
 
       console.log(new_born_tag.value);
       return false;
-  
+
     }
-  
+
     return true;
-  
+
   });
 
 }
@@ -167,3 +167,80 @@ function addDgays(date, days) {
   console.log(result + "RESULT");
   return result;
 }
+
+
+async function recordNewborn(event) {
+  try {
+
+    // post body data 
+    const newborn = {
+      newBornTag: document.getElementById('new-born-tag').value,
+      parentTag: document.getElementById('parent-tag').value,
+      newBornGender: document.getElementById('new-born-gender').value,
+      newBornDOB: document.getElementById('new-born-dob').value,
+      newBornRegDate: document.getElementById('new-born-dob-reg-date').value
+    };
+
+    console.log(newborn);
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(newborn),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/addNewBorn`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+        $('#registerNewBornModalToggle').modal('hide');
+        // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
+
+        event.preventDefault();
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+
+const newBornForm = document.forms.namedItem("recordNewborn");
+
+newBornForm.addEventListener("submit", (event) => {
+
+  recordNewborn();
+
+  event.preventDefault();
+
+},
+
+  false
+
+);
+

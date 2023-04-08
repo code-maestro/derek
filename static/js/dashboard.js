@@ -77,7 +77,7 @@ async function getAnimalTableData(inputID) {
     console.log(listed);
 
     let heavyListed = '';
-    let heavyList = `<option selected disabled> Choose a Parent Animal ... </option>`;
+    let heavyList = `<option selected disabled value=""> Choose a Parent Animal ... </option>`;
 
     const heavy_lstd = document.getElementById('parent-tag');
 
@@ -905,6 +905,79 @@ async function editVet(param) {
 }
 
 
+// Function Adding new Animal
+async function recordAnimal() {
+  try {
+    // post body data 
+    const animalData = {
+      animalTag: document.getElementById('animal-tag').value,
+      gender: document.getElementById('gender').value,
+      dob: document.getElementById('dob').value,
+      regDate: document.getElementById('registration-date').value,
+      ageYears: document.getElementById('age-years').value
+    };
+
+    console.log(animalData);
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(animalData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/newAnimal`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+        $('#registerAnimalModalToggle').modal('hide');
+        document.getElementById("registerNewAnimalForm").reset();
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+const animalForm = document.forms.namedItem("registerAnimalForm");
+animalForm.addEventListener("submit", (event) => {
+
+  recordAnimal();
+
+  event.preventDefault();
+
+},
+
+  false
+
+);
+
+
+// Function Adding new Vaccine
 async function recordVaccine() {
   try {
 
@@ -944,17 +1017,17 @@ async function recordVaccine() {
       console.log(data);
 
       if (data.status == 200) {
-        
+
         $('#successModalToggle').modal('show');
         document.getElementById('success-msg').innerText = data.message;
         $('#newVaccineModalToggle').modal('hide');
-        // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
+        document.getElementById("recordNewVaccine").reset();
 
       } else {
 
         $('#errModalToggle').modal('show');
 
-        document.getElementById('errors-msg').innerText = data.message ;
+        document.getElementById('errors-msg').innerText = data.message;
 
       }
 
@@ -962,21 +1035,86 @@ async function recordVaccine() {
 
   }
 
-  catch (error) {
-
-    console.log(error);
-
-  }
+  catch (error) { console.log(error); }
 
 }
 
-
-
-const newForm = document.forms.namedItem("fileinfo");
-
+const newForm = document.forms.namedItem("recordVaccine");
 newForm.addEventListener("submit", (event) => {
 
   recordVaccine();
+
+  event.preventDefault();
+
+},
+
+  false
+
+);
+
+
+// Function Adding new Feed
+async function recordFeed() {
+  try {
+    // post body data 
+    const feedData = {
+      feeds_name: document.getElementById('feeds_name').value,
+      feeds_name: document.getElementById('feeds_name').value,
+      feeds_qnty: document.getElementById('feeds_qnty').value,
+      feeds_qnty_measure: document.getElementById('feeds_qnty_m').value,
+      feeds_stock_date: document.getElementById('feeds_stock_date').value
+    };
+
+    console.log(feedData);
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(feedData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/newFeed`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+        $('#registerFeedStockModalToggle').modal('hide');
+        document.getElementById("recordNewFeed").reset();
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+const feedForm = document.forms.namedItem("recordFeed");
+feedForm.addEventListener("submit", (event) => {
+
+  recordFeed();
 
   event.preventDefault();
 

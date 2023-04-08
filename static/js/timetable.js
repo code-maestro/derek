@@ -41,39 +41,75 @@ const validateQuantity = async (param) => {
 
 }
 
-// // DELETING A TABLE ROW
-// function createschedule(param) {
-//   const url = `/schedule`;
-//   // post body data
-//   const user = {
-//     id: param
-//   };
+async function recordSchedule() {
+  try {
 
-//   // request options
-//   const options = {
-//     method: 'POST',
-//     body: JSON.stringify(user),
-//     headers: {
-//       'Content-Type': 'application/json'
-//     }
-//   }
+      // post body data 
+      const scheduleData = {
+        vaxID: document.getElementById('vaxID').value,
+        scheduled_first_date: document.getElementById('scheduled_first_date').value,
+        animalTag: document.getElementById('all-animals-tag').value,
+        vetID: document.getElementById('vetID').value
+      };
 
-//   fetch(url, options)
-//     .then(function (response) {
-//       if (!response.ok) {
-//         throw Error(response.statusText);
-//       } else {
-//         console.log("😎😎😎😜");
-//       }
-//       return response;
-//     }).then(function (response) {
-//       console.log("ok");
-//       console.log(response);
+      console.log(scheduleData);
 
-//     }).catch(function (error) {
-//       console.log(error);
-//     });
+      // request options
+      const options = {
+          method: 'POST',
+          body: JSON.stringify(scheduleData),
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      }
 
-// }
+      const response = await fetch(`/scheduleVaccination`, options);
 
-// Function to get All schedules
+      if (!response.ok) {
+
+          console.log(`HTTP error: ${response.status}`);
+
+      } else {
+
+          const data = await response.json();
+
+          console.log(data);
+
+          if (data.status == 200) {
+
+              $('#successModalToggle').modal('show');
+              document.getElementById('success-msg').innerText = data.message;
+              $('#vaccinateModalToggle').modal('hide');
+              document.getElementById("recordVaxSchedule").reset();
+              // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
+
+          } else {
+
+              $('#errModalToggle').modal('show');
+
+              document.getElementById('errors-msg').innerText = data.message;
+
+          }
+
+      }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+
+const scheduleForm = document.forms.namedItem("recordSchedule");
+
+scheduleForm.addEventListener("submit", (event) => {
+
+  recordSchedule();
+
+  event.preventDefault();
+
+},
+
+  false
+
+);

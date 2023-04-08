@@ -12,7 +12,6 @@ const bodyParser = require('body-parser');
 const hbs = require('nodemailer-express-handlebars');
 const dotenv = require("dotenv");
 const cron = require('node-cron');
-const { isNullOrUndefined } = require('util');
 
 
 dotenv.config();
@@ -860,14 +859,37 @@ app.post('/newAnimal', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${request.body.animalTag}', '${request.body.gender}', '${request.body.dob}', '${request.body.regDate}', '${animal}', '${farma_id}', 'Y');`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        response.redirect(`/animal/${animal}`);
-        return;
-    });
-})
+    connection.query(`INSERT INTO animal (animal_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${request.body.animalTag}', '${request.body.gender}', '${request.body.dob}', '${request.body.regDate}', '${animal}', '${farma_id}', 'Y');`,
+
+        function (error, results, fields) {
+
+            if (error) {
+
+                console.log(error);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: ` ${request.body.animalTag} Added Successfuly ! ` });
+
+                } else {
+
+                    return response.json({ status: 400, message: ` Adding ${request.body.animalTag} Failed` });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
 
 
 // TODO test new born registration
@@ -876,14 +898,37 @@ app.post('/addNewBorn', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, parent_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${request.body.newBornTag}', '${request.body.parentTag}', '${request.body.newBornGender}', '${request.body.newBornDOB}', '${request.body.newBornRegDate}', '${animal}', '${farma_id}', 'Y');`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        response.redirect(`/animal/${animal}`);
-        return;
-    });
-})
+    connection.query(`INSERT INTO animal (animal_tag, parent_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${request.body.newBornTag}', '${request.body.parentTag}', '${request.body.newBornGender}', '${request.body.newBornDOB}', '${request.body.newBornRegDate}', '${animal}', '${farma_id}', 'Y');`,
+
+        function (error, results, fields) {
+
+            if (error) {
+
+                console.log(error);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: ` ${request.body.newBornTag} Added Successfuly ! ` });
+
+                } else {
+
+                    return response.json({ status: 400, message: ` Adding ${request.body.newBornTag} Failed` });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
 
 
 // Inserting new TimeTable into the DB
@@ -952,6 +997,7 @@ app.post('/newVaccine', function (request, response) {
 
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, cycle, period, injection_area, disease_id, animal_type, farma_id) VALUES ('${request.body.vaccineName}', ${request.body.vaccineQuantity}, '${request.body.quantityMeasure}', '${request.body.vaccineDesc}', ${request.body.vaccineCycle}, ${request.body.vaccinePeriod}, '${request.body.injectionArea}', '${disease_id}', '${animal}', '${farma_id}');`,
+
         function (error, results, fields) {
 
             if (error) {
@@ -990,13 +1036,35 @@ app.post('/newFeed', function (request, response) {
 
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`INSERT INTO feeds (name, description, quantity, quantity_measure, stock_date, animal_type, farma_id) VALUES ('${request.body.feeds_name}','${request.body.feeds_name}',${request.body.feeds_qnty},${request.body.feeds_qnty_measure},'${request.body.feeds_stock_date}', '${animal}','${farma_id}');`,
+
         function (error, results, fields) {
-            if (error) throw error;
-            console.log(results);
-            console.log(fields);
-        });
-    response.redirect(`/animal/${animal}`);
-    return;
+
+            if (error) {
+
+                console.log(error);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: `${request.body.feeds_name} Feed Added Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: `Adding ${request.body.feeds_name} Feed Failed` });
+
+                }
+
+            }
+
+        }
+
+    );
+
 });
 
 
@@ -1009,12 +1077,35 @@ app.post('/newBred', function (request, response) {
 
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`INSERT INTO breeding (animal_id, breeding_date, expected_due_date, breeding_uuid) VALUES ('${request.body.breeding_animal_id}','${request.body.breeding_date}', DATE_ADD('${request.body.breeding_date}', INTERVAL ${request.body.gestation_period} DAY), '${breeding_uuid}');`,
+
         function (error, results, fields) {
-            if (error) throw error;
-            console.log(results);
-        });
-    response.redirect(`/animal/${animal}`);
-    return;
+
+            if (error) {
+
+                console.log(error);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: 'Vaccine Added Successfuly.' });
+
+                } else {
+
+                    return response.json({ status: 400, message: 'Adding new Vaccine Failed' });
+
+                }
+
+            }
+
+        }
+
+    );
+
 });
 
 
@@ -1024,13 +1115,36 @@ app.post('/newVet', function (request, response) {
     const vet_uuid = uuidv4();
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`INSERT INTO vets (fname, lname, email, phone, station, vet_id) VALUES ('${request.body.vetFname}', '${request.body.vetLname}', '${request.body.vetEmail}', '${request.body.vetPhone}', '${request.body.vetStation}', '${vet_uuid}');`,
-        function (error, results, fields) {
-            if (error) throw error;
-        });
 
-    response.redirect(`/animal/${animal}`);
-    return;
-})
+        function (error, results, fields) {
+
+            if (error) {
+
+                console.log(error);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: `${request.body.vetFname} ${request.body.vetLname} has been Added Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: `Adding ${request.body.vetFname} ${request.body.vetLname} Failed ` });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
 
 
 // Inserting Vaccines into the DB
@@ -1039,14 +1153,36 @@ app.post('/updateVet', function (request, response) {
 
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`UPDATE vets SET fname = '${request.body.editVetFname}', lname = '${request.body.editVetLname}', email = '${request.body.editVetEmail}', phone = '${request.body.editVetPhone}', station = '${request.body.editVetStation}' WHERE vet_id = '${request.body.editVetID}';`,
+
         function (error, results, fields) {
-            if (error) throw error;
-        });
 
-    response.redirect(`/animal/${animal}`);
-    return;
-})
+            if (error) {
 
+                console.log(error);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: `${request.body.editVetFname} ${request.body.editVetLname} has been Added Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: `Adding ${request.body.editVetFname} ${request.body.editVetLname} Failed ` });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
 
 // // Inserting Vaccines into the DB
 // app.post('/updateSick', function (request, response) {
@@ -1075,38 +1211,48 @@ app.post('/confirmation', function (request, response) {
 
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`UPDATE sick_animals SET confirmed = 'Y' WHERE id = '${request.body.edit_sick_animal_id}';`,
+
         function (error, results, fields) {
+
             if (error) {
+
                 console.log(error);
-                console.log(error.errno);
-                console.log(error.message);
-                console.log(error.name);
-                response.redirect(`/animal/${animal}`);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    const params = {
+                        subject: 'FARMA ALERTS: CONFIRMATION OF TREATMENT APPOINTMENT',
+                        vet_name: `${request.body.editVetName}`,
+                        heading: `TREATMENT APPOINTMENT CONFIRMATION FOR ${request.body.editSickTag}`,
+                        message: `Treatment Appointment for ${storage('farma_name')}'s ${animal} tagged ${request.body.editSickTag} has been confirmed. `,
+                        farma_name: `${storage('farma_name')}`,
+                        vet_mail: `${request.body.update_vet_mail}`
+                    };
+
+                    sendmail(params);
+
+                    return response.json({ status: 200, message: `${request.body.editVetFname} ${request.body.editVetLname} has been Added Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: `Adding ${request.body.editVetFname} ${request.body.editVetLname} Failed ` });
+
+                }
+
             }
 
-            if (results.affectedRows === 1) {
+        }
 
-                console.log(results.affectedRows);
-                console.log(request.body.edit_sick_animal_id);
+    );
 
-                const params = {
-                    subject: 'FARMA ALERTS: CONFIRMATION OF TREATMENT APPOINTMENT',
-                    vet_name: `${request.body.editVetName}`,
-                    heading: `TREATMENT APPOINTMENT CONFIRMATION FOR ${request.body.editSickTag}`,
-                    message: `Treatment Appointment for ${storage('farma_name')}'s ${animal} tagged ${request.body.editSickTag} has been confirmed. `,
-                    farma_name: `${storage('farma_name')}`,
-                    vet_mail: `${request.body.update_vet_mail}`
-                };
+});
 
-                // sendmail(params);
-            }
-
-        });
-
-    response.redirect(`/animal/${animal}`);
-
-    return;
-})
 
 
 //  Verifying new born animal
@@ -1119,27 +1265,35 @@ app.post('/verifyNewBorn', function (request, response) {
 
     if (user_id) {
 
-        connection.query(queries, function (error, results, fields) {
-            // If there is an issue with the query, output the error
+        connection.query(queries,
+            
+        function (error, results, fields) {
+
             if (error) {
 
                 console.log(error);
 
-                response.send({ error_message: "an error happened" + error });
+                return response.json({ status: 500, message: error.sqlMessage });
 
             } else {
 
                 console.log(results);
 
-                // response.send({ listing: results });
+                if (results.affectedRows > 0) {
 
-                response.redirect(`/animal/${animal}`);
+                    return response.json({ status: 200, message: ` ${request.body.newBornAnimalTag} has been confirmed Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: `${request.body.newBornAnimalTag} Confirmation Failed ` });
+
+                }
 
             }
 
-        })
+        }
 
-    } else {
+    )} else {
 
         response.redirect('/');
 
@@ -1156,32 +1310,37 @@ app.post('/scheduleVaccination', function (request, response) {
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id, confirmed, confirmed_id) VALUES (${request.body.vaxID}, '${request.body.scheduled_first_date}', ${request.body.animalTag}, '${request.body.vetID}', 'N', UUID());`,
 
-        function (error, results, fields) {
 
-            if (error) {
+    function (error, results, fields) {
 
-                console.log(error);
+        if (error) {
+
+            console.log(error);
+
+            return response.json({ status: 500, message: error.sqlMessage });
+
+        } else {
+
+            console.log(results);
+
+            if (results.affectedRows > 0) {
+
+                return response.json({ status: 200, message: `Vaccination schedule has been Added Successfuly.` });
 
             } else {
 
-                if (results.affectedRows != 1) {
-
-                    console.log("FAILED TO CREATE SCHEDULE")
-
-                } else {
-
-                    console.log("VACCINATION APPPOINTMENT CREATED");
-
-                }
+                return response.json({ status: 400, message: `Vaccination schedule creation Failed ` });
 
             }
-        });
 
-    response.redirect(`/animal/${animal}`);
+        }
 
-    return;
+    }
 
-})
+);
+
+});
+
 
 
 // Updating Farma Profile Data
@@ -1211,15 +1370,36 @@ app.post('/addSick', function (request, response) {
 
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`CALL recordSick(${request.body.healthyAnimals}, '${request.body.reportedDate}', '${request.body.vets_id}', '${request.body.appointment_date}', ${request.body.suspected_disease}, '${request.body.ssText}');`,
+
         function (error, results, fields) {
-            if (error) throw error;
-        });
 
-    response.redirect(`/animal/${animal}`);
+            if (error) {
 
-    return;
+                console.log(error);
 
-})
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: 'Vaccine Added Successfuly.' });
+
+                } else {
+
+                    return response.json({ status: 400, message: 'Adding new Vaccine Failed' });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
 
 
 // send-reset-otp
