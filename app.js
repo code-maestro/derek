@@ -1062,7 +1062,7 @@ app.post('/newVaccine', function (request, response) {
     const disease_id = request.body.diseaseID === undefined ? 0 : request.body.diseaseID;
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, cycle, period, injection_area, disease_id, animal_type, farma_id) VALUES ('${request.body.vaccineName}', ${request.body.vaccineQuantity}, '${request.body.quantityMeasure}', '${request.body.vaccineDesc}', ${request.body.vaccineCycle}, ${request.body.vaccinePeriod}, '${request.body.injectionArea}', '${disease_id}', '${animal}', '${farma_id}');`,
+    connection.query(`INSERT INTO vaccines (name, quantity, quantity_measure, description, cycle, period, qnty_per_cycle, qnty_measure_per_cycle, injection_area, disease_id, animal_type, farma_id) VALUES ('${request.body.vaccineName}', ${request.body.vaccineQuantity}, '${request.body.quantityMeasure}', '${request.body.vaccineDesc}', ${request.body.vaccineCycle}, ${request.body.vaccinePeriod}, ${request.body.vaccineQntyPerCycle}, ${request.body.qntyMeasurePerCycle}, '${request.body.injectionArea}', '${disease_id}', '${animal}', '${farma_id}');`,
 
         function (error, results, fields) {
 

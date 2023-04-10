@@ -985,7 +985,27 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-12">
+                                                <div class="col-md-3">
+                                                    <label for="vaccine-quantity" class="form-label fw-bold">
+                                                        Quantity/cycle</label>
+                                                    <input id="vaccine-qnty-cycle" type="number" class="form-control"
+                                                        name="vaccineQntyPerCycle" spellcheck="false" value="">
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label for="period" class="form-label fw-bold"> Quantity Measure/Cycle
+                                                    </label>
+                                                    <select class="form-select" id="quantity-measure/cycle"
+                                                        name="qntyMeasurePerCycle" required="">
+                                                        <option selected="" disabled="" value=""> Choose a measure
+                                                            ...</option>
+                                                        <option value="1000"> milli litre(s) </option>
+                                                        <option value="1"> litre(s) </option>
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="col-md-6">
                                                     <label for="injection-area" class="form-label fw-bold">
                                                         Injection Area </label>
                                                     <input id="injection-area" type="text" class="form-control"

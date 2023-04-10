@@ -1011,6 +1011,8 @@ async function recordVaccine() {
       quantityMeasure: document.getElementById('quantity-measure').value,
       vaccineCycle: document.getElementById('vaccination-cycle').value,
       vaccinePeriod: document.getElementById('vPeriod').value,
+      vaccineQntyPerCycle: document.getElementById('vaccine-qnty-cycle').value,
+      qntyMeasurePerCycle: document.getElementById('quantity-measure/cycle').value,
       injectionArea: document.getElementById('injection-area').value
     };
 
