@@ -2,7 +2,7 @@
 // viewing THE SCHEDULE
 const viewSchedule = async (param) => {
 
-  const schedules = await getScheduleListing(`${param}`);
+  const schedules = await (`${param}`);
 
   let html = "";
   let htmlSegment = "";

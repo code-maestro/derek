@@ -35,8 +35,8 @@ async function isConfirmed(param) {
 
 
 // Getting schedule listings from backend
-async function getScheduleListing(param) {
-  let url = `/getScheduletListing/${param}`;
+async function getScheduleListing(type, id) {
+  let url = `/getScheduletListing?type=${type}&id=${id}`;
   try {
     let res = await fetch(url);
     return await res.json();
@@ -314,6 +314,7 @@ const getAllVaccines = async () => {
 
 // Funciton invoked on changes
 const getOtherVaccineData = async () => {
+
   const vaccines = await getListing('availableVaccines');
 
   const vaxName = document.getElementById('all-vaccines-name');
@@ -438,9 +439,8 @@ const getAvailableVaccines = async () => {
       <td class="text-center"> ${vaccine.name} </td>
       <td class="text-center"> ${vaccine.description} </td>
       <td class="text-center"> ${vaccine.quantity + ' ' + vaccine.measure} </td>
-      <td class="text-center"> ${vaccine.no_of_vaccinations} </td>
-      <td class="text-center"> ${vaccine.cycle} </td>
-      <td class="text-center"> ${vaccine.period} </td>
+      <td class="text-center"> ${vaccine.frequency} </td>
+      <td class="text-center"> ${vaccine.qnty_per_cycle + ' ' + vaccine.measure_per_cycle} </td>
       <td class="text-center"> ${vaccine.injection_area} </td>
 
       <td class="text-center noprint" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="sendData('vaccine', '${vaccine.id}', '${vaccine.name}')" >
@@ -855,6 +855,8 @@ async function editFeed(param) {
 async function scheduleConfirm(param) {
   
   const isCon = await isConfirmed(param);
+
+  console.log(isCon);
 
   if (isCon.status === 400) {
 

@@ -162,3 +162,69 @@ BEGIN
 
 END;
 
+
+-- auto-generated definition
+create table schedule_vaccination
+(
+    id                   int auto_increment
+        primary key,
+    vaccination_id       varchar(64) null,
+    effective_date       date        not null,
+    next_date            date        null,
+    vaccine_quantity     int         null,
+    vaccine_qnty_pending int         null,
+    schedule_id          text        not null,
+    qnty_unit            int         not null,
+    qnty_per_cycle_unit  int         not null
+);
+
+
+drop procedure schedule_vaccination;
+
+create
+    definer = derek@localhost procedure schedule_vaccination(IN vaccination_details_id varchar(64), IN qnty int,
+                                                             IN quantity_unit int, IN start_dt date, IN cycle int,
+                                                             IN period int, IN qty_per_cycle int,
+                                                             IN qty_per_cycle_unit int, OUT total int)
+BEGIN
+
+DECLARE effective_dt DATE;
+
+SET effective_dt = start_dt;
+
+    WHILE qnty > 0
+
+        DO
+
+			INSERT INTO schedule_vaccination (vaccination_id,
+			                              effective_date,
+			                              next_date,
+			                              vaccine_quantity,
+			                              vaccine_qnty_pending,
+			                              schedule_id,
+			                              qnty_per_cycle_unit,
+			                              qnty_unit)
+			VALUES (vaccination_details_id,
+			        effective_dt,
+			        DATE_ADD(effective_dt, INTERVAL period DAY),
+			        qty_per_cycle,
+			        qnty,
+			        UUID(),
+			        qty_per_cycle_unit,
+			        quantity_unit );
+
+            SET qnty = (qnty - (qty_per_cycle*cycle));
+
+			SET effective_dt = DATE_ADD(effective_dt, INTERVAL period DAY);
+
+			    UPDATE vaccines SET quantity = qnty WHERE id  = (SELECT vaccine_id
+                                                         FROM vaccination_details
+                                                         WHERE vaccination_details.id = vaccination_details_id);
+
+
+	END WHILE;
+
+    SET total = 1;
+
+END;
+

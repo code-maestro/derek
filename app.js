@@ -483,7 +483,7 @@ app.get('/getListing/:param', function (request, response) {
                           FROM vaccination_details A, animal C WHERE A.animal_id = C.id AND C.animal_type = '${animal_type}' 
                           AND C.farma_id = '${farma_id}' AND C.confirmed = 'Y';`,
 
-        availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, cycle, period, injection_area, (SELECT disease_name FROM disease WHERE id = vaccines.disease_id) AS disease_name FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
+        availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, CONCAT(cycle,' ',(CASE WHEN period = 1 THEN 'time(s) a Day' WHEN period = 7 THEN 'time(s) a Week' WHEN period = 30 THEN 'time(s) a Month' ELSE 'time(s) a Year' END)) as frequency, cycle, period, injection_area, qnty_per_cycle, IF(qnty_measure_per_cycle >= 1000, 'millilitres', 'litres') as measure_per_cycle, (SELECT disease_name FROM disease WHERE id = vaccines.disease_id) AS disease_name FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
 
         feeds: `SELECT id, name, description, quantity, quantity_measure, IF(quantity_measure >= 1000, 'kg', 'g') AS measure, stock_date, expected_restock_date FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}' AND quantity > 0;`,
 
@@ -531,13 +531,15 @@ app.get('/getListing/:param', function (request, response) {
 
 // Cleaned
 // SCHEDULE LISTINg
-app.get('/getScheduletListing/:param', function (request, response) {
+app.get('/getScheduletListing', function (request, response) {
 
     const user_id = storage('farma_id');
 
-    const param = request.params.param;
+    const type = request.query.type;
+    const id = request.query.id;
 
-    console.log(param);
+    console.log(type);
+    console.log(id);
 
     const queries = `SELECT id,feeding_tt_id,
                         effective_date,next_date,
@@ -545,16 +547,20 @@ app.get('/getScheduletListing/:param', function (request, response) {
                         FORMAT(((feeds_qnty_pending*feeding_schedule.qnty_unit)/qnty_unit), 2) as feeds_qnty_pending,
                         IF(qnty_unit >= 1000, 'kg', 'g' ) as unit,
                         schedule_id
-                        FROM feeding_schedule WHERE feeding_tt_id = '${param}';`
+                        FROM feeding_schedule WHERE feeding_tt_id = '${id}';`
 
     if (user_id) {
 
         connection.query(queries, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
+
                 response.send({ error_message: "an error happened" + error });
+            
             } else {
+            
                 response.send({ listing: results });
+            
             }
 
         })
@@ -584,10 +590,14 @@ app.get('/isConfirmed/:param', function (request, response) {
         connection.query(queries, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
+
                 response.send({ status: 500, error_message: "an error happened" + error });
+            
             } else {
 
-                if (results[0].confirmed = 'Y') {
+                console.log(results[0].confirmed);
+
+                if (results[0].confirmed === 'Y') {
 
                     response.send({ status: 200, message: "animal's vaccination appointment is confirmed", listing: results });
 
