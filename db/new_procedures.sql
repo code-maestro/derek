@@ -139,3 +139,26 @@ BEGIN
 
 END;
 
+
+drop trigger new_born_confirm;
+
+create definer = derek@localhost trigger new_born_confirm
+    after update
+    on animal
+    for each row
+BEGIN
+    
+    IF OLD.confirmed = 'N' THEN
+
+        INSERT INTO triggered_emails (email_address,status,subject,farma_name,body,animal_tag,confirmation_id, template_name) 
+        VALUES ((SELECT mail FROM farma WHERE farma_id = NEW.farma_id),'N',
+            CONCAT('REGISTRATION OF NEW BORN ', NEW.animal_tag, ' ON ', DATE_FORMAT(NOW(), '%W, %M, %Y')),
+            (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = NEW.farma_id),
+            CONCAT(NEW.animal_tag, ' has been confirmed and registered today the ', DATE_FORMAT(NOW(), '%W, %M, %Y')),
+            NEW.animal_tag,
+            UUID(), 'reminder');
+
+    END IF;
+
+END;
+

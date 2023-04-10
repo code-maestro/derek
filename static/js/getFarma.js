@@ -34,3 +34,73 @@ const renderFarma = async () => {
   });
 
 }
+
+
+// Function Adding new Animal
+async function updateFarma() {
+  try {
+    // post body data 
+    const profileData = {
+      mail: document.getElementById('validation04').value,
+      fname: document.getElementById('validation01').value,
+      lname: document.getElementById('validation02').value,
+      phone: document.getElementById('validation03').value
+    };
+
+    console.log(profileData);
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(profileData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/updateFarma`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+        $('#offcanvasRight').offcanvas('hide');
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+const profileForm = document.forms.namedItem("updateFarmaProfileForm");
+profileForm.addEventListener("submit", (event) => {
+
+  updateFarma();
+
+  event.preventDefault();
+
+},
+
+  false
+
+);

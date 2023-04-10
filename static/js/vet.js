@@ -38,7 +38,8 @@ async function recordVet() {
                 $('#successModalToggle').modal('show');
                 document.getElementById('success-msg').innerText = data.message;
                 $('#newVetToggle').modal('hide');
-                // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
+                document.getElementById("recordNewVet").reset();
+                
 
             } else {
 

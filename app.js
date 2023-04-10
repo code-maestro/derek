@@ -511,7 +511,7 @@ app.get('/getListing/:param', function (request, response) {
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
-                response.send({ listing: "error" });
+                response.send({ listing: error });
             } else {
 
                 response.send({ listing: results });
@@ -959,16 +959,37 @@ app.post('/updateAnimalData', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
     // Execute SQL query that'll insert into the farma table
-    connection.query(`UPDATE animal SET animal_tag = '${request.body.editAnimalTag}', gender = '${request.body.editGender}', dob = '${request.body.editDob}', reg_date = '${request.body.editRegDate}' WHERE animal_type ='${animal}' AND farma_id = '${farma_id}' AND id='${request.body.editid}';`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        response.redirect(`/animal/${animal}`);
-        return;
-    });
-})
+    connection.query(`UPDATE animal SET animal_tag = '${request.body.editAnimalTag}', gender = '${request.body.editGender}', dob = '${request.body.editDob}', reg_date = '${request.body.editRegDate}' WHERE animal_type ='${animal}' AND farma_id = '${farma_id}' AND id='${request.body.editid}';`,
 
+        function (error, results, fields) {
 
+            if (error) {
+
+                console.log(error);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: ` ${request.body.editAnimalTag} updated Successfuly ! ` });
+
+                } else {
+
+                    return response.json({ status: 400, message: ` ${request.body.editAnimalTag} Update Failed` });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
 // Inserting Feeds into the DB
 app.post('/updateFeed', function (request, response) {
     const farma_id = storage('farma_id');
@@ -1073,8 +1094,6 @@ app.post('/newBred', function (request, response) {
     const animal = storage('animal');
     const breeding_uuid = uuidv4();
 
-    console.log(request.body);
-
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`INSERT INTO breeding (animal_id, breeding_date, expected_due_date, breeding_uuid) VALUES ('${request.body.breeding_animal_id}','${request.body.breeding_date}', DATE_ADD('${request.body.breeding_date}', INTERVAL ${request.body.gestation_period} DAY), '${breeding_uuid}');`,
 
@@ -1092,11 +1111,11 @@ app.post('/newBred', function (request, response) {
 
                 if (results.affectedRows > 0) {
 
-                    return response.json({ status: 200, message: 'Vaccine Added Successfuly.' });
+                    return response.json({ status: 200, message: 'Breeding Record Added Successfuly.' });
 
                 } else {
 
-                    return response.json({ status: 400, message: 'Adding new Vaccine Failed' });
+                    return response.json({ status: 400, message: 'Adding new Breeding Record Failed' });
 
                 }
 
@@ -1266,34 +1285,35 @@ app.post('/verifyNewBorn', function (request, response) {
     if (user_id) {
 
         connection.query(queries,
-            
-        function (error, results, fields) {
 
-            if (error) {
+            function (error, results, fields) {
 
-                console.log(error);
+                if (error) {
 
-                return response.json({ status: 500, message: error.sqlMessage });
+                    console.log(error);
 
-            } else {
-
-                console.log(results);
-
-                if (results.affectedRows > 0) {
-
-                    return response.json({ status: 200, message: ` ${request.body.newBornAnimalTag} has been confirmed Successfuly.` });
+                    return response.json({ status: 500, message: error.sqlMessage });
 
                 } else {
 
-                    return response.json({ status: 400, message: `${request.body.newBornAnimalTag} Confirmation Failed ` });
+                    console.log(results);
+
+                    if (results.affectedRows > 0) {
+
+                        return response.json({ status: 200, message: ` ${request.body.newBornAnimalTag} has been confirmed Successfuly.` });
+
+                    } else {
+
+                        return response.json({ status: 400, message: `${request.body.newBornAnimalTag} Confirmation Failed ` });
+
+                    }
 
                 }
 
             }
 
-        }
-
-    )} else {
+        )
+    } else {
 
         response.redirect('/');
 
@@ -1311,33 +1331,33 @@ app.post('/scheduleVaccination', function (request, response) {
     connection.query(`INSERT INTO vaccination_details (vaccine_id, first_date, animal_id, vet_id, confirmed, confirmed_id) VALUES (${request.body.vaxID}, '${request.body.scheduled_first_date}', ${request.body.animalTag}, '${request.body.vetID}', 'N', UUID());`,
 
 
-    function (error, results, fields) {
+        function (error, results, fields) {
 
-        if (error) {
+            if (error) {
 
-            console.log(error);
+                console.log(error);
 
-            return response.json({ status: 500, message: error.sqlMessage });
-
-        } else {
-
-            console.log(results);
-
-            if (results.affectedRows > 0) {
-
-                return response.json({ status: 200, message: `Vaccination schedule has been Added Successfuly.` });
+                return response.json({ status: 500, message: error.sqlMessage });
 
             } else {
 
-                return response.json({ status: 400, message: `Vaccination schedule creation Failed ` });
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: `Vaccination schedule has been Added Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: `Vaccination schedule creation Failed ` });
+
+                }
 
             }
 
         }
 
-    }
-
-);
+    );
 
 });
 
@@ -1345,23 +1365,43 @@ app.post('/scheduleVaccination', function (request, response) {
 
 // Updating Farma Profile Data
 app.post('/updateFarma', function (request, response) {
-    const animal = storage('animal');
+    
     const farma_id = storage('farma_id');
     const data = request.body;
-    console.log(data);
+
     // Execute SQL query that'll insert into the farma table
-    connection.query(`UPDATE farma SET first_name = '${data.fname}', last_name = '${data.lname}', phone = '${data.phone}', mail = '${data.mail}' WHERE farma_id = '${farma_id}';`, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        console.log("RESULTS" + results);
-        console.log("FIELDS " + fields);
-        return;
-    });
+    connection.query(`UPDATE farma SET first_name = '${data.fname}', last_name = '${data.lname}', phone = '${data.phone}', mail = '${data.mail}' WHERE farma_id = '${farma_id}';`,
+        
+        function (error, results, fields) {
 
-    response.redirect(`/animal/${animal}`);
+            if (error) {
 
-})
+                console.log(error);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: `${data.fname} ${data.lname}' has been saved Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: ` Update to ${data.fname} ${data.lname} Failed ` });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
+
 
 
 // Reportinsg Sick animals into the DB

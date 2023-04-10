@@ -1123,3 +1123,76 @@ feedForm.addEventListener("submit", (event) => {
   false
 
 );
+
+
+// Function Adding new Feed
+async function recordEditAnimal() {
+  try {
+    // post body data 
+    const editAnimalData = {
+      editAnimalTag: document.getElementById('edit-animal-tag').value,
+      editGender: document.getElementById('edit-gender').value,
+      editDob: document.getElementById('edit-dob').value,
+      editRegDate: document.getElementById('edit-registration-date').value,
+      editid: document.getElementById('editid').value
+    };
+
+    console.log(editAnimalData);
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(editAnimalData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/updateAnimalData`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#editAnimalModal').modal('hide');
+        $('#registeredAnimalsModalToggle').modal('hide');
+        
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+const updateAnimalForm = document.forms.namedItem("editAnimalForm");
+updateAnimalForm.addEventListener("submit", (event) => {
+
+  recordEditAnimal();
+
+  event.preventDefault();
+
+},
+
+  false
+
+);

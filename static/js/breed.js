@@ -1,11 +1,14 @@
 // Function to get All feeds
 const getBreedAnimals = async () => {
+
   const animals = await getListing('notHeavyAnimals');
 
   let tagListed = '';
   let tagList = `<option selected disabled> Choose an Animal Tag ...</option>`;
 
   const tag_lstd = document.getElementById('breeding_animal');
+
+  console.log(animals);
 
   animals.listing.forEach(animal => {
     tagListed = ` <option id="${animal.id}" value="${animal.animal_tag}">  ${animal.animal_tag} </option> `;
@@ -206,12 +209,12 @@ async function recordNewborn(event) {
 
       if (data.status == 200) {
 
+        console.log(document.getElementById('successModalToggle'));
+
         $('#successModalToggle').modal('show');
         document.getElementById('success-msg').innerText = data.message;
         $('#registerNewBornModalToggle').modal('hide');
         // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
-
-        event.preventDefault();
 
       } else {
 
@@ -231,10 +234,89 @@ async function recordNewborn(event) {
 
 
 const newBornForm = document.forms.namedItem("recordNewborn");
-
 newBornForm.addEventListener("submit", (event) => {
 
   recordNewborn();
+
+  event.preventDefault();
+
+},
+
+  false
+
+);
+
+
+function addDgays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+
+  console.log(result + "RESULT");
+  return result;
+}
+
+
+async function recordBreed(event) {
+  try {
+
+    // post body data 
+    const newBreed = {
+      breeding_animal_id: document.getElementById('breeding_animal_id').value,
+      gestation_period: document.getElementById('gestation_period').value,
+      breeding_date: document.getElementById('breeding_date').value
+    };
+
+    console.log(newBreed);
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(newBreed),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/newBred`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+        $('#breedingAnimalModalToggle').modal('hide');
+        document.getElementById("breedingAnimalForm").reset();
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+
+const newBreedForm = document.forms.namedItem("recordBreed");
+newBreedForm.addEventListener("submit", (event) => {
+
+  recordBreed();
 
   event.preventDefault();
 
