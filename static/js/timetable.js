@@ -7,6 +7,8 @@ const viewSchedule = async (param) => {
   let html = "";
   let htmlSegment = "";
 
+  console.log(schedules);
+
   const con = document.getElementById('scheduleTable');
 
   schedules.listing.forEach(schedule => {

@@ -247,16 +247,7 @@ newBornForm.addEventListener("submit", (event) => {
 );
 
 
-function addDgays(date, days) {
-  var result = new Date(date);
-  result.setDate(result.getDate() + days);
-
-  console.log(result + "RESULT");
-  return result;
-}
-
-
-async function recordBreed(event) {
+async function recordBreed() {
   try {
 
     // post body data 
@@ -291,10 +282,11 @@ async function recordBreed(event) {
 
       if (data.status == 200) {
 
-        $('#successModalToggle').modal('show');
-        document.getElementById('success-msg').innerText = data.message;
         $('#breedingAnimalModalToggle').modal('hide');
         document.getElementById("breedingAnimalForm").reset();
+        
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
 
       } else {
 
@@ -311,7 +303,6 @@ async function recordBreed(event) {
   catch (error) { console.log(error); }
 
 }
-
 
 const newBreedForm = document.forms.namedItem("recordBreed");
 newBreedForm.addEventListener("submit", (event) => {

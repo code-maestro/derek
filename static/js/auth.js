@@ -98,8 +98,7 @@ async function sendOTP() {
 
         const myModal = new bootstrap.Modal('#newPwdModalToggle');
         myModal.show();
-        const modalToggle = document.getElementById('newPwdModalToggle');
-        myModal.show(modalToggle);
+
 
       } else if (data.status == 400) {
 

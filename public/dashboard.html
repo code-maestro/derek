@@ -112,8 +112,7 @@
 
                 <!-- Nav Item -  Register -->
                 <li class="nav-item font-weight-bold font-weight-bold" onclick="getAnimalTableData('animal-tag')">
-                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#reg" 
-                        aria-controls="reg">
+                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#reg" aria-controls="reg">
                         <i class="fa-solid fa-address-card"></i>
                         <span> Registration </span>
                     </span>
@@ -128,9 +127,37 @@
                 </li>
 
 
+                <!-- Nav Item - Breeding -->
+                <li class="nav-item font-weight-bold" onclick="getBreedAnimals()">
+                    <span class="nav-link" data-bs-toggle="modal" href="#breedingAnimalModalToggle" role="button">
+                        <i class="fa-solid fa-address-card"></i>
+                        <span> Breeding </span>
+                    </span>
+                </li>
+
+
+                <!-- Nav Item - New Borns -->
+                <li class="nav-item font-weight-bold font-weight-bold">
+                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#regNewBorn"
+                        aria-controls="regNewBorn">
+                        <i class="fa-solid fa-address-card"></i>
+                        <span> New Borns </span>
+                    </span>
+                    <div id="regNewBorn" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white collapse-inner rounded">
+                            <span class="collapse-item" data-bs-toggle="modal" href="#registerNewBornModalToggle"
+                                onclick="getAnimalTableData('new-born-tag')" role="button"> Register a New Born </span>
+                            <span class="collapse-item" data-bs-toggle="modal" href="#newBornsModalToggle"
+                                onclick="getExpectedNewBorns()" role="button"> Expected New Borns </span>
+                        </div>
+                    </div>
+                </li>
+
+
                 <!-- Nav Item - Vaccination -->
                 <li class="nav-item font-weight-bold">
-                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#vaccines" 
+                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#vaccines"
                         aria-controls="vaccines">
                         <i class="fa-solid fa-address-card"></i>
                         <span> Vaccination </span>
@@ -155,39 +182,41 @@
                 </li>
 
 
-                <!-- Nav Item - Breeding -->
-                <li class="nav-item font-weight-bold" onclick="getBreedAnimals()">
-                    <span class="nav-link" data-bs-toggle="modal" href="#breedingAnimalModalToggle" role="button">
-                        <i class="fa-solid fa-address-card"></i>
-                        <span> Breeding </span>
+                <!-- TODO edit a sick animal -->
+                <!-- Nav Item - Symptoms -->
+                <li class="nav-item font-weight-bold">
+                    <span class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#sick"
+                        aria-controls="sick">
+                        <i class="fas fa-flag"></i>
+                        <span> Sick </span>
                     </span>
+
+                    <div id="sick" class="collapse" aria-labelledby="thesick" data-parent="#accordionSidebar">
+                        <div class="bg-white collapse-inner rounded">
+                            <span class="collapse-item" onclick="getRequiredData()" data-bs-toggle="modal"
+                                href="#addSickModalToggle" role="button"> Add Sick </span>
+                            <span class="collapse-item" onclick="viewSick()" data-bs-toggle="modal"
+                                href="#sickModalToggle" role="button"> Sick Animals </span>
+                        </div>
+                    </div>
                 </li>
 
 
-                <!-- Nav Item - New Borns -->
-                <li class="nav-item font-weight-bold font-weight-bold">
-                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#regNewBorn"
-                         aria-controls="regNewBorn">
-                        <i class="fa-solid fa-address-card"></i>
-                        <span> New Borns </span>
+                <!-- TODO implement function - viewDiseases() to handle the click event -->
+                <!-- Nav Item - Diseases -->
+                <li class="nav-item font-weight-bold">
+                    <span class="nav-link collapsed" data-toggle="modal" data-target="#diseaseModalToggle"
+                        aria-controls="collapseUtilities">
+                        <i class="fas fa-disease"></i>
+                        <span> Disease Control </span>
                     </span>
-                    <div id="regNewBorn" class="collapse" aria-labelledby="headingUtilities"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white collapse-inner rounded">
-                            <span class="collapse-item" data-bs-toggle="modal" href="#registerNewBornModalToggle"
-                                onclick="getAnimalTableData('new-born-tag')" role="button"> Register a New Born </span>
-                            <span class="collapse-item" data-bs-toggle="modal" href="#newBornsModalToggle"
-                                onclick="getExpectedNewBorns()" role="button"> Expected New Borns </span>
-                        </div>
-                    </div>
                 </li>
 
 
                 <!-- TODO Test the routing created off  at 20220910-1804 -->
                 <!-- Nav Item - Feeds -->
                 <li class="nav-item font-weight-bold" onclick="getFeedsTableData()">
-                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#feeds" 
-                        aria-controls="feeds">
+                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#feeds" aria-controls="feeds">
                         <i class="fa-solid fa-address-card"></i>
                         <span> Feeds </span>
                     </span>
@@ -211,7 +240,7 @@
                 <!-- TODO implement function - populateGraphs() -->
                 <!-- Nav Item - Charts -->
                 <li class="nav-item font-weight-bold">
-                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#charts" 
+                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#charts"
                         aria-controls="charts">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span> Charts </span>
@@ -221,37 +250,6 @@
                         <div class="bg-white collapse-inner rounded">
                             <span class="collapse-item" onclick="showGraphs()"> Expectations </span>
                             <span class="collapse-item" onclick="viewGraphs('actual')"> Actual Data </span>
-                        </div>
-                    </div>
-                </li>
-
-
-                <!-- TODO implement function - viewDiseases() to handle the click event -->
-                <!-- Nav Item - Diseases -->
-                <!-- <li class="nav-item font-weight-bold">
-                    <span class="nav-link collapsed" data-toggle="modal" data-target="#diseaseModalToggle"
-                         aria-controls="collapseUtilities">
-                        <i class="fas fa-disease"></i>
-                        <span> Diseases </span>
-                    </span>
-                </li> -->
-
-
-                <!-- TODO edit a sick animal -->
-                <!-- Nav Item - Symptoms -->
-                <li class="nav-item font-weight-bold">
-                    <span class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#sick"
-                         aria-controls="sick">
-                        <i class="fas fa-flag"></i>
-                        <span> Sick </span>
-                    </span>
-
-                    <div id="sick" class="collapse" aria-labelledby="thesick" data-parent="#accordionSidebar">
-                        <div class="bg-white collapse-inner rounded">
-                            <span class="collapse-item" onclick="getRequiredData()" data-bs-toggle="modal"
-                                href="#addSickModalToggle" role="button"> Add Sick </span>
-                            <span class="collapse-item" onclick="viewSick()" data-bs-toggle="modal"
-                                href="#sickModalToggle" role="button"> Sick Animals </span>
                         </div>
                     </div>
                 </li>
@@ -270,7 +268,7 @@
                 <!-- Nav Item - Vets -->
                 <li class="nav-item font-weight-bold">
                     <span class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#vets"
-                         aria-controls="vets">
+                        aria-controls="vets">
                         <i class="fas fa-flag"></i>
                         <span> Vets </span>
                     </span>
@@ -605,8 +603,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="heading">
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapse" 
-                                                aria-controls="collapse">
+                                                data-bs-target="#collapse" aria-controls="collapse">
                                                 <strong> COMMUNICATIONS </strong>
                                             </button>
                                         </h2>
@@ -634,8 +631,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingOne">
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseOne" 
-                                                aria-controls="collapseOne">
+                                                data-bs-target="#collapseOne" aria-controls="collapseOne">
                                                 <strong> SYSTEM EVENTS</strong>
                                             </button>
                                         </h2>
@@ -1116,7 +1112,7 @@
                                             <form class="row g-3" enctype="multipart/form-data" method="post"
                                                 id="recordVaxSchedule" name="recordSchedule">
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <label for="all-animals-tag" class="form-label fw-bold"> Animal
                                                         Tag(s)
                                                     </label>
@@ -1124,7 +1120,7 @@
                                                         class="form-select" name="animalTag" required> </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <label for="vaccine-name" class="form-label fw-bold"> Vaccine Name
                                                     </label>
                                                     <select onchange="getOtherVaccineData()" id="all-vaccines-name"
@@ -1135,14 +1131,7 @@
 
                                                 <input id="vaxID" type="number" name="vaxID" hidden>
 
-                                                <div class="col-md-3">
-                                                    <label for="no-vaccinations" class="form-label fw-bold"> Number of
-                                                        Vaccinations </label>
-                                                    <input id="no-vax" type="number" class="form-control"
-                                                        name="noVaccinations" spellcheck="false" disabled>
-                                                </div>
-
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <label for="cycle-vaccinations" class="form-label fw-bold">
                                                         Vaccination cycle </label>
                                                     <input id="cycle-vaccinations" type="text" class="form-control"
@@ -2262,6 +2251,72 @@
         </div>
 
 
+        <!-- Generated Animal Vaccination TimeTable modal -->
+        <div class="modal fade" id="generatedVaxModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="generatedVaxModalToggleLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row px-2 pt-4">
+                                <div class="mx-auto" style="width: auto;">
+                                    <h5 class="font-monospace" id="generatedModalLabel"> GENERATED VACCINACTION
+                                        TIMETABLE </h5>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="row px-4">
+                                        <!-- Vaccines Form -->
+                                        <table id="generatedVaxTable"
+                                            class="table table-bordered table-hover table-sm table-striped">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th scope="col" class="text-center"> ID </th>
+                                                    <th scope="col" class="text-center"> EFFECTIVE DATE </th>
+                                                    <th scope="col" class="text-center"> NEXT DATE </th>
+                                                    <th scope="col" class="text-center"> QUANTITY PER CYCLE </th>
+                                                    <th scope="col" class="text-center"> QUANTITY </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody id="vaxScheduleTable"> </tbody>
+
+                                        </table>
+                                    </div>
+
+                                    <div class="row px-4 pt-4">
+                                        <div class="col-auto me-auto">
+                                            <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                        </div>
+                                        <div class="col-auto me-auto">
+                                            <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                        </div>
+                                        <div class="col-auto">
+                                            <h6 class="fw-bold py-2"> Export your data to </h6>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                onclick="toExcel('generatedVaxTable', 'VACCINACTION_SCHEDULE_')"> EXCEL
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                onclick="printReport('generatedVaxTable')"> PRINT </button>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                                aria-label="Close"> CLOSE </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Add Sick Animal Modal -->
         <div class="modal fade" id="addSickModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="addSickToggleLabel" aria-hidden="true">
@@ -2275,8 +2330,7 @@
                                     <div class="card bg-gradient-primary">
                                         <div class="mx-auto "
                                             style="border-radius: 0.15rem; width: auto; color: white;">
-                                            <h4 class="font-monospace font-weight-bold" id="newVetModalLabel"> RECORD A
-                                                SICK </h4>
+                                            <h4 class="font-monospace font-weight-bold" id="newSickAnimalModalLabel"> RECORD A SICK ANIMAL </h4>
                                         </div>
                                     </div>
                                 </div>
@@ -2287,10 +2341,13 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- Add Sick Form -->
+
+                                            <form class="row g-3 " enctype="multipart/form-data" method="post" id="sickAnimalForm" name="recordSick">
+
                                             <form method="POST" action="/addSick" class="row g-3">
                                                 <!-- HEALTHY ANIMALS -->
                                                 <div class="col-md-4">
-                                                    <label for="feedsName" class="form-label fw-bold"> Choose Animal TAG
+                                                    <label for="healthyList" class="form-label fw-bold"> Choose Animal TAG
                                                     </label>
                                                     <select id="healthyList" class="form-select" name="healthyAnimals"
                                                         required> </select>
@@ -2312,12 +2369,15 @@
                                                         name="suspected_disease" required> </select>
                                                 </div>
 
-                                                <div class="col-md-12">
-                                                    <label for="signs_and_symptoms" class="form-label fw-bold"> Signs
-                                                        and
-                                                        Symptoms </label>
-                                                    <textarea class="form-control" name="ssText" id="ssText" rows="3"
-                                                        required></textarea>
+                                                <div class="col-md-8">
+                                                    <label for="signs_and_symptoms" class="form-label fw-bold"> Signs and Symptoms </label>
+                                                    <textarea class="form-control" name="ssText" id="ssText" rows="3" required></textarea>
+                                                </div>
+
+                                                <!-- Vaccine attached to a disease -->
+                                                <div class="col-md-4">
+                                                    <label for="vaccineNamen" class="form-label fw-bold"> Proposed Vaccine </label>
+                                                    <input id="vaccine-namen" type="text" class="form-control" name="vaccineNamen" spellcheck="false" readonly>
                                                 </div>
 
                                                 <!-- SCHEDULE A TREATMENT APPOINTMENT -->
@@ -2459,23 +2519,21 @@
                         <div class="container">
                             <div class="row p-2 mx-auto">
                                 <div class="mx-auto" style="width: auto;">
-                                    <h5 class="font-monospace" id="diseaseModalLabel"> DISEASES LISTING </h5>
+                                    <h5 class="font-monospace" id="diseaseModalToggleLabel"> SICK ANIMALS </h5>
                                 </div>
                             </div>
 
                             <div class="row mt-2">
                                 <div class="col">
                                     <div class="row px-4">
-                                        <!-- Symptoms Table -->
+                                        <!-- Sick Animals Table -->
                                         <table id="diseaseTable" class="table table-bordered table-hover table-sm">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col" class="text-center"> ID </th>
                                                     <th scope="col" class="text-center"> DISEASE NAME </th>
-                                                    <th scope="col" class="text-center"> DESCRIPTION </th>
-                                                    <th scope="col" class="text-center"> COMMON AMONG ANIMALS WITH AGE
-                                                    </th>
-                                                    <th scope="col" class="text-center"> RECOMMENDED MEDICATION </th>
+                                                    <th scope="col" class="text-center"> SIGNS AND SYMPTOMS </th>
+                                                    <th scope="col" class="text-center"> RECOMMENDED VACCINE </th>
                                                 </tr>
                                             </thead>
                                             <tbody id="diseaseListing"> </tbody>
@@ -2701,7 +2759,8 @@
                                 <div class="col">
                                     <div class="card bg-gradient-primary">
                                         <div class="mx-auto" style="border-radius: 0.15rem; width: auto; color: white;">
-                                            <h4 class="font-monospace font-weight-bold" id="editVetModalLabel"> EDIT ANIMAL FORM </h4>
+                                            <h4 class="font-monospace font-weight-bold" id="editVetModalLabel"> EDIT
+                                                ANIMAL FORM </h4>
                                         </div>
                                     </div>
                                 </div>
@@ -2709,7 +2768,8 @@
 
 
                             <div class="row pt-2">
-                                <form class="row g-3 " enctype="multipart/form-data" method="post" id="editAnimalForm" name="editAnimalForm">
+                                <form class="row g-3 " enctype="multipart/form-data" method="post" id="editAnimalForm"
+                                    name="editAnimalForm">
                                     <div class="col-md-6">
                                         <label for="edit-animal-tag" class="form-label fw-bold"> Animal Tag </label>
                                         <input id="edit-animal-tag" type="text" placeholder="Disabled input"
@@ -2718,8 +2778,8 @@
 
                                     <div class="col-md-6">
                                         <label for="edit-gender" class="form-label fw-bold"> Gender </label>
-                                        <select class="form-select" name="editGender">
-                                            <option selected disabled id="edit-gender" value="">Choose...</option>
+                                        <select class="form-select" id="edit-gender" name="editGender">
+                                            <option selected disabled id="edit-genda">Choose...</option>
                                             <option value="Male"> Male </option>
                                             <option value="Female"> Female </option>
                                         </select>
@@ -2786,7 +2846,8 @@
 
                             <div class="row pt-2">
                                 <!-- Vaccination Form -->
-                                <form class="row g-3 " novalidate method="POST" action="/editVaccine">
+                                <form class="row g-3 " enctype="multipart/form-data" method="post" id="editVaccineForm"
+                                    name="editVaccineForm">
                                     <!-- Vaccination Records -->
                                     <div class="col-md-12">
                                         <label for="edit-vaccine-form" class="form-label fw-bold"> EDIT
@@ -2899,83 +2960,86 @@
                             </div>
 
                             <div class="row pt-2">
-                        <!-- Sick Animal Edit Form -->
-                        <form method="POST" action="/confirmation" class="row g-3">
-                            <!-- HEALTHY ANIMALS -->
-                            <div class="col-md-4">
-                                <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG
-                                </label>
-                                <input id="edit-sick-animal-tag" type="text" class="form-control" name="editSickTag"
-                                    spellcheck="false" readonly>
+                                <!-- Sick Animal Edit Form -->
+                                <form method="POST" action="/confirmation" class="row g-3">
+                                    <!-- HEALTHY ANIMALS -->
+                                    <div class="col-md-4">
+                                        <label for="edit-sick-animal-tag" class="form-label fw-bold"> Choose Animal TAG
+                                        </label>
+                                        <input id="edit-sick-animal-tag" type="text" class="form-control"
+                                            name="editSickTag" spellcheck="false" readonly>
+                                    </div>
+
+                                    <input id="edit-sick-animal-id" type="number" name="edit_sick_animal_id" hidden>
+                                    <input id="update-vet-mail" type="text" name="update_vet_mail" hidden>
+
+                                    <div class="col-md-4">
+                                        <label for="edit-reported-date" class="form-label fw-bold"> First Signs
+                                            Date </label>
+                                        <input onchange="valDate()" id="edit-reported-date" type="date"
+                                            class="form-control" name="editReportedDate" spellcheck="false">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="edit-disease-suspected" class="form-label fw-bold"> Suspected
+                                            Disease
+                                        </label>
+                                        <select id="edit-disease-s" class="form-select" name="disease_suspected">
+                                            <option selected id="edit-disease-suspected" value=""></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="signs_and_symptoms" class="form-label fw-bold"> Signs and Symptoms
+                                        </label>
+                                        <textarea class="form-control" name="editSSText" id="edit-ss-text"
+                                            rows="3"></textarea>
+                                    </div>
+
+                                    <!-- SCHEDULE A TREATMENT APPOINTMENT -->
+                                    <div class="col-md-12 pt-4">
+                                        <h5 class="font-monospace"> TREATMENT APPOINTMENT </h5>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="edit-appointment_date" class="form-label fw-bold"> Appointment Date
+                                        </label>
+                                        <input min="2022-01-01" onchange="validateDate('edit-appointment_date')"
+                                            id="edit-appointment_date" type="date" class="form-control" required
+                                            name="editAppointmentDate">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="edit-appointment_time" class="form-label fw-bold"> Appointment Time
+                                        </label>
+                                        <input id="edit-appointment_time" type="time" class="form-control" required
+                                            name="editAppointmentTime">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="update-vet-name" class="form-label fw-bold"> Vet Name </label>
+                                        <select id="update-vet-name" class="form-select" name="editVetName">
+                                            <option selected id="edit-vets" value=""></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end"
+                                        id="action_btns">
+                                        <button class="btn btn-secondary me-md-2 font-monospace" data-bs-dismiss="modal"
+                                            type="button"> CLOSE </button>
+                                        <button class="btn btn-primary font-monospace" id="confirm_btn" type="submit">
+                                            CONFIRM
+                                            APPOINTMENT </button>
+                                    </div>
+                                </form>
+
+
                             </div>
-
-                            <input id="edit-sick-animal-id" type="number" name="edit_sick_animal_id" hidden>
-                            <input id="update-vet-mail" type="text" name="update_vet_mail" hidden>
-
-                            <div class="col-md-4">
-                                <label for="edit-reported-date" class="form-label fw-bold"> First Signs
-                                    Date </label>
-                                <input onchange="valDate()" id="edit-reported-date" type="date" class="form-control"
-                                    name="editReportedDate" spellcheck="false">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="edit-disease-suspected" class="form-label fw-bold"> Suspected
-                                    Disease
-                                </label>
-                                <select id="edit-disease-s" class="form-select" name="disease_suspected">
-                                    <option selected id="edit-disease-suspected" value=""></option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-12">
-                                <label for="signs_and_symptoms" class="form-label fw-bold"> Signs and Symptoms
-                                </label>
-                                <textarea class="form-control" name="editSSText" id="edit-ss-text" rows="3"></textarea>
-                            </div>
-
-                            <!-- SCHEDULE A TREATMENT APPOINTMENT -->
-                            <div class="col-md-12 pt-4">
-                                <h5 class="font-monospace"> TREATMENT APPOINTMENT </h5>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="edit-appointment_date" class="form-label fw-bold"> Appointment Date
-                                </label>
-                                <input min="2022-01-01" onchange="validateDate('edit-appointment_date')"
-                                    id="edit-appointment_date" type="date" class="form-control" required
-                                    name="editAppointmentDate">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="edit-appointment_time" class="form-label fw-bold"> Appointment Time
-                                </label>
-                                <input id="edit-appointment_time" type="time" class="form-control" required
-                                    name="editAppointmentTime">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="update-vet-name" class="form-label fw-bold"> Vet Name </label>
-                                <select id="update-vet-name" class="form-select" name="editVetName">
-                                    <option selected id="edit-vets" value=""></option>
-                                </select>
-                            </div>
-
-                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end" id="action_btns">
-                                <button class="btn btn-secondary me-md-2 font-monospace" data-bs-dismiss="modal"
-                                    type="button"> CLOSE </button>
-                                <button class="btn btn-primary font-monospace" id="confirm_btn" type="submit">
-                                    CONFIRM
-                                    APPOINTMENT </button>
-                            </div>
-                        </form>
-
-
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <!-- Edit Pending Modal -->
         <div class="modal fade" id="editPendingModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -3189,7 +3253,8 @@
 
 
         <!-- Success modal -->
-        <div class="modal fade" id="successModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="successModalToggleLabel">
+        <div class="modal fade" id="successModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="successModalToggleLabel">
             <div class="modal-dialog modal-ms">
                 <div class="modal-content">
                     <div class="card">
@@ -3241,7 +3306,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <!-- Bootstrap core JavaScript-->

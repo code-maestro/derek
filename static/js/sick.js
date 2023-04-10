@@ -128,23 +128,21 @@ const formatTime = (param) => {
 
 // Function to get Required data to report a sick animal
 const getRequiredData = async () => {
-  const diseases = await getListing('allDiseases');
+  
   const animals = await getListing('healthyAnimals');
   const vets = await getListing('vets');
+  const diseases = await getListing('allDiseases');
+
+  console.log(animals);
 
   let diseaseListed, tagListed, vetListed = '';
-  let diseaseList = `<option selected disabled id='default-sick'> Select suspected Disease ... </option>`;
   let tagList = `<option selected disabled> Choose an Animal Tag ... </option>`;
-  let vetList = `<option selected disabled id="update-vet-name"> Choose an Vet ... </option>`;
+  let vetList = `<option selected disabled id="update-vet-name" value=0> Choose an Vet ... </option>`;
+  let diseaseList = `<option selected disabled id='default-sick' value=0 > Select suspected Disease ... </option>`;
 
   const disease_lstd = document.getElementById('disease_suspected');
   const tag_lstd = document.getElementById('healthyList');
   const vet_lstd = document.getElementById('vets-named');
-
-  diseases.listing.forEach(disease => {
-    diseaseListed = ` <option id="${disease.id}" value="${disease.id}">  ${disease.disease_name} </option> `;
-    diseaseList += diseaseListed;
-  });
 
   animals.listing.forEach(animal => {
     tagListed = ` <option id="${animal.id}" value="${animal.id}">  ${animal.animal_tag} </option> `;
@@ -154,6 +152,11 @@ const getRequiredData = async () => {
   vets.listing.forEach(vet => {
     vetListed = ` <option id="${vet.id}" value="${vet.fname + ' ' + vet.lname}">  ${vet.fname + ' ' + vet.lname} </option> `;
     vetList += vetListed;
+  });
+
+  diseases.listing.forEach(disease => {
+    diseaseListed = ` <option id="${disease.id}" value="${disease.id}">  ${disease.disease_name} </option> `;
+    diseaseList += diseaseListed;
   });
 
   disease_lstd.innerHTML = diseaseList;
@@ -230,3 +233,79 @@ const validateDate = (parameter) => {
   }
 
 }
+
+
+
+async function recordSick() {
+  try {
+
+    // post body data 
+    const sickData = {
+      healthyAnimals: document.getElementById('healthyList').value,
+      reportedDate: document.getElementById('reportedDate').value,
+      vets_id: document.getElementById('vets-id').value,
+      appointment_date: document.getElementById('appointment_date').value,
+      suspected_disease: document.getElementById('disease_suspected').value,
+      ssText: document.getElementById('ssText').value
+    };
+
+    console.log(sickData);
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(sickData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/addSick`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#addSickModalToggle').modal('hide');
+        document.getElementById("sickAnimalForm").reset();
+        
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+const newBreedForm = document.forms.namedItem("recordSick");
+newBreedForm.addEventListener("submit", (event) => {
+
+  recordSick();
+
+  event.preventDefault();
+
+},
+
+  false
+
+);
+

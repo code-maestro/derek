@@ -22,6 +22,18 @@ async function getListing(param) {
 }
 
 
+// Checking whether animal's vaccination is confirmed
+async function isConfirmed(param) {
+  let url = `/isConfirmed/${param}`;
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 // Getting schedule listings from backend
 async function getScheduleListing(param) {
   let url = `/getScheduletListing/${param}`;
@@ -249,7 +261,7 @@ const getAllDiseases = async () => {
   const diseases = await getListing('allDiseases');
 
   let diseaseListed = '';
-  let diseaseList = `<option id="0" selected disabled value="0"> Choose a disease ...</option>`;
+  let diseaseList = `<option id="0" selected disabled value=0> Choose a disease ...</option>`;
 
   const disease_lstd = document.getElementById('disease-name');
 
@@ -270,9 +282,9 @@ const getAllVaccines = async () => {
   const vets = await getListing('vets');
 
   let vaccineListed, tagListed, vetListed = '';
-  let vaccineList = `<option selected disabled> Choose a Vaccine ...</option>`;
-  let tagList = `<option selected disabled> Choose an Animal Tag ...</option>`;
-  let vetList = `<option selected disabled> Choose an Vet ...</option>`;
+  let vaccineList = `<option selected disabled value=""> Choose a Vaccine ...</option>`;
+  let tagList = `<option selected disabled value=""> Choose an Animal Tag ...</option>`;
+  let vetList = `<option selected disabled value=""> Choose an Vet ...</option>`;
 
   const vaccine_lstd = document.getElementById('all-vaccines-name');
   const tag_lstd = document.getElementById('all-animals-tag');
@@ -308,7 +320,6 @@ const getOtherVaccineData = async () => {
 
   const vaxIds = [];
   const vaxNames = [];
-  const noVaxs = [];
   const vaxCycles = [];
 
   // PUSHING TO VACCINES ARRAY
@@ -319,21 +330,14 @@ const getOtherVaccineData = async () => {
 
     vaxIds.push(vaccine.id);
     vaxNames.push(vaccine.name);
-    noVaxs.push(vaccine.no_of_vaccinations);
     vaxCycles.push(vax_cycle + ' ' + vax_period);
 
   });
 
   if (vaxNames.includes(vaxName.value)) {
     let getIndex = vaxNames.indexOf(vaxName.value);
-
-    console.log(vaxCycles.at(getIndex));
-
-    console.log('noVaxs' + noVaxs.at(getIndex));
-
     document.getElementById('vaxID').value = vaxIds.at(getIndex);
     document.getElementById('cycle-vaccinations').value = vaxCycles.at(getIndex);
-    document.getElementById('no-vax').value = noVaxs.at(getIndex);
   }
 
 }
@@ -476,7 +480,7 @@ const getPendingVaccinations = async () => {
         <td class="text-center"> ${dateFrontend(vaxed.first_date)} </td>
         <td class="text-center"> ${vaxed.no_of_vaccinations} </td>
 
-        <td class="text-center noprint" data-bs-target="#editPendingModalToggle" data-bs-toggle="modal" onclick="">
+        <td class="text-center noprint" onclick="scheduleConfirm(${vaxed.id})">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
             <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
           </svg>
@@ -801,7 +805,7 @@ function calculateAge(params) {
 async function editAnimal(param) {
   const editid = document.getElementById("editid");
   const tag = document.getElementById("edit-animal-tag");
-  const gender = document.getElementById("edit-gender");
+  const gender = document.getElementById("edit-genda");
   const dob = document.getElementById("edit-dob");
   const regDate = document.getElementById("edit-registration-date");
 
@@ -845,6 +849,23 @@ async function editFeed(param) {
     }
     return true;
   });
+}
+
+// Conditional Rendering Depending on whether the vaccination was confirmed or not
+async function scheduleConfirm(param) {
+  
+  const isCon = await isConfirmed(param);
+
+  if (isCon.status === 400) {
+
+    $('#editPendingModalToggle').modal('show'); 
+
+  } else {
+
+    $('#generatedVaxModalToggle').modal('show');
+
+  }
+
 }
 
 
@@ -989,7 +1010,7 @@ async function recordVaccine() {
       vaccineQuantity: document.getElementById('vaccine-quantity').value,
       quantityMeasure: document.getElementById('quantity-measure').value,
       vaccineCycle: document.getElementById('vaccination-cycle').value,
-      vaccinePeriod: document.getElementById('period').value,
+      vaccinePeriod: document.getElementById('vPeriod').value,
       injectionArea: document.getElementById('injection-area').value
     };
 
@@ -1020,13 +1041,14 @@ async function recordVaccine() {
 
         $('#successModalToggle').modal('show');
         document.getElementById('success-msg').innerText = data.message;
+        
         $('#newVaccineModalToggle').modal('hide');
         document.getElementById("recordNewVaccine").reset();
+
 
       } else {
 
         $('#errModalToggle').modal('show');
-
         document.getElementById('errors-msg').innerText = data.message;
 
       }
@@ -1196,3 +1218,77 @@ updateAnimalForm.addEventListener("submit", (event) => {
   false
 
 );
+
+
+// Function Adding new Feed
+async function recordEditVaccine() {
+  try {
+    // post body data 
+    const editAnimalData = {
+      editAnimalTag: document.getElementById('edit-animal-tag').value,
+      editGender: document.getElementById('edit-gender').value,
+      editDob: document.getElementById('edit-dob').value,
+      editRegDate: document.getElementById('edit-registration-date').value,
+      editid: document.getElementById('editid').value
+    };
+
+    console.log(editAnimalData);
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(editAnimalData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/updateAnimalData`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#editAnimalModal').modal('hide');
+        $('#registeredAnimalsModalToggle').modal('hide');
+        
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+const updateVaccineForm = document.forms.namedItem("editVaccineForm");
+updateVaccineForm.addEventListener("submit", (event) => {
+
+  recordEditVaccine();
+
+  event.preventDefault();
+
+},
+
+  false
+
+);
+

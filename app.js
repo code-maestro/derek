@@ -481,9 +481,9 @@ app.get('/getListing/:param', function (request, response) {
                           (SELECT disease_name FROM disease WHERE id = (SELECT disease_id FROM vaccines WHERE id = A.vaccine_id)) AS disease_name,
                           (SELECT (cycle*period) FROM vaccines WHERE id = A.vaccine_id) AS no_of_vaccinations
                           FROM vaccination_details A, animal C WHERE A.animal_id = C.id AND C.animal_type = '${animal_type}' 
-                          AND C.farma_id = '${farma_id}' AND C.confirmed = 'Y' AND A.confirmed = 'N';`,
+                          AND C.farma_id = '${farma_id}' AND C.confirmed = 'Y';`,
 
-        availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, cycle, period, injection_area, (cycle*period) AS no_of_vaccinations, (SELECT disease_name FROM disease WHERE id = vaccines.disease_id) AS disease_name FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
+        availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, cycle, period, injection_area, (SELECT disease_name FROM disease WHERE id = vaccines.disease_id) AS disease_name FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
 
         feeds: `SELECT id, name, description, quantity, quantity_measure, IF(quantity_measure >= 1000, 'kg', 'g') AS measure, stock_date, expected_restock_date FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}' AND quantity > 0;`,
 
@@ -566,6 +566,49 @@ app.get('/getScheduletListing/:param', function (request, response) {
     }
 
 });
+
+
+// is vaccanition confirm
+app.get('/isConfirmed/:param', function (request, response) {
+
+    const user_id = storage('farma_id');
+
+    const param = request.params.param;
+
+    console.log(param);
+
+    const queries = `SELECT confirmed FROM vaccination_details WHERE id = '${param}';`
+
+    if (user_id) {
+
+        connection.query(queries, function (error, results, fields) {
+            // If there is an issue with the query, output the error
+            if (error) {
+                response.send({ status: 500, error_message: "an error happened" + error });
+            } else {
+
+                if (results[0].confirmed = 'Y') {
+
+                    response.send({ status: 200, message: "animal's vaccination appointment is confirmed", listing: results });
+
+                } else {
+
+                    response.send({ status: 400, message: "animal's vaccination is not confirmed" });
+
+                }
+
+            }
+
+        })
+
+    } else {
+
+        response.redirect('/');
+
+    }
+
+});
+
 
 
 // Verify animal has been born
@@ -990,6 +1033,8 @@ app.post('/updateAnimalData', function (request, response) {
     );
 
 });
+
+
 // Inserting Feeds into the DB
 app.post('/updateFeed', function (request, response) {
     const farma_id = storage('farma_id');
@@ -1033,11 +1078,11 @@ app.post('/newVaccine', function (request, response) {
 
                 if (results.affectedRows > 0) {
 
-                    return response.json({ status: 200, message: 'Vaccine Added Successfuly.' });
+                    return response.json({ status: 200, message: `${request.body.vaccineName} Added Successfuly.` });
 
                 } else {
 
-                    return response.json({ status: 400, message: 'Adding new Vaccine Failed' });
+                    return response.json({ status: 400, message: `Adding ${request.body.vaccineName} Failed ` });
 
                 }
 
@@ -1365,13 +1410,13 @@ app.post('/scheduleVaccination', function (request, response) {
 
 // Updating Farma Profile Data
 app.post('/updateFarma', function (request, response) {
-    
+
     const farma_id = storage('farma_id');
     const data = request.body;
 
     // Execute SQL query that'll insert into the farma table
     connection.query(`UPDATE farma SET first_name = '${data.fname}', last_name = '${data.lname}', phone = '${data.phone}', mail = '${data.mail}' WHERE farma_id = '${farma_id}';`,
-        
+
         function (error, results, fields) {
 
             if (error) {
@@ -1406,38 +1451,50 @@ app.post('/updateFarma', function (request, response) {
 
 // Reportinsg Sick animals into the DB
 app.post('/addSick', function (request, response) {
+
     const animal = storage('animal');
 
-    // Execute SQL query that'll insert into the vaccines table
-    connection.query(`CALL recordSick(${request.body.healthyAnimals}, '${request.body.reportedDate}', '${request.body.vets_id}', '${request.body.appointment_date}', ${request.body.suspected_disease}, '${request.body.ssText}');`,
+    const disease_id = request.body.suspected_disease === undefined ? 0 : request.body.suspected_disease;
 
-        function (error, results, fields) {
+    if (animal) {
 
-            if (error) {
+        // Execute SQL query that'll insert into the vaccines table
+        connection.query(`CALL recordSick(${request.body.healthyAnimals}, '${request.body.reportedDate}', '${request.body.vets_id}', '${request.body.appointment_date}', ${disease_id}, '${request.body.ssText}');`,
 
-                console.log(error);
+            function (error, results, fields) {
 
-                return response.json({ status: 500, message: error.sqlMessage });
+                if (error) {
 
-            } else {
+                    console.log(error);
 
-                console.log(results);
-
-                if (results.affectedRows > 0) {
-
-                    return response.json({ status: 200, message: 'Vaccine Added Successfuly.' });
+                    return response.json({ status: 500, message: error.sqlMessage });
 
                 } else {
 
-                    return response.json({ status: 400, message: 'Adding new Vaccine Failed' });
+                    console.log(results);
+
+                    if (results.affectedRows > 0) {
+
+                        return response.json({ status: 200, message: `${request.body.healthyAnimals} has recorded Successfuly.`});
+
+                    } else {
+
+                        return response.json({ status: 400, message: `Reporting ${request.body.healthyAnimals}'s Sickness Failed` });
+
+                    }
 
                 }
 
             }
 
-        }
+        );
+    
+    } else {
 
-    );
+        response.redirect(`/`);
+
+    }
+
 
 });
 
