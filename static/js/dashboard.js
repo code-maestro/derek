@@ -36,14 +36,32 @@ async function isConfirmed(param) {
 
 // Getting schedule listings from backend
 async function getScheduleListing(type, id) {
-  let url = `/getScheduletListing?type=${type}&id=${id}`;
+
+  console.log('TYPE : ' + type);
+  console.log("ID : " + id);
+
   try {
-    let res = await fetch(url);
+
+    // request options
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    let res = await fetch(`/getScheduletListing?type=${type}&id=${id}`, options);
+
     return await res.json();
+
   } catch (error) {
+
     console.log(error);
+
   }
+
 }
+
 
 
 // Getting new born animal to verify from backend
@@ -398,7 +416,7 @@ const getTimetables = async () => {
       <td class="text-center"> ${timetable.quantity} ${timetable.quantity_unit}  </td>
       <td class="text-center"> ${dateFrontend(timetable.first_feed_date)} </td> 
 
-      <td class="text-center noprint" data-bs-target="#generatedModalToggle" data-bs-toggle="modal"  onclick="viewSchedule('${timetable.tt_id}')">
+      <td class="text-center noprint" data-bs-target="#generatedModalToggle" data-bs-toggle="modal"  onclick="viewSchedule('feeding','${timetable.tt_id}')">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
           <path d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3h4v-.5A1.5 1.5 0 0 0 5.5 1h-1zM7 4v1h2V4h4v.882a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V13H9v-1.5a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5V13H1V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882V4h4zM1 14v.5A1.5 1.5 0 0 0 2.5 16h3A1.5 1.5 0 0 0 7 14.5V14H1zm8 0v.5a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5V14H9zm4-11H9v-.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5V3z"/>
         </svg>
@@ -755,6 +773,18 @@ function HtmlTOExcel(type, name, fun, dl) {
 }
 
 
+// TODO
+/* REPLACE THE FUNCTION BELOW WITH THIS
+ function exportTableToExcel(tableId, columns) {
+   var exportData = $('#' + tableId).tableExport({
+     type:'xlsx',
+     escape:'false',
+     columns: columns
+   });
+   exportData.exportToExcel();
+ }
+*/
+
 // Function to print report
 function printReport(param) {
   const hideElements = document.getElementsByClassName('noprint');
@@ -853,14 +883,14 @@ async function editFeed(param) {
 
 // Conditional Rendering Depending on whether the vaccination was confirmed or not
 async function scheduleConfirm(param) {
-  
+
   const isCon = await isConfirmed(param);
 
   console.log(isCon);
 
   if (isCon.status === 400) {
 
-    $('#editPendingModalToggle').modal('show'); 
+    $('#editPendingModalToggle').modal('show');
 
   } else {
 
@@ -1045,7 +1075,7 @@ async function recordVaccine() {
 
         $('#successModalToggle').modal('show');
         document.getElementById('success-msg').innerText = data.message;
-        
+
         $('#newVaccineModalToggle').modal('hide');
         document.getElementById("recordNewVaccine").reset();
 
@@ -1190,7 +1220,7 @@ async function recordEditAnimal() {
 
         $('#editAnimalModal').modal('hide');
         $('#registeredAnimalsModalToggle').modal('hide');
-        
+
         $('#successModalToggle').modal('show');
         document.getElementById('success-msg').innerText = data.message;
 
@@ -1263,7 +1293,7 @@ async function recordEditVaccine() {
 
         $('#editAnimalModal').modal('hide');
         $('#registeredAnimalsModalToggle').modal('hide');
-        
+
         $('#successModalToggle').modal('show');
         document.getElementById('success-msg').innerText = data.message;
 

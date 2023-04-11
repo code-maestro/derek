@@ -538,9 +538,6 @@ app.get('/getScheduletListing', function (request, response) {
     const type = request.query.type;
     const id = request.query.id;
 
-    console.log(type);
-    console.log(id);
-
     const queries = `SELECT id,feeding_tt_id,
                         effective_date,next_date,
                         FORMAT(((feeds_quantity*feeding_schedule.qnty_unit) / qnty_per_cycle_unit), 2) as feeds_quantity,
@@ -555,9 +552,13 @@ app.get('/getScheduletListing', function (request, response) {
             // If there is an issue with the query, output the error
             if (error) {
 
+                console.log(error);
+
                 response.send({ error_message: "an error happened" + error });
             
             } else {
+
+                console.log(results);
             
                 response.send({ listing: results });
             

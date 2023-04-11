@@ -1,8 +1,11 @@
 
 // viewing THE SCHEDULE
-const viewSchedule = async (param) => {
+const viewSchedule = async (type,id) => {
+  
+  console.log('TYPE : '+ type);
+  console.log("ID : " + id);
 
-  const schedules = await (`${param}`);
+  const schedules = await getScheduleListing(`${type}`,`${id}`);
 
   let html = "";
   let htmlSegment = "";
@@ -27,6 +30,8 @@ const viewSchedule = async (param) => {
 
   });
 
+
+
   con.innerHTML = html;
 
 }
@@ -42,6 +47,7 @@ const validateQuantity = async (param) => {
 
 
 }
+
 
 async function recordSchedule() {
   try {
