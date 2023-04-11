@@ -24,7 +24,7 @@ async function getListing(param) {
 
 // Checking whether animal's vaccination is confirmed
 async function isConfirmed(param) {
-  let url = `/isConfirmed/${param}`;
+  let url = `/isConfirmed?id=${param}`;
   try {
     let res = await fetch(url);
     return await res.json();
@@ -50,7 +50,7 @@ async function getScheduleListing(type, id) {
       }
     }
 
-    let res = await fetch(`/getScheduletListing?type=${type}&id=${id}`, options);
+    let res = await fetch(`/getScheduleListing?type=${type}&id=${id}`, options);
 
     return await res.json();
 
@@ -894,7 +894,11 @@ async function scheduleConfirm(param) {
 
   } else {
 
+    const vaccanitionSchedule = await viewSchedule("vaccination", param);
+
     $('#generatedVaxModalToggle').modal('show');
+
+
 
   }
 

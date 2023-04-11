@@ -531,14 +531,17 @@ app.get('/getListing/:param', function (request, response) {
 
 // Cleaned
 // SCHEDULE LISTINg
-app.get('/getScheduletListing', function (request, response) {
+app.get('/getScheduleListing', function (request, response) {
 
     const user_id = storage('farma_id');
 
     const type = request.query.type;
     const id = request.query.id;
 
-    const queries = `SELECT id,feeding_tt_id,
+    let queries = "";
+
+    if (type === "feeding") {
+        queries = `SELECT id,feeding_tt_id,
                         effective_date,next_date,
                         FORMAT(((feeds_quantity*feeding_schedule.qnty_unit) / qnty_per_cycle_unit), 2) as feeds_quantity,
                         FORMAT(((feeds_qnty_pending*feeding_schedule.qnty_unit)/qnty_unit), 2) as feeds_qnty_pending,
@@ -546,6 +549,18 @@ app.get('/getScheduletListing', function (request, response) {
                         schedule_id
                         FROM feeding_schedule WHERE feeding_tt_id = '${id}';`
 
+    } else {
+
+        queries = `SELECT   id, vaccination_id, effective_date, next_date, 
+                            FORMAT(((vaccine_quantity * qnty_unit)/qnty_unit), 2) as vax_qnty,
+                            IF(qnty_unit >= 1000, 'kg', 'g' ) as unit,
+                            FORMAT(((vaccine_qnty_pending * qnty_per_cycle_unit)/qnty_per_cycle_unit), 2) as vax_qnty_pending,
+                            schedule_id
+                            FROM schedule_vaccination WHERE vaccination_id = '${id}';`
+
+    }
+    
+    
     if (user_id) {
 
         connection.query(queries, function (error, results, fields) {
@@ -576,11 +591,11 @@ app.get('/getScheduletListing', function (request, response) {
 
 
 // is vaccanition confirm
-app.get('/isConfirmed/:param', function (request, response) {
+app.get('/isConfirmed', function (request, response) {
 
     const user_id = storage('farma_id');
 
-    const param = request.params.param;
+    const param = request.query.id;
 
     console.log(param);
 
@@ -835,17 +850,6 @@ app.post('/register-farma', function (request, response) {
     }
 
 });
-
-
-// Registering a user
-app.post('/testPost', function (request, response) {
-
-    console.log(request.body);
-
-    response.send({ data: request.body });
-
-});
-
 
 // login authentication
 app.post('/authenticate', function (request, response) {

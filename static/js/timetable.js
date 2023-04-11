@@ -1,36 +1,61 @@
 
 // viewing THE SCHEDULE
-const viewSchedule = async (type,id) => {
-  
-  console.log('TYPE : '+ type);
+const viewSchedule = async (type, id) => {
+
+  console.log('TYPE : ' + type);
   console.log("ID : " + id);
 
-  const schedules = await getScheduleListing(`${type}`,`${id}`);
+  const schedules = await getScheduleListing(`${type}`, `${id}`);
 
   let html = "";
   let htmlSegment = "";
+  let con = "";
 
-  console.log(schedules);
+    console.log(schedules);
 
-  const con = document.getElementById('scheduleTable');
+  if (type === "feeding") {
 
-  schedules.listing.forEach(schedule => {
+    con = document.getElementById('scheduleTable');
 
-    htmlSegment = `
-    <tr class="justify-content-center" id="${schedule.id}">
-      <td class="text-center"> ${schedule.id} </td>   
-      <td class="text-center"> ${dateFrontend(schedule.effective_date)} </td> 
-      <td class="text-center"> ${dateFrontend(schedule.next_date)} </td> 
-      <td class="text-center"> ${schedule.feeds_quantity} ${schedule.unit} </td>
-      <td class="text-center"> ${schedule.feeds_qnty_pending}  ${schedule.unit} </td>
-    </tr>
-  `;
+    schedules.listing.forEach(schedule => {
 
-    html += htmlSegment;
+      htmlSegment = `
+        <tr class="justify-content-center" id="${schedule.id}">
+          <td class="text-center"> ${schedule.id} </td>   
+          <td class="text-center"> ${dateFrontend(schedule.effective_date)} </td> 
+          <td class="text-center"> ${dateFrontend(schedule.next_date)} </td> 
+          <td class="text-center"> ${schedule.feeds_quantity} ${schedule.unit} </td>
+          <td class="text-center"> ${schedule.feeds_qnty_pending}  ${schedule.unit} </td>
+        </tr>
+      `;
 
-  });
+      html += htmlSegment;
+
+    });
+
+  } else {
 
 
+    con = document.getElementById('vaxScheduleTable');
+
+    schedules.listing.forEach(schedule => {
+
+      htmlSegment = `
+        <tr class="justify-content-center" id="${schedule.id}">
+          <td class="text-center"> ${schedule.id} </td>   
+          <td class="text-center"> ${dateFrontend(schedule.effective_date)} </td> 
+          <td class="text-center"> ${dateFrontend(schedule.next_date)} </td> 
+          <td class="text-center"> ${schedule.vax_qnty} ${schedule.unit} </td>
+          <td class="text-center"> ${schedule.vax_qnty_pending}  ${schedule.unit} </td>
+        </tr>
+      `;
+
+      html += htmlSegment;
+
+    });
+
+
+  }
 
   con.innerHTML = html;
 
@@ -52,54 +77,54 @@ const validateQuantity = async (param) => {
 async function recordSchedule() {
   try {
 
-      // post body data 
-      const scheduleData = {
-        vaxID: document.getElementById('vaxID').value,
-        scheduled_first_date: document.getElementById('scheduled_first_date').value,
-        animalTag: document.getElementById('all-animals-tag').value,
-        vetID: document.getElementById('vetID').value
-      };
+    // post body data 
+    const scheduleData = {
+      vaxID: document.getElementById('vaxID').value,
+      scheduled_first_date: document.getElementById('scheduled_first_date').value,
+      animalTag: document.getElementById('all-animals-tag').value,
+      vetID: document.getElementById('vetID').value
+    };
 
-      console.log(scheduleData);
+    console.log(scheduleData);
 
-      // request options
-      const options = {
-          method: 'POST',
-          body: JSON.stringify(scheduleData),
-          headers: {
-              'Content-Type': 'application/json'
-          }
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(scheduleData),
+      headers: {
+        'Content-Type': 'application/json'
       }
+    }
 
-      const response = await fetch(`/scheduleVaccination`, options);
+    const response = await fetch(`/scheduleVaccination`, options);
 
-      if (!response.ok) {
+    if (!response.ok) {
 
-          console.log(`HTTP error: ${response.status}`);
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+        $('#vaccinateModalToggle').modal('hide');
+        document.getElementById("recordVaxSchedule").reset();
+        // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
 
       } else {
 
-          const data = await response.json();
+        $('#errModalToggle').modal('show');
 
-          console.log(data);
-
-          if (data.status == 200) {
-
-              $('#successModalToggle').modal('show');
-              document.getElementById('success-msg').innerText = data.message;
-              $('#vaccinateModalToggle').modal('hide');
-              document.getElementById("recordVaxSchedule").reset();
-              // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
-
-          } else {
-
-              $('#errModalToggle').modal('show');
-
-              document.getElementById('errors-msg').innerText = data.message;
-
-          }
+        document.getElementById('errors-msg').innerText = data.message;
 
       }
+
+    }
 
   }
 
