@@ -636,7 +636,6 @@ app.get('/isConfirmed', function (request, response) {
 });
 
 
-
 // Verify animal has been born
 app.get('/verifyAnimal/:param', function (request, response) {
 
@@ -850,6 +849,7 @@ app.post('/register-farma', function (request, response) {
     }
 
 });
+
 
 // login authentication
 app.post('/authenticate', function (request, response) {
@@ -1333,7 +1333,6 @@ app.post('/confirmation', function (request, response) {
 });
 
 
-
 //  Verifying new born animal
 app.post('/verifyNewBorn', function (request, response) {
 
@@ -1422,7 +1421,6 @@ app.post('/scheduleVaccination', function (request, response) {
 });
 
 
-
 // Updating Farma Profile Data
 app.post('/updateFarma', function (request, response) {
 
@@ -1461,7 +1459,6 @@ app.post('/updateFarma', function (request, response) {
     );
 
 });
-
 
 
 // Reportinsg Sick animals into the DB

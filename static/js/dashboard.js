@@ -763,31 +763,9 @@ function deleteFromDom(param) {
 }
 
 
-// Export to excel
-function HtmlTOExcel(type, name, fun, dl) {
-  var elt = document.getElementById(`${name}`);
-  var wb = XLSX.utils.table_to_book(elt, { sheet: `${name}` });
-  return dl ?
-    XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
-    XLSX.writeFile(wb, fun || (`${name}.` + (type || 'xlsx')));
-}
-
-
-// TODO
-/* REPLACE THE FUNCTION BELOW WITH THIS
- function exportTableToExcel(tableId, columns) {
-   var exportData = $('#' + tableId).tableExport({
-     type:'xlsx',
-     escape:'false',
-     columns: columns
-   });
-   exportData.exportToExcel();
- }
-*/
-
 // Function to print report
 function printReport(param) {
-  const hideElements = document.getElementsByClassName('noprint');
+  const hideElements = document.getElementsByClassName('nopnt');
   const arr = Array.prototype.slice.call(hideElements)
   arr.map(val => {
     val.style.visibility = 'hidden';

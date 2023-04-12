@@ -4,7 +4,7 @@ const toExcel = (param, name) => {
 
     if (table && table.length) {
         $(table).table2excel({
-            exclude: ".noExl",
+            exclude: ".nopnt",
             name: param,
             filename: name + new Date().toISOString().slice(0, 10).replace(/[\-\:\.]/g, "") + ".xls",
             fileext: ".xls",
