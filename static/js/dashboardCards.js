@@ -321,6 +321,7 @@ async function getAllAnimals() {
 
 }
 
+
 // Sick animals listintg
 async function getSickAnimals() {
   let sickAnimals = await getListing("sickAnimals");
@@ -349,6 +350,7 @@ async function getSickAnimals() {
   con.innerHTML = html;
 
 }
+
 
 // [x]  WORKS - Get Pregant animals listing
 async function getExpectingAnimals() {
@@ -382,6 +384,7 @@ async function getExpectingAnimals() {
 
 }
 
+
 // this function - Animal products listing
 async function getAnimalProducts() {
   let products = await getListing("allProducts");
@@ -412,6 +415,7 @@ async function getAnimalProducts() {
 
 }
 
+
 //  Animal Feeds listing
 async function getAnimalFeeds() {
   let feeds = await getListing("feeds");
@@ -439,6 +443,7 @@ async function getAnimalFeeds() {
   con.innerHTML = html;
 
 }
+
 
 // TODO implement this function - New borns listing
 async function getNewBornAnimals() {
@@ -544,6 +549,7 @@ async function getVaccinesTableData() {
 
 }
 
+
 // Table data for p3ending 
 async function getPendingVaccinationsListing() {
   let list = await getListing("pendingAnimals");
@@ -574,6 +580,7 @@ async function getPendingVaccinationsListing() {
   con.innerHTML = html;
 
 }
+
 
 document.querySelector("#ssd").onclick = function () {
   new bootstrap.Toast(document.querySelector('#bt')).show();

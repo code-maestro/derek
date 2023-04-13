@@ -68,6 +68,7 @@
         <script src="https://code.highcharts.com/modules/exporting.js" defer></script>
         <script src="https://code.highcharts.com/modules/export-data.js" defer></script>
         <script src="https://code.highcharts.com/modules/accessibility.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js" defer></script>
 
     </head>
 
@@ -1081,6 +1082,8 @@
                                                 onclick="toExcel('vaccinationTable', 'VACCINES_')"> EXCEL </button>
                                             <button type="button" class="btn btn-primary btn-sm"
                                                 onclick="printReport('vaccinationTable')"> PRINT </button>
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                onclick="toPDF()"> PDF </button>
                                         </div>
                                         <div class="col-auto">
                                             <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
@@ -3391,7 +3394,6 @@
         <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
 
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
-
 
     </body>
 

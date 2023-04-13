@@ -15,6 +15,9 @@
 
     <!-- JS -->
     <script src="../js/auth.js" defer></script>
+    <script src="../js/registration.js" defer></script>
+
+    <script src="../vendor/jquery/jquery.min.js" defer></script>
 
     <title> Farma </title>
 
@@ -160,19 +163,14 @@
               </h5>
               <p class="card-text"> Please enter the OTP that was sent to your email.</p>
 
-              <div class="form-group last mb-4">
-                <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
-                <input type="number" class="form-control px-2" id="reset-otp" name="reset-otp" placeholder="Enter your OTP code" onchange="" required>
-              </div>
-
               <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                <button class="input-group-text" type="button" onclick="console.log('asdasdfasdfsadf')"> VERIFY OTP </button>
+                <input type="text" id="thee_otp" class="form-control" placeholder="ENTER OTP CODE">
+                <input type="text" id="thee_user_id" hidden>
+                <button class="input-group-text" type="button" onclick="verifyOTP('thee_otp', 'thee_user_id')"> VERIFY OTP </button>
               </div>
 
               <!-- Appear after OTP is verified -->
-              <div class="correctOTP">
-
+              <form id="correctOTP" class="correctOTP">
                 <div class="form-group last mb-4">
                   <input type="password" class="form-control px-2" id="reset-pass" name="reset-pass"
                     placeholder="Enter New Password" readonly required>
@@ -183,14 +181,17 @@
                     placeholder="Confirm New Password" readonly required>
                 </div>
 
-              </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-end mb-3">
 
-              <div class="d-grid gap-2 d-md-flex justify-content-end mb-3">
-                <button type="button" class="btn btn-secondary mr-3" data-bs-dismiss="modal" aria-label="Close">
-                  cancel
-                </button>
-                <button class="btn btn-primary" type="button"> reset password </button>
-              </div>
+                  <button type="button" class="btn btn-secondary mr-3" data-bs-dismiss="modal" aria-label="Close">
+                    cancel
+                  </button>
+
+                  <button class="btn btn-primary" type="submit"> reset password </button>
+                  
+                </div>
+
+              </form>
 
             </div>
 
@@ -198,7 +199,6 @@
         </div>
       </div>
     </div>
-
 
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 

@@ -854,12 +854,10 @@ app.post('/register-farma', function (request, response) {
 // login authentication
 app.post('/authenticate', function (request, response) {
 
-    console.log(request.body);
-
     // Ensure the input fields exists and are not empty
     if (request.body.mail && request.body.pass) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
-        connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, (SELECT password FROM pwd WHERE farma_id = a.farma_id) AS pwd, b.list_of_animals FROM farma a,  animals_at_farm b WHERE a.mail = '${request.body.mail}' AND (AES_DECRYPT(FROM_BASE64((SELECT password FROM pwd WHERE farma_id = a.farma_id) ), a.farma_id)) = '${request.body.pass}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
+        connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, (SELECT password FROM pwd WHERE farma_id = a.farma_id) AS pwd, b.list_of_animals FROM farma a,  animals_at_farm b WHERE a.mail = '${request.body.mail}' AND (AES_DECRYPT(FROM_BASE64((SELECT password FROM pwd WHERE farma_id = a.farma_id AND status = 'A') ), a.farma_id)) = '${request.body.pass}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
 
             // If there is an issue with the query, output the error
             if (error) {
@@ -867,19 +865,13 @@ app.post('/authenticate', function (request, response) {
                 response.redirect(`/`);
             }
 
-            console.log(results);
-
             // If the account exists
             if (results.length > 0) {
-
-                console.log(results);
 
                 console.log("SUCCESSFULLY AUTHENTICATED");
 
                 // Authenticate the user
                 const row = Object.values(JSON.parse(JSON.stringify(results)));
-
-                console.log(row);
 
                 row.forEach(element => {
                     // Save data to sessionStorage
@@ -1514,7 +1506,7 @@ app.post('/addSick', function (request, response) {
 // send-reset-otp
 app.post('/send_reset_otp', async (request, response) => {
 
-    connection.query(`CALL seedOTP('${request.body.mail}');`, function (error, results, fields) {
+    connection.query(`CALL seedOTP('${request.body.mail}', @user_id);`, function (error, results, fields) {
 
         if (error) {
 
@@ -1524,16 +1516,9 @@ app.post('/send_reset_otp', async (request, response) => {
 
         } else {
 
-            console.log(results);
-            console.log(results.affectedRows);
-
             if (results.affectedRows = 1) {
 
-                // results.forEach(element => {
-                //     console.log(element);
-                // });
-
-                return response.json({ status: 200, message: `HERE IS THE OTP CODE ${results[0]}` });
+                return response.json({ status: 200, message: 'OTP CODE HAS BEEN GENERATED SUCCESSFULLY', user_id: results[0][0].user_id });
 
             } else {
 

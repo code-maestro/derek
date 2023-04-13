@@ -135,10 +135,12 @@
           </div>
 
           <div class="modal-body">
+            
             <label for="edit-reported-date" class="form-label fw-bold"> Enter the Single Use OTP code that has been sent to your email </label>
-            <input onchange="verifyOTP()" id="confirm_otp" type="number" class="form-control my-4" name="confirm_otp">
-
+            
             <input id="uuid" type="text" name="uuid" hidden>
+
+            <input onchange="verifyOTP('confirm_otp','uuid')" id="confirm_otp" type="number" class="form-control my-4" name="confirm_otp">
 
             <strong>
               <span class="text-danger mt-03" id="otp-msg">

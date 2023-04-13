@@ -228,3 +228,36 @@ SET effective_dt = start_dt;
 
 END;
 
+
+-- PASSWORD RESET LOGIC
+
+drop procedure seedOTP;
+
+create
+    definer = derek@localhost procedure seedOTP(IN gmail varchar(120), OUT user_id varchar(80))
+BEGIN
+
+    DECLARE email VARCHAR(120);
+    DECLARE f_id VARCHAR(120);
+    SET @OTP_ID := UUID();
+
+    SELECT mail INTO email FROM farma WHERE mail = gmail;
+
+    SELECT farma_id INTO f_id FROM farma WHERE mail = gmail;
+
+    SELECT farma_id INTO user_id FROM farma WHERE mail = gmail;
+
+    IF email = gmail THEN
+
+        INSERT INTO otp (otp,otp_id,pending_id,status,expiry_timestamp)
+        VALUES (TO_BASE64(AES_ENCRYPT((SELECT LEFT(CAST(RAND()*1000000000+999999 AS UNSIGNED),6)), f_id)), @OTP_ID, f_id, 'A', DATE_ADD(NOW(), INTERVAL 5 MINUTE));
+
+        INSERT INTO triggered_emails (email_address,status,subject,farma_name,body,confirmation_id, template_name, type)
+        VALUES ( email, 'N', 'PASSWORD RESET SINGLE-USE OTP', (SELECT CONCAT(first_name, ' ', last_name) FROM farma WHERE farma_id = f_id), ' Please Enter this single-use OTP code :  ', @OTP_ID,'otp', (SELECT otp FROM otp WHERE otp_id = @OTP_ID));
+
+        SELECT user_id;
+
+    END IF;
+
+END;
+

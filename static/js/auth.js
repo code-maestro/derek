@@ -88,6 +88,7 @@ async function sendOTP() {
       if (data.status == 200) {
 
         console.log(data.message);
+        console.log(data.user_id);
 
         // document.getElementById("errOTP").innerHTML = `
         // <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -95,10 +96,13 @@ async function sendOTP() {
         //   <strong> ${data.message}!</strong>
         //   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         // </div>`;
+        $('#pwdResetModalToggle').modal('hide');
 
         const myModal = new bootstrap.Modal('#newPwdModalToggle');
         myModal.show();
 
+        document.getElementById('thee_user_id').setAttribute("value", `${data.user_id}`);
+        localStorage.setItem('das_id', `${data.user_id}`);
 
       } else if (data.status == 400) {
 
@@ -128,9 +132,8 @@ async function sendOTP() {
 
   }
 
-  catch (error) {
-    console.log(error);
-    console.log("error");
+  catch (error) {    
+    console.log("error");  
+    console.log(error); 
   }
-
-}
+ }

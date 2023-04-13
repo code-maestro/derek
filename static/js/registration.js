@@ -130,14 +130,12 @@ async function registerFarma() {
 
 
 // Function to call api end point to fetch and Authenticate OTP
-async function verifyOTP() {
-
-  console.log("entering here");
+async function verifyOTP(id1, id2) {
 
   try {
     // query parameters
-    const code = document.getElementById('confirm_otp').value;
-    const userId = document.getElementById('uuid').value;
+    const code = document.getElementById(`${id1}`).value;
+    const userId = document.getElementById(`${id2}`).value == null ? localStorage.getItem('das_id') : document.getElementById(`${id2}`).value;
 
     // request options
     const options = {
@@ -157,14 +155,19 @@ async function verifyOTP() {
 
       const data = await response.json();
 
-      console.log("data"+data);
-
       if (data.status == 200) {
 
-        document.getElementById("otp-msg").innerText = ` ${data.message} ! `;
+        if (id1 === 'confirm_otp') {
 
-        // window.location.href = `/selection?userId=${userId}`;
-        window.location.href = `/selection`;
+          document.getElementById("otp-msg").innerText = ` ${data.message} ! `;
+          window.location.href = `/selection`;
+
+        } else {
+
+          document.getElementById('correctOTP').style.display = "block";
+
+        }
+
 
       } else if (data.status == 400) {
 

@@ -631,7 +631,7 @@ const deleteFromList = async (param1, param2) => {
   fetch(`/delete`, options)
     .then(function (response) {
       if (!response.ok) {
-        
+
         throw Error(response.statusText);
 
       } else {
@@ -787,6 +787,24 @@ function printReport(param) {
   arr.map(val => {
     val.style.visibility = 'visible';
   })
+
+}
+
+
+// Get the HTML div and table elements
+function toPDF() {
+  const divToPrint = document.getElementById("vaccinesModalToggle");
+  const tableToPrint = divToPrint.querySelector("table");
+
+  // Create a new jsPDF instance
+  const doc = new jsPDF();
+
+  // Add the HTML div and table to the PDF document
+  doc.fromHTML(divToPrint, 10, 10);
+  doc.autoTable({ html: tableToPrint });
+
+  // Save the PDF document
+  doc.save("document.pdf");
 
 }
 
