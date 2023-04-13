@@ -659,23 +659,10 @@
 
                 </div>
             </div>
-            <!-- /.container-fluid -->
+            <!-- End of Content Wrapper -->
 
         </div>
         <!-- End of Main Content -->
-
-        <!-- Footer -->
-        <!-- <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-                <span id="autoYear"> </span>
-            </div>
-        </div>
-    </footer> -->
-        <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
 
         <div class="toast-container mt-3 top-0 start-50 translate-middle-x">
             <div id="bt" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
@@ -691,10 +678,6 @@
         </div>
 
 
-        </div>
-        <!-- End of Page Wrapper -->
-
-
         <!-- Logout Modal-->
         <div class="modal fade" id="logoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -702,22 +685,12 @@
                 <div class="modal-content">
                     <div class="card">
                         <div class="card-body text-center">
-
-                            <div class="prompt">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor"
-                                    class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                                </svg>
+                            
+                            <h5 class="card-title my-4"> Select "Logout" below if you are ready to end your current session. </h5>
+                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button"> cancel </button>
+                                <a class="btn btn-primary" href="/logout"> LOGOUT </a>
                             </div>
-
-                            <h5 class="card-title my-2"> Select "Logout" below if you are ready to end your current
-                                session. </h5>
-
-                            <button type="button" class="btn btn-secondary my-2 font-monospace" data-bs-dismiss="modal">
-                                CANCEL </button>
-
-                            <a class="btn btn-primary" href="/logout"> LOGOUT </a>
 
                         </div>
 
@@ -725,7 +698,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <!-- Register Animal modal -->
@@ -867,15 +839,13 @@
                                                     <th scope="col" class="text-center font-monospace"> DATE OF BIRTH
                                                     </th>
                                                     <th scope="col" class="text-center font-monospace"> AGE </th>
-                                                    <th scope="col" class="text-center font-monospace nopnt"> EDIT
-                                                    </th>
-                                                    <th scope="col" class="text-center font-monospace nopnt"> DELETE
+                                                    <th scope="col" class="nopnt text-center font-monospace"> EDIT </th>
+                                                    <th scope="col" class="nopnt text-center font-monospace"> DELETE
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="animalListing">
 
-                                            </tbody>
+                                            <tbody id="animalListing"> </tbody>
                                         </table>
                                     </div>
 
@@ -894,7 +864,7 @@
                                                 onclick="toExcel('registeredAnilsTable', 'ANIMALS REPORT_')"> EXCEL
                                             </button>
                                             <button type="button" class="btn btn-primary btn-sm"
-                                                onclick="printReport('registeredAnilsTable')"> PRINT </button>
+                                                onclick="printReport('registeredAnilsTable', 'nopnt')"> PRINT </button>
                                         </div>
                                         <div class="col-auto">
                                             <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
@@ -1290,7 +1260,8 @@
                                         </div>
                                         <div class="col-auto">
                                             <button type="button" class="btn btn-primary btn-sm"
-                                                onclick="toExcel('pendingVaccinationTable', 'ANIMALS PENDING VACCINATION REPORT_')"></button>
+                                                onclick="toExcel('pendingVaccinationTable', 'ANIMALS PENDING VACCINATION REPORT_')">
+                                                EXCEL </button>
                                             <button type="button" class="btn btn-primary btn-sm"
                                                 onclick="printReport('pendingVaccinationTable')"> PRINT
                                             </button>
@@ -1302,6 +1273,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -3405,7 +3377,7 @@
             </div>
         </div>
 
-
+        
         <!-- Bootstrap core JavaScript-->
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

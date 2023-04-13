@@ -1658,11 +1658,14 @@ app.post('/delete', function (request, response) {
     const param_id = request.body.id;
     const par = request.body.type;
 
+    console.log(request.body.type);
+
     const user_id = storage('farma_id');
     const animal = storage('animal');
 
     const queries = {
         vaccine: `DELETE FROM vaccines WHERE id = ${param_id};`,
+        vaccination_details: `DELETE FROM vaccination_details WHERE id = ${param_id};`,
         animal: `DELETE FROM animal WHERE farma_id='${user_id}' AND id = '${param_id}';`,
         sickAnimal: `DELETE FROM sick_animals WHERE id = '${param_id}';`,
         timetable: `DELETE FROM feeding_timetable WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${user_id}') AND id = '${param_id}';`,
@@ -1670,13 +1673,26 @@ app.post('/delete', function (request, response) {
         feed: `DELETE FROM feeds WHERE id = '${param_id}'`
     }
 
+    console.log(queries[par]);
+
     if (user_id) {
+
         connection.query(queries[par], function (error, results, fields) {
+            
+            console.log(queries[par]);
+
             // If there is an issue with the query, output the error
             if (error) {
+
+                console.log("error");
                 console.log(error);
+
             } else {
+
+                console.log(results);
+
                 results.affectedRows >= 1 ? response.send({ message: "GOOD" }) : response.send({ message: "BAD" });
+
             }
 
         })
