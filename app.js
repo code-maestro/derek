@@ -95,7 +95,7 @@ function checkFileType(file, cb) {
 
 
 // Schedule tasks to be run on the server.
-cron.schedule('*/15 * * * * *', function () {
+cron.schedule('*/5 * * * * *', function () {
     getTriggeredEmails();
 });
 
@@ -857,7 +857,7 @@ app.post('/authenticate', function (request, response) {
     // Ensure the input fields exists and are not empty
     if (request.body.mail && request.body.pass) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
-        connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, (SELECT password FROM pwd WHERE farma_id = a.farma_id) AS pwd, b.list_of_animals FROM farma a,  animals_at_farm b WHERE a.mail = '${request.body.mail}' AND (AES_DECRYPT(FROM_BASE64((SELECT password FROM pwd WHERE farma_id = a.farma_id AND status = 'A') ), a.farma_id)) = '${request.body.pass}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
+        connection.query(`SELECT a.farma_id, a.first_name, a.last_name, a.mail, (SELECT password FROM pwd WHERE farma_id = a.farma_id AND status = 'A') AS pwd, b.list_of_animals FROM farma a,  animals_at_farm b WHERE a.mail = '${request.body.mail}' AND (AES_DECRYPT(FROM_BASE64((SELECT password FROM pwd WHERE farma_id = a.farma_id AND status = 'A') ), a.farma_id)) = '${request.body.pass}' AND a.farma_id = b.farma_id;`, function (error, results, fields) {
 
             // If there is an issue with the query, output the error
             if (error) {
@@ -1523,6 +1523,36 @@ app.post('/send_reset_otp', async (request, response) => {
             } else {
 
                 return response.json({ status: 400, message: 'NO OTP CODE GENERATED' });
+
+            }
+
+        }
+
+    });
+
+});
+
+
+// send-reset-otp
+app.post('/recordNewPassword', async (request, response) => {
+
+    connection.query(`INSERT INTO pwd (farma_id, status, password) VALUES ('${request.body.USER_ID}', 'A', TO_BASE64(AES_ENCRYPT('${request.body.NEW_PASSWORD}', '${request.body.USER_ID}')));`, function (error, results, fields) {
+
+        if (error) {
+
+            console.log(error);
+
+            return response.json({ status: 500, message: 'SQL Error. Refresh and Try Again.' + error });
+
+        } else {
+
+            if (results.affectedRows = 1) {
+
+                return response.json({ status: 200, message: 'PASSWORD RESET SUCCESSFULLY'});
+
+            } else {
+
+                return response.json({ status: 400, message: 'PASSWORD RESET GENERATED' });
 
             }
 

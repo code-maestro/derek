@@ -21,7 +21,7 @@
   },
   "name": "farma",
   "version": "1.0.0",
-  "description": "farma ms",
+  "description": "farma v1",
   "main": "index.js",
   "scripts": {
     "test": "nodemon last.js",

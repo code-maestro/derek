@@ -1,14 +1,14 @@
 
-const validatePassword = async () => {
+const validatePassword = async (pwd, cpwd) => {
 
-  const password1 = document.getElementById('pass').value;
-  const password2 = document.getElementById('pass2').value;
+  const password1 = document.getElementById(`${pwd}`).value;
+  const password2 = document.getElementById(`${cpwd}`).value;
 
   console.log("PASSWORD 1" + " " + password1 + "  PASSWORD 2  " + "  " + password2);
 
   if (password1 !== password2) {
 
-    document.getElementById('pass2').value = "";
+    document.getElementById(`${cpwd}`).value = "";
 
   }
 
@@ -165,6 +165,7 @@ async function verifyOTP(id1, id2) {
         } else {
 
           document.getElementById('correctOTP').style.display = "block";
+          document.getElementById('thee_otp').setAttribute('readonly', true);
 
         }
 

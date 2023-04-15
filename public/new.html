@@ -4,15 +4,18 @@
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <meta name="description" content="FARMA WEB APP">
+    <meta name="author" content="code-maestro">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
-
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css' />
+    
     <!-- Style -->
     <link rel="stylesheet" href="/css/login.css" type="text/css">
-
+    <link href="../css/custom.css" rel="stylesheet" type="text/css" />
     <!-- JS -->
     <script src="../js/auth.js" defer></script>
     <script src="../js/registration.js" defer></script>
@@ -23,9 +26,6 @@
 
     <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
-
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"
@@ -67,7 +67,7 @@
                 </div>
 
                 <!-- action="/auth"  -->
-                <form method="post">
+                <form method="post" id="login-form">
 
                   <div class="form-group first">
                     <!-- <label for="username">Username</label> -->
@@ -100,8 +100,8 @@
             <!-- <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_6wA0Oc.json" background="transparent"
               speed="1" style="width: 350px; height: 350px;" loop autoplay></lottie-player> -->
 
-            <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_CgexnTerux.json"  
-              background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop autoplay>
+            <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_CgexnTerux.json" background="transparent"
+              speed="1" style="width: 300px; height: 300px;" loop autoplay>
             </lottie-player>
 
           </div>
@@ -125,7 +125,8 @@
               </h5>
 
               <form method="post">
-                <p class="card-text" id="replace"> Please your email where the OTP will be sent to reset your passowrd.</p>
+                <p class="card-text" id="replace"> Please your email where the OTP will be sent to reset your passowrd.
+                </p>
 
                 <div class="form-group last mb-4">
                   <input type="email" class="form-control px-2" id="reset-email" name="reset-email"
@@ -166,19 +167,22 @@
               <div class="input-group mb-3">
                 <input type="text" id="thee_otp" class="form-control" placeholder="ENTER OTP CODE">
                 <input type="text" id="thee_user_id" hidden>
-                <button class="input-group-text" type="button" onclick="verifyOTP('thee_otp', 'thee_user_id')"> VERIFY OTP </button>
+                <button class="input-group-text btn-primary" type="button"
+                  onclick="verifyOTP('thee_otp', 'thee_user_id')"> VERIFY OTP </button>
               </div>
 
               <!-- Appear after OTP is verified -->
-              <form id="correctOTP" class="correctOTP">
+
+              <form enctype="multipart/form-data" method="post" name="correctOTP" id="correctOTP" class="correctOTP">
                 <div class="form-group last mb-4">
                   <input type="password" class="form-control px-2" id="reset-pass" name="reset-pass"
-                    placeholder="Enter New Password" readonly required>
+                    placeholder="Enter New Password" required>
                 </div>
 
                 <div class="form-group last mb-4">
-                  <input type="password" class="form-control px-2" id="reset-pass2" name="reset-pass2"
-                    placeholder="Confirm New Password" readonly required>
+                  <input type="password" class="form-control px-2" id="reset-pass2"
+                    onchange="validatePassword('reset-pass', 'reset-pass2')" name="reset-pass2"
+                    placeholder="Confirm New Password" required>
                 </div>
 
                 <div class="d-grid gap-2 d-md-flex justify-content-end mb-3">
@@ -188,7 +192,7 @@
                   </button>
 
                   <button class="btn btn-primary" type="submit"> reset password </button>
-                  
+
                 </div>
 
               </form>
@@ -199,6 +203,64 @@
         </div>
       </div>
     </div>
+
+    
+    <!-- Success modal -->
+    <div class="modal fade" id="successModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="successModalToggleLabel">
+      <div class="modal-dialog modal-ms">
+        <div class="modal-content">
+          <div class="card">
+            <div class="card-body text-center">
+
+              <div class="prompt">
+                <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_s2lryxtd.json"
+                  background="transparent" speed="0.5" style="width: 100px; height: 100px;" loop
+                  autoplay></lottie-player>
+              </div>
+
+              <h5 class="card-title my-2" id="success-msg"> </h5>
+
+              <button type="button" class="btn btn-secondary my-2 font-monospace" data-bs-dismiss="modal">
+                OK </button>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Error modal -->
+    <div class="modal fade" id="errModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="errModalToggleLabel" aria-hidden="true">
+      <div class="modal-dialog modal-ms">
+        <div class="modal-content">
+          <div class="card">
+            <div class="card-body text-center">
+
+              <div class="prompt">
+                <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor"
+                  class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+                  <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                </svg>
+              </div>
+
+              <h5 class="card-title my-2" id="errors-msg"> </h5>
+
+              <button type="button" class="btn btn-secondary my-2 font-monospace" data-bs-dismiss="modal">
+                OK </button>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
