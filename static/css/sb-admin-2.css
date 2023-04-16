@@ -24,6 +24,7 @@
   --white: #fff;
   --gray: #858796;
   --gray-dark: #5a5c69;
+  --currentColor: #ffffff;
   --primary: #0f6e2a;
   --secondary: #858796;
   --success: #1cc88a;
@@ -159,7 +160,7 @@ sup {
 }
 
 a {
-  color: #4e73df;
+  color: currentColor;
   text-decoration: none;
   background-color: transparent;
 }

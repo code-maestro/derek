@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const hbs = require('nodemailer-express-handlebars');
 const dotenv = require("dotenv");
 const cron = require('node-cron');
+const logger = require('./util/logger');
 
 
 dotenv.config();
@@ -95,7 +96,7 @@ function checkFileType(file, cb) {
 
 
 // Schedule tasks to be run on the server.
-cron.schedule('*/5 * * * * *', function () {
+cron.schedule('*/10 * * * * *', function () {
     getTriggeredEmails();
 });
 
@@ -110,7 +111,7 @@ async function getTriggeredEmails() {
 
         if (error) {
 
-            console.log(error);
+            logger.error( error.errno + error.message);
 
         } else {
 
@@ -183,7 +184,7 @@ function sendEmail(email) {
 
         if (error) {
 
-            console.log(error);
+            logger.error( error.errno + error.message);
 
             return ({ message: `FAILED TO SEND EMAIL TO  ${email.email_address} ` });
 
@@ -196,7 +197,7 @@ function sendEmail(email) {
 
                 if (error) {
 
-                    console.log(error);
+                    logger.error( error.errno + error.message);
 
                 } else {
 
@@ -255,8 +256,6 @@ app.get('/selection', function (request, response) {
 app.get('/home', function (request, response) {
     // Get saved data from sessionStorage
     const user_id = storage('farma_id');
-
-    console.log(user_id);
 
     if (user_id) {
         response.sendFile(path.join(__dirname + '/public/home.html'));
@@ -328,7 +327,7 @@ app.get('/before-home', function (request, response) {
             // If there is an issue with the query, output the error
 
             if (error) {
-                console.log(error);
+                logger.error( error.errno + error.message);
             }
 
             results.forEach(element => {
@@ -396,7 +395,7 @@ app.get('/getCount/:param', function (request, response) {
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
-                console.log(error);
+                logger.error( error.errno + error.message);
             };
             response.send({ count: results });
         })
@@ -567,7 +566,7 @@ app.get('/getScheduleListing', function (request, response) {
             // If there is an issue with the query, output the error
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 response.send({ error_message: "an error happened" + error });
             
@@ -653,7 +652,7 @@ app.get('/verifyAnimal/:param', function (request, response) {
             // If there is an issue with the query, output the error
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 response.send({ error_message: "an error happened" + error });
 
@@ -861,13 +860,14 @@ app.post('/authenticate', function (request, response) {
 
             // If there is an issue with the query, output the error
             if (error) {
-                console.log(error);
+                logger.error( error.errno + error.message);
                 response.redirect(`/`);
             }
 
             // If the account exists
             if (results.length > 0) {
 
+                logger.error("SUCCESSFULLY AUTHENTICATED");
                 console.log("SUCCESSFULLY AUTHENTICATED");
 
                 // Authenticate the user
@@ -915,7 +915,7 @@ app.post('/newAnimal', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -954,7 +954,7 @@ app.post('/addNewBorn', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1015,7 +1015,7 @@ app.post('/updateAnimalData', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1053,7 +1053,7 @@ app.post('/updateFeed', function (request, response) {
             if (error) {
                 // response.redirect(`/animal/${animal}`); 
 
-                console.log(error);
+                logger.error( error.errno + error.message);
             }
         });
     response.redirect(`/animal/${animal}`);
@@ -1075,7 +1075,7 @@ app.post('/newVaccine', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1114,7 +1114,7 @@ app.post('/newFeed', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1153,7 +1153,7 @@ app.post('/newBred', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1191,7 +1191,7 @@ app.post('/newVet', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1229,7 +1229,7 @@ app.post('/updateVet', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1262,7 +1262,7 @@ app.post('/updateVet', function (request, response) {
 //     connection.query(`CALL update_sick('${request.body.edit_sick_animal_id}', '${request.body.editReportedDate}', '${request.body.editVetName}', '${request.body.editAppointmentDate + ' ' + request.body.editAppointmentTime}', '${request.body.disease_suspected}', '${request.body.editSSText}' )`,
 //         function (error, results, fields) {
 //             if (error) {
-//                 console.log(error);
+//                 logger.error( error.errno + error.message);
 //                 console.log(error.errno);
 //                 console.log(error.message);
 //                 console.log(error.name);
@@ -1287,7 +1287,7 @@ app.post('/confirmation', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1306,7 +1306,9 @@ app.post('/confirmation', function (request, response) {
                         vet_mail: `${request.body.update_vet_mail}`
                     };
 
-                    sendmail(params);
+                    console.log(params);
+
+                    sendEmail(params);
 
                     return response.json({ status: 200, message: `${request.body.editVetFname} ${request.body.editVetLname} has been Added Successfuly.` });
 
@@ -1341,7 +1343,7 @@ app.post('/verifyNewBorn', function (request, response) {
 
                 if (error) {
 
-                    console.log(error);
+                    logger.error( error.errno + error.message);
 
                     return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1386,7 +1388,7 @@ app.post('/scheduleVaccination', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1426,7 +1428,7 @@ app.post('/updateFarma', function (request, response) {
 
             if (error) {
 
-                console.log(error);
+                logger.error( error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1469,7 +1471,7 @@ app.post('/addSick', function (request, response) {
 
                 if (error) {
 
-                    console.log(error);
+                    logger.error( error.errno + error.message);
 
                     return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1510,7 +1512,7 @@ app.post('/send_reset_otp', async (request, response) => {
 
         if (error) {
 
-            console.log(error);
+            logger.error( error.errno + error.message);
 
             return response.json({ status: 500, message: 'SQL Error. Refresh and Try Again.' + error });
 
@@ -1540,7 +1542,7 @@ app.post('/recordNewPassword', async (request, response) => {
 
         if (error) {
 
-            console.log(error);
+            logger.error( error.errno + error.message);
 
             return response.json({ status: 500, message: 'SQL Error. Refresh and Try Again.' + error });
 
@@ -1579,7 +1581,7 @@ app.post('/save', async (request, response) => {
         function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
-                console.log(error);
+                logger.error( error.errno + error.message);
             } else {
 
                 console.log(results);
@@ -1700,7 +1702,7 @@ app.post('/delete', function (request, response) {
             if (error) {
 
                 console.log("error");
-                console.log(error);
+                logger.error( error.errno + error.message);
 
             } else {
 

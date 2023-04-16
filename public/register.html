@@ -104,8 +104,8 @@
 
                   <div class="form-group last mb-4">
                     <label for="password2" id="password2" class="alerts"> </label>
-                    <input type="password" class="form-control" onchange="validatePassword('pass', 'password2')" minlength="8" id="pass2"
-                      name="password2" placeholder="Confirm Password">
+                    <input type="password" class="form-control" onchange="validatePassword('pass', 'pass2')"
+                      minlength="8" id="pass2" name="password2" placeholder="Confirm Password">
                   </div>
 
                   <input type="button" onclick="validateForm()" value="REGISTER"
@@ -125,7 +125,7 @@
     </div>
 
 
-    <!-- OTP Modal -->
+    <!-- OTP Modal 
     <div class="modal fade" id="OTP" data-bs-keyboard="true" aria-hidden="true" aria-labelledby="OTPLabel"
       tabindex="-1">
       <div class="modal-dialog modal-sm">
@@ -135,12 +135,14 @@
           </div>
 
           <div class="modal-body">
-            
-            <label for="edit-reported-date" class="form-label fw-bold"> Enter the Single Use OTP code that has been sent to your email </label>
-            
+
+            <label for="edit-reported-date" class="form-label fw-bold"> Enter the Single Use OTP code that has been sent
+              to your email </label>
+
             <input id="uuid" type="text" name="uuid" hidden>
 
-            <input onchange="verifyOTP('confirm_otp','uuid')" id="confirm_otp" type="number" class="form-control my-4" name="confirm_otp">
+            <input onchange="verifyOTP('confirm_otp','uuid')" id="confirm_otp" type="number" class="form-control my-4"
+              name="confirm_otp">
 
             <strong>
               <span class="text-danger mt-03" id="otp-msg">
@@ -153,6 +155,57 @@
       </div>
 
     </div>
+-->
+
+    <!-- OTP Modal -->
+    <div class="modal fade" id="OTP" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="pwdResetModalToggleLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title py-2" style="background-color: #38d39f;">
+                <strong>
+                  OTP VERIFICATION
+                </strong>
+              </h5>
+
+
+              <form enctype="multipart/form-data" method="post" name="OTP-FORM" id="OTP_CODE" class="OTP-CODE">
+
+                <p class="card-text" id="replace"> Enter the Single Use OTP code that has been sent to your email. </p>
+
+                <div class="form-group last mb-4">
+
+                  <input id="uuid" type="text" name="uuid" hidden>
+
+                  <input id="confirm_otp" type="number"
+                    class="form-control my-4" name="confirm_otp">
+
+                </div>
+
+                <strong>
+                  <span class="text-danger my-2" id="otp-msg">
+                    ** OTP Code expires after 5 minutes **
+                  </span>
+                </strong>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-end mb-3">
+                  <button type="button" class="btn btn-sm btn-danger mr-3" data-bs-dismiss="modal" aria-label="Close">
+                    cancel
+                  </button>
+                  <button class="btn btn-primary" type="submit"> VERIFY </button>
+                </div>
+
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
 
   </body>
 
