@@ -21,12 +21,12 @@ async function renderUsers() {
   if (![false, 0, "", null, undefined, NaN].includes(users)) {
 
     const animals_at_farm = JSON.parse(JSON.stringify(users));
-    
+
     animals_at_farm.forEach(animal => {
-      
+
       htmlSegment = `
         <!-- animal card onclick="seeDetails()"-->
-          <a class="col-auto mb-4" href="/animal/${animal.name}">
+          <a class="col-sm mb-4" href="/animal/${animal.name}">
             <div >
               <div class="rounded shadow-sm py-5 px-4" id="${animal.name}s">
                 <img src="${animal.image_url}" alt="${animal.name}'s image" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
@@ -42,12 +42,11 @@ async function renderUsers() {
     });
 
     html += `
-    <a class="col-auto mb-4" data-toggle="modal" data-target="#newAnimalModal" href="#">
+    <a class="col-sm mb-4" data-toggle="modal" data-target="#newAnimalModal" href="#">
       <div>
         <div class="rounded shadow-sm py-5 px-4">
-          <img width="75" class="img-fluid rounded-circle mb-3 img-thumbnail" src="images/plus.svg"/>
+          <img width="100" class="img-fluid rounded-circle mb-3 img-thumbnail" src="images/plus.svg"/>
           <h5 class="mb-0"> add new </h5>
-          <h5 class="mb-0"> animal </h5>
           <span class="small text-uppercase text-muted" ></span>
         </div>
       </div>
