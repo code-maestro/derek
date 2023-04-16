@@ -8,3 +8,7 @@ test_dir
 equiweb.sql
 
 test.js
+
+logs
+
+server.log

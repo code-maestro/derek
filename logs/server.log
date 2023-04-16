@@ -3,3 +3,6 @@ info: Apr-16-2023 16:45:21: 	Success : 4ad39572-925d-4446-be24-7acccf28e96b
 error: Apr-16-2023 17:07:12: 	SUCCESSFULLY AUTHENTICATED
 error: Apr-16-2023 17:17:18: 	undefinedUnexpected socket close
 error: Apr-16-2023 17:24:36: 	SUCCESSFULLY AUTHENTICATED
+error: Apr-16-2023 17:28:52: 	SUCCESSFULLY AUTHENTICATED
+error: Apr-16-2023 17:29:53: 	1265Data truncated for column 'symptom_name' at row 1
+error: Apr-16-2023 21:30:34: 	SUCCESSFULLY AUTHENTICATED
