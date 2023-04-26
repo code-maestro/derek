@@ -111,7 +111,7 @@ async function getTriggeredEmails() {
 
         if (error) {
 
-            logger.error( error.errno + error.message);
+            logger.error(error.errno + error.message);
 
         } else {
 
@@ -184,7 +184,7 @@ function sendEmail(email) {
 
         if (error) {
 
-            logger.error( error.errno + error.message);
+            logger.error(error.errno + error.message);
 
             return ({ message: `FAILED TO SEND EMAIL TO  ${email.email_address} ` });
 
@@ -197,7 +197,7 @@ function sendEmail(email) {
 
                 if (error) {
 
-                    logger.error( error.errno + error.message);
+                    logger.error(error.errno + error.message);
 
                 } else {
 
@@ -327,27 +327,39 @@ app.get('/before-home', function (request, response) {
             // If there is an issue with the query, output the error
 
             if (error) {
-                logger.error( error.errno + error.message);
+
+                logger.error(error.errno + error.message);
+
+                response.send({ status: 500, error_message: "an error happened" + error });
+
+            } else {
+
+                results.forEach(element => {
+
+                    if (element.list_of_animals == null) {
+
+                        console.log("😒😒😒😒😒");
+
+                        response.send({ status: 400, message: "NOT ANIMALS AT THE FARM" });
+
+                    } else {
+
+                        storage('all-animals', JSON.parse(JSON.stringify(element.list_of_animals)));
+
+                        JSON.parse(element.list_of_animals).forEach(named => { animalNames.push(named.name); });
+
+                        storage('animal-names', animalNames);
+
+                        response.send({ status: 200, message: "ANIMALS ARE AT THE FARMA", listing: JSON.parse(JSON.stringify(element.list_of_animals)) });
+
+                    }
+
+                });
+
             }
 
-            results.forEach(element => {
-                if (element.list_of_animals == null) {
-                    console.log("😒😒😒😒😒");
-                } else {
-
-                    storage('all-animals', JSON.parse(JSON.stringify(element.list_of_animals)));
-
-                    (element.list_of_animals).forEach(named => {
-                        animalNames.push(named.name);
-                    })
-
-                    storage('animal-names', animalNames);
-
-                    response.send(JSON.parse(JSON.stringify(element.list_of_animals)));
-
-                }
-            });
         })
+
     } else {
 
         console.log("BEFORE-HOME animals listing retrieval nicht arbeitet viel  du hat keine farma_id ");
@@ -395,7 +407,7 @@ app.get('/getCount/:param', function (request, response) {
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
             };
             response.send({ count: results });
         })
@@ -558,24 +570,24 @@ app.get('/getScheduleListing', function (request, response) {
                             FROM schedule_vaccination WHERE vaccination_id = '${id}';`
 
     }
-    
-    
+
+
     if (user_id) {
 
         connection.query(queries, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 response.send({ error_message: "an error happened" + error });
-            
+
             } else {
 
                 console.log(results);
-            
+
                 response.send({ listing: results });
-            
+
             }
 
         })
@@ -607,7 +619,7 @@ app.get('/isConfirmed', function (request, response) {
             if (error) {
 
                 response.send({ status: 500, error_message: "an error happened" + error });
-            
+
             } else {
 
                 console.log(results[0].confirmed);
@@ -652,7 +664,7 @@ app.get('/verifyAnimal/:param', function (request, response) {
             // If there is an issue with the query, output the error
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 response.send({ error_message: "an error happened" + error });
 
@@ -756,12 +768,7 @@ app.get('/verify-otp', async (request, response) => {
         const code = request.query.code;
         const userId = request.query.userId;
 
-        console.log("CODE => " + code);
-        console.log("ISER_ID => " + userId);
-
         storage('farma_id', userId);
-
-        console.log(storage('farma_id'));
 
         // query to return the tokens
         connection.query(`CALL verify_otp ('${userId}', '${code}', @user_id);`, function (err, result) {
@@ -860,7 +867,7 @@ app.post('/authenticate', function (request, response) {
 
             // If there is an issue with the query, output the error
             if (error) {
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
                 response.redirect(`/`);
             }
 
@@ -915,7 +922,7 @@ app.post('/newAnimal', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -954,7 +961,7 @@ app.post('/addNewBorn', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1015,7 +1022,7 @@ app.post('/updateAnimalData', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1053,7 +1060,7 @@ app.post('/updateFeed', function (request, response) {
             if (error) {
                 // response.redirect(`/animal/${animal}`); 
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
             }
         });
     response.redirect(`/animal/${animal}`);
@@ -1075,7 +1082,7 @@ app.post('/newVaccine', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1114,7 +1121,7 @@ app.post('/newFeed', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1153,7 +1160,7 @@ app.post('/newBred', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1191,7 +1198,7 @@ app.post('/newVet', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1229,7 +1236,7 @@ app.post('/updateVet', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1287,7 +1294,7 @@ app.post('/confirmation', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1343,7 +1350,7 @@ app.post('/verifyNewBorn', function (request, response) {
 
                 if (error) {
 
-                    logger.error( error.errno + error.message);
+                    logger.error(error.errno + error.message);
 
                     return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1388,7 +1395,7 @@ app.post('/scheduleVaccination', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1428,7 +1435,7 @@ app.post('/updateFarma', function (request, response) {
 
             if (error) {
 
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1471,7 +1478,7 @@ app.post('/addSick', function (request, response) {
 
                 if (error) {
 
-                    logger.error( error.errno + error.message);
+                    logger.error(error.errno + error.message);
 
                     return response.json({ status: 500, message: error.sqlMessage });
 
@@ -1481,7 +1488,7 @@ app.post('/addSick', function (request, response) {
 
                     if (results.affectedRows > 0) {
 
-                        return response.json({ status: 200, message: `${request.body.healthyAnimals} has recorded Successfuly.`});
+                        return response.json({ status: 200, message: `${request.body.healthyAnimals} has recorded Successfuly.` });
 
                     } else {
 
@@ -1494,7 +1501,7 @@ app.post('/addSick', function (request, response) {
             }
 
         );
-    
+
     } else {
 
         response.redirect(`/`);
@@ -1512,7 +1519,7 @@ app.post('/send_reset_otp', async (request, response) => {
 
         if (error) {
 
-            logger.error( error.errno + error.message);
+            logger.error(error.errno + error.message);
 
             return response.json({ status: 500, message: 'SQL Error. Refresh and Try Again.' + error });
 
@@ -1542,7 +1549,7 @@ app.post('/recordNewPassword', async (request, response) => {
 
         if (error) {
 
-            logger.error( error.errno + error.message);
+            logger.error(error.errno + error.message);
 
             return response.json({ status: 500, message: 'SQL Error. Refresh and Try Again.' + error });
 
@@ -1550,7 +1557,7 @@ app.post('/recordNewPassword', async (request, response) => {
 
             if (results.affectedRows = 1) {
 
-                return response.json({ status: 200, message: 'PASSWORD RESET SUCCESSFULLY'});
+                return response.json({ status: 200, message: 'PASSWORD RESET SUCCESSFULLY' });
 
             } else {
 
@@ -1581,7 +1588,7 @@ app.post('/save', async (request, response) => {
         function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
             } else {
 
                 console.log(results);
@@ -1695,14 +1702,14 @@ app.post('/delete', function (request, response) {
     if (user_id) {
 
         connection.query(queries[par], function (error, results, fields) {
-            
+
             console.log(queries[par]);
 
             // If there is an issue with the query, output the error
             if (error) {
 
                 console.log("error");
-                logger.error( error.errno + error.message);
+                logger.error(error.errno + error.message);
 
             } else {
 
@@ -1719,6 +1726,33 @@ app.post('/delete', function (request, response) {
         console.log(" trying to delete with no farma_id  ");
         response.redirect('/');
     }
+});
+
+// Function to delete data from animal
+app.post('/testtest', function (request, response) {
+
+    var myArray = [{ "name": "John", "age": 30, "city": "New York" }, { "name": "Mary", "age": 25, "city": "Los Angeles" }];
+    var jsonString = JSON.stringify(myArray);
+
+    connection.query(`INSERT INTO test_dbo (name) VALUES ('${jsonString}');`, function (error, results, fields) {
+
+
+        // If there is an issue with the query, output the error
+        if (error) {
+
+            console.log("error");
+            logger.error(error.errno + error.message);
+
+        } else {
+
+            console.log(results);
+
+            results.affectedRows >= 1 ? response.send({ message: "GOOD" }) : response.send({ message: "BAD" });
+
+        }
+
+    })
+
 });
 
 

@@ -11,12 +11,21 @@ async function getUsers() {
 
 
 async function renderUsers() {
+
   let users = await getUsers();
+  
   let html = '';
 
   let htmlSegment = '';
 
   let container = document.querySelector('#ddaa');
+
+  console.log("users");
+  console.log(users.listing);
+
+  if (users.status === 200) {
+    
+  }
 
   if (![false, 0, "", null, undefined, NaN].includes(users)) {
 
