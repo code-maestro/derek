@@ -13,38 +13,39 @@ async function getUsers() {
 async function renderUsers() {
 
   let users = await getUsers();
-  
+
   let html = '';
 
   let htmlSegment = '';
 
   let container = document.querySelector('#ddaa');
 
-  console.log("users");
-  console.log(users.listing);
-
   if (users.status === 200) {
-    
-  }
 
-  if (![false, 0, "", null, undefined, NaN].includes(users)) {
+    console.log("users");
 
-    const animals_at_farm = JSON.parse(JSON.stringify(users));
+    const animals_ku_farm = users.listing;
 
-    animals_at_farm.forEach(animal => {
+    console.log(animals_ku_farm);
+
+    console.log(typeof animals_ku_farm);
+
+    JSON.parse(animals_ku_farm).forEach(animal => {
+      
+      console.log(animal);
 
       htmlSegment = `
-        <!-- animal card onclick="seeDetails()"-->
-          <a class="col-sm mb-4" href="/animal/${animal.name}">
-            <div >
-              <div class="rounded shadow-sm py-5 px-4" id="${animal.name}s">
-                <img src="${animal.image_url}" alt="${animal.name}'s image" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                <h5 class="mb-0"> ${animal.name} </h5>
-                <span class="small text-uppercase text-muted" id="${animal.name}ss"></span>
-              </div>
+      <!-- animal card onclick="seeDetails()"-->
+        <a class="col-sm mb-4" href="/animal/${animal.name}">
+          <div >
+            <div class="rounded shadow-sm py-5 px-4" id="${animal.name}s">
+              <img src="${animal.image_url}" alt="${animal.name}'s image" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+              <h5 class="mb-0"> ${animal.name} </h5>
+              <span class="small text-uppercase text-muted" id="${animal.name}ss"></span>
             </div>
-          </a>
-      `;
+          </div>
+        </a>
+    `;
 
       html += htmlSegment;
 
@@ -66,8 +67,11 @@ async function renderUsers() {
     document.getElementById("select-heading").innerText = "select an animal to view the stats";
 
   } else {
+
     return null;
+
   }
+
 }
 
 renderUsers()
