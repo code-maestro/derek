@@ -190,11 +190,8 @@ async function verifyOTP(id1, id2) {
 
 const OTP_FORM = document.forms.namedItem("OTP-FORM");
 OTP_FORM.addEventListener("submit", (event) => {
-
   verifyOTP('confirm_otp','uuid');
-
   event.preventDefault();
-
 },
 
   false
