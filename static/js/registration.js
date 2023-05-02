@@ -58,7 +58,7 @@ async function registerFarma() {
       lname: document.getElementById('last-name').value,
       mail: document.getElementById('email').value,
       phone: document.getElementById('phone-number').value,
-      pass: document.getElementById('pass2').value
+      pass: document.getElementById('password2').value
     };
 
     // request options
@@ -106,7 +106,7 @@ async function registerFarma() {
           <strong> ${data.message}!</strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`;
-
+        console.log(data);
       } else {
 
         document.getElementById("err").innerHTML = `
@@ -115,7 +115,7 @@ async function registerFarma() {
           <strong> ${data.message}!</strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`;
-
+        console.log(data);
       }
 
     }
