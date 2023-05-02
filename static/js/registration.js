@@ -43,6 +43,7 @@ function validateForm() {
   }
 
   console.log(success);
+
   success ? registerFarma() : console.log("FALSE");
 
 }
@@ -58,7 +59,7 @@ async function registerFarma() {
       lname: document.getElementById('last-name').value,
       mail: document.getElementById('email').value,
       phone: document.getElementById('phone-number').value,
-      pass: document.getElementById('pass2').value
+      pass: document.getElementById('password2').value
     };
 
     // request options
@@ -85,7 +86,6 @@ async function registerFarma() {
 
         document.getElementById("err").innerHTML = `
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
           <strong> ${data.message}!</strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`;
@@ -102,7 +102,6 @@ async function registerFarma() {
 
         document.getElementById("err").innerHTML = `
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <svg class="bi flex-shrink-0" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
           <strong> ${data.message}!</strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`;
@@ -111,7 +110,6 @@ async function registerFarma() {
 
         document.getElementById("err").innerHTML = `
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-          <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
           <strong> ${data.message}!</strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`;

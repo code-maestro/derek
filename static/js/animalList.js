@@ -22,18 +22,9 @@ async function renderUsers() {
 
   if (users.status === 200) {
 
-    console.log("users");
-
     const animals_ku_farm = users.listing;
 
-    console.log(animals_ku_farm);
-
-    console.log(typeof animals_ku_farm);
-
     JSON.parse(animals_ku_farm).forEach(animal => {
-      
-      console.log(animal);
-
       htmlSegment = `
       <!-- animal card onclick="seeDetails()"-->
         <a class="col-sm mb-4" href="/animal/${animal.name}">
@@ -74,4 +65,84 @@ async function renderUsers() {
 
 }
 
-renderUsers()
+renderUsers();
+
+
+// // Function Adding new Animal
+// async function addNewAnimal(formData) {
+
+//   console.log(formData);
+  
+//   try {
+
+//     // // post body data 
+//     // const newAnimalData = {
+//     //   animal_type: document.getElementById('animal_type').value,
+//     //   animal_desc: document.getElementById('animal_desc').value,
+//     //   file_name: file
+//     // };
+
+//     // console.log(newAnimalData);
+
+//     // request options
+//     const options = {
+//       method: 'POST',
+//       body: formData,
+//       // JSON.stringify(newAnimalData),
+//       headers: {
+//         'Content-Type': 'application/json'
+//       }
+//     }
+
+//     const response = await fetch(`/addAnimal`, options);
+
+//     if (!response.ok) {
+
+//       console.log(`HTTP error: ${response.status}`);
+
+//     } else {
+
+//       const data = await response.json();
+
+//       console.log(data);
+
+//       if (data.status == 200) {
+
+//         $('#successModalToggle').modal('show');
+//         document.getElementById('success-msg').innerText = data.message;
+//         $('#registerAnimalModalToggle').modal('hide');
+//         document.getElementById("registerNewAnimalForm").reset();
+
+//       } else {
+
+//         $('#errModalToggle').modal('show');
+
+//         document.getElementById('errors-msg').innerText = data.message;
+
+//       }
+
+//     }
+
+//   }
+
+//   catch (error) { console.log(error); }
+
+// }
+
+
+// const animalForm = document.forms.namedItem("new-animal-form");
+// animalForm.addEventListener("submit", (event) => {
+
+//   var input = document.querySelector('input[type="file"]')
+//   console.log(input.files[0].name);
+//   console.log(input.files[0].originalname);
+
+//   addNewAnimal(input.files[0]);
+
+//   event.preventDefault();
+
+// },
+
+//   false
+
+// );

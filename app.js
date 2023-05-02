@@ -20,10 +20,11 @@ dotenv.config();
 // // REMOTE DATABASE CONNECTIONS
 // const connection = mysql.createConnection({
 //     host: 'db4free.net',
-//     user: 'derek_2022',
-//     password: '18ba6a01',
-//     database: 'farma_2022'
+//     user: 'farma_v1',
+//     password: '581610a5',
+//     database: 'farma_v1'
 // });
+
 
 // LOCAL DATABASE CONNECTIONS
 const connection = mysql.createConnection({
@@ -443,6 +444,25 @@ app.get('/getFarma', function (request, response) {
         console.log(" trying to delete with no farma_id 🤣😂 ");
         response.redirect('/');
     }
+
+});
+
+
+// Function to retrieve animal data for table
+app.get('/success', function (request, response) {
+    const sql_query = `SHOW VARIABLES LIKE 'max_connections';`;
+
+    connection.query(sql_query, function (error, results, fields) {
+        // If there is an issue with the query, output the error
+        if (error) {
+
+            console.log(error);
+
+        };
+
+        response.send({ farma: results });
+
+    })
 
 });
 
@@ -1629,6 +1649,7 @@ app.post('/save', async (request, response) => {
 });
 
 
+
 // End Point adding new animal
 app.post('/addAnimal', (request, response) => {
     uploadImage(request, response, (err) => {
@@ -1674,7 +1695,6 @@ app.post('/addAnimal', (request, response) => {
         }
     });
 });
-
 
 // Function to delete data from animal
 app.post('/delete', function (request, response) {
@@ -1727,6 +1747,7 @@ app.post('/delete', function (request, response) {
         response.redirect('/');
     }
 });
+
 
 // Function to delete data from animal
 app.post('/testtest', function (request, response) {

@@ -36,14 +36,9 @@
   </head>
 
   <body>
-    <!-- <div id="wrapper"> -->
-    <!-- Content Wrapper -->
-    <!-- <div id="content-wrapper"> -->
-
     <!-- Main Content -->
-    <!-- <div id="content my-4"> -->
     <div class="container text-center">
-      <div class="row justify-content-md-center align-items-center"  style="height: 80vh;">
+      <div class="row justify-content-md-center align-items-center" style="height: 80vh;">
         <div class="col-md-auto">
           <table class="table">
             <thead>
@@ -93,16 +88,15 @@
       </div>
     </div>
 
-    <!-- </div> -->
-    <!-- </div> -->
-    <!-- </div> -->
-
     <!-- New Animal Modal-->
     <div class="modal fade" id="newAnimalModal" tabindex="-1" role="dialog" aria-labelledby="newAnimalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <form id="contact-form" role="form" method="POST" action="/addAnimal" enctype="multipart/form-data">
+
+          <!-- Registration Form -->
+          <form class="row g-3 " enctype="multipart/form-data" action="/addAnimal" method="POST" id="new-animal-form"
+            name="new-animal-form">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel"> Add a new animal </h5>
               <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -117,7 +111,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label for="form_name"> Animal Name * </label>
-                        <input id="form_name" type="text" name="animal_type" class="form-control"
+                        <input id="animal_type" type="text" name="animal_type" class="form-control"
                           placeholder="Please enter the animal name *" required="required"
                           data-error=" animal name is required.">
                       </div>
@@ -127,19 +121,8 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label for="form_lastname"> Number of animals * </label>
-                        <input id="form_lastname" type="number" name="count" class="form-control"
-                          placeholder="Please enter the number of the animals  *" required="required"
-                          data-error="number of animals is required.">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
                         <label for="form_message">Animal Description *</label>
-                        <textarea id="form_message" name="desc" class="form-control"
+                        <textarea id="animal_desc" name="desc" class="form-control"
                           placeholder="Write animal Description." rows="4" required="required"
                           data-error="Please, leave us a message."></textarea>
                       </div>
@@ -155,10 +138,6 @@
                     </div>
                   </div>
 
-                  <div class="row">
-
-                  </div>
-
                 </div>
 
               </div>
@@ -170,6 +149,63 @@
         </div>
       </div>
     </div>
+
+
+    <!-- Success modal -->
+    <div class="modal fade" id="successModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="successModalToggleLabel">
+      <div class="modal-dialog modal-ms">
+        <div class="modal-content">
+          <div class="card">
+            <div class="card-body text-center">
+
+              <div class="prompt">
+                <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_s2lryxtd.json"
+                  background="transparent" speed="0.5" style="width: 100px; height: 100px;" loop
+                  autoplay></lottie-player>
+              </div>
+
+              <h5 class="card-title my-2" id="success-msg"> </h5>
+
+              <button type="button" class="btn btn-secondary my-2 font-monospace" data-bs-dismiss="modal">
+                OK </button>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Error modal -->
+    <div class="modal fade" id="errModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="errModalToggleLabel" aria-hidden="true">
+      <div class="modal-dialog modal-ms">
+        <div class="modal-content">
+          <div class="card">
+            <div class="card-body text-center">
+
+              <div class="prompt">
+                <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor"
+                  class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+                  <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                </svg>
+              </div>
+
+              <h5 class="card-title my-2" id="errors-msg"> </h5>
+
+              <button type="button" class="btn btn-secondary my-2 font-monospace" data-bs-dismiss="modal">
+                OK </button>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>

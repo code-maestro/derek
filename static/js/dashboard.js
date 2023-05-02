@@ -519,8 +519,6 @@ const getFullyVaccinated = async () => {
 
   const vaccinated = await getListing('fullyVaxedAnimals');
 
-  console.log(vaccinated);
-
   let html = '';
   let htmlSegment = '';
 
