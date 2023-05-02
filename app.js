@@ -794,7 +794,7 @@ app.get('/verify-otp', async (request, response) => {
         connection.query(`CALL verify_otp ('${userId}', '${code}', @user_id);`, function (err, result) {
             if (err) {
                 console.log(err);
-                response.send({ status: 500, message: " NOOOO LOL " });
+                response.send( { status: 500, message: err.sqlMessage });
             } else {
 
                 console.log(result[0][0].VERIFIED);
@@ -857,9 +857,9 @@ app.post('/register-farma', function (request, response) {
         connection.query(`CALL pending_farma_registration('${f_id}', '${fname}', '${lname}' , '${mail}', '${phone}', '${password2}')`, function (error, results, fields) {
 
             if (error) {
-
+                console.log(error)
                 return response.json({ status: 500, message: error.sqlMessage });
-
+                    
             } else {
 
                 return response.json({ status: 200, message: 'User Registration Successfuly.', user_id: `${f_id}` });
