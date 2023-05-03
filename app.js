@@ -402,6 +402,8 @@ app.get('/getCount/:param', function (request, response) {
 
         allProducts: `SELECT COUNT(B.id) as COUNT FROM animal A, products B WHERE B.animal_id = A.id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
 
+        totalNotifications: `SELECT COUNT(*) as COUNT FROM audit_trail A, farma B WHERE B.farma_id = A.user_id AND A.user_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
+
     }
 
     if (farma_id) {
@@ -534,6 +536,8 @@ app.get('/getListing/:param', function (request, response) {
         healthyAnimals: `SELECT id, animal_tag, gender FROM animal WHERE id NOT IN (SELECT animal_id FROM sick_animals) AND farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
 
         allProducts: `SELECT B.id, A.animal_tag, B.name, B.quantity, C.expected_qnty, IF(B.quantity_measure >= 1000, 'kg', 'g') AS measure FROM animal A, products B, product_schedule C WHERE B.animal_id = A.id AND B.animal_id = C.animal_id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
+
+        notifications: `SELECT B.id, CONCAT(A.first_name, ' ', A.last_name) AS names, B.action, B.action_date FROM farma A, audit_trail B WHERE B.user_id = A.farma_id AND A.farma_id = '${farma_id}' AND B.animal_type='${animal_type}';`,
 
     }
 

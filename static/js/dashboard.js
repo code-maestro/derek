@@ -608,8 +608,6 @@ const deleteFromList = async (param1, param2) => {
   // post body data 
   const user = { id: param2, type: param1 };
 
-  console.log(user);
-
   const item = {
     name: param1,
     id: param2
@@ -634,18 +632,14 @@ const deleteFromList = async (param1, param2) => {
 
       } else {
 
-        console.log("😎😎😎😜");
-        showClear('Nice, you triggered this alert message');
+        console.log(response);
 
       }
 
       return response;
 
     }).then(function (response) {
-      console.log("ok");
-      console.log(param1);
       const element = document.getElementById(`${param2}`);
-      console.log(element);
       element.remove();
 
     }).catch(function (error) { console.log(error); });
@@ -671,18 +665,9 @@ const sendData = async (param1, param2, param3) => {
 
 // DELETING A TABLE ROW
 const deletionList = async () => {
-
   const cat = JSON.parse(localStorage.getItem('delete'));
-
-  console.log(cat);
-
-  console.log(cat.name);
-  console.log(cat.id);
-
   deleteFromList(cat.name, cat.id);
-
   localStorage.removeItem("delete");
-
 }
 
 
@@ -972,8 +957,6 @@ async function recordAnimal() {
       ageYears: document.getElementById('age-years').value
     };
 
-    console.log(animalData);
-
     // request options
     const options = {
       method: 'POST',
@@ -992,8 +975,6 @@ async function recordAnimal() {
     } else {
 
       const data = await response.json();
-
-      console.log(data);
 
       if (data.status == 200) {
 

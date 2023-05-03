@@ -10234,9 +10234,9 @@ a:focus {
 .topbar .dropdown-list .dropdown-header {
   background-color: rgb(12 117 0);
   border: 1px solid #4e73df;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
+  padding: 0.45rem;
   color: #fff;
+  margin: 0;
 }
 
 .topbar .dropdown-list .dropdown-item {

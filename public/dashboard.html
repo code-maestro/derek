@@ -49,16 +49,18 @@
 
         <!-- List of animals that belong to the farmer that has signed in -->
         <script src="../js/dashboard.js" defer></script>
+        <!-- <script src="../js/notifications.js" defer></script> -->
         <script src="../js/age.js" defer></script>
         <script src="../js/main.js" defer></script>
         <script src="../js/vet.js" defer></script>
         <script src="../js/sick.js" defer></script>
         <script src="../js/timetable.js" defer></script>
         <script src="../js/dashboardCards.js" defer></script>
+        <script src="../js/graphs.js" defer></script>
+        <script src="../js/notifications.js" defer></script>
         <script src="../js/getFarma.js" defer></script>
         <script src="../js/breed.js" defer></script>
         <script src="../js/excel.js" defer></script>
-        <script src="../js/graphs.js" defer></script>
         <script src="../js/calculations.js" defer></script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -385,23 +387,14 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-bell fa-fw"></i>
                                     <!-- Counter - Alerts -->
-                                    <span class="badge badge-danger badge-counter">3+</span>
+                                    <span class="badge badge-danger badge-counter" id="farma-notifications-count">  </span>
                                 </a>
                                 <!-- Dropdown - Alerts -->
                                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="alertsDropdown">
-                                    <h6 class="dropdown-header"> Alerts Center </h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-primary">
-                                                <i class="fas fa-file-alt text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">December 12, 2019</div>
-                                            <span class="font-weight-bold">A new monthly report is ready to
-                                                download!</span>
-                                        </div>
+                                    <h6 class="dropdown-header"> Notifications </h6>
+                                    <a class="dropdown-item d-flex align-items-center" href="#" id="farma-notifications">
+                                        
                                     </a>
                                     <a class="dropdown-item text-center small text-gray-500" href="#">
                                         Show All Alerts

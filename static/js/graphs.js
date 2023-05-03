@@ -1,7 +1,3 @@
-document.addEventListener('DOMContentLoaded', function () {
-    showGraphs();
-});
-
 
 // DISPLAYS GRAPHS
 const showGraphs = async () => {

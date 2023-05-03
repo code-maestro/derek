@@ -25,7 +25,7 @@ async function getAnimalType() {
 
 // RENDERS DATA TO THE BI DASHBOARD CARDS LIVE STATISTICS
 async function renderAnimals() {
-  
+
   const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'babies', 'vaccinatedAnimals', 'pendingAnimals', 'allFeeds', 'allProducts'];
 
   for (const number of cardsCount) {
@@ -34,9 +34,16 @@ async function renderAnimals() {
 
     animalCount.count.forEach(count => {
       document.getElementById(number).innerText = count.COUNT || 0;
-    })
+    });
 
   }
+
+  // Get Notifications Count
+  getNotifications();
+
+  // SHOW GRAPHS
+  showGraphs();
+
 }
 
 renderAnimals();
@@ -249,6 +256,7 @@ function clicked(param) {
         // newborn animals
         case 'new-born':
           getNewBornAnimals();
+          getNotifications();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
