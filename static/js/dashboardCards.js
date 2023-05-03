@@ -62,6 +62,7 @@ function clicked(param) {
         // [x] animals listing fixed  
         case 'total':
           getAllAnimals();
+          renderAnimals();
           container.innerHTML = `
             <div class="card ${param}" id="${param}ss">
               <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
@@ -89,6 +90,7 @@ function clicked(param) {
         // Sick Animals Card and dashboard table
         case 'sick':
           getSickAnimals();
+          renderAnimals();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()} ANIMALS TABLE </h5>
@@ -117,6 +119,7 @@ function clicked(param) {
         // [x] expecting table completed 
         case 'heavy':
           getExpectingAnimals();
+          renderAnimals();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
@@ -144,6 +147,7 @@ function clicked(param) {
         // RETURN FULLY VACCINATED ANIMAKS
         case 'vaccinated':
           getFullyVaccinated();
+          renderAnimals();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
@@ -173,6 +177,7 @@ function clicked(param) {
         // all animals pending vaccinations
         case 'pending':
           getPendingVaccinationsListing();
+          renderAnimals();
           container.innerHTML = `
             <div class="card ${param}" id="${param}ss">
               <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
@@ -202,6 +207,7 @@ function clicked(param) {
         // products from animals
         case 'products':
           getAnimalProducts();
+          renderAnimals();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
@@ -229,6 +235,7 @@ function clicked(param) {
         // stocked feeds
         case 'feed':
           getAnimalFeeds();
+          renderAnimals();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
@@ -257,6 +264,7 @@ function clicked(param) {
         case 'new-born':
           getNewBornAnimals();
           getNotifications();
+          renderAnimals();
           container.innerHTML = `
           <div class="card ${param}" id="${param}ss">
             <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>

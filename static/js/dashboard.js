@@ -983,6 +983,8 @@ async function recordAnimal() {
         $('#registerAnimalModalToggle').modal('hide');
         document.getElementById("registerNewAnimalForm").reset();
 
+        renderAnimals();
+
       } else {
 
         $('#errModalToggle').modal('show');
@@ -1134,6 +1136,8 @@ async function recordFeed() {
         document.getElementById('success-msg').innerText = data.message;
         $('#registerFeedStockModalToggle').modal('hide');
         document.getElementById("recordNewFeed").reset();
+
+        renderAnimals();
 
       } else {
 

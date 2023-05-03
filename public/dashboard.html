@@ -240,6 +240,26 @@
                 </li>
 
 
+                <!-- TODO edit a sick animal -->
+                <!-- Nav Item - Symptoms -->
+                <li class="nav-item font-weight-bold">
+                    <span class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#products"
+                        aria-controls="products">
+                        <i class="fas fa-flag"></i>
+                        <span> Products </span>
+                    </span>
+
+                    <div id="products" class="collapse" aria-labelledby="products" data-parent="#accordionSidebar">
+                        <div class="bg-white collapse-inner rounded">
+                            <span class="collapse-item" onclick="getProductTypes()" data-bs-toggle="modal"
+                                href="#addProductModalToggle" role="button"> Add Projections </span>
+                            <span class="collapse-item" onclick="viewProducts()" data-bs-toggle="modal"
+                                href="#productsModalToggle" role="button"> View Expected </span>
+                        </div>
+                    </div>
+                </li>
+
+
                 <!-- TODO implement function - populateGraphs() -->
                 <!-- Nav Item - Charts -->
                 <li class="nav-item font-weight-bold">
@@ -387,14 +407,16 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-bell fa-fw"></i>
                                     <!-- Counter - Alerts -->
-                                    <span class="badge badge-danger badge-counter" id="farma-notifications-count">  </span>
+                                    <span class="badge badge-danger badge-counter" id="farma-notifications-count">
+                                    </span>
                                 </a>
                                 <!-- Dropdown - Alerts -->
                                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="alertsDropdown">
                                     <h6 class="dropdown-header"> Notifications </h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#" id="farma-notifications">
-                                        
+                                    <a class="dropdown-item d-flex align-items-center" href="#"
+                                        id="farma-notifications">
+
                                     </a>
                                     <a class="dropdown-item text-center small text-gray-500" href="#">
                                         Show All Alerts
@@ -679,10 +701,12 @@
                 <div class="modal-content">
                     <div class="card">
                         <div class="card-body text-center">
-                            
-                            <h5 class="card-title my-4"> Select "Logout" below if you are ready to end your current session. </h5>
+
+                            <h5 class="card-title my-4"> Select "Logout" below if you are ready to end your current
+                                session. </h5>
                             <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                                <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button"> cancel </button>
+                                <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
+                                    type="button"> cancel </button>
                                 <a class="btn btn-primary" href="/logout"> LOGOUT </a>
                             </div>
 
@@ -720,7 +744,7 @@
                                 <div class="col">
                                     <div class="card">
                                         <div class="card-body">
-                                            
+
                                             <!-- Registration Form -->
                                             <form class="row g-3 " enctype="multipart/form-data" method="post"
                                                 id="registerNewAnimalForm" name="registerAnimalForm">
@@ -1076,8 +1100,8 @@
                                                 onclick="toExcel('vaccinationTable', 'VACCINES_')"> EXCEL </button>
                                             <button type="button" class="btn btn-primary btn-sm"
                                                 onclick="printReport('vaccinationTable')"> PRINT </button>
-                                                <button type="button" class="btn btn-primary btn-sm"
-                                                onclick="toPDF()"> PDF </button>
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="toPDF()"> PDF
+                                            </button>
                                         </div>
                                         <div class="col-auto">
                                             <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
@@ -2285,6 +2309,215 @@
         </div>
 
 
+        <!-- Add New Product projection Modal -->
+        <div class="modal fade" id="addProductModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card bg-gradient-primary">
+                                        <div class="mx-auto "
+                                            style="border-radius: 0.15rem; width: auto; color: white;">
+                                            <h4 class="font-monospace font-weight-bold"
+                                                id="registerFeedStockModalLabel"> REGISTER NEW ANIMAL PROJECTIONS </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-4">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <!-- Feeds Registration Form -->
+                                            <form class="row g-3 " enctype="multipart/form-data" method="post"
+                                                id="recordNewProductProjection" name="recordProductProjections">
+
+                                                <div class="col-md-3">
+                                                    <label for="product_projection" class="form-label fw-bold"> PRODUCT
+                                                        TYPE </label>
+                                                    <select class="form-select" id="product_projection"
+                                                        name="product_projection" required onchange="getAnimalList()">
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label for="product_start_date" class="form-label fw-bold">
+                                                        PRODUCTION START DATE
+                                                    </label>
+                                                    <input id="product_start_date" type="date" class="form-control"
+                                                        name="feeds_stock_date" required>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label for="production_frequency" class="form-label fw-bold">
+                                                        PRODUCTION FREQUENCY </label>
+                                                    <input id="production_frequency" type="number" class="form-control"
+                                                        name="feeds_stock_date" required>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label for="production_period" class="form-label fw-bold"> EVERY
+                                                    </label>
+                                                    <select class="form-select" id="production_period"
+                                                        name="production_period" required>
+                                                        <option value="1" selected> Day </option>
+                                                        <option value="7"> Week </option>
+                                                        <option value="14"> Fortnight </option>
+                                                        <option value="30"> Month </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="production_qnty" class="form-label fw-bold"> PRODUCTION
+                                                        QUANTITY PER CYCLE </label>
+                                                    <input id="production_qnty" type="number" class="form-control"
+                                                        name="production_qnty" required>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="production_period" class="form-label fw-bold">
+                                                        PRODUCTION QUANTITY MEASURE/CYCLE </label>
+                                                    <select class="form-select" id="production_period"
+                                                        name="production_period" required>
+                                                        <option value="1" selected> gram(g) </option>
+                                                        <option value="1000"> Kilogram(kg) </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="all_production_qnty" class="form-label fw-bold"> TOTAL
+                                                        PRODUCTION QUANTITY </label>
+                                                    <input id="all_production_qnty" type="text" disabled
+                                                        class="form-control" name="all_production_qnty" required>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="target_animals" class="form-label fw-bold"> TARGET
+                                                        ANIMALS </label>
+                                                    <select class="form-select" id="target_animals"
+                                                        name="target_animals" required> </select>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label for="targeted" class="form-label fw-bold"> TARGET LISTING
+                                                    </label>
+                                                    <div id="targeted"> </div>
+                                                </div>
+                                        </div>
+
+                                        <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                            <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
+                                                type="button"> cancel </button>
+                                            <button class="btn btn-primary font-monospace" type="submit"> submit form
+                                            </button>
+                                        </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Product Expections modal -->
+        <div class="modal fade" id="productsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="productsModalToggleLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="container">
+
+                            <div class="toast-container position-absolute p-3 bottom-1000 start-50 translate-middle-x"
+                                style="z-index: 5">
+                                <div class="toast align-items-center text-white bg-light border-0" role="alert"
+                                    id="ttoast" aria-live="assertive" aria-atomic="true">
+                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-exclamation-triangle me-3"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+                                            <path
+                                                d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
+                                        </svg>
+                                        <div id="error_msg"> </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row px-2">
+                                <div class="mx-auto" style="width: auto;">
+                                    <h5 class="font-monospace" id="feedsModalLabel"> AVAILABLE FEEDS
+                                    </h5>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="row px-4">
+                                        <!-- Feeds Table Form -->
+                                        <table id="feedsTable" class="table table-bordered table-hover table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="text-center font-monospace"> ID </th>
+                                                    <th scope="col" class="text-center font-monospace"> NAME </th>
+                                                    <th scope="col" class="text-center font-monospace"> DESCRIPTION
+                                                    </th>
+                                                    <th scope="col" class="text-center font-monospace"> QUANTITY </th>
+                                                    <th scope="col" class="text-center font-monospace"> STOCK DATE </th>
+                                                    <th scope="col" class="text-center font-monospace"> EXPECTED RESTOCK
+                                                        DATE </th>
+                                                    <th scope="col" class="nopnt text-center font-monospace"> EDIT
+                                                    </th>
+                                                    <th scope="col" class="nopnt text-center font-monospace"> DELETE
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="feedsListing"> </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="row px-4 py-4">
+                                        <div class="col-auto me-auto">
+                                            <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                        </div>
+                                        <div class="col-auto me-auto">
+                                            <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                        </div>
+                                        <div class="col-auto">
+                                            <h6 class="fw-bold"> Export your data to </h6>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                onclick="toExcel('feedsTable', 'ANIMAL FEEDS REPORT_')"> EXCEL </button>
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                onclick="printReport('vaccinationTable')"> PRINT </button>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                                aria-label="Close"> CLOSE </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Generated Animal Vaccination TimeTable modal -->
         <div class="modal fade" id="generatedVaxModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="generatedVaxModalToggleLabel" aria-hidden="true">
@@ -3374,7 +3607,7 @@
             </div>
         </div>
 
-        
+
         <!-- Bootstrap core JavaScript-->
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
