@@ -210,3 +210,10 @@ h2 {
   color: red;
   width: 10px;
 }
+
+
+.clickable {
+  /* height: 50px; */
+  background: gray;
+  border: 2px solid black;
+}

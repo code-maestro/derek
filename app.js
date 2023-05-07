@@ -537,7 +537,7 @@ app.get('/getListing/:param', function (request, response) {
 
         allProducts: `SELECT B.id, A.animal_tag, B.name, B.quantity, C.expected_qnty, IF(B.quantity_measure >= 1000, 'kg', 'g') AS measure FROM animal A, products B, product_schedule C WHERE B.animal_id = A.id AND B.animal_id = C.animal_id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
 
-        product_types: `SELECT type_id, name FROM product_types WHERE animal_type = '${animal_type}';`,
+        product_types: `SELECT type_id, name, price, price_qnty, currency_code FROM product_types WHERE animal_type = '${animal_type}';`,
 
         dairy:`SELECT * FROM V_DAIRY_${animal_type} WHERE farma_id = '${farma_id}';`,
 
@@ -548,6 +548,8 @@ app.get('/getListing/:param', function (request, response) {
         eggs:`SELECT * FROM V_EGGS_${animal_type} WHERE farma_id = '${farma_id}';`,
 
         hooves:`SELECT * FROM V_HOOVES_${animal_type} WHERE farma_id = '${farma_id}';`,
+
+        projections: `SELECT projection_id, id, title, description, product_type, production_qnty, IF(production_measure >= 1000, 'kg', 'g') AS measure, product_start_date, product_end_date FROM product_projections WHERE farma_id = '${farma_id}';`,
 
         notifications: `SELECT B.id, CONCAT(A.first_name, ' ', A.last_name) AS names, B.action, B.action_date FROM farma A, audit_trail B WHERE B.user_id = A.farma_id AND A.farma_id = '${farma_id}' AND B.animal_type='${animal_type}';`,
 
@@ -1261,7 +1263,49 @@ app.post('/newVet', function (request, response) {
 });
 
 
-// Inserting Feeds into the DB
+// Inserting Product Type into the DB
+app.post('/newProductType', function (request, response) {
+
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`INSERT INTO product_types (name,animal_type,farma_id,price,price_qnty,currency_code) VALUES ('${request.body.type_title}','${animal}','${farma_id}','${request.body.type_price}','${request.body.price_qnty}','${request.body.currency}');`,
+
+        function (error, results, fields) {
+
+            if (error) {
+
+                console.log(error);
+
+                logger.error(error.errno + error.message);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: `${request.body.type_title} Added Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: `Adding ${request.body.type_title} Failed` });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
+
+
+// Inserting Product Projections into the DB
 app.post('/newProductProjection', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
