@@ -539,6 +539,16 @@ app.get('/getListing/:param', function (request, response) {
 
         product_types: `SELECT type_id, name FROM product_types WHERE animal_type = '${animal_type}';`,
 
+        dairy:`SELECT * FROM V_DAIRY_${animal_type} WHERE farma_id = '${farma_id}';`,
+
+        meat: `SELECT * FROM V_MEAT_${animal_type} WHERE farma_id = '${farma_id}';`,
+
+        skin: `SELECT * FROM V_SKIN_${animal_type} WHERE farma_id = '${farma_id}';`,
+
+        eggs:`SELECT * FROM V_EGGS_${animal_type} WHERE farma_id = '${farma_id}';`,
+
+        hooves:`SELECT * FROM V_HOOVES_${animal_type} WHERE farma_id = '${farma_id}';`,
+
         notifications: `SELECT B.id, CONCAT(A.first_name, ' ', A.last_name) AS names, B.action, B.action_date FROM farma A, audit_trail B WHERE B.user_id = A.farma_id AND A.farma_id = '${farma_id}' AND B.animal_type='${animal_type}';`,
 
     }
@@ -1239,6 +1249,48 @@ app.post('/newVet', function (request, response) {
                 } else {
 
                     return response.json({ status: 400, message: `Adding ${request.body.vetFname} ${request.body.vetLname} Failed ` });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
+
+
+// Inserting Feeds into the DB
+app.post('/newProductProjection', function (request, response) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+
+
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`INSERT INTO product_projections (title,description,product_type,production_frequency,production_period,product_start_date,product_end_date,production_qnty,production_measure,animal_list,one_animal,farma_id) VALUES ('${request.body.projection_title}','${request.body.projection_desc}','${request.body.product_type}',${request.body.production_frequency},'${request.body.production_period}', '${request.body.product_start_date}', '${request.body.product_end_date}', '${request.body.production_qnty}', '${request.body.production_measure}', '${request.body.production_animal_list}', '${request.body.record_one_animal}','${farma_id}');`,
+
+        function (error, results, fields) {
+
+            if (error) {
+
+                console.log(error);
+
+                logger.error(error.errno + error.message);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: `${request.body.projection_title} Added Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: `Adding ${request.body.projection_title} Failed` });
 
                 }
 

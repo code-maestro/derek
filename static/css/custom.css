@@ -172,3 +172,41 @@ h2 {
   display: flex;
   justify-content: center;
 }
+
+.bd-callout {
+  padding: 1rem;
+  margin: 0;
+  border: 1px solid #eee;
+  border-left-width: .25rem;
+  border-radius: .25rem
+}
+
+.bd-callout h4 {
+  margin-top: 0;
+  margin-bottom: .25rem
+}
+
+.bd-callout p:last-child {
+  margin-bottom: 0
+}
+
+.bd-callout code {
+  border-radius: .25rem
+}
+
+.bd-callout+.bd-callout {
+  margin-top: -.25rem
+}
+
+.bd-callout-default {
+  border-left-color: #28a745
+}
+
+.bd-callout-default h4 {
+  color: #6c757d
+}
+
+.close {
+  color: red;
+  width: 10px;
+}
