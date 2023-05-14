@@ -11,7 +11,7 @@ const viewSchedule = async (type, id) => {
   let htmlSegment = "";
   let con = "";
 
-    console.log(schedules);
+  console.log(schedules);
 
   if (type === "feeding") {
 
@@ -132,15 +132,88 @@ async function recordSchedule() {
 
 }
 
-
 const scheduleForm = document.forms.namedItem("recordSchedule");
-
 scheduleForm.addEventListener("submit", (event) => {
 
   recordSchedule();
 
   event.preventDefault();
 
+},
+
+  false
+
+);
+
+
+async function recordFeedingSchedule() {
+  try {
+
+    const ttData = {
+      timetableTitle: document.getElementById('timetableTitle').value,
+      feedingCycle: document.getElementById('feeding-cycle').value,
+      feedingPeriod: document.getElementById('fPeriod').value,
+      feedingQuantityPerCycle: document.getElementById('feeding-quantity').value,
+      feedingQuantityPerCycleUnit: document.getElementById('feedQuantityMeasure').value,
+      plannedQnty: document.getElementById('plannedQnty').value,
+      plannedQntyMeasure: document.getElementById('plannedQntyMeasure').value,
+      feedingStartDate: document.getElementById('feedingStartDate').value,
+      feedsID: document.getElementById('feeds_id').value
+    }
+
+
+    console.log(ttData);
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(ttData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/newTimeTable`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+        $('#newFeedingTimetableModalToggle').modal('hide');
+        document.getElementById("newFeedingTT").reset();
+        // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+
+const feedingTTForm = document.forms.namedItem("newFeedingTT");
+feedingTTForm.addEventListener("submit", (event) => {
+  recordFeedingSchedule();
+  event.preventDefault();
 },
 
   false

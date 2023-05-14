@@ -537,19 +537,21 @@ app.get('/getListing/:param', function (request, response) {
 
         allProducts: `SELECT B.id, A.animal_tag, B.name, B.quantity, C.expected_qnty, IF(B.quantity_measure >= 1000, 'kg', 'g') AS measure FROM animal A, products B, product_schedule C WHERE B.animal_id = A.id AND B.animal_id = C.animal_id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
 
-        product_types: `SELECT type_id, name, price, price_qnty, currency_code FROM product_types WHERE animal_type = '${animal_type}';`,
+        product_types: `SELECT type_id, name, price, price_qnty, IF(price_qnty >= 1000, 'kg', 'g') as price_qty, currency_code FROM product_types WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
 
-        dairy:`SELECT * FROM V_DAIRY_${animal_type} WHERE farma_id = '${farma_id}';`,
+        milk: `SELECT * FROM V_DAIRY_${animal_type} WHERE farma_id = '${farma_id}';`,
 
         meat: `SELECT * FROM V_MEAT_${animal_type} WHERE farma_id = '${farma_id}';`,
 
         skin: `SELECT * FROM V_SKIN_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        eggs:`SELECT * FROM V_EGGS_${animal_type} WHERE farma_id = '${farma_id}';`,
+        eggs: `SELECT * FROM V_EGGS_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        hooves:`SELECT * FROM V_HOOVES_${animal_type} WHERE farma_id = '${farma_id}';`,
+        hooves: `SELECT * FROM V_HOOVES_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        projections: `SELECT projection_id, id, title, description, product_type, production_qnty, IF(production_measure >= 1000, 'kg', 'g') AS measure, product_start_date, product_end_date FROM product_projections WHERE farma_id = '${farma_id}';`,
+        horns: `SELECT * FROM V_HORNS_${animal_type} WHERE farma_id = '${farma_id}';`,
+
+        projections: `SELECT projection_id, id, title, description, product_type, production_qnty, IF(production_measure >= 1000, 'kg', 'g') AS measure, product_start_date, product_end_date, animal_list FROM product_projections WHERE farma_id = '${farma_id}';`,
 
         notifications: `SELECT B.id, CONCAT(A.first_name, ' ', A.last_name) AS names, B.action, B.action_date FROM farma A, audit_trail B WHERE B.user_id = A.farma_id AND A.farma_id = '${farma_id}' AND B.animal_type='${animal_type}';`,
 
@@ -812,7 +814,7 @@ app.get('/verify-otp', async (request, response) => {
         connection.query(`CALL verify_otp ('${userId}', '${code}', @user_id);`, function (err, result) {
             if (err) {
                 console.log(err);
-                response.send( { status: 500, message: err.sqlMessage });
+                response.send({ status: 500, message: err.sqlMessage });
             } else {
 
                 console.log(result[0][0].VERIFIED);
@@ -877,7 +879,7 @@ app.post('/register-farma', function (request, response) {
             if (error) {
                 console.log(error)
                 return response.json({ status: 500, message: error.sqlMessage });
-                    
+
             } else {
 
                 return response.json({ status: 200, message: 'User Registration Successfuly.', user_id: `${f_id}` });
@@ -905,37 +907,43 @@ app.post('/authenticate', function (request, response) {
 
             // If there is an issue with the query, output the error
             if (error) {
+
+                console.log(error);
+
                 logger.error(error.errno + error.message);
                 response.redirect(`/`);
-            }
-
-            // If the account exists
-            if (results.length > 0) {
-
-                logger.error("SUCCESSFULLY AUTHENTICATED");
-                console.log("SUCCESSFULLY AUTHENTICATED");
-
-                // Authenticate the user
-                const row = Object.values(JSON.parse(JSON.stringify(results)));
-
-                row.forEach(element => {
-                    // Save data to sessionStorage
-                    storage('farma_id', element.farma_id);
-                    storage('farma_name', element.first_name + ' ' + element.last_name);
-
-                    if (element.list_of_animals == null) {
-                        response.send({ url: '/selection' });
-                    } else {
-                        response.send({ url: '/home' });
-                    }
-                });
 
             } else {
+                
+                console.log(results);
 
-                response.send({ url: 'error' });
-
+                // If the account exists
+                if (results.length > 0) {
+    
+                    logger.error("SUCCESSFULLY AUTHENTICATED");
+                    console.log("SUCCESSFULLY AUTHENTICATED");
+    
+                    // Authenticate the user
+                    const row = Object.values(JSON.parse(JSON.stringify(results)));
+    
+                    row.forEach(element => {
+                        // Save data to sessionStorage
+                        storage('farma_id', element.farma_id);
+                        storage('farma_name', element.first_name + ' ' + element.last_name);
+    
+                        if (element.list_of_animals == null) {
+                            response.send({ url: '/selection' });
+                        } else {
+                            response.send({ url: '/home' });
+                        }
+                    });
+    
+                } else {
+    
+                    response.send({ url: 'error' });
+    
+                }
             }
-
             response.end();
 
         });
@@ -1040,13 +1048,35 @@ app.post('/newTimeTable', function (request, response) {
         VALUES ('${request.body.timetableTitle}','${animal}', ${request.body.feedingCycle},${request.body.feedingPeriod},${request.body.feedingQuantityPerCycle},${request.body.feedingQuantityPerCycleUnit},${request.body.plannedQnty},${request.body.plannedQntyMeasure},'${request.body.feedingStartDate}',${request.body.feedsID}, '${rand_id}');`,
 
         function (error, results, fields) {
-            if (error) throw error;
-        });
+            if (error) {
 
-    response.redirect(`/animal/${animal}`);
+                console.log(error);
 
-    return;
-})
+                logger.error(error.errno + error.message);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: `${request.body.timetableTitle} Added Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: `Adding ${request.body.timetableTitle} Failed` });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
 
 
 // Updating animal data
@@ -1343,6 +1373,51 @@ app.post('/newProductProjection', function (request, response) {
         }
 
     );
+
+});
+
+
+// Modify animal product type
+app.post('/editProductType', function (request, response) {
+    const farma_id = storage('farma_id');
+    const animal = storage('animal');
+
+    if (farma_id) {
+
+        // Execute SQL query that'll insert into the vaccines table
+        connection.query(`UPDATE product_types SET name = '${request.body.product_type_title}',price = '${request.body.product_type_price}',price_qnty ='${request.body.product_type_qnty}' ,currency_code = '${request.body.product_currency}' WHERE animal_type = '${animal}' AND farma_id = '${farma_id}' AND type_id = '${request.body.product_type_id}';`,
+
+            function (error, results, fields) {
+
+                if (error) {
+
+                    console.log(error);
+
+                    logger.error(error.errno + error.message);
+
+                    return response.json({ status: 500, message: error.sqlMessage });
+
+                } else {
+
+                    console.log(results);
+
+                    if (results.affectedRows > 0) {
+
+                        return response.json({ status: 200, message: `${request.body.product_type_title} modified Successfuly.` });
+
+                    } else {
+
+                        return response.json({ status: 400, message: `Modifying ${request.body.product_type_title} Failed` });
+
+                    }
+
+                }
+
+            }
+
+        );
+
+    }
 
 });
 
@@ -1751,7 +1826,6 @@ app.post('/save', async (request, response) => {
 });
 
 
-
 // End Point adding new animal
 app.post('/addAnimal', (request, response) => {
     uploadImage(request, response, (err) => {
@@ -1797,6 +1871,7 @@ app.post('/addAnimal', (request, response) => {
         }
     });
 });
+
 
 // Function to delete data from animal
 app.post('/delete', function (request, response) {

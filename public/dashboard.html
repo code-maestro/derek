@@ -253,11 +253,14 @@
 
                     <div id="products" class="collapse" aria-labelledby="products" data-parent="#accordionSidebar">
                         <div class="bg-white collapse-inner rounded">
-                            <span class="collapse-item" data-bs-toggle="modal" href="#addProductTypeModalToggle" role="button"> Add Product Type </span>
-                            <span class="collapse-item" onclick="getProductTypes('productTypesListing')" data-bs-toggle="modal"
-                            href="#productTypeModalToggle" role="button"> Product Types </span>
-                            <span class="collapse-item" onclick="getProductTypes('projectionListing')" data-bs-toggle="modal"
-                                href="#addProductModalToggle" role="button"> Add Projections </span>
+                            <span class="collapse-item" data-bs-toggle="modal" href="#addProductTypeModalToggle"
+                                role="button"> Add Product Type </span>
+                            <span class="collapse-item" onclick="getProductTypes('productTypesListing')"
+                                data-bs-toggle="modal" href="#productTypeModalToggle" role="button"> Product Types
+                            </span>
+                            <span class="collapse-item" onclick="getProductTypes('projectionListing')"
+                                data-bs-toggle="modal" href="#addProductModalToggle" role="button"> Add Projections
+                            </span>
                             <span class="collapse-item" onclick="getProjections()" data-bs-toggle="modal"
                                 href="#productsModalToggle" role="button"> View Expected </span>
                         </div>
@@ -709,7 +712,7 @@
 
                             <h5 class="card-title my-4"> Select "Logout" below if you are ready to end your current
                                 session. </h5>
-                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                            <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                 <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
                                     type="button"> cancel </button>
                                 <a class="btn btn-primary" href="/logout"> LOGOUT </a>
@@ -811,7 +814,7 @@
                                                              -->
                                                 </div>
 
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button"> cancel </button>
                                                     <button class="btn btn-primary font-monospace" type="submit"> submit
@@ -1025,7 +1028,7 @@
                                                         name="injectionArea" spellcheck="false" value="">
                                                 </div>
 
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button">
                                                         cancel </button>
@@ -1214,7 +1217,7 @@
                                                         name="scheduled_first_date" spellcheck="false">
                                                 </div>
 
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button"> cancel </button>
                                                     <button class="btn btn-primary font-monospace" type="submit"> submit
@@ -1447,7 +1450,7 @@
                                                         name="newBornRegDate" spellcheck="false" value="">
                                                 </div>
 
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button">
                                                         cancel </button>
@@ -1654,7 +1657,7 @@
                                                         name="vetStation" spellcheck="false">
                                                 </div>
 
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button"> cancel </button>
                                                     <button class="btn btn-primary font-monospace" type="submit"> submit
@@ -1888,7 +1891,7 @@
                                                 </div>
                                         </div>
 
-                                        <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                        <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                             <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
                                                 type="button"> cancel </button>
                                             <button class="btn btn-primary font-monospace" type="submit"> submit form
@@ -2009,7 +2012,7 @@
                                     <div class="card bg-gradient-primary">
                                         <div class="mx-auto "
                                             style="border-radius: 0.15rem; width: auto; color: white;">
-                                            <h4 class="font-monospace font-weight-bold" id="newVetModalLabel"> GENERATE
+                                            <h4 class="font-monospace font-weight-bold" id="newFeedingTTModalLabel"> GENERATE
                                                 NEW FEEDING TIMETABLE </h4>
                                         </div>
                                     </div>
@@ -2020,8 +2023,10 @@
                                 <div class="col">
                                     <div class="card">
                                         <div class="card-body">
+
                                             <!-- New Feeds Form -->
-                                            <form method="POST" action="/newTimeTable" class="row g-3 ">
+                                            <form class="row g-3 " enctype="multipart/form-data" method="post"
+                                            id="newFeedingTT" name="newFeedingTT">
 
                                                 <div class="col-md-12">
                                                     <input id="feeds_id" type="number" class="form-control"
@@ -2133,7 +2138,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button"> CANCEL </button>
                                                     <button class="btn btn-primary font-monospace" type="submit">
@@ -2317,7 +2322,7 @@
         <!-- Add New Product Type Modal -->
         <div class="modal fade" id="addProductTypeModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="addProductTypeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div>
@@ -2342,37 +2347,38 @@
                                             <form class="row g-3 " enctype="multipart/form-data" method="post"
                                                 id="recordNewProductType" name="recordNewProductType">
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-12">
                                                     <label for="type_title" class="form-label fw-bold"> TITLE </label>
                                                     <input type="text" class="form-control" id="type_title"
                                                         placeholder="Enter Title" name="type_title" required />
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <label for="currency" class="form-label fw-bold"> QUANTITY PRICED
+                                                <div class="col-md-4">
+                                                    <label for="currency" class="form-label fw-bold"> CURRENCY
                                                     </label>
                                                     <select class="form-select" id="currency" name="currency" required>
                                                         <option value="UGX" selected> UGX </option>
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-8">
+                                                <div class="col-md-4">
                                                     <label for="type_price" class="form-label fw-bold"> PRICE </label>
                                                     <input type="number" class="form-control" id="type_price"
-                                                        placeholder="Enter Description" name="type_price" required />
+                                                        placeholder="Enter Price" name="type_price" required />
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <label for="price_qnty" class="form-label fw-bold"> QUANTITY PRICED
-                                                    </label>
-                                                    <select class="form-select" id="type_qnty" name="type_qnty"
-                                                        required>
-                                                        <option value="1" selected> gram(g) </option>
+                                                <div class="col-md-4">
+                                                    <label for="price_qnty" class="form-label fw-bold"> QUANTITY </label>
+                                                    <select class="form-select" id="type_qnty" name="type_qnty" required>
+                                                        <option selected> Choose Quantity measure </option>
+                                                        <option value="1"> millilitres(ml) </option>
+                                                        <option value="1000"> litres(l) </option>
+                                                        <option value="1"> gram(g) </option>
                                                         <option value="1000"> Kilogram(kg) </option>
                                                     </select>
                                                 </div>
 
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button"> cancel </button>
                                                     <button class="btn btn-primary font-monospace" type="submit"> submit
@@ -2403,7 +2409,8 @@
                         <div class="container">
                             <div class="row pt-2">
                                 <div class="mx-auto" style="width: auto;">
-                                    <h5 class="font-monospace" id="productTypesModalLabel"> PRODUCT TYPES </h5>
+                                    <h3 class="font-monospace" id="productTypesModalLabel"> <strong> PRODUCT TYPES
+                                        </strong> </h3>
                                 </div>
                             </div>
 
@@ -2417,7 +2424,6 @@
                                                     <th scope="col" class="text-center font-monospace"> ID </th>
                                                     <th scope="col" class="text-center font-monospace"> NAME </th>
                                                     <th scope="col" class="text-center font-monospace"> PRICE </th>
-                                                    <th scope="col" class="text-center font-monospace"> ACTION </th>
                                                 </tr>
                                             </thead>
                                             <tbody id="productTypesListing"> </tbody>
@@ -2447,6 +2453,81 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modify Product Type Modal -->
+        <div class="modal fade" id="productTypeDetailsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="productTypeDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card bg-gradient-primary">
+                                        <div class="mx-auto "
+                                            style="border-radius: 0.15rem; width: auto; color: white;">
+                                            <h4 class="font-monospace font-weight-bold" id="productTypeDetailsModalLabel"> MODIFY ANIMAL PRODUCT TYPE </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-4">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <!-- Production Projections Form -->
+                                            <form class="row g-3 " enctype="multipart/form-data" method="post"
+                                                id="modifyProductType" name="modifyProductType">
+
+                                                    <input type="number" id="product_type_id" name="product_type_id" hidden disabled readonly />
+
+                                                <div class="col-md-12">
+                                                    <label for="product_type_title" class="form-label fw-bold"> TITLE </label>
+                                                    <input type="text" class="form-control" id="product_type_title" name="product_type_title" />
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="currency" class="form-label fw-bold"> CURRENCY </label>
+                                                    <select class="form-select" id="product_currency" name="product_currency">
+                                                        <option value="UGX" selected> UGX </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="product_type_price" class="form-label fw-bold"> PRICE </label>
+                                                    <input type="number" class="form-control" id="product_type_price" name="product_type_price" />
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="product_price_qnty" class="form-label fw-bold"> QUANTITY PRICED </label>
+                                                    <select class="form-select" id="product_type_qnty" name="product_type_qnty">
+                                                        <option id="value_from_db" selected> gram(g) </option>
+                                                        <option value="1"> gram(g) </option>
+                                                        <option value="1000"> Kilogram(kg) </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
+                                                    <button class="btn btn-light me-md-2 font-monospace"
+                                                        data-bs-dismiss="modal" type="button"> cancel </button>
+                                                    <button class="btn btn-primary font-monospace" type="submit"> submit form </button>
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -2556,7 +2637,10 @@
                                                         PRODUCTION QUANTITY MEASURE/CYCLE </label>
                                                     <select class="form-select" id="production_measure"
                                                         name="production_measure" required>
-                                                        <option value="1" selected> gram(g) </option>
+                                                        <option selected> Choose Quantity measure </option>
+                                                        <option value="1"> millilitres(ml) </option>
+                                                        <option value="1000"> litres(l) </option>
+                                                        <option value="1"> gram(g) </option>
                                                         <option value="1000"> Kilogram(kg) </option>
                                                     </select>
                                                 </div>
@@ -2598,7 +2682,7 @@
 
                                         </div>
 
-                                        <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                        <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                             <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
                                                 type="button"> cancel </button>
                                             <button class="btn btn-primary font-monospace" type="submit"> submit
@@ -2705,15 +2789,20 @@
 
                                 <div class="col">
                                     <div class="row px-2">
-                                        <div id="myPlot" style="width:50%;max-width:500px"></div>
+                                        <div id="myPlot" style="width:100%;max-width:500px"></div>
                                     </div>
                                 </div>
 
                                 <div class="col">
                                     <div class="row px-2">
+
                                         <form class="row g-3 " enctype="multipart/form-data" method="post"
                                             id="recordDaysProduct" name="recordDaysProduct"
                                             style="width:100%;max-width:500px">
+
+                                            <div class="col-md-12">
+                                                <h4 class="font-monospace my-0"> PROJECTIONS </h4>
+                                            </div>
 
                                             <div class="col-md-12">
                                                 <label for="days_qnty" class="form-label fw-bold"> QUANTITY PRODUCED
@@ -2747,7 +2836,7 @@
                                                     name="expected_price " required />
                                             </div>
 
-                                            <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                            <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                 <button class="btn btn-light me-md-2 font-monospace"
                                                     data-bs-dismiss="modal" type="button"> CANCEL </button>
                                                 <button class="btn btn-primary font-monospace" type="submit">
@@ -3199,7 +3288,7 @@
 
                                                 <input id="edit-vet-uuid" type="text" name="editVetID" hidden>
 
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button">
                                                         cancel </button>
@@ -3293,7 +3382,7 @@
                                                         name="newBornAnimalAge" value="">
                                                 </div>
 
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button">
                                                         cancel </button>
@@ -3489,7 +3578,7 @@
                                             name="editInjectionArea" spellcheck="false" value="">
                                     </div>
 
-                                    <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                    <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                         <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
                                             type="button">
                                             cancel </button>
@@ -3770,7 +3859,7 @@
                                                 </div>
                                         </div>
 
-                                        <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                        <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                             <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
                                                 type="button"> cancel </button>
                                             <button class="btn btn-primary font-monospace" type="submit"> udpate

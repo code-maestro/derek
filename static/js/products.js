@@ -26,26 +26,16 @@ const getProductTypes = async (param) => {
     const con = document.getElementById('productTypesListing');
 
     products.listing.forEach(product => {
+
+      console.log(product);
+
       htmlSegment = `
-    <tr class="justify-content-center" id="${product.type_id}">
-      <td class="text-center"> ${product.type_id} </td>   
-      <td class="text-center"> ${product.name} </td> 
-      <td class="text-center"> ${product.currency_code + ' ' + product.price + '/' + product.price_qnty} </td> 
- 
-      <td class="text-center nopnt" data-bs-target="#editVetToggle" data-bs-toggle="modal">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
-          <path d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3h4v-.5A1.5 1.5 0 0 0 5.5 1h-1zM7 4v1h2V4h4v.882a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V13H9v-1.5a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5V13H1V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882V4h4zM1 14v.5A1.5 1.5 0 0 0 2.5 16h3A1.5 1.5 0 0 0 7 14.5V14H1zm8 0v.5a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5V14H9zm4-11H9v-.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5V3z"/>
-        </svg>
-      </td>
-
-      <td class="text-center nopnt" data-bs-toggle="modal" data-bs-target="#approveModalToggle">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-          <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
-        </svg>
-      </td>
-    </tr>
-
-  `;
+        <tr onclick="viewProductType('${product.type_id}', '${product.name}','${product.currency_code}','${product.price}', '${product.price_qty}', '${product.price_qnty}')" class="justify-content-center" id="${product.type_id}">
+          <td class="text-center"> ${product.type_id} </td>   
+          <td class="text-center"> ${product.name} </td> 
+          <td class="text-center"> ${product.currency_code + ' ' + product.price + '/' + product.price_qty} </td> 
+        </tr>
+    `;
 
       html += htmlSegment;
 
@@ -72,7 +62,7 @@ const getAnimalList = async () => {
 
   switch (selectedProductType) {
     // [x] animals listing fixed  
-    case 'dairy':
+    case 'milk':
       products = await getListing(`${selectedProductType}`);
       break;
 
@@ -154,6 +144,7 @@ const removeItem = (param) => {
 
 }
 
+
 // Function Adding new Feed
 async function recordProductType() {
 
@@ -230,8 +221,6 @@ productTypeForm.addEventListener("submit", (event) => {
 
 // Function Adding new Feed
 async function recordProjection() {
-
-  console.log(picked_animals.toString());
 
   try {
     // post body data 
@@ -322,8 +311,11 @@ const getProjections = async () => {
   const con = document.getElementById('projectionListing');
 
   projections.listing.forEach(projection => {
+
+    const arrayy = [projection.animal_list];
+
     htmlSegment = `
-    <tr class="justify-content-center" onclick="viewProjection('${projection.projection_id}', ' ${projection.title}', '${projection.production_qnty + ' ' + projection.measure}')" id="${projection.projection_id}">
+    <tr class="justify-content-center" onclick="viewProjection('${projection.projection_id}', ' ${projection.title}', '${projection.production_qnty}', '${projection.measure}', '${arrayy}')" id="${projection.projection_id}">
       <td class="text-center"> ${projection.id} </td>   
       <td class="text-center"> ${projection.title} </td> 
       <td class="text-center"> ${projection.description} </td> 
@@ -342,32 +334,126 @@ const getProjections = async () => {
 
 }
 
-const viewProjection = (param1, param2, param3) => {
+
+const viewProjection = (param1, param2, param3, param4, param5) => {
 
   $('#productGraphModalToggle').modal('show');
 
-  document.getElementById('projectionsModalLabel').innerText = `${param2} PROJECTION`;
-  document.getElementById('expected_qnty').setAttribute("value", param3)
+  const today = new Date();
 
-  var xArray = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
-  var yArray = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+  document.getElementById('projectionsModalLabel').innerText = `${param2} PROJECTION FOR ${today.toLocaleDateString()}`;
+  document.getElementById('expected_qnty').setAttribute("value", param3);
 
-  // Define Data
-  var data = [{
-    x: xArray,
-    y: yArray,
-    mode: "lines",
-    type: "scatter"
-  }];
+  const integers = param5.split(",");
 
-  // Define Layout
-  var layout = {
-    xaxis: { range: [40, 160], title: "Square Meters" },
-    yaxis: { range: [5, 16], title: "Price in Millions" },
-    title: "House Prices vs Size"
-  };
+  const animals = integers;
+  const ACTUAL = ["5", "5", "50", "10", "25"];
+  const EXPECTED = ["5", "20", "40", "0", "15"];
 
-  // Display using Plotly
-  Plotly.newPlot("myPlot", data, layout);
+
+  var data = [
+    {
+      histfunc: "sum",
+      y: EXPECTED,
+      x: animals,
+      type: "histogram",
+      name: "produced"
+    },
+    {
+      histfunc: "sum",
+      y: ACTUAL,
+      x: animals,
+      type: "histogram",
+      name: "expected"
+    }
+  ]
+
+  Plotly.newPlot('myPlot', data)
+
+
 
 }
+
+
+const viewProductType = (type_id, name, code, price, qnty_tag, qnty) => {
+
+  $('#productTypeDetailsModalToggle').modal('show');
+
+  document.getElementById('product_type_title').setAttribute("value", name);
+  document.getElementById('product_type_price').value = price;
+  document.getElementById('product_currency').value = code;
+  document.getElementById('value_from_db').value = qnty;
+  document.getElementById('value_from_db').innerText = qnty_tag;
+  document.getElementById('product_type_id').value = type_id;
+
+}
+
+
+// Function Adding new Feed
+async function editProductType() {
+
+  try {
+    // post body data 
+    const typeData = {
+      product_type_title: document.getElementById('product_type_title').value,
+      product_type_price: document.getElementById('product_type_price').value,
+      product_currency: document.getElementById('product_currency').value,
+      product_type_qnty: document.getElementById('product_type_qnty').value,
+      product_type_id: document.getElementById('product_type_id').value
+    };
+
+    console.log(typeData);
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(typeData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/editProductType`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+        $('#productTypeDetailsModalToggle').modal('hide');
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}
+
+const editProductTypeForm = document.forms.namedItem("modifyProductType");
+editProductTypeForm.addEventListener("submit", (event) => {
+  editProductType();
+  event.preventDefault();
+
+},
+
+  false
+
+);
+
