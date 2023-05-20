@@ -3223,8 +3223,7 @@
 
 
         <!-- Edt Vet Modal -->
-        <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aaria-labelledby="editVetToggleLabel" aria-hidden="true">
+        <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editVetToggleLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -3248,19 +3247,17 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- New Vet Form -->
-                                            <form class="row g-3 " novalidate method="POST" action="/updateVet">
+                                                <form class="row g-3 " enctype="multipart/form-data" method="post" id="updateVetForm"
+                                                name="updateVetForm">
+                                                
                                                 <div class="col-md-6">
-                                                    <label for="edit-vet-fname" class="form-label fw-bold"> First
-                                                        Name</label>
-                                                    <input id="edit-vet-fname" type="text" class="form-control"
-                                                        name="editVetFname" spellcheck="false">
+                                                    <label for="edit-vet-fname" class="form-label fw-bold"> First Name</label>
+                                                    <input id="edit-vet-fname" type="text" class="form-control" name="editVetFname" spellcheck="false">
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label for="edit-vet-lname" class="form-label fw-bold"> Last
-                                                        Name</label>
-                                                    <input id="edit-vet-lname" type="text" class="form-control"
-                                                        name="editVetLname" spellcheck="false">
+                                                    <label for="edit-vet-lname" class="form-label fw-bold"> Last Name</label>
+                                                    <input id="edit-vet-lname" type="text" class="form-control" name="editVetLname" spellcheck="false">
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -3289,12 +3286,8 @@
                                                 <input id="edit-vet-uuid" type="text" name="editVetID" hidden>
 
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
-                                                    <button class="btn btn-light me-md-2 font-monospace"
-                                                        data-bs-dismiss="modal" type="button">
-                                                        cancel </button>
-                                                    <button class="btn btn-primary font-monospace" type="submit">
-                                                        submit
-                                                        form </button>
+                                                    <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button"> cancel </button>
+                                                    <button class="btn btn-primary font-monospace" type="submit">  submit form </button>
                                                 </div>
 
                                             </form>

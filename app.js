@@ -493,7 +493,7 @@ app.get('/getListing/:param', function (request, response) {
                            AND GP.animal_type = '${animal_type}'
                            AND A.gender = 'Female'
                            AND A.animal_type = GP.animal_type
-                           AND  DATEDIFF(NOW(),A.dob) >= GP.ready_after
+                           AND  DATEDIFF(NOW(),A.dob) >= GP.period
                            AND A.farma_id = '${farma_id}';`,
 
         expectingToday: `SELECT A.id, A.animal_tag, B.breeding_date, B.expected_due_date, TIMESTAMPDIFF(DAY, CURDATE(), B.expected_due_date) AS DAYS FROM animal A, breeding B WHERE A.id = B.animal_id AND TIMESTAMPDIFF(DAY, CURDATE(), B.expected_due_date) = 0 AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}';`,
@@ -1126,8 +1126,6 @@ app.post('/updateFeed', function (request, response) {
     connection.query(`UPDATE feeds SET name = '${request.body.edit_feeds_name}',  description = '${request.body.edit_feeds_name}', quantity = ${request.body.edit_feeds_qnty}, quantity_measure = ${request.body.edit_feeds_qnty_measure}, stock_date  = '${request.body.edit_feeds_stock_date}', animal_type = '${animal}' WHERE farma_id ='${farma_id}' AND id = ${request.body.edit_feeds_id};`,
         function (error, results, fields) {
             if (error) {
-                // response.redirect(`/animal/${animal}`); 
-
                 logger.error(error.errno + error.message);
             }
         });
@@ -1424,7 +1422,6 @@ app.post('/editProductType', function (request, response) {
 
 // Inserting Vaccines into the DB
 app.post('/updateVet', function (request, response) {
-    const animal = storage('animal');
 
     // Execute SQL query that'll insert into the vaccines table
     connection.query(`UPDATE vets SET fname = '${request.body.editVetFname}', lname = '${request.body.editVetLname}', email = '${request.body.editVetEmail}', phone = '${request.body.editVetPhone}', station = '${request.body.editVetStation}' WHERE vet_id = '${request.body.editVetID}';`,
@@ -1443,11 +1440,11 @@ app.post('/updateVet', function (request, response) {
 
                 if (results.affectedRows > 0) {
 
-                    return response.json({ status: 200, message: `${request.body.editVetFname} ${request.body.editVetLname} has been Added Successfuly.` });
+                    return response.json({ status: 200, message: `${request.body.editVetFname} ${request.body.editVetLname} has been udated Successfuly.` });
 
                 } else {
 
-                    return response.json({ status: 400, message: `Adding ${request.body.editVetFname} ${request.body.editVetLname} Failed ` });
+                    return response.json({ status: 400, message: `Updating ${request.body.editVetFname} ${request.body.editVetLname} Failed ` });
 
                 }
 
@@ -1458,6 +1455,7 @@ app.post('/updateVet', function (request, response) {
     );
 
 });
+
 
 // // Inserting Vaccines into the DB
 // app.post('/updateSick', function (request, response) {
@@ -1798,7 +1796,10 @@ app.post('/save', async (request, response) => {
                         connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY(JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}")) WHERE farma_id = '${f_id}';`,
                             function (error, results, fields) {
                                 // If there is an issue with the query, output the error
-                                if (error) throw error;
+                                if (error) {
+                                    console.log(error);
+                                    logger.error(error.errno + error.message);
+                                };
                                 // If the account exists
                                 return;
                             }
@@ -1808,7 +1809,10 @@ app.post('/save', async (request, response) => {
                         connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', JSON_OBJECT("name" , "${getDetails.name}", "image_url" , "${getDetails.image_url}")) WHERE farma_id = '${f_id}';`,
                             function (error, results, fields) {
                                 // If there is an issue with the query, output the error
-                                if (error) throw error;
+                                if (error) {
+                                    console.log(error);
+                                    logger.error(error.errno + error.message);
+                                };
                                 // If the account exists
                                 return;
                             }
@@ -1830,19 +1834,14 @@ app.post('/save', async (request, response) => {
 app.post('/addAnimal', (request, response) => {
     uploadImage(request, response, (err) => {
         if (err) {
-            console.log('err');
-            console.log(err);
+            logger.error(err.errno + err.message);
             response.redirect('/home');
         } else {
             if (request.file == undefined) {
                 response.redirect('/home');
-                console.log('failure');
+                logger.error("IMAGE NOT DEFINED");
             } else {
-                console.log('SUCCESS');
-
-                console.log(request.file.originalname);
-                console.log(storage('img_url'));
-
+                logger.success("STORED SUCCESSFULLY");
                 const f_id = storage('farma_id');
                 const animal_name = request.body.animal_type;
                 const animal_count = request.body.count;
@@ -1853,17 +1852,23 @@ app.post('/addAnimal', (request, response) => {
                 connection.query(`UPDATE animals_at_farm SET list_of_animals = JSON_ARRAY_APPEND(list_of_animals, '$', JSON_OBJECT("name" , "${animal_name}", "desc" , "${animal_description}", "image_url" , "${image_url}")) WHERE farma_id = '${f_id}';`,
                     function (error, results, fields) {
                         // If there is an issue with the query, output the error
-                        if (error) throw error;
+                        if (error) {
+                            logger.error(error.errno + error.message);
+                        };
+
+                        logger.info(request.body.animal_type + " HAS BEEN ADDED TO THE LIST OF ANIMAL TYPES");
+
                         return;
+
                     });
 
-                // Query to update the list of animals for all the farmer
-                connection.query(`INSERT INTO animals (animal_type, count, farma_id) VALUES ('${animal_name}', ${animal_count}, '${f_id}');`,
-                    function (error, results, fields) {
-                        // If there is an issue with the query, output the error
-                        if (error) throw error;
-                        return;
-                    });
+                // // Query to update the list of animals for all the farmer
+                // connection.query(`INSERT INTO animals (animal_type, count, farma_id) VALUES ('${animal_name}', ${animal_count}, '${f_id}');`,
+                //     function (error, results, fields) {
+                //         // If there is an issue with the query, output the error
+                //         if (error) throw error;
+                //         return;
+                //     });
 
                 response.redirect('/home');
 

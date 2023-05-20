@@ -89,6 +89,8 @@ const getAnimalList = async () => {
 
   const tag_lstd = document.getElementById('target_animals');
 
+  console.log(products);
+
   products.listing.forEach(product => {
     tagListed = ` <option id="${product.id}" value="${product.animal_tag}">  ${product.animal_tag} </option> `;
     tagList += tagListed;

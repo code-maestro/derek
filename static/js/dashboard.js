@@ -925,9 +925,6 @@ async function editVet(param) {
 
   let vets = await getListing('vets');
 
-  console.log("vets");
-  console.log(vets);
-
   vets.listing.every(vet => {
 
     if (vet.vet_id == param) {
