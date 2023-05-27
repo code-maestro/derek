@@ -551,7 +551,7 @@ app.get('/getListing/:param', function (request, response) {
 
         horns: `SELECT * FROM V_HORNS_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        projections: `SELECT projection_id, id, title, description, product_type, production_qnty, IF(production_measure >= 1000, 'kg', 'g') AS measure, product_start_date, product_end_date, animal_list FROM product_projections WHERE farma_id = '${farma_id}';`,
+        projections: `SELECT id, projection_id, title, description, product_type, production_qnty, IF(production_measure >= 1000, 'kg', 'g') AS measure, product_start_date, product_end_date, animal_list FROM product_projections WHERE farma_id = '${farma_id}';`,
 
         notifications: `SELECT B.id, CONCAT(A.first_name, ' ', A.last_name) AS names, B.action, B.action_date FROM farma A, audit_trail B WHERE B.user_id = A.farma_id AND A.farma_id = '${farma_id}' AND B.animal_type='${animal_type}';`,
 
@@ -589,32 +589,47 @@ app.get('/getScheduleListing', function (request, response) {
     const type = request.query.type;
     const id = request.query.id;
 
-    let queries = "";
+    let query = "";
 
-    if (type === "feeding") {
-        queries = `SELECT id,feeding_tt_id,
+    switch (type) {
+        // vaccination
+        case 'feeding':
+            query = `SELECT id,feeding_tt_id,
                         effective_date,next_date,
                         FORMAT(((feeds_quantity*feeding_schedule.qnty_unit) / qnty_per_cycle_unit), 2) as feeds_quantity,
                         FORMAT(((feeds_qnty_pending*feeding_schedule.qnty_unit)/qnty_unit), 2) as feeds_qnty_pending,
                         IF(qnty_unit >= 1000, 'kg', 'g' ) as unit,
                         schedule_id
                         FROM feeding_schedule WHERE feeding_tt_id = '${id}';`
+            break;
 
-    } else {
+        // vaccination
+        case 'vaccination':
+            query = `SELECT   id, vaccination_id, effective_date, next_date, 
+                        FORMAT(((vaccine_quantity * qnty_unit)/qnty_unit), 2) as vax_qnty,
+                        IF(qnty_unit >= 1000, 'kg', 'g' ) as unit,
+                        FORMAT(((vaccine_qnty_pending * qnty_per_cycle_unit)/qnty_per_cycle_unit), 2) as vax_qnty_pending,
+                        schedule_id
+                        FROM schedule_vaccination WHERE vaccination_id = '${id}';`
+            break;
 
-        queries = `SELECT   id, vaccination_id, effective_date, next_date, 
-                            FORMAT(((vaccine_quantity * qnty_unit)/qnty_unit), 2) as vax_qnty,
-                            IF(qnty_unit >= 1000, 'kg', 'g' ) as unit,
-                            FORMAT(((vaccine_qnty_pending * qnty_per_cycle_unit)/qnty_per_cycle_unit), 2) as vax_qnty_pending,
-                            schedule_id
-                            FROM schedule_vaccination WHERE vaccination_id = '${id}';`
+        //product
+        case 'product':
+            query = `SELECT id,projection_id,effective_dt,nxt_dt,FORMAT(((quantity * qnty_measure)/qnty_measure), 2) as product_qnty,
+                        IF(qnty_measure >= 1000, 'kg', 'g') as measure,FORMAT(((actual_qnty * actual_qnty_measure)/actual_qnty_measure), 2) as actual_qnty,schedule_id
+                        FROM product_schedules WHERE projection_id = '${id}';`
+            break;
 
+        default:
+
+            console.log(`Sorry`);
     }
+
 
 
     if (user_id) {
 
-        connection.query(queries, function (error, results, fields) {
+        connection.query(query, function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
 
@@ -623,8 +638,6 @@ app.get('/getScheduleListing', function (request, response) {
                 response.send({ error_message: "an error happened" + error });
 
             } else {
-
-                console.log(results);
 
                 response.send({ listing: results });
 
@@ -908,40 +921,35 @@ app.post('/authenticate', function (request, response) {
             // If there is an issue with the query, output the error
             if (error) {
 
-                console.log(error);
-
                 logger.error(error.errno + error.message);
                 response.redirect(`/`);
 
             } else {
-                
-                console.log(results);
 
                 // If the account exists
                 if (results.length > 0) {
-    
-                    logger.error("SUCCESSFULLY AUTHENTICATED");
-                    console.log("SUCCESSFULLY AUTHENTICATED");
-    
+
+                    logger.info("SUCCESSFULLY AUTHENTICATED");
+
                     // Authenticate the user
                     const row = Object.values(JSON.parse(JSON.stringify(results)));
-    
+
                     row.forEach(element => {
                         // Save data to sessionStorage
                         storage('farma_id', element.farma_id);
                         storage('farma_name', element.first_name + ' ' + element.last_name);
-    
+
                         if (element.list_of_animals == null) {
                             response.send({ url: '/selection' });
                         } else {
                             response.send({ url: '/home' });
                         }
                     });
-    
+
                 } else {
-    
+
                     response.send({ url: 'error' });
-    
+
                 }
             }
             response.end();
@@ -983,45 +991,6 @@ app.post('/newAnimal', function (request, response) {
                 } else {
 
                     return response.json({ status: 400, message: ` Adding ${request.body.animalTag} Failed` });
-
-                }
-
-            }
-
-        }
-
-    );
-
-});
-
-
-// TODO test new born registration
-// Registering a new animal
-app.post('/addNewBorn', function (request, response) {
-    const farma_id = storage('farma_id');
-    const animal = storage('animal');
-    // Execute SQL query that'll insert into the farma table
-    connection.query(`INSERT INTO animal (animal_tag, parent_tag, gender, dob, reg_date, animal_type, farma_id, confirmed) VALUES ('${request.body.newBornTag}', '${request.body.parentTag}', '${request.body.newBornGender}', '${request.body.newBornDOB}', '${request.body.newBornRegDate}', '${animal}', '${farma_id}', 'Y');`,
-
-        function (error, results, fields) {
-
-            if (error) {
-
-                logger.error(error.errno + error.message);
-
-                return response.json({ status: 500, message: error.sqlMessage });
-
-            } else {
-
-                console.log(results);
-
-                if (results.affectedRows > 0) {
-
-                    return response.json({ status: 200, message: ` ${request.body.newBornTag} Added Successfuly ! ` });
-
-                } else {
-
-                    return response.json({ status: 400, message: ` Adding ${request.body.newBornTag} Failed` });
 
                 }
 
@@ -1336,16 +1305,15 @@ app.post('/newProductType', function (request, response) {
 // Inserting Product Projections into the DB
 app.post('/newProductProjection', function (request, response) {
     const farma_id = storage('farma_id');
-    const animal = storage('animal');
-
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO product_projections (title,description,product_type,production_frequency,production_period,product_start_date,product_end_date,production_qnty,production_measure,animal_list,one_animal,farma_id) VALUES ('${request.body.projection_title}','${request.body.projection_desc}','${request.body.product_type}',${request.body.production_frequency},'${request.body.production_period}', '${request.body.product_start_date}', '${request.body.product_end_date}', '${request.body.production_qnty}', '${request.body.production_measure}', '${request.body.production_animal_list}', '${request.body.record_one_animal}','${farma_id}');`,
+    connection.query(`INSERT INTO product_projections (title,description,product_type,production_frequency,production_period,product_start_date,product_end_date,production_qnty,production_measure,animal_list,farma_id) VALUES ('${request.body.projection_title}','${request.body.projection_desc}','${request.body.product_type}',${request.body.production_frequency},'${request.body.production_period}', '${request.body.product_start_date}', '${request.body.product_end_date}', '${request.body.production_qnty}', '${request.body.production_measure}', '${request.body.production_animal_list}','${farma_id}');`,
 
         function (error, results, fields) {
 
             if (error) {
 
+                console.log("error");
                 console.log(error);
 
                 logger.error(error.errno + error.message);
@@ -1354,6 +1322,7 @@ app.post('/newProductProjection', function (request, response) {
 
             } else {
 
+                console.log("results");
                 console.log(results);
 
                 if (results.affectedRows > 0) {
@@ -1457,26 +1426,6 @@ app.post('/updateVet', function (request, response) {
 });
 
 
-// // Inserting Vaccines into the DB
-// app.post('/updateSick', function (request, response) {
-//     const animal = storage('animal');
-//     // Execute SQL query that'll insert into the vaccines table
-//     connection.query(`CALL update_sick('${request.body.edit_sick_animal_id}', '${request.body.editReportedDate}', '${request.body.editVetName}', '${request.body.editAppointmentDate + ' ' + request.body.editAppointmentTime}', '${request.body.disease_suspected}', '${request.body.editSSText}' )`,
-//         function (error, results, fields) {
-//             if (error) {
-//                 logger.error( error.errno + error.message);
-//                 console.log(error.errno);
-//                 console.log(error.message);
-//                 console.log(error.name);
-//                 response.redirect(`/animal/rabbbit`);
-//             }
-//         });
-
-//     response.redirect(`/animal/${animal}`);
-//     return;
-// })
-
-
 // Confirming appointment
 app.post('/confirmation', function (request, response) {
 
@@ -1533,9 +1482,8 @@ app.post('/confirmation', function (request, response) {
 app.post('/verifyNewBorn', function (request, response) {
 
     const user_id = storage('farma_id');
-    const animal = storage('animal');
 
-    const queries = `UPDATE animal SET confirmed = 'Y', gender = '${request.body.newBornAnimalGender}' WHERE farma_id = '${user_id}' AND animal_tag = '${request.body.newBornAnimalTag}' AND parent_tag = '${request.body.newBornParentTag}' AND confirmed = 'N';`
+    const queries = `UPDATE animal SET confirmed = 'Y', gender = '${request.body.newBornGender}' WHERE farma_id = '${user_id}' AND animal_tag = '${request.body.newBornTag}' AND parent_tag = '${request.body.parentTag}' AND confirmed = 'N';`;
 
     if (user_id) {
 
@@ -1555,11 +1503,11 @@ app.post('/verifyNewBorn', function (request, response) {
 
                     if (results.affectedRows > 0) {
 
-                        return response.json({ status: 200, message: ` ${request.body.newBornAnimalTag} has been confirmed Successfuly.` });
+                        return response.json({ status: 200, message: ` ${request.body.newBornTag} has been confirmed Successfuly.` });
 
                     } else {
 
-                        return response.json({ status: 400, message: `${request.body.newBornAnimalTag} Confirmation Failed ` });
+                        return response.json({ status: 400, message: `${request.body.newBornTag} Confirmation Failed ` });
 
                     }
 
@@ -1657,7 +1605,7 @@ app.post('/updateFarma', function (request, response) {
 });
 
 
-// Reportinsg Sick animals into the DB
+// Reporting Sick animals into the DB
 app.post('/addSick', function (request, response) {
 
     const animal = storage('animal');
@@ -1841,7 +1789,7 @@ app.post('/addAnimal', (request, response) => {
                 response.redirect('/home');
                 logger.error("IMAGE NOT DEFINED");
             } else {
-                logger.success("STORED SUCCESSFULLY");
+                logger.info("STORED SUCCESSFULLY");
                 const f_id = storage('farma_id');
                 const animal_name = request.body.animal_type;
                 const animal_count = request.body.count;
@@ -1878,13 +1826,50 @@ app.post('/addAnimal', (request, response) => {
 });
 
 
+// Reportinsg Sick animals into the DB
+app.post('/recordProduction', function (request, response) {
+
+    // Execute SQL query that'll insert into the vaccines table
+    connection.query(`UPDATE product_schedules SET actual_qnty = ${request.body.product_quantity} WHERE schedule_id = '${request.body.product_id}';`,
+
+        function (error, results, fields) {
+
+            if (error) {
+
+                logger.error(error.errno + error.message);
+
+                return response.json({ status: 500, message: error.sqlMessage });
+
+            } else {
+
+                console.log(results);
+
+                if (results.affectedRows > 0) {
+
+                    return response.json({ status: 200, message: `${request.body.product_id} has recorded Successfuly.` });
+
+                } else {
+
+                    return response.json({ status: 400, message: `Reporting ${request.body.product_id}'s Sickness Failed` });
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
+
+
 // Function to delete data from animal
 app.post('/delete', function (request, response) {
 
     const param_id = request.body.id;
     const par = request.body.type;
 
-    console.log(request.body.type);
+    console.log(param_id);
 
     const user_id = storage('farma_id');
     const animal = storage('animal');
@@ -1896,7 +1881,8 @@ app.post('/delete', function (request, response) {
         sickAnimal: `DELETE FROM sick_animals WHERE id = '${param_id}';`,
         timetable: `DELETE FROM feeding_timetable WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${user_id}') AND id = '${param_id}';`,
         vet: `DELETE FROM vets WHERE vet_id = '${param_id}';`,
-        feed: `DELETE FROM feeds WHERE id = '${param_id}'`
+        feed: `DELETE FROM feeds WHERE id = '${param_id}';`,
+        product_schedule: `DELETE FROM product_schedules where schedule_id = '${param_id}';`
     }
 
     console.log(queries[par]);
@@ -1904,13 +1890,10 @@ app.post('/delete', function (request, response) {
     if (user_id) {
 
         connection.query(queries[par], function (error, results, fields) {
-
-            console.log(queries[par]);
-
             // If there is an issue with the query, output the error
             if (error) {
 
-                console.log("error");
+                console.log(error);
                 logger.error(error.errno + error.message);
 
             } else {

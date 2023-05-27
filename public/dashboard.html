@@ -143,20 +143,11 @@
 
                 <!-- Nav Item - New Borns -->
                 <li class="nav-item font-weight-bold font-weight-bold">
-                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#regNewBorn"
-                        aria-controls="regNewBorn">
+                    <span class="nav-link collapsed" data-bs-toggle="modal" href="#newBornsModalToggle"
+                        onclick="getExpectedNewBorns()" role="button">
                         <i class="fa-solid fa-address-card"></i>
-                        <span> New Borns </span>
+                        <span> Expected New Borns </span>
                     </span>
-                    <div id="regNewBorn" class="collapse" aria-labelledby="headingUtilities"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white collapse-inner rounded">
-                            <span class="collapse-item" data-bs-toggle="modal" href="#registerNewBornModalToggle"
-                                onclick="getAnimalTableData('new-born-tag')" role="button"> Register a New Born </span>
-                            <span class="collapse-item" data-bs-toggle="modal" href="#newBornsModalToggle"
-                                onclick="getExpectedNewBorns()" role="button"> Expected New Borns </span>
-                        </div>
-                    </div>
                 </li>
 
 
@@ -259,7 +250,8 @@
                                 data-bs-toggle="modal" href="#productTypeModalToggle" role="button"> Product Types
                             </span>
                             <span class="collapse-item" onclick="getProductTypes('projectionListing')"
-                                data-bs-toggle="modal" href="#addProductModalToggle" role="button"> Add Projections
+                                data-bs-toggle="modal" href="#addProductProjectionModalToggle" role="button"> Add
+                                Projections
                             </span>
                             <span class="collapse-item" onclick="getProjections()" data-bs-toggle="modal"
                                 href="#productsModalToggle" role="button"> View Expected </span>
@@ -271,18 +263,10 @@
                 <!-- TODO implement function - populateGraphs() -->
                 <!-- Nav Item - Charts -->
                 <li class="nav-item font-weight-bold">
-                    <span class="nav-link collapsed" data-toggle="collapse" data-target="#charts"
-                        aria-controls="charts">
+                    <span class="nav-link collapsed" aria-controls="charts">
                         <i class="fas fa-fw fa-chart-area"></i>
-                        <span> Charts </span>
+                        <span> Reports </span>
                     </span>
-                    <div id="charts" class="collapse" aria-labelledby="headingUtilities"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white collapse-inner rounded">
-                            <span class="collapse-item" onclick="showGraphs()"> Expectations </span>
-                            <span class="collapse-item" onclick="viewGraphs('actual')"> Actual Data </span>
-                        </div>
-                    </div>
                 </li>
 
 
@@ -1381,94 +1365,6 @@
         </div>
 
 
-        <!-- Register New Born Modal  -->
-        <div class="modal fade" id="registerNewBornModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aaria-labelledby="newBornModalToggleLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="container">
-
-                            <div class="row">
-                                <div class="col">
-                                    <div class="card bg-gradient-primary">
-                                        <div class="mx-auto "
-                                            style="border-radius: 0.15rem; width: auto; color: white;">
-                                            <h4 class="font-monospace font-weight-bold" id="newVetModalLabel"> NEW BORN
-                                                REGISTRATION FORM </h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mt-4">
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <!-- New Born Form -->
-
-                                            <form class="row g-3 " enctype="multipart/form-data" method="post" id=""
-                                                name="recordNewborn">
-
-                                                <div class="col-md-6">
-                                                    <label for="new-born-tag" class="form-label fw-bold"> New Born Tag
-                                                    </label>
-                                                    <input id="new-born-tag" type="text" class="form-control"
-                                                        name="newBornTag" spellcheck="false" readonly required>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <label for="parent-tag" class="form-label fw-bold"> Parent Tag
-                                                    </label>
-                                                    <select id="parent-tag" class="form-select" name="parentTag"
-                                                        readonly required> </select>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <label for="new-born-gender" class="form-label fw-bold"> Gender
-                                                    </label>
-                                                    <select class="form-select" id="new-born-gender"
-                                                        name="newBornGender" required>
-                                                        <option selected="" disabled="" value=""> Choose a gender
-                                                            ...</option>
-                                                        <option value="Male"> Male </option>
-                                                        <option value="Female"> Female </option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <label for="new-born-dob" class="form-label fw-bold"> Date of
-                                                        Birth </label>
-                                                    <input id="new-born-dob" type="date" class="form-control"
-                                                        name="newBornDOB" spellcheck="false" value="">
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <label for="new-born-reg-date" class="form-label fw-bold">
-                                                        Registration Date </label>
-                                                    <input id="new-born-dob-reg-date" type="date" class="form-control"
-                                                        name="newBornRegDate" spellcheck="false" value="">
-                                                </div>
-
-                                                <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
-                                                    <button class="btn btn-light me-md-2 font-monospace"
-                                                        data-bs-dismiss="modal" type="button">
-                                                        cancel </button>
-                                                    <button class="btn btn-primary font-monospace" type="submit"> submit
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <!-- New Borns Modal  -->
         <div class="modal fade" id="newBornsModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="newBornsModalToggleLabel" aria-hidden="true">
@@ -1490,7 +1386,6 @@
                                         <!-- Vaccination Form -->
                                         <table id="newBornsTable" class="table table-bordered table-hover table-sm">
                                             <thead class="table-dark">
-
                                                 <tr>
                                                     <th scope="col" class="text-center font-monospace"> ID </th>
                                                     <th scope="col" class="text-center font-monospace"> NEW BORN TAG
@@ -1500,13 +1395,12 @@
                                                     </th>
                                                     <th scope="col" class="text-center font-monospace"> REGISTRATION
                                                         DATE </th>
-                                                    <th scope="col" class="nopnt text-center font-monospace"> EDIT
-                                                    </th>
+                                                    <th scope="col" class="nopnt text-center font-monospace"> EDIT </th>
                                                     <th scope="col" class="nopnt text-center font-monospace"> DELETE
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="newBornsListing"> </tbody>
+                                            <tbody id="expectedNewBornsListing"> </tbody>
                                         </table>
                                     </div>
 
@@ -1957,10 +1851,7 @@
                                                     </th>
                                                     <th scope="col" class="text-center font-monospace"> QUANTITY </th>
                                                     <th scope="col" class="text-center font-monospace"> STOCK DATE </th>
-                                                    <th scope="col" class="text-center font-monospace"> EXPECTED RESTOCK
-                                                        DATE </th>
-                                                    <th scope="col" class="nopnt text-center font-monospace"> EDIT
-                                                    </th>
+                                                    <th scope="col" class="nopnt text-center font-monospace"> EDIT </th>
                                                     <th scope="col" class="nopnt text-center font-monospace"> DELETE
                                                     </th>
                                                 </tr>
@@ -2012,7 +1903,8 @@
                                     <div class="card bg-gradient-primary">
                                         <div class="mx-auto "
                                             style="border-radius: 0.15rem; width: auto; color: white;">
-                                            <h4 class="font-monospace font-weight-bold" id="newFeedingTTModalLabel"> GENERATE
+                                            <h4 class="font-monospace font-weight-bold" id="newFeedingTTModalLabel">
+                                                GENERATE
                                                 NEW FEEDING TIMETABLE </h4>
                                         </div>
                                     </div>
@@ -2026,7 +1918,7 @@
 
                                             <!-- New Feeds Form -->
                                             <form class="row g-3 " enctype="multipart/form-data" method="post"
-                                            id="newFeedingTT" name="newFeedingTT">
+                                                id="newFeedingTT" name="newFeedingTT">
 
                                                 <div class="col-md-12">
                                                     <input id="feeds_id" type="number" class="form-control"
@@ -2368,8 +2260,10 @@
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="price_qnty" class="form-label fw-bold"> QUANTITY </label>
-                                                    <select class="form-select" id="type_qnty" name="type_qnty" required>
+                                                    <label for="price_qnty" class="form-label fw-bold"> QUANTITY
+                                                    </label>
+                                                    <select class="form-select" id="type_qnty" name="type_qnty"
+                                                        required>
                                                         <option selected> Choose Quantity measure </option>
                                                         <option value="1"> millilitres(ml) </option>
                                                         <option value="1000"> litres(l) </option>
@@ -2474,7 +2368,8 @@
                                     <div class="card bg-gradient-primary">
                                         <div class="mx-auto "
                                             style="border-radius: 0.15rem; width: auto; color: white;">
-                                            <h4 class="font-monospace font-weight-bold" id="productTypeDetailsModalLabel"> MODIFY ANIMAL PRODUCT TYPE </h4>
+                                            <h4 class="font-monospace font-weight-bold"
+                                                id="productTypeDetailsModalLabel"> MODIFY ANIMAL PRODUCT TYPE </h4>
                                         </div>
                                     </div>
                                 </div>
@@ -2488,28 +2383,36 @@
                                             <form class="row g-3 " enctype="multipart/form-data" method="post"
                                                 id="modifyProductType" name="modifyProductType">
 
-                                                    <input type="number" id="product_type_id" name="product_type_id" hidden disabled readonly />
+                                                <input type="number" id="product_type_id" name="product_type_id" hidden
+                                                    disabled readonly />
 
                                                 <div class="col-md-12">
-                                                    <label for="product_type_title" class="form-label fw-bold"> TITLE </label>
-                                                    <input type="text" class="form-control" id="product_type_title" name="product_type_title" />
+                                                    <label for="product_type_title" class="form-label fw-bold"> TITLE
+                                                    </label>
+                                                    <input type="text" class="form-control" id="product_type_title"
+                                                        name="product_type_title" />
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <label for="currency" class="form-label fw-bold"> CURRENCY </label>
-                                                    <select class="form-select" id="product_currency" name="product_currency">
+                                                    <select class="form-select" id="product_currency"
+                                                        name="product_currency">
                                                         <option value="UGX" selected> UGX </option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="product_type_price" class="form-label fw-bold"> PRICE </label>
-                                                    <input type="number" class="form-control" id="product_type_price" name="product_type_price" />
+                                                    <label for="product_type_price" class="form-label fw-bold"> PRICE
+                                                    </label>
+                                                    <input type="number" class="form-control" id="product_type_price"
+                                                        name="product_type_price" />
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="product_price_qnty" class="form-label fw-bold"> QUANTITY PRICED </label>
-                                                    <select class="form-select" id="product_type_qnty" name="product_type_qnty">
+                                                    <label for="product_price_qnty" class="form-label fw-bold">
+                                                        PRICE/QNTY </label>
+                                                    <select class="form-select" id="product_type_qnty"
+                                                        name="product_type_qnty">
                                                         <option id="value_from_db" selected> gram(g) </option>
                                                         <option value="1"> gram(g) </option>
                                                         <option value="1000"> Kilogram(kg) </option>
@@ -2519,7 +2422,8 @@
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button"> cancel </button>
-                                                    <button class="btn btn-primary font-monospace" type="submit"> submit form </button>
+                                                    <button class="btn btn-primary font-monospace" type="submit"> submit
+                                                        form </button>
                                                 </div>
 
                                             </form>
@@ -2537,7 +2441,7 @@
 
 
         <!-- Add New Product projection Modal -->
-        <div class="modal fade" id="addProductModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
+        <div class="modal fade" id="addProductProjectionModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -2563,8 +2467,7 @@
                                         <div class="card-body">
                                             <!-- Production Projections Form -->
                                             <form class="row g-3 " enctype="multipart/form-data" method="post"
-                                                id="recordNewProductProjection" name="recordProductProjections">
-
+                                                id="recordPrdtProjections" name="recordPrdtProjection">
                                                 <div class="col-md-4">
                                                     <label for="projection_title" class="form-label fw-bold"> TITLE
                                                     </label>
@@ -2625,8 +2528,7 @@
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="production_qnty" class="form-label fw-bold">
-                                                        PRODUCTION
+                                                    <label for="production_qnty" class="form-label fw-bold"> PRODUCTION
                                                         QUANTITY PER CYCLE </label>
                                                     <input id="production_qnty" type="number" class="form-control"
                                                         name="production_qnty" required>
@@ -2636,7 +2538,7 @@
                                                     <label for="production_measure" class="form-label fw-bold">
                                                         PRODUCTION QUANTITY MEASURE/CYCLE </label>
                                                     <select class="form-select" id="production_measure"
-                                                        name="production_measure" required>
+                                                        name="production_measure" required onchange="calculateTotal()">
                                                         <option selected> Choose Quantity measure </option>
                                                         <option value="1"> millilitres(ml) </option>
                                                         <option value="1000"> litres(l) </option>
@@ -2780,11 +2682,37 @@
                         <div class="container">
 
                             <div class="row px-2">
-                                <div class="mx-auto" style="width: auto;">
-                                    <h4 class="font-monospace" id="projectionsModalLabel"> PROJECTIONS </h4>
+                                <div class="col-lg-6" style="width: auto;">
+                                    <h4 class="font-monospace mx-auto" id="projectionsModalLabel"> PROJECTIONS </h4>
+                                    <span id="projection_id"> the id  </span>
                                 </div>
+                            
                             </div>
 
+                            <!-- LISTING TO DATE -->
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <div class="row px-4">
+                                        <!-- Feeds Table Form -->
+                                        <table id="projectionsTable" class="table table-bordered table-hover table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="text-center font-monospace"> ID </th>
+                                                    <th scope="col" class="text-center font-monospace"> EFFECTIVE DATE </th>
+                                                    <th scope="col" class="text-center font-monospace"> QUANTITY </th>
+                                                    <th scope="col" class="text-center font-monospace"> EXPECTED QUANTITY </th>
+                                                    <th scope="col" class="text-center font-monospace"> QUANTITY UNIT </th>
+                                                    <th scope="col" class="text-center font-monospace"> ACTIONS </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="projectionsListing"> </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- RECORD THE DAY'S PRODUCE -->
                             <div class="row mt-2">
 
                                 <div class="col">
@@ -2793,15 +2721,14 @@
                                     </div>
                                 </div>
 
-                                <div class="col">
+                                <!-- <div class="col">
                                     <div class="row px-2">
 
-                                        <form class="row g-3 " enctype="multipart/form-data" method="post"
-                                            id="recordDaysProduct" name="recordDaysProduct"
-                                            style="width:100%;max-width:500px">
+                                        <form class="row g-3" enctype="multipart/form-data" method="post"
+                                            id="recordDaysProduct" name="recordDaysProduct">
 
                                             <div class="col-md-12">
-                                                <h4 class="font-monospace my-0"> PROJECTIONS </h4>
+                                                <h4 class="font-monospace my-0" id="projectionsModalLabel"> PROJECTIONS </h4>
                                             </div>
 
                                             <div class="col-md-12">
@@ -2847,6 +2774,13 @@
                                         </form>
                                     </div>
 
+                                </div> -->
+                            </div>
+
+                            <div class="row px-4 py-4">
+                                <div class="col-lg-6">
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                        aria-label="Close"> CLOSE </button>
                                 </div>
                             </div>
 
@@ -2968,108 +2902,105 @@
                                             <form class="row g-3 " enctype="multipart/form-data" method="post"
                                                 id="sickAnimalForm" name="recordSick">
 
-                                                <form method="POST" action="/addSick" class="row g-3">
-                                                    <!-- HEALTHY ANIMALS -->
-                                                    <div class="col-md-4">
-                                                        <label for="healthyList" class="form-label fw-bold"> Choose
-                                                            Animal TAG
-                                                        </label>
-                                                        <select id="healthyList" class="form-select"
-                                                            name="healthyAnimals" required> </select>
-                                                    </div>
+                                                <!-- HEALTHY ANIMALS -->
+                                                <div class="col-md-4">
+                                                    <label for="healthyList" class="form-label fw-bold"> Choose
+                                                        Animal TAG
+                                                    </label>
+                                                    <select id="healthyList" class="form-select" name="healthyAnimals"
+                                                        required> </select>
+                                                </div>
 
-                                                    <div class="col-md-4">
-                                                        <label for="feedingFirstDate" class="form-label fw-bold">
-                                                            First
-                                                            Signs
-                                                            Date </label>
-                                                        <input onchange="validateDate('reportedDate')" id="reportedDate"
-                                                            type="date" class="form-control" name="reportedDate"
-                                                            spellcheck="false" required>
-                                                    </div>
+                                                <div class="col-md-4">
+                                                    <label for="feedingFirstDate" class="form-label fw-bold">
+                                                        First
+                                                        Signs
+                                                        Date </label>
+                                                    <input onchange="validateDate('reportedDate')" id="reportedDate"
+                                                        type="date" class="form-control" name="reportedDate"
+                                                        spellcheck="false" required>
+                                                </div>
 
-                                                    <div class="col-md-4">
-                                                        <label for="feedsName" class="form-label fw-bold"> Suspected
-                                                            Disease
-                                                        </label>
-                                                        <select id="disease_suspected" class="form-select"
-                                                            name="suspected_disease" required> </select>
-                                                    </div>
+                                                <div class="col-md-4">
+                                                    <label for="feedsName" class="form-label fw-bold"> Suspected
+                                                        Disease
+                                                    </label>
+                                                    <select id="disease_suspected" class="form-select"
+                                                        name="suspected_disease" required> </select>
+                                                </div>
 
-                                                    <div class="col-md-8">
-                                                        <label for="signs_and_symptoms" class="form-label fw-bold">
-                                                            Signs and Symptoms </label>
-                                                        <textarea class="form-control" name="ssText" id="ssText"
-                                                            rows="3" required></textarea>
-                                                    </div>
+                                                <div class="col-md-8">
+                                                    <label for="signs_and_symptoms" class="form-label fw-bold">
+                                                        Signs and Symptoms </label>
+                                                    <textarea class="form-control" name="ssText" id="ssText" rows="3"
+                                                        required></textarea>
+                                                </div>
 
-                                                    <!-- Vaccine attached to a disease -->
-                                                    <div class="col-md-4">
-                                                        <label for="vaccineNamen" class="form-label fw-bold">
-                                                            Proposed
-                                                            Vaccine </label>
-                                                        <input id="vaccine-namen" type="text" class="form-control"
-                                                            name="vaccineNamen" spellcheck="false" readonly>
-                                                    </div>
+                                                <!-- Vaccine attached to a disease -->
+                                                <div class="col-md-4">
+                                                    <label for="vaccineNamen" class="form-label fw-bold">
+                                                        Proposed
+                                                        Vaccine </label>
+                                                    <input id="vaccine-namen" type="text" class="form-control"
+                                                        name="vaccineNamen" spellcheck="false" readonly>
+                                                </div>
 
-                                                    <!-- SCHEDULE A TREATMENT APPOINTMENT -->
-                                                    <div class="col-md-12 pt-4">
-                                                        <h5 class="font-monospace"> SCHEDULE A TREATMENT APPOINTMENT
-                                                        </h5>
-                                                    </div>
+                                                <!-- SCHEDULE A TREATMENT APPOINTMENT -->
+                                                <div class="col-md-12 pt-4">
+                                                    <h5 class="font-monospace"> SCHEDULE A TREATMENT APPOINTMENT
+                                                    </h5>
+                                                </div>
 
-                                                    <div class="col-md-6">
-                                                        <label for="vet-name" class="form-label fw-bold"> Vet Name
-                                                        </label>
-                                                        <select onChange="getMoreVetData()" id="vets-named"
-                                                            class="form-select" data-live-search="true" name="vetName"
-                                                            required> </select>
-                                                    </div>
+                                                <div class="col-md-6">
+                                                    <label for="vet-name" class="form-label fw-bold"> Vet Name
+                                                    </label>
+                                                    <select onChange="getMoreVetData()" id="vets-named"
+                                                        class="form-select" data-live-search="true" name="vetName"
+                                                        required> </select>
+                                                </div>
 
-                                                    <input id="vets-id" type="text" name="vets_id" hidden>
+                                                <input id="vets-id" type="text" name="vets_id" hidden>
 
-                                                    <div class="col-md-6">
-                                                        <label for="vet-hospital" class="form-label fw-bold">
-                                                            Station
-                                                        </label>
-                                                        <input id="vets-hospital" type="text" class="form-control"
-                                                            name="vetHospital" spellcheck="false" readonly>
-                                                    </div>
+                                                <div class="col-md-6">
+                                                    <label for="vet-hospital" class="form-label fw-bold">
+                                                        Station
+                                                    </label>
+                                                    <input id="vets-hospital" type="text" class="form-control"
+                                                        name="vetHospital" spellcheck="false" readonly>
+                                                </div>
 
-                                                    <div class="col-md-3">
-                                                        <label for="vet-email" class="form-label fw-bold"> Email
-                                                        </label>
-                                                        <input id="vets-email" type="email" class="form-control"
-                                                            name="vetEmail" spellcheck="false" readonly>
-                                                    </div>
+                                                <div class="col-md-3">
+                                                    <label for="vet-email" class="form-label fw-bold"> Email
+                                                    </label>
+                                                    <input id="vets-email" type="email" class="form-control"
+                                                        name="vetEmail" spellcheck="false" readonly>
+                                                </div>
 
-                                                    <div class="col-md-3">
-                                                        <label for="vet-phone" class="form-label fw-bold"> Phone
-                                                        </label>
-                                                        <input id="vets-phone" type="tel" class="form-control"
-                                                            name="vetPhone" spellcheck="false" readonly>
-                                                    </div>
+                                                <div class="col-md-3">
+                                                    <label for="vet-phone" class="form-label fw-bold"> Phone
+                                                    </label>
+                                                    <input id="vets-phone" type="tel" class="form-control"
+                                                        name="vetPhone" spellcheck="false" readonly>
+                                                </div>
 
-                                                    <div class="col-md-6">
-                                                        <label for="appointment_date" class="form-label fw-bold">
-                                                            Appointmemt
-                                                            Date and Time </label>
-                                                        <input onchange="validateDate('appointment_date')"
-                                                            id="appointment_date" type="datetime-local"
-                                                            class="form-control" required name="appointment_date"
-                                                            spellcheck="false">
-                                                    </div>
+                                                <div class="col-md-6">
+                                                    <label for="appointment_date" class="form-label fw-bold">
+                                                        Appointmemt
+                                                        Date and Time </label>
+                                                    <input onchange="validateDate('appointment_date')"
+                                                        id="appointment_date" type="datetime-local" class="form-control"
+                                                        required name="appointment_date" spellcheck="false">
+                                                </div>
 
-                                                    <div
-                                                        class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
-                                                        <button class="btn btn-light me-md-2 font-monospace"
-                                                            data-bs-dismiss="modal" type="button"> CANCEL </button>
-                                                        <button class="btn btn-primary font-monospace" type="submit">
-                                                            GENERATE
-                                                        </button>
-                                                    </div>
+                                                <div class="d-grid gap-2 d-md-flex px-2 py-2 justify-content-md-end">
+                                                    <button class="btn btn-light me-md-2 font-monospace"
+                                                        data-bs-dismiss="modal" type="button"> CANCEL </button>
+                                                    <button class="btn btn-primary font-monospace" type="submit">
+                                                        GENERATE
+                                                    </button>
+                                                </div>
 
-                                                </form>
+                                            </form>
 
                                         </div>
                                     </div>
@@ -3223,7 +3154,8 @@
 
 
         <!-- Edt Vet Modal -->
-        <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editVetToggleLabel" aria-hidden="true">
+        <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="editVetToggleLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -3247,17 +3179,21 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <!-- New Vet Form -->
-                                                <form class="row g-3 " enctype="multipart/form-data" method="post" id="updateVetForm"
-                                                name="updateVetForm">
-                                                
+                                            <form class="row g-3 " enctype="multipart/form-data" method="post"
+                                                id="updateVetForm" name="updateVetForm">
+
                                                 <div class="col-md-6">
-                                                    <label for="edit-vet-fname" class="form-label fw-bold"> First Name</label>
-                                                    <input id="edit-vet-fname" type="text" class="form-control" name="editVetFname" spellcheck="false">
+                                                    <label for="edit-vet-fname" class="form-label fw-bold"> First
+                                                        Name</label>
+                                                    <input id="edit-vet-fname" type="text" class="form-control"
+                                                        name="editVetFname" spellcheck="false">
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label for="edit-vet-lname" class="form-label fw-bold"> Last Name</label>
-                                                    <input id="edit-vet-lname" type="text" class="form-control" name="editVetLname" spellcheck="false">
+                                                    <label for="edit-vet-lname" class="form-label fw-bold"> Last
+                                                        Name</label>
+                                                    <input id="edit-vet-lname" type="text" class="form-control"
+                                                        name="editVetLname" spellcheck="false">
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -3286,8 +3222,10 @@
                                                 <input id="edit-vet-uuid" type="text" name="editVetID" hidden>
 
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
-                                                    <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal" type="button"> cancel </button>
-                                                    <button class="btn btn-primary font-monospace" type="submit">  submit form </button>
+                                                    <button class="btn btn-light me-md-2 font-monospace"
+                                                        data-bs-dismiss="modal" type="button"> cancel </button>
+                                                    <button class="btn btn-primary font-monospace" type="submit"> submit
+                                                        form </button>
                                                 </div>
 
                                             </form>
@@ -3322,31 +3260,30 @@
                                 <div class="col">
                                     <div class="card">
                                         <div class="card-body">
-                                            <!-- New Vet Form -->
-                                            <form class="row g-3 " novalidate method="POST" action="/verifyNewBorn">
+                                            <!-- New Born Animal Confirmation -->
+                                            <form class="row g-3 " enctype="multipart/form-data" method="post"
+                                                id="confirmNewBorn" name="confirmNewBorn">
+
                                                 <div class="col-md-4">
                                                     <label for="new-born-animal-tag" class="form-label fw-bold"> New
                                                         Born Animal Tag </label>
                                                     <input id="new-born-animal-tag" type="text" class="form-control"
-                                                        name="newBornAnimalTag" spellcheck="false">
+                                                        name="newBornAnimalTag" spellcheck="false" readonly>
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="new-born-parent-tag" class="form-label fw-bold">
-                                                        Parent
+                                                    <label for="new-born-parent-tag" class="form-label fw-bold"> Parent
                                                         Tag </label>
                                                     <input id="new-born-parent-tag" type="text" class="form-control"
-                                                        name="newBornParentTag" spellcheck="false">
+                                                        name="newBornParentTag" spellcheck="false" readonly>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <label for="new-born-animal-gender" class="form-label fw-bold">
-                                                        Gender
-                                                    </label>
+                                                        Gender </label>
                                                     <select class="form-select" id="new-born-animal-gender"
                                                         name="newBornAnimalGender" required>
-                                                        <option selected="" disabled="" value=""> Choose a gender
-                                                            ...
+                                                        <option selected="" disabled="" value=""> Choose a gender ...
                                                         </option>
                                                         <option value="Male"> Male </option>
                                                         <option value="Female"> Female </option>
@@ -3354,18 +3291,17 @@
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="new-born-animal-reg" class="form-label fw-bold">
-                                                        Registraion Date </label>
+                                                    <label for="new-born-animal-reg"
+                                                        class="form-label fw-bold">Registraion Date </label>
                                                     <input id="new-born-animal-reg" type="date" class="form-control"
-                                                        name="newBornAnimalReg" spellcheck="false">
+                                                        name="newBornAnimalReg">
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="new-born-animal-dob" class="form-label fw-bold">
-                                                        Date of
+                                                    <label for="new-born-animal-dob" class="form-label fw-bold"> Date of
                                                         Birth </label>
                                                     <input id="new-born-animal-dob" type="date" class="form-control"
-                                                        name="newBornAnimalDOB" spellcheck="false">
+                                                        name="newBornAnimalDOB" readonly>
                                                 </div>
 
                                                 <div class="col-md-4">
@@ -3377,11 +3313,9 @@
 
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
-                                                        data-bs-dismiss="modal" type="button">
-                                                        cancel </button>
+                                                        data-bs-dismiss="modal" type="button"> CANCEL </button>
                                                     <button class="btn btn-primary font-monospace" type="submit">
-                                                        submit
-                                                        form </button>
+                                                        CONFIRM </button>
                                                 </div>
 
                                             </form>

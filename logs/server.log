@@ -4436,3 +4436,155 @@ error: May-20-2023 14:23:22: 	SUCCESSFULLY AUTHENTICATED
 error: May-20-2023 14:25:56: 	SUCCESSFULLY AUTHENTICATED
 error: May-20-2023 14:32:58: 	SUCCESSFULLY AUTHENTICATED
 error: May-20-2023 14:53:42: 	SUCCESSFULLY AUTHENTICATED
+error: May-20-2023 20:58:17: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 07:20:28: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 07:20:31: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 07:20:41: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 07:20:45: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 07:20:57: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 08:08:27: 	1146Table 'farma.product_projections' doesn't exist
+error: May-21-2023 08:32:57: 	1054Unknown column 'one_animal' in 'field list'
+error: May-21-2023 08:35:28: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 08:48:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 09:00:44: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 09:03:38: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 09:21:32: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 10:23:31: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 12:58:22: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:09:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:20:25: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:42:25: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:38: 	-4077read ECONNRESET
+error: May-21-2023 13:49:40: 	undefinedCan't add new command when connection is in closed state
+error: May-21-2023 13:49:50: 	undefinedCan't add new command when connection is in closed state
+error: May-21-2023 13:49:59: 	undefinedCan't add new command when connection is in closed state
+error: May-21-2023 13:50:00: 	undefinedCan't add new command when connection is in closed state
+error: May-21-2023 13:50:10: 	undefinedCan't add new command when connection is in closed state
+error: May-21-2023 13:57:56: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 14:00:11: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 19:16:28: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 20:29:58: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 22:32:09: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 22:43:34: 	SUCCESSFULLY AUTHENTICATED
+error: May-21-2023 22:59:19: 	SUCCESSFULLY AUTHENTICATED
+error: May-22-2023 10:16:10: 	SUCCESSFULLY AUTHENTICATED
+error: May-22-2023 15:50:00: 	SUCCESSFULLY AUTHENTICATED
+error: May-22-2023 19:27:58: 	SUCCESSFULLY AUTHENTICATED
+error: May-22-2023 19:34:01: 	SUCCESSFULLY AUTHENTICATED
+error: May-22-2023 19:41:59: 	SUCCESSFULLY AUTHENTICATED
+error: May-22-2023 20:17:45: 	SUCCESSFULLY AUTHENTICATED
+error: May-22-2023 20:32:44: 	SUCCESSFULLY AUTHENTICATED
+error: May-23-2023 11:33:46: 	undefinedConnection lost: The server closed the connection.
+error: May-23-2023 11:33:46: 	undefinedConnection lost: The server closed the connection.
+error: May-23-2023 11:33:46: 	undefinedConnection lost: The server closed the connection.
+error: May-23-2023 11:33:50: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:34:00: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:34:10: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:34:30: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:34:40: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:34:50: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:35:00: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:35:10: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:35:20: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:35:30: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:35:40: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:35:50: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:36:00: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:36:10: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 11:36:20: 	undefinedCan't add new command when connection is in closed state
+error: May-23-2023 18:04:52: 	SUCCESSFULLY AUTHENTICATED
+error: May-23-2023 21:07:08: 	SUCCESSFULLY AUTHENTICATED
+error: May-23-2023 21:11:29: 	undefinedUnexpected socket close
+error: May-23-2023 21:11:34: 	undefinedUnexpected socket close
+error: May-23-2023 21:11:36: 	undefinedUnexpected socket close
+error: May-23-2023 21:12:02: 	undefinedUnexpected socket close
+error: May-23-2023 21:12:11: 	undefinedUnexpected socket close
+error: May-23-2023 21:12:27: 	undefinedUnexpected socket close
+error: May-23-2023 21:12:29: 	undefinedUnexpected socket close
+error: May-23-2023 21:12:30: 	undefinedUnexpected socket close
+error: May-23-2023 21:23:33: 	SUCCESSFULLY AUTHENTICATED
+error: May-23-2023 21:45:01: 	undefinedUnexpected socket close
+error: May-23-2023 21:45:07: 	undefinedUnexpected socket close
+error: May-23-2023 21:45:12: 	-4077read ECONNRESET
+error: May-23-2023 21:45:27: 	undefinedUnexpected socket close
+error: May-23-2023 21:45:31: 	undefinedUnexpected socket close
+error: May-23-2023 21:46:09: 	undefinedUnexpected socket close
+error: May-23-2023 21:46:18: 	undefinedUnexpected socket close
+error: May-23-2023 21:46:29: 	-4077read ECONNRESET
+error: May-23-2023 21:46:35: 	undefinedUnexpected socket close
+error: May-24-2023 08:08:20: 	SUCCESSFULLY AUTHENTICATED
+error: May-24-2023 08:19:21: 	1366Incorrect integer value: 'Choose Quantity measure' for column 'price_qnty' at row 1
+error: May-24-2023 19:00:17: 	SUCCESSFULLY AUTHENTICATED
+error: May-24-2023 19:25:51: 	SUCCESSFULLY AUTHENTICATED
+error: May-24-2023 20:21:42: 	SUCCESSFULLY AUTHENTICATED
+error: May-24-2023 20:36:29: 	SUCCESSFULLY AUTHENTICATED
+error: May-24-2023 20:38:34: 	SUCCESSFULLY AUTHENTICATED
+error: May-24-2023 20:40:46: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+error: May-24-2023 20:41:32: 	SUCCESSFULLY AUTHENTICATED_=
+error: May-26-2023 14:11:53: 	SUCCESSFULLY AUTHENTICATED
+error: May-26-2023 14:13:49: 	undefinedUnexpected socket close
+error: May-26-2023 14:14:00: 	-4073connect EHOSTUNREACH 108.177.119.108:465
+error: May-26-2023 14:14:10: 	-4073connect EHOSTUNREACH 108.177.119.108:465
+error: May-26-2023 14:14:10: 	-4077read ECONNRESET
+error: May-26-2023 14:14:10: 	-4077read ECONNRESET
+error: May-26-2023 14:14:10: 	-4079connect ECONNABORTED 108.177.119.108:465
+
+error: May-27-2023 06:49:43: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 07:28:00: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 07:32:44: 	1364Field 'actual_qnty' doesn't have a default value
+
+error: May-27-2023 13:51:26: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+error: May-27-2023 13:51:45: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 13:51:54: 	1054Unknown column 'qnty' in 'field list'
+error: May-27-2023 13:52:18: 	SUCCESSFULLY AUTHENTICATED
+info: May-27-2023 13:57:57: 	SUCCESSFULLY AUTHENTICATED
+info: May-27-2023 14:25:26: 	SUCCESSFULLY AUTHENTICATED
+info: May-27-2023 14:26:31: 	STORED SUCCESSFULLY
+info: May-27-2023 14:26:31: 	START HAS BEEN ADDED TO THE LIST OF ANIMAL TYPES
+info: May-27-2023 17:26:40: 	SUCCESSFULLY AUTHENTICATED
+info: May-27-2023 19:11:48: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:12:02: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd330067-fc4d-11ed-b997-8c1645602325'' at line 1
+info: May-27-2023 19:13:47: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:13:54: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd33092f-fc4d-11ed-b997-8c1645602325'' at line 1
+info: May-27-2023 19:14:29: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:14:35: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd330ae1-fc4d-11ed-b997-8c1645602325'' at line 1
+info: May-27-2023 19:15:23: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:15:30: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd330bde-fc4d-11ed-b997-8c1645602325'' at line 1
+info: May-27-2023 19:16:49: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:16:58: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd330cd5-fc4d-11ed-b997-8c1645602325'' at line 1
+error: May-27-2023 19:17:01: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd330dbd-fc4d-11ed-b997-8c1645602325'' at line 1
+error: May-27-2023 19:17:04: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd3311a3-fc4d-11ed-b997-8c1645602325'' at line 1
+error: May-27-2023 19:17:31: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd33233e-fc4d-11ed-b997-8c1645602325'' at line 1
+info: May-27-2023 19:18:34: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:18:45: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd33233e-fc4d-11ed-b997-8c1645602325'' at line 1
+info: May-27-2023 19:19:48: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:19:54: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd330cd5-fc4d-11ed-b997-8c1645602325'' at line 1
+info: May-27-2023 19:20:41: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:20:50: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd330cd5-fc4d-11ed-b997-8c1645602325'' at line 1
+info: May-27-2023 19:21:19: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:21:29: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd33233e-fc4d-11ed-b997-8c1645602325'' at line 1
+info: May-27-2023 19:23:11: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:23:18: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd330cd5-fc4d-11ed-b997-8c1645602325' at line 1
+info: May-27-2023 19:25:05: 	SUCCESSFULLY AUTHENTICATED
+error: May-27-2023 19:51:31: 	1064You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE schedule_id = 'dd330cd5-fc4d-11ed-b997-8c1645602325'' at line 1

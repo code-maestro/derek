@@ -100,6 +100,16 @@ const getAnimalList = async () => {
 
 }
 
+const calculateTotal = () => {
+  const freq = document.getElementById("production_frequency").value;
+  const qnty = document.getElementById("production_qnty").value;
+  const qnty_unit = document.getElementById("production_measure").value;
+  console.log(freq * qnty * qnty_unit);
+
+  document.getElementById('all_production_qnty').setAttribute("value", (freq * qnty * qnty_unit));
+
+}
+
 const picked_animals = [];
 
 // Function to get All feeds
@@ -208,11 +218,8 @@ async function recordProductType() {
 
 const productTypeForm = document.forms.namedItem("recordNewProductType");
 productTypeForm.addEventListener("submit", (event) => {
-
   recordProductType();
-
   event.preventDefault();
-
 },
 
   false
@@ -223,7 +230,6 @@ productTypeForm.addEventListener("submit", (event) => {
 
 // Function Adding new Feed
 async function recordProjection() {
-
   try {
     // post body data 
     const projectionData = {
@@ -236,11 +242,8 @@ async function recordProjection() {
       product_end_date: document.getElementById('product_end_date').value,
       production_qnty: document.getElementById('production_qnty').value,
       production_measure: document.getElementById('production_measure').value,
-      production_animal_list: picked_animals.toString(),
-      record_one_animal: document.getElementById('y/n').value
+      production_animal_list: picked_animals.toString()
     };
-
-    console.log(projectionData);
 
     // request options
     const options = {
@@ -261,21 +264,19 @@ async function recordProjection() {
 
       const data = await response.json();
 
-      console.log(data);
-
       if (data.status == 200) {
 
         $('#successModalToggle').modal('show');
         document.getElementById('success-msg').innerText = data.message;
-        $('#recordNewProductProjection').modal('hide');
-        document.getElementById("recordNewFeed").reset();
+        $('#addProductProjectionModalToggle').modal('hide');
+        document.getElementById("recordPrdtProjections").reset();
+        document.getElementById('targeted').innerHTML = "";
 
         renderAnimals();
 
       } else {
 
         $('#errModalToggle').modal('show');
-
         document.getElementById('errors-msg').innerText = data.message;
 
       }
@@ -288,17 +289,14 @@ async function recordProjection() {
 
 }
 
-const productForm = document.forms.namedItem("recordNewProductProjection");
+const productForm = document.forms.namedItem("recordPrdtProjection");
 productForm.addEventListener("submit", (event) => {
-
+  console.log("event");
+  console.log(event);
   recordProjection();
-
   event.preventDefault();
-
 },
-
   false
-
 );
 
 
@@ -314,10 +312,12 @@ const getProjections = async () => {
 
   projections.listing.forEach(projection => {
 
-    const arrayy = [projection.animal_list];
+    console.log(projection);
+
+    // const arrayy = [projection.animal_list];
 
     htmlSegment = `
-    <tr class="justify-content-center" onclick="viewProjection('${projection.projection_id}', ' ${projection.title}', '${projection.production_qnty}', '${projection.measure}', '${arrayy}')" id="${projection.projection_id}">
+    <tr class="justify-content-center" onclick="viewProjection('${projection.projection_id}')" id="${projection.projection_id}">
       <td class="text-center"> ${projection.id} </td>   
       <td class="text-center"> ${projection.title} </td> 
       <td class="text-center"> ${projection.description} </td> 
@@ -337,42 +337,84 @@ const getProjections = async () => {
 }
 
 
-const viewProjection = (param1, param2, param3, param4, param5) => {
+const viewProjection = async (param) => {
+
+  const projectedData = await getScheduleListing("product", `${param}`);
 
   $('#productGraphModalToggle').modal('show');
 
   const today = new Date();
+  // document.getElementById('projectionsModalLabel').innerText = `${param2} PROJECTION FOR ${today.toLocaleDateString()}`;
+  // document.getElementById('expected_qnty').setAttribute("value", param3);
 
-  document.getElementById('projectionsModalLabel').innerText = `${param2} PROJECTION FOR ${today.toLocaleDateString()}`;
-  document.getElementById('expected_qnty').setAttribute("value", param3);
+  // const integers = param5.split(",");
+  // const animals = integers;
 
-  const integers = param5.split(",");
-
-  const animals = integers;
   const ACTUAL = ["5", "5", "50", "10", "25"];
   const EXPECTED = ["5", "20", "40", "0", "15"];
-
 
   var data = [
     {
       histfunc: "sum",
       y: EXPECTED,
-      x: animals,
+      x: ACTUAL,
       type: "histogram",
       name: "produced"
     },
     {
       histfunc: "sum",
       y: ACTUAL,
-      x: animals,
+      x: EXPECTED,
       type: "histogram",
       name: "expected"
     }
   ]
 
-  Plotly.newPlot('myPlot', data)
+  Plotly.newPlot('myPlot', data);
 
+  let html = "";
+  let htmlSegment = "";
 
+  const con = document.getElementById('projectionsListing');
+
+  projectedData.listing.forEach(projection => {
+
+    const read = today.getTime() > new Date(projection.effective_dt).getTime() ? "readonly" : "";
+
+    htmlSegment = `
+        <tr class="justify-content-center" id="${projection.id}">
+          <td class="text-center"> ${projection.id} </td>
+          <td class="text-center dated"> ${dateFrontend(projection.effective_dt)}</td>
+          <td class="text-center"> ${projection.product_qnty} </td>
+          <td class="text-center"> ${projection.actual_qnty === null || projection.actual_qnty === undefined
+        ? `
+          <input type="number" id="${projection.schedule_id}" class="form-control" ${read}>
+      
+        `
+        : projection.actual_qnty}
+           </td>
+
+           <td class="text-center"> ${projection.measure} </td>
+          
+          <td class="text-center" onclick="saveProduction('${projection.schedule_id}')">
+            <button type="button" class="btn btn-sm btn-primary">
+              Save
+            </button>
+
+            <button type="button" class="btn btn-sm btn-danger" onclick="deleteFromList('product_schedule',${projection.schedule_id})">
+              Delete
+            </button>
+          </td>
+
+        </tr>
+
+      `;
+
+    html += htmlSegment;
+
+  });
+
+  con.innerHTML = html;
 
 }
 
@@ -459,3 +501,58 @@ editProductTypeForm.addEventListener("submit", (event) => {
 
 );
 
+
+
+// Function Adding new Feed
+async function saveProduction(param) {
+
+  try {
+    // post body data 
+    const prdtData = {
+      product_quantity: document.getElementById(`${param}`).value,
+      product_id: param
+    };
+
+    console.log(prdtData);
+
+
+    // request options
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(prdtData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await fetch(`/recordProduction`, options);
+
+    if (!response.ok) {
+
+      console.log(`HTTP error: ${response.status}`);
+
+    } else {
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.status == 200) {
+
+        $('#successModalToggle').modal('show');
+        document.getElementById('success-msg').innerText = data.message;
+
+      } else {
+
+        $('#errModalToggle').modal('show');
+        document.getElementById('errors-msg').innerText = data.message;
+
+      }
+
+    }
+
+  }
+
+  catch (error) { console.log(error); }
+
+}

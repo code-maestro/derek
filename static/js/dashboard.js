@@ -91,48 +91,25 @@ async function getAnimalTableData(inputID) {
 
   document.getElementById(`${inputID}`).setAttribute('value', `${last.animalType.toUpperCase()}-000${last.last_id}`);
 
+  let list = await getListing('allAnimals');
 
-  if (inputID === 'new-born-tag') {
+  let html = "";
+  let htmlSegment = "";
 
-    let listed = await getListing('expectingToday');
+  const con = document.getElementById('animalListing');
 
-    console.log(listed);
+  list.listing.forEach(animal => {
 
-    let heavyListed = '';
-    let heavyList = `<option selected disabled value=""> Choose a Parent Animal ... </option>`;
+    const dobYear = new Date(Date.parse(animal.dob));
+    const regDate = new Date(Date.parse(animal.reg_date));
 
-    const heavy_lstd = document.getElementById('parent-tag');
+    // AGE CALCULATION
+    const ageYears = today.getFullYear() - dobYear.getFullYear();
+    const ageMonths = today.getMonth() - dobYear.getMonth();
+    // const ageDays = today.getDay() - dobYear.getDay();
+    const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
 
-    listed.listing.forEach(heavy => {
-      heavyListed = ` <option id="${heavy.id}" value="${heavy.animal_tag}">  ${heavy.animal_tag} </option> `;
-      heavyList += heavyListed;
-    });
-
-    heavy_lstd.innerHTML = heavyList;
-
-  }
-
-  else {
-
-    let list = await getListing('allAnimals');
-
-    let html = "";
-    let htmlSegment = "";
-
-    const con = document.getElementById('animalListing');
-
-    list.listing.forEach(animal => {
-
-      const dobYear = new Date(Date.parse(animal.dob));
-      const regDate = new Date(Date.parse(animal.reg_date));
-
-      // AGE CALCULATION
-      const ageYears = today.getFullYear() - dobYear.getFullYear();
-      const ageMonths = today.getMonth() - dobYear.getMonth();
-      // const ageDays = today.getDay() - dobYear.getDay();
-      const ageDays = today.getDate() - parseInt(dobYear.toDateString().slice(8, 10));
-
-      htmlSegment = `
+    htmlSegment = `
         <tr class="justify-content-center" id="${animal.id}">
           <th scope="row" class="text-center" id="id"> ${animal.id} </th>
           <td class="text-center"> ${animal.animal_tag} </td>
@@ -156,14 +133,13 @@ async function getAnimalTableData(inputID) {
         </tr>
       `;
 
-      html += htmlSegment;
+    html += htmlSegment;
 
-    });
+  });
 
-    con.innerHTML = html;
-  }
-
+  con.innerHTML = html;
 }
+
 
 
 // Function to get All feeds
@@ -184,7 +160,6 @@ const getFeedsTableData = async () => {
           <td class="text-center"> ${feed.description} </td>
           <td class="text-center"> ${feed.quantity + ' ' + feed.measure} </td>
           <td class="text-center"> ${dateFrontend(feed.stock_date)} </td>
-          <td class="text-center"> ${dateFrontend(feed.expected_restock_date)} </td>
           
           <td class="text-center nopnt" data-bs-target="#editFeedsModalToggle" data-bs-toggle="modal"  onclick="editFeed(${feed.id})">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
@@ -592,19 +567,6 @@ const getVets = async () => {
 // DELETING A TABLE ROW
 const deleteFromList = async (param1, param2) => {
 
-  // SHOWS TOAST 
-  const showClear = (param) => {
-    const toastLiveExample = document.getElementById('ttoast');
-    const toast = new bootstrap.Toast(toastLiveExample, { delay: 3500 });
-
-    toast.show();
-
-    console.log(param);
-
-    document.getElementById('error_msg').innerText = param;
-
-  }
-
   // post body data 
   const user = { id: param2, type: param1 };
 
@@ -612,6 +574,8 @@ const deleteFromList = async (param1, param2) => {
     name: param1,
     id: param2
   }
+
+  console.log(item);
 
   localStorage.setItem('delete', JSON.stringify(item));
 

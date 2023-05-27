@@ -7,8 +7,6 @@ async function authenticateUser() {
       pass: document.getElementById('password').value
     };
 
-    console.log(userCredentials);
-
     // request options
     const options = {
       method: 'POST',

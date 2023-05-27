@@ -28,7 +28,7 @@ const getExpectedNewBorns = async () => {
   let html = '';
   let htmlSegment = '';
 
-  const con = document.getElementById('newBornsListing');
+  const con = document.getElementById('expectedNewBornsListing');
 
   new_borns.listing.forEach(baby => {
 
@@ -172,16 +172,15 @@ function addDgays(date, days) {
 }
 
 
-async function recordNewborn(event) {
+async function confirmNewborn() {
   try {
 
     // post body data 
     const newborn = {
-      newBornTag: document.getElementById('new-born-tag').value,
-      parentTag: document.getElementById('parent-tag').value,
-      newBornGender: document.getElementById('new-born-gender').value,
-      newBornDOB: document.getElementById('new-born-dob').value,
-      newBornRegDate: document.getElementById('new-born-dob-reg-date').value
+      newBornTag: document.getElementById('new-born-animal-tag').value,
+      parentTag: document.getElementById('new-born-parent-tag').value,
+      newBornGender: document.getElementById('new-born-animal-gender').value,
+      newBornRegDate: document.getElementById('new-born-animal-reg').value
     };
 
     console.log(newborn);
@@ -195,7 +194,7 @@ async function recordNewborn(event) {
       }
     }
 
-    const response = await fetch(`/addNewBorn`, options);
+    const response = await fetch(`/verifyNewBorn`, options);
 
     if (!response.ok) {
 
@@ -213,8 +212,8 @@ async function recordNewborn(event) {
 
         $('#successModalToggle').modal('show');
         document.getElementById('success-msg').innerText = data.message;
-        $('#registerNewBornModalToggle').modal('hide');
-        // document.getElementById("wrongCredentials").innerText = `Incorrect Email or Password`;
+        $('#verifyAnimalToggle').modal('hide');
+        document.getElementById("confirmNewBorn").reset();
 
       } else {
 
@@ -233,13 +232,10 @@ async function recordNewborn(event) {
 }
 
 
-const newBornForm = document.forms.namedItem("recordNewborn");
+const newBornForm = document.forms.namedItem("confirmNewBorn");
 newBornForm.addEventListener("submit", (event) => {
-
-  recordNewborn();
-
+  confirmNewborn();
   event.preventDefault();
-
 },
 
   false
@@ -247,6 +243,7 @@ newBornForm.addEventListener("submit", (event) => {
 );
 
 
+// Record a mating
 async function recordBreed() {
   try {
 
