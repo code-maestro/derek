@@ -551,6 +551,8 @@ app.get('/getListing/:param', function (request, response) {
 
         horns: `SELECT * FROM V_HORNS_${animal_type} WHERE farma_id = '${farma_id}';`,
 
+        report_types: `SELECT table_name as name FROM information_schema.views WHERE table_schema = 'farma' AND table_name LIKE '%rpt%';`,
+
         projections: `SELECT id, projection_id, title, description, product_type, production_qnty, IF(production_measure >= 1000, 'kg', 'g') AS measure, product_start_date, product_end_date, animal_list FROM product_projections WHERE farma_id = '${farma_id}';`,
 
         notifications: `SELECT B.id, CONCAT(A.first_name, ' ', A.last_name) AS names, B.action, B.action_date FROM farma A, audit_trail B WHERE B.user_id = A.farma_id AND A.farma_id = '${farma_id}' AND B.animal_type='${animal_type}';`,
@@ -868,6 +870,40 @@ app.get('/verify-otp', async (request, response) => {
 
 
 
+// Report data from new views
+app.get('/rpt_data', async (request, response) => {
+    try {
+        const from_dt = request.query.from_dt;
+        const to_dt = request.query.to_dt;
+        const rpt_type = request.query.type;
+
+        // query to return the tokens
+        connection.query(`SELECT * FROM ${rpt_type} WHERE effective_dt BETWEEN ${from_dt} AND ${to_dt};`, function (err, result) {
+
+            if (err) {
+
+                console.log(err);
+
+                response.send({ status: 500, message: err.message });
+
+            } else {
+
+                response.json({ status: 200, message: `SUCCESSFUL`, data: result });
+
+
+            }
+
+        });
+
+    } catch (error) {
+
+        console.log(`${error}`);
+
+        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
+
+    }
+
+});
 /*
     
     ENDPOINTS THAT WRITE TO DATABASE 
@@ -1830,7 +1866,7 @@ app.post('/addAnimal', (request, response) => {
 app.post('/recordProduction', function (request, response) {
 
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`UPDATE product_schedules SET actual_qnty = ${request.body.product_quantity} WHERE schedule_id = '${request.body.product_id}';`,
+    connection.query(`UPDATE product_schedules SET actual_qnty = '${request.body.product_quantity}' WHERE schedule_id = '${request.body.product_id}';`,
 
         function (error, results, fields) {
 
@@ -1881,8 +1917,8 @@ app.post('/delete', function (request, response) {
         sickAnimal: `DELETE FROM sick_animals WHERE id = '${param_id}';`,
         timetable: `DELETE FROM feeding_timetable WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${user_id}') AND id = '${param_id}';`,
         vet: `DELETE FROM vets WHERE vet_id = '${param_id}';`,
-        feed: `DELETE FROM feeds WHERE id = '${param_id}';`,
-        product_schedule: `DELETE FROM product_schedules where schedule_id = '${param_id}';`
+        product_schedule: `DELETE FROM product_schedules WHERE schedule_id IN ('${param_id}');`,
+        feed: `DELETE FROM feeds WHERE id = '${param_id}';`
     }
 
     console.log(queries[par]);

@@ -291,8 +291,6 @@ async function recordProjection() {
 
 const productForm = document.forms.namedItem("recordPrdtProjection");
 productForm.addEventListener("submit", (event) => {
-  console.log("event");
-  console.log(event);
   recordProjection();
   event.preventDefault();
 },
@@ -396,12 +394,12 @@ const viewProjection = async (param) => {
 
            <td class="text-center"> ${projection.measure} </td>
           
-          <td class="text-center" onclick="saveProduction('${projection.schedule_id}')">
-            <button type="button" class="btn btn-sm btn-primary">
+          <td class="text-center">
+            <button type="button" onclick="saveProduction('${projection.schedule_id}')" class="btn btn-sm btn-primary">
               Save
             </button>
 
-            <button type="button" class="btn btn-sm btn-danger" onclick="deleteFromList('product_schedule',${projection.schedule_id})">
+            <button type="button" class="btn btn-sm btn-danger"  data-bs-toggle="modal" data-bs-target="#approveModalToggle" onclick="deleteFromList('product_schedule','${projection.schedule_id}')">
               Delete
             </button>
           </td>
@@ -494,7 +492,6 @@ const editProductTypeForm = document.forms.namedItem("modifyProductType");
 editProductTypeForm.addEventListener("submit", (event) => {
   editProductType();
   event.preventDefault();
-
 },
 
   false
@@ -503,7 +500,7 @@ editProductTypeForm.addEventListener("submit", (event) => {
 
 
 
-// Function Adding new Feed
+// Function Adding new Product
 async function saveProduction(param) {
 
   try {
