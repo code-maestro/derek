@@ -551,11 +551,11 @@ app.get('/getListing/:param', function (request, response) {
 
         horns: `SELECT * FROM V_HORNS_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        report_types: `SELECT table_name as name FROM information_schema.views WHERE table_schema = 'farma' AND table_name LIKE '%rpt%';`,
-
         projections: `SELECT id, projection_id, title, description, product_type, production_qnty, IF(production_measure >= 1000, 'kg', 'g') AS measure, product_start_date, product_end_date, animal_list FROM product_projections WHERE farma_id = '${farma_id}';`,
 
         notifications: `SELECT B.id, CONCAT(A.first_name, ' ', A.last_name) AS names, B.action, B.action_date FROM farma A, audit_trail B WHERE B.user_id = A.farma_id AND A.farma_id = '${farma_id}' AND B.animal_type='${animal_type}';`,
+        
+        report_types: `SELECT table_name as name FROM information_schema.views WHERE table_schema = 'farma' AND table_name LIKE '%rpt%';`,
 
     }
 
@@ -869,16 +869,57 @@ app.get('/verify-otp', async (request, response) => {
 });
 
 
+// Report Headers
+app.get('/rpt_headers', async (request, response) => {
+    
+    try {
+
+        const rpt_type = request.query.type;
+
+        // query to return the tokens
+        connection.query(`SHOW COLUMNS FROM ${rpt_type};`, function (err, result) {
+
+            if (err) {
+
+                console.log(err);
+
+                response.send({ status: 500, message: err.message });
+
+            } else {
+
+                console.log(result);
+
+                response.json({ status: 200, message: `SUCCESSFUL`, daa: result });
+
+
+            }
+
+        });
+
+    } catch (error) {
+
+        console.log(`${error}`);
+
+        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
+
+    }
+
+});
+
 
 // Report data from new views
 app.get('/rpt_data', async (request, response) => {
+
+    const farma_id = storage('farma_id');
+    const animal_type = storage('animal');
+
     try {
         const from_dt = request.query.from_dt;
         const to_dt = request.query.to_dt;
         const rpt_type = request.query.type;
 
         // query to return the tokens
-        connection.query(`SELECT * FROM ${rpt_type} WHERE effective_dt BETWEEN ${from_dt} AND ${to_dt};`, function (err, result) {
+        connection.query(`SELECT * FROM ${rpt_type} WHERE effective_dt BETWEEN ${from_dt} AND ${to_dt} AND farma_id = '${farma_id}' AND animal_type = '${animal_type}';`, function (err, result) {
 
             if (err) {
 
@@ -904,6 +945,8 @@ app.get('/rpt_data', async (request, response) => {
     }
 
 });
+
+
 /*
     
     ENDPOINTS THAT WRITE TO DATABASE 

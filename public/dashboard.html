@@ -263,7 +263,8 @@
                 <!-- TODO implement function - populateGraphs() -->
                 <!-- Nav Item - Charts -->
                 <li class="nav-item font-weight-bold">
-                    <span class="nav-link" data-toggle="modal" data-target="#reportModalToggle" onclick="getReportTypes()">
+                    <span class="nav-link" data-toggle="modal" data-target="#reportModalToggle"
+                        onclick="getReportTypes()">
                         <i class="fas fa-disease"></i>
                         <span> Reports </span>
                     </span>
@@ -3728,203 +3729,222 @@
         </div>
 
 
-            <!-- Reports Module -->
-            <div class="modal fade" id="reportModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
-                tabindex="-1" aria-labelledby="productsModalToggleLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row pt-2">
-                                    <div class="mx-auto" style="width: auto;">
-                                        <h5 class="font-monospace" id="reportModalLabel"> GENERATE A REPORT </h5>
-                                    </div>
+        <!-- Reports Module -->
+        <div class="modal fade" id="reportModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="productsModalToggleLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row pt-2">
+                                <div class="mx-auto" style="width: auto;">
+                                    <h5 class="font-monospace" id="reportModalLabel"> GENERATE A REPORT </h5>
                                 </div>
+                            </div>
 
-                                <div class="row mt-4">
-                                    <div class="col">
-                                        <!-- Filter Report Form -->
-                                        <form class="row g-3 " enctype="multipart/form-data" method="post" id="filterReport" name="filterReport">
-                                            <div class="col-md-3">
-                                                <label for="rpt_type" class="form-label fw-bold"> REPORT TYPE</label>
-                                                <select class="form-select" id="rpt_type" name="rpt_type"> </select>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label for="from_dt" class="form-label fw-bold"> FROM DATE </label>
-                                                <input id="from_dt" type="date" class="form-control" name="from_dt">
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label for="to_dt" class="form-label fw-bold"> TO DATE </label>
-                                                <input id="to_dt" type="date" class="form-control" name="to_dt">
-                                            </div>
-
-                                            <div class="col-md-3  align-self-end">
-                                                <button class="btn btn-primary font-monospace" type="submit"> GENERATE
-                                                </button>
-                                            </div>
-
-                                        </form>
-
-
-                                        <div class="row py-4">
-                                            <!-- Sick Animals Table -->
-                                            <table id="repoTable" class="table table-bordered table-hover table-sm">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col" class="text-center font-monospace"> ID </th>
-                                                        <th scope="col" class="text-center font-monospace"> EFFECTIVE date </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="reportListing"> </tbody>
-                                            </table>
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <!-- Filter Report Form -->
+                                    <form class="row px-5" enctype="multipart/form-data" method="post" id="filterReport"
+                                        name="filterReport">
+                                        <div class="col-md-3">
+                                            <label for="rpt_type" class="form-label fw-bold"> REPORT TYPE</label>
+                                            <select class="form-select" id="rpt_type" name="rpt_type"> </select>
                                         </div>
 
-
-
-                                        <div class="row px-4 py-4">
-                                            <div class="col-auto me-auto">
-                                                <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
-                                            </div>
-                                            <div class="col-auto me-auto">
-                                                <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
-                                            </div>
-                                            <div class="col-auto">
-                                                <h6 class="fw-bold"> Export your data to </h6>
-                                            </div>
-                                            <div class="col-auto">
-                                                <button type="button" class="btn btn-primary btn-sm"
-                                                    onclick="toExcel('projectionTable', 'ANIMAL PRODUCT PROJECTION REPORT_')">
-                                                    EXCEL </button>
-                                                <button type="button" class="btn btn-primary btn-sm"
-                                                    onclick="printReport('projectionTable')"> PRINT </button>
-                                            </div>
-                                            <div class="col-auto">
-                                                <button type="button" class="btn btn-sm btn-danger"
-                                                    data-bs-dismiss="modal" aria-label="Close"> CLOSE </button>
-                                            </div>
+                                        <div class="col-md-3">
+                                            <label for="from_dt" class="form-label fw-bold"> FROM DATE </label>
+                                            <input id="from_dt" type="date" class="form-control" name="from_dt">
                                         </div>
 
+                                        <div class="col-md-3">
+                                            <label for="to_dt" class="form-label fw-bold"> TO DATE </label>
+                                            <input id="to_dt" type="date" class="form-control" name="to_dt">
+                                        </div>
+
+                                        <div class="col-md-3  align-self-end">
+                                            <button class="btn btn-primary font-monospace" type="submit"> GENERATE
+                                            </button>
+                                        </div>
+
+                                    </form>
+
+                                    <div class="row p-5">
+                                        <div id="tabs" class="project-tab">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <nav>
+                                                            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                                                <a class="nav-item nav-link active" id="taburised-rpt" data-toggle="tab" href="#rpt-table-tab" role="tab" aria-controls="taburised-rpt" aria-selected="true"> TABULARISED REPORT </a>
+                                                                <a class="nav-item nav-link" id="graphed-rpt" data-toggle="tab" href="#rpt-graph-tab" role="tab" aria-controls="graphed-rpt" aria-selected="false"> GRAPH REPORT </a>
+                                                            </div>
+                                                        </nav>
+
+                                                        <div class="tab-content" id="nav-tabContent">
+                                                            <div class="tab-pane fade show active" id="rpt-table-tab" role="tabpanel" aria-labelledby="nav-home-tab">
+                                                                <!-- Sick Animals Table -->
+                                                                <table id="repoTable" class="table table-bordered table-hover table-sm">
+                                                                    <thead>
+                                                                        <tr id="reportHeaders"> </tr>
+                                                                    </thead>
+                                                                    <tbody id="reportListing"> </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                            <div class="tab-pane fade" id="rpt-graph-tab" role="tabpanel" aria-labelledby="rpt-graph-tab">
+                                                                <div id="charted">
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    <div class="row px-4 py-4">
+                                        <div class="col-auto me-auto">
+                                            <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                        </div>
+                                        <div class="col-auto me-auto">
+                                            <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
+                                        </div>
+                                        <div class="col-auto">
+                                            <h6 class="fw-bold"> Export your data to </h6>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                onclick="toExcel('projectionTable', 'ANIMAL PRODUCT PROJECTION REPORT_')">
+                                                EXCEL </button>
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                onclick="printReport('projectionTable')"> PRINT </button>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                                aria-label="Close"> CLOSE </button>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <!-- Approval modal -->
-            <div class="modal fade" id="approveModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
-                tabindex="-1" aria-labelledby="approveModalToggleLabel" aria-hidden="true">
-                <div class="modal-dialog modal-ms">
-                    <div class="modal-content">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <div class="mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="90" fill="currentColor"
-                                        class="bi bi-exclamation-triangle btn-outline-danger" viewBox="0 0 16 16">
-                                        <path
-                                            d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
-                                        <path
-                                            d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
-                                    </svg>
-                                </div>
-
-                                <h5 class="card-title mb-2" id="alles">
-
-                                </h5>
-
-                                <h5 class="mb-2">
-                                    Do you want to proceed ?
-                                </h5>
-
+        <!-- Approval modal -->
+        <div class="modal fade" id="approveModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="approveModalToggleLabel" aria-hidden="true">
+            <div class="modal-dialog modal-ms">
+                <div class="modal-content">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="90" fill="currentColor"
+                                    class="bi bi-exclamation-triangle btn-outline-danger" viewBox="0 0 16 16">
+                                    <path
+                                        d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+                                    <path
+                                        d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
+                                </svg>
                             </div>
-                            <div class="card-footer d-flex justify-content-end">
-                                <button type="button" class="btn btn-secondary mx-2 font-monospace"
-                                    data-bs-dismiss="modal" onclick="localStorage.removeItem('delete')"> CANCEL
-                                </button>
-                                <button type="button" class="btn btn-danger font-monospace" data-bs-dismiss="modal"
-                                    onclick="deletionList()"> DELETE </button>
-                            </div>
+
+                            <h5 class="card-title mb-2" id="alles">
+
+                            </h5>
+
+                            <h5 class="mb-2">
+                                Do you want to proceed ?
+                            </h5>
+
+                        </div>
+                        <div class="card-footer d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary mx-2 font-monospace" data-bs-dismiss="modal"
+                                onclick="localStorage.removeItem('delete')"> CANCEL
+                            </button>
+                            <button type="button" class="btn btn-danger font-monospace" data-bs-dismiss="modal"
+                                onclick="deletionList()"> DELETE </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <!-- Success modal -->
-            <div class="modal fade" id="successModalToggle" data-bs-backdrop="static" data-bs-keyboard="false"
-                tabindex="-1" aria-labelledby="successModalToggleLabel">
-                <div class="modal-dialog modal-ms">
-                    <div class="modal-content">
-                        <div class="card">
-                            <div class="card-body text-center">
+        <!-- Success modal -->
+        <div class="modal fade" id="successModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="successModalToggleLabel">
+            <div class="modal-dialog modal-ms">
+                <div class="modal-content">
+                    <div class="card">
+                        <div class="card-body text-center">
 
-                                <div class="prompt">
-                                    <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_s2lryxtd.json"
-                                        background="transparent" speed="0.5" style="width: 100px; height: 100px;" loop
-                                        autoplay></lottie-player>
-                                </div>
-
-                                <h5 class="card-title my-2" id="success-msg"> </h5>
-
-                                <button type="button" class="btn btn-secondary my-2 font-monospace"
-                                    data-bs-dismiss="modal">
-                                    OK </button>
-
+                            <div class="prompt">
+                                <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_s2lryxtd.json"
+                                    background="transparent" speed="0.5" style="width: 100px; height: 100px;" loop
+                                    autoplay></lottie-player>
                             </div>
 
+                            <h5 class="card-title my-2" id="success-msg"> </h5>
+
+                            <button type="button" class="btn btn-secondary my-2 font-monospace" data-bs-dismiss="modal">
+                                OK </button>
+
                         </div>
+
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <!-- Error modal -->
-            <div class="modal fade" id="errModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="errModalToggleLabel" aria-hidden="true">
-                <div class="modal-dialog modal-ms">
-                    <div class="modal-content">
-                        <div class="card">
-                            <div class="card-body text-center">
+        <!-- Error modal -->
+        <div class="modal fade" id="errModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="errModalToggleLabel" aria-hidden="true">
+            <div class="modal-dialog modal-ms">
+                <div class="modal-content">
+                    <div class="card">
+                        <div class="card-body text-center">
 
-                                <div class="prompt">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor"
-                                        class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
-                                        <path
-                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                                    </svg>
-                                </div>
-
-                                <h5 class="card-title my-2" id="errors-msg"> </h5>
-
-                                <button type="button" class="btn btn-secondary my-2 font-monospace"
-                                    data-bs-dismiss="modal">
-                                    OK </button>
-
+                            <div class="prompt">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor"
+                                    class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                                </svg>
                             </div>
 
+                            <h5 class="card-title my-2" id="errors-msg"> </h5>
+
+                            <button type="button" class="btn btn-secondary my-2 font-monospace" data-bs-dismiss="modal">
+                                OK </button>
+
                         </div>
+
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="../vendor/jquery/jquery.min.js"></script>
-            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-            <script
-                src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 
-            <!-- Core plugin JavaScript-->
-            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-            <!-- Page level plugins -->
-            <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
+        <!-- Page level plugins -->
+        <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
 
-            <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
 
     </body>
 
