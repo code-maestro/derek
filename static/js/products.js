@@ -54,8 +54,6 @@ const getAnimalList = async () => {
 
   const selectedProductType = document.getElementById('product_type').value;
 
-  console.log(selectedProductType);
-
   let products = '';
   let tagListed = '';
   let tagList = `<option selected disabled> Choose an animal(s)...</option>`;
@@ -170,8 +168,6 @@ async function recordProductType() {
 
     };
 
-    console.log(productTypeData);
-
     // request options
     const options = {
       method: 'POST',
@@ -190,8 +186,6 @@ async function recordProductType() {
     } else {
 
       const data = await response.json();
-
-      console.log(data);
 
       if (data.status == 200) {
 
@@ -221,9 +215,7 @@ productTypeForm.addEventListener("submit", (event) => {
   recordProductType();
   event.preventDefault();
 },
-
   false
-
 );
 
 
@@ -310,12 +302,13 @@ const getProjections = async () => {
 
   projections.listing.forEach(projection => {
 
-    console.log(projection);
-
-    // const arrayy = [projection.animal_list];
+    const viewProj = {
+      id: projection.projection_id,
+      name: projection.title
+    }
 
     htmlSegment = `
-    <tr class="justify-content-center" onclick="viewProjection('${projection.projection_id}')" id="${projection.projection_id}">
+    <tr class="justify-content-center" onclick="viewProjection(${viewProj})" id="${projection.projection_id}">
       <td class="text-center"> ${projection.id} </td>   
       <td class="text-center"> ${projection.title} </td> 
       <td class="text-center"> ${projection.description} </td> 
@@ -335,40 +328,18 @@ const getProjections = async () => {
 }
 
 
+// VIEW PRJECTION SCHEDULES.
 const viewProjection = async (param) => {
 
-  const projectedData = await getScheduleListing("product", `${param}`);
+  console.log(param);
+
+  document.getElementById("projectionsModalLabel").innerText = param.name;
+
+  const projectedData = await getScheduleListing("product", `${param.id}`);
 
   $('#productGraphModalToggle').modal('show');
 
   const today = new Date();
-  // document.getElementById('projectionsModalLabel').innerText = `${param2} PROJECTION FOR ${today.toLocaleDateString()}`;
-  // document.getElementById('expected_qnty').setAttribute("value", param3);
-
-  // const integers = param5.split(",");
-  // const animals = integers;
-
-  const ACTUAL = ["5", "5", "50", "10", "25"];
-  const EXPECTED = ["5", "20", "40", "0", "15"];
-
-  var data = [
-    {
-      histfunc: "sum",
-      y: EXPECTED,
-      x: ACTUAL,
-      type: "histogram",
-      name: "produced"
-    },
-    {
-      histfunc: "sum",
-      y: ACTUAL,
-      x: EXPECTED,
-      type: "histogram",
-      name: "expected"
-    }
-  ]
-
-  Plotly.newPlot('myPlot', data);
 
   let html = "";
   let htmlSegment = "";

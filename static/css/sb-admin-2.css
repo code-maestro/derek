@@ -478,17 +478,13 @@ mark,
 }
 
 .img-fluid {
-  max-width: 100%;
-  height: auto;
-}
-
-.img-thumbnail {
+  --max-width: 50%;
+  height: 50%;
+  object-fit: cover;
   padding: 0.25rem;
   background-color: #fff;
   border: 1px solid #dddfeb;
   border-radius: 0.35rem;
-  max-width: 100%;
-  height: auto;
 }
 
 .figure {

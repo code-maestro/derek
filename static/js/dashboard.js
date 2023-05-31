@@ -965,15 +965,10 @@ async function recordAnimal() {
 
 const animalForm = document.forms.namedItem("registerAnimalForm");
 animalForm.addEventListener("submit", (event) => {
-
   recordAnimal();
-
   event.preventDefault();
-
 },
-
   false
-
 );
 
 
@@ -1044,15 +1039,10 @@ async function recordVaccine() {
 
 const newForm = document.forms.namedItem("recordVaccine");
 newForm.addEventListener("submit", (event) => {
-
   recordVaccine();
-
   event.preventDefault();
-
 },
-
   false
-
 );
 
 
@@ -1118,15 +1108,10 @@ async function recordFeed() {
 
 const feedForm = document.forms.namedItem("recordFeed");
 feedForm.addEventListener("submit", (event) => {
-
   recordFeed();
-
   event.preventDefault();
-
 },
-
   false
-
 );
 
 
@@ -1191,15 +1176,10 @@ async function recordEditAnimal() {
 
 const updateAnimalForm = document.forms.namedItem("editAnimalForm");
 updateAnimalForm.addEventListener("submit", (event) => {
-
   recordEditAnimal();
-
   event.preventDefault();
-
 },
-
   false
-
 );
 
 
@@ -1264,14 +1244,9 @@ async function recordEditVaccine() {
 
 const updateVaccineForm = document.forms.namedItem("editVaccineForm");
 updateVaccineForm.addEventListener("submit", (event) => {
-
   recordEditVaccine();
-
   event.preventDefault();
-
 },
-
   false
-
 );
 

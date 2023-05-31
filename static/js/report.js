@@ -49,8 +49,6 @@ async function getReportData() {
 
       if (headers.status == 200) {
 
-        console.log(headers.daa);
-
         const res = await fetch(`/rpt_data?from_dt='${from_dt}'&to_dt='${to_dt}'&type=${rpt_type}`, options);
 
         if (!res.ok) {
@@ -62,8 +60,6 @@ async function getReportData() {
           const data = await res.json();
 
           if (data.status == 200) {
-
-            console.log(data.data);
 
             populateReport(headers.daa, data.data);
 
@@ -140,9 +136,7 @@ const populateReport = (headers, param2) => {
           <td class="text-center"> ${data.gender} </td>
           <td class="text-center"> ${data.dob} </td>
           <td class="text-center"> ${dateFrontend(data.effective_dt)} </td>
-        </tr>
-
-      `;
+        </tr> `;
 
     html += htmlSegment;
 
@@ -157,6 +151,9 @@ const populateReport = (headers, param2) => {
 
 // Plot graph
 const graph = (param) => {
+
+  console.log(param);
+
   var trace1 = {
     x: param,
     y: [20, 14, 23],

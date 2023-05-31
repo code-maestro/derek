@@ -30,7 +30,7 @@ async function renderUsers() {
         <a class="col-sm mb-4" href="/animal/${animal.name}">
           <div >
             <div class="rounded shadow-sm py-5 px-4" id="${animal.name}s">
-              <img src="${animal.image_url}" alt="${animal.name}'s image" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+              <img src="${animal.image_url}" alt="${animal.name}'s image" width="100" class="img-fluid rounded-circle mb-3 shadow-sm">
               <h5 class="mb-0"> ${animal.name} </h5>
               <span class="small text-uppercase text-muted" id="${animal.name}ss"></span>
             </div>
@@ -46,7 +46,7 @@ async function renderUsers() {
     <a class="col-sm mb-4" data-toggle="modal" data-target="#newAnimalModal" href="#">
       <div>
         <div class="rounded shadow-sm py-5 px-4">
-          <img width="100" class="img-fluid rounded-circle mb-3 img-thumbnail" src="images/plus.svg"/>
+          <img width="100" class="img-fluid rounded-circle mb-3" src="images/plus.svg"/>
           <h5 class="mb-0"> add new </h5>
           <span class="small text-uppercase text-muted" ></span>
         </div>
