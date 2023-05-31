@@ -553,7 +553,7 @@ app.get('/getListing/:param', function (request, response) {
 
         projections: `SELECT id, projection_id, title, description, product_type, production_qnty, IF(production_measure >= 1000, 'kg', 'g') AS measure, product_start_date, product_end_date, animal_list FROM product_projections WHERE farma_id = '${farma_id}';`,
 
-        notifications: `SELECT B.id, CONCAT(A.first_name, ' ', A.last_name) AS names, B.action, B.action_date FROM farma A, audit_trail B WHERE B.user_id = A.farma_id AND A.farma_id = '${farma_id}' AND B.animal_type='${animal_type}';`,
+        notifications: `SELECT B.id, CONCAT(A.first_name, ' ', A.last_name) AS names, B.action, B.action_date FROM farma A, audit_trail B WHERE B.user_id = A.farma_id AND A.farma_id = '${farma_id}' AND B.animal_type='${animal_type}' ORDER BY id DESC LIMIT 12;`,
         
         report_types: `SELECT table_name as name FROM information_schema.views WHERE table_schema = 'farma' AND table_name LIKE '%rpt%';`,
 

@@ -71,14 +71,12 @@
 
                   <div class="form-group first">
                     <!-- <label for="username">Username</label> -->
-                    <input type="email" class="form-control px-2" id="email" name="mail" placeholder="Enter email"
-                      required>
+                    <input type="email" class="form-control px-2" id="email" name="mail" placeholder="Enter email" autocomplete="email" required>
                   </div>
 
                   <div class="form-group last mb-4">
                     <!-- <label for="password">Password</label> -->
-                    <input type="password" class="form-control px-2" id="password" name="password"
-                      placeholder="Enter password" required>
+                    <input type="password" class="form-control px-2" id="password" name="password" autocomplete="current-password" placeholder="Enter password" required>
                   </div>
 
                   <input type="button" onclick="authenticateUser()" value="Log In"
@@ -129,7 +127,7 @@
                 </p>
 
                 <div class="form-group last mb-4">
-                  <input type="email" class="form-control px-2" id="reset-email" name="reset-email"
+                  <input type="email" class="form-control px-2" id="reset-email" name="reset-email" autocomplete="current-password"
                     placeholder="Enter your email" required>
                 </div>
 
@@ -175,13 +173,11 @@
 
               <form enctype="multipart/form-data" method="post" name="correctOTP" id="correctOTP" class="correctOTP">
                 <div class="form-group last mb-4">
-                  <input type="password" class="form-control px-2" id="reset-pass" name="reset-pass"
-                    placeholder="Enter New Password" required>
+                  <input type="password" class="form-control px-2" id="reset-pass" name="reset-pass" autocomplete="new-password" placeholder="Enter New Password" required>
                 </div>
 
                 <div class="form-group last mb-4">
-                  <input type="password" class="form-control px-2" id="reset-pass2"
-                    onchange="validatePassword('reset-pass', 'reset-pass2')" name="reset-pass2"
+                  <input type="password" class="form-control px-2" id="reset-pass2" autocomplete="new-password" sonchange="validatePassword('reset-pass', 'reset-pass2')" name="reset-pass2"
                     placeholder="Confirm New Password" required>
                 </div>
 

@@ -162,7 +162,7 @@ const graph = (param) => {
   };
 
   var trace2 = {
-    x: ['giraffes', 'orangutans', 'monkeys'],
+    x: param,
     y: [12, 18, 29],
     name: 'LA Zoo',
     type: 'bar'
