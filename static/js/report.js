@@ -61,14 +61,12 @@ async function getReportData() {
 
           if (data.status == 200) {
 
-            populateReport(headers.daa, data.data);
+            populateReport(headers.daa, data.data, data.dates);
 
           } else {
 
-            console.log(data);
-
             $('#errModalToggle').modal('show');
-            document.getElementById('errors-msg').innerText = data.message;
+            // document.getElementById('errors-msg').innerText = data.message;
 
           }
 
@@ -102,9 +100,10 @@ rpt.addEventListener("submit", (event) => {
 
 
 // GETTING REPORT
-const populateReport = (headers, param2) => {
+const populateReport = (headers, param2, count) => {
 
   const effective_dates = [];
+  const counted = [];
 
   let htmlx = "";
   let htmlxSegment = "";
@@ -142,36 +141,45 @@ const populateReport = (headers, param2) => {
 
   });
 
+  count.forEach(data => {
+    counted.push(data.sumation);
+  });
+
   con.innerHTML = html;
 
-  graph(effective_dates);
+  console.log(counted);
+
+  graph(effective_dates, counted);
 
 }
 
 
 // Plot graph
-const graph = (param) => {
+const graph = (dates, sumation) => {
 
-  console.log(param);
+  console.log(dates);
+  console.log(sumation);
 
   var trace1 = {
-    x: param,
-    y: [20, 14, 23],
-    name: 'SF Zoo',
+    x: dates,
+    y: sumation,
+    name: 'Actual',
     type: 'bar'
   };
-
+  
   var trace2 = {
-    x: param,
-    y: [12, 18, 29],
-    name: 'LA Zoo',
+    x: dates,
+    y: sumation,
+    name: 'expected',
     type: 'bar'
   };
-
+  
   var data = [trace1, trace2];
 
-  var layout = { barmode: 'stack' };
-
+  console.log(data);
+  
+  var layout = {barmode: 'group'};
+  
   Plotly.newPlot('charted', data, layout);
 
 }
