@@ -12,10 +12,10 @@ const getNotifications = async () => {
 
   total === null || total === undefined ? document.getElementById("farma-notifications-count").innerHTML = 0 : document.getElementById("farma-notifications-count").innerHTML = `${total.count[0].COUNT}`;
 
-  notifications === null || notifications === undefined ? console.log("nothing found") :  notis = notifications.listing;
+  notifications === null || notifications === undefined ? console.log("nothing found") : notis = notifications.listing;
 
-    notis.forEach(data => {
-      htmlSegment = `
+  notis.forEach(data => {
+    htmlSegment = `
       <span class="list-group-item list-group-item-action">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1"> ${data.action} </h5>
@@ -24,13 +24,13 @@ const getNotifications = async () => {
       <p class="mb-1">${data.names} - ${dateFrontend(data.action_date)}  </p>
     </span>`;
 
-      html += htmlSegment;
+    html += htmlSegment;
 
-    });
+  });
 
-    con.innerHTML = html;
+  con.innerHTML = html;
 
-    document.getElementById("farma-notifications").innerHTML = `
+  document.getElementById("farma-notifications").innerHTML = `
       <div class="mr-3">
         <div class="icon-circle bg-primary"> <i class="fas fa-file-alt text-white"></i>  </div>
       </div>

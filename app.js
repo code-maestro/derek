@@ -97,7 +97,7 @@ function checkFileType(file, cb) {
 
 
 // Schedule tasks to be run on the server.
-cron.schedule('*/10 * * * * *', function () {
+cron.schedule('*/30 * * * * *', function () {
     getTriggeredEmails();
 });
 
@@ -420,14 +420,6 @@ app.get('/getCount/:param', function (request, response) {
     }
 
 });
-
-
-// Function to return animal type dashboard data count
-app.get('/getType', function (request, response) { response.send({ type: storage('animal') }); });
-
-
-// Function to return animal type dashboard data count
-app.get('/getFarmaName', function (request, response) { response.send({ type: storage('farma_name') }); });
 
 
 // Function to retrieve animal data for table
@@ -877,7 +869,7 @@ app.get('/rpt_headers', async (request, response) => {
         const rpt_type = request.query.type;
 
         // query to return the tokens
-        connection.query(`SHOW COLUMNS FROM ${rpt_type} WHERE Field NOT IN ('effective_dt', 'farma_id');`, function (err, result) {
+        connection.query(`SHOW COLUMNS FROM ${rpt_type} WHERE Field NOT IN ('farma_id', 'effective_dt','animal_type');`, function (err, result) {
 
             if (err) {
 
@@ -887,10 +879,7 @@ app.get('/rpt_headers', async (request, response) => {
 
             } else {
 
-                console.log(result);
-
                 response.json({ status: 200, message: `SUCCESSFUL`, daa: result });
-
 
             }
 
@@ -914,6 +903,7 @@ app.get('/rpt_data', async (request, response) => {
     const animal_type = storage('animal');
 
     try {
+
         const from_dt = request.query.from_dt;
         const to_dt = request.query.to_dt;
         const rpt_type = request.query.type;
@@ -940,13 +930,16 @@ app.get('/rpt_data', async (request, response) => {
 
                     } else {
 
-                        response.json({ status: 200, message: `SUCCESSFUL`, data: res, dates: result});
+                        console.log("res");
+                        console.log(res);
+                        console.log("result");
+                        console.log(result);
 
+                        response.json({ status: 200, message: `SUCCESSFUL`, data: res, dates: result });
 
                     }
 
                 });
-
 
             }
 
@@ -957,6 +950,46 @@ app.get('/rpt_data', async (request, response) => {
         console.log(`${error}`);
 
         response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
+
+    }
+
+});
+
+
+// Report data from new views
+app.get('/predict_disease', async (request, response) => {
+
+    const farma_id = storage('farma_id');
+
+    if (farma_id) {
+
+        try {
+
+            const prompt = request.query.prompt;
+
+            // query to return the tokens
+            // connection.query(`SELECT * FROM otp WHERE pending_id = '${farma_id}';`, function (err, res) {
+            connection.query(`SELECT * FROM otp `, function (err, res) {
+
+                if (err) {
+
+                    console.log(err);
+                    response.send({ status: 500, message: err.message });
+
+                } else {
+
+                    response.json({ status: 201, message: `SUCCESSFUL`, data: res });
+
+                }
+
+            });
+
+        } catch (error) {
+
+            console.log(`${error}`);
+            response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
+
+        }
 
     }
 

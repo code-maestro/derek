@@ -1,84 +1,87 @@
-// var date = new Date();
-// console.log(date);
-// var date2= new Date('2013-02-11T10:12:50.5000z');
 
-// // console.log(date.toLocaleDateString('YYYY-MM-dd'));'2/10/2015'
+// import { Configuration, OpenAIApi } from "openai";
+// import readline from "readline";
 
-// const formatYmd = date.toISOString().slice(0, 10); // Example formatYmd(new Date())
+// const configuration = new Configuration({
+//   organization: "org-CjoTlbO9bvCo707NB8arW3qP",
+//   apiKey: "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",
+// });
+// const openai = new OpenAIApi(configuration);
 
-// function daysIntoYear(date){
-//   return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date2.getFullYear(),date2.getMonth(), date2.getDate())) / 24 / 60 / 60 / 1000;
-// }
+// const userInterface = readline.createInterface({
+//   input: process.stdin,
+//   output: process.stdout,
+// });
 
-// console.log(daysIntoYear(date, date2));
+// userInterface.prompt();
 
-// console.log(2022-2000);
-
-// console.log(new Intl.DateTimeFormat('en-CA').format(new Date()));
-// console.log(formatYmd);
-
-// const aran = 'vaccine'
-
-// const queries = {
-//   vaccine: `DELETE FROM vaccine`,
-//   animal: `DELETE FROM animal `
-// }
-
-// console.log(); // John
-
-// var x=360;
-// var y = x==1 ? "DAY" : x==7 ? "WEEK" : x==30 ? "MONTH" : "YEAR";
-// console.log(y);
-
-
-// // crypto module
-// const crypto = require("crypto");
-// const algorithm = "aes-256-cbc";
-// // generate 16 bytes of random data
-// const initVector = crypto.randomBytes(16);
-// // secret key generate 32 bytes of random data
-// const Securitykey = crypto.randomBytes(32);
-
-// const message = "This is a secret message";
+// userInterface.on("line", async (input) => {
+//   await openai
+//     .createChatCompletion({
+//       model: "gpt-3.5-turbo",
+//       messages: [{ role: "user", content: input }],
+//     })
+//     .then((res) => {
+//       console.log(res.data.choices[0].message.content);
+//       userInterface.prompt();
+//     })
+//     .catch((e) => {
+//       console.log(e);
+//     });
+// });
 
 
-// const encryptPassword = (password) => {
-//     // the cipher function
-//     const cipher = crypto.createCipheriv(algorithm, Securitykey, initVector);
-//     // encrypt the message
-//     let encryptedData = cipher.update(password, "utf-8", "hex");
-//     encryptedData += cipher.final("hex");
+// const configuration = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
 
-//     return encryptedData;
+// const openai = new OpenAIApi(configuration);
 
-// }
+// const completion = await openai.createChatCompletion({
+//   model: "gpt-3.5-turbo",
+//   messages: [{role: "user", content: "Hello world"}],
+// });
 
-// console.log(encryptPassword(message));
-
-
-// // the decipher function
-// const decipher = crypto.createDecipheriv(algorithm, Securitykey, initVector);
-
-// let decryptedData = decipher.update(encryptedData, "hex", "utf-8");
-
-// decryptedData += decipher.final("utf8");
-
-// console.log("Decrypted message: " + decryptedData);
+// console.log(completion.data.choices[0].message);
 
 
+// const configuration = new Configuration({
+//   organization: "org-CjoTlbO9bvCo707NB8arW3qP",
+//   apiKey: "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",
+// });
 
-// const date = new Date();
+// const openai = new OpenAIApi(configuration);
+// const response = await openai.createCompletion({
+//   model: "text-davinci-003",
+//   prompt: "Say this is a test",
+//   max_tokens: 7,
+//   temperature: 0,
+// });
 
-// console.log(date);
-// let day = date.getDate();
-// let month = date.getMonth() + 1;
-// let year = date.getFullYear();
 
-// // This arrangement can be altered based on how we want the date's format to appear.
-// let currentDate = `${day}-${month}-${year}`;
-// console.log(currentDate); // "17-6-2022"
+// console.log(response.data);
 
-// console.log("Add 283 Days to Current Date")
-// const d = new Date();
-// d.setDate(d.getDate() + 283);
-// console.log(d)
+
+const { BardAPI } = require('bard-api-node');
+
+async function testAssistant() {
+  try {
+
+    const assistant = new BardAPI();
+
+    // Set session information for authentication
+    await assistant.setSession('__Secure-1PSID', 'XQhk1CwSqdl4KV4t1bCFntzyy7TNtrhoDzlCeRHGQehKDCc6ai3jGGZ2NTMq1RisZ5M2sQ.'); // or '__Secure-3PSID'
+
+    // Send a query to Bard
+    const response = await assistant.getBardResponse('Hello, how are you?');
+    console.log('Bard:', response.content);
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+}
+
+testAssistant();
+

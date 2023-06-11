@@ -11,22 +11,11 @@ async function getCount(param) {
 }
 
 
-// Get number of animals' products from backend endpoint
-async function getAnimalType() {
-  let url = `/getType`;
-  try {
-    let res = await fetch(url);
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
 // RENDERS DATA TO THE BI DASHBOARD CARDS LIVE STATISTICS
 async function renderAnimals() {
 
-  const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'babies', 'vaccinatedAnimals', 'pendingAnimals', 'allFeeds', 'allProducts'];
+  const cardsCount = ['allAnimals', 'sickAnimals', 'vaccinatedAnimals', 'pendingAnimals', 'allFeeds', 'allProducts'];
+  // const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'babies', 'vaccinatedAnimals', 'pendingAnimals', 'allFeeds', 'allProducts'];
 
   for (const number of cardsCount) {
 
@@ -52,7 +41,8 @@ renderAnimals();
 // CARDS CLICK EVENT HANDLER
 // called when a totaling card is called
 function clicked(param) {
-  cards = ['total', 'sick', 'heavy', 'vaccinated', 'products', 'feed', 'new-born', 'pending'];
+  cards = ['total', 'sick', 'vaccinated', 'products', 'feed', 'pending'];
+  // cards = ['total', 'sick', 'heavy', 'vaccinated', 'products', 'feed', 'new-born', 'pending'];
   cards.forEach(element => {
     if (element == param) {
       document.getElementById(param).classList.add('border-left-info');
@@ -117,32 +107,32 @@ function clicked(param) {
           break;
 
         // [x] expecting table completed 
-        case 'heavy':
-          getExpectingAnimals();
-          renderAnimals();
-          container.innerHTML = `
-          <div class="card ${param}" id="${param}ss">
-            <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
-            <div class="card-body">
-              <h5 class="card-title"> ${param} statistics </h5>
-              <p class="card-text">
-                <table id="generalTable" class="table table-bordered table-hover table-sm">
-                  <thead class="table-dark">
-                    <tr>
-                      <th scope="col" class="text-center"> ID </th>
-                      <th scope="col" class="text-center"> ANIMAL TAG </th>
-                      <th scope="col" class="text-center"> INSERMINATION DATE </th>
-                      <th scope="col" class="text-center"> EXPECTED DUE DATE </th>
-                      <th scope="col" class="text-center"> REMAINING PERIOD </th>
-                    </tr>
-                  </thead>
-                  <tbody id="heavyAnimalsListing"> </tbody>
-              </table>
-            </p>
-          </div>
-        </div>
-          `;
-          break;
+        // case 'heavy':
+        //   getExpectingAnimals();
+        //   renderAnimals();
+        //   container.innerHTML = `
+        //   <div class="card ${param}" id="${param}ss">
+        //     <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
+        //     <div class="card-body">
+        //       <h5 class="card-title"> ${param} statistics </h5>
+        //       <p class="card-text">
+        //         <table id="generalTable" class="table table-bordered table-hover table-sm">
+        //           <thead class="table-dark">
+        //             <tr>
+        //               <th scope="col" class="text-center"> ID </th>
+        //               <th scope="col" class="text-center"> ANIMAL TAG </th>
+        //               <th scope="col" class="text-center"> INSERMINATION DATE </th>
+        //               <th scope="col" class="text-center"> EXPECTED DUE DATE </th>
+        //               <th scope="col" class="text-center"> REMAINING PERIOD </th>
+        //             </tr>
+        //           </thead>
+        //           <tbody id="heavyAnimalsListing"> </tbody>
+        //       </table>
+        //     </p>
+        //   </div>
+        // </div>
+        //   `;
+        //   break;
 
         // RETURN FULLY VACCINATED ANIMAKS
         case 'vaccinated':
@@ -261,32 +251,32 @@ function clicked(param) {
           break;
 
         // newborn animals
-        case 'new-born':
-          getNewBornAnimals();
-          getNotifications();
-          renderAnimals();
-          container.innerHTML = `
-          <div class="card ${param}" id="${param}ss">
-            <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
-            <div class="card-body">
-            <h5 class="card-title"> ${param} statistics </h5>
-              <p class="card-text">
-                <table id="generalTable" class="table table-bordered table-hover table-sm">
-                  <thead class="table-dark">
-                    <tr>
-                      <th scope="col" class="text-center"> ID </th>
-                      <th scope="col" class="text-center"> NEW BORN ANIMAL_TAG </th>
-                      <th scope="col" class="text-center"> DATE OF BIRTH </th>
-                      <th scope="col" class="text-center"> PARENT ANIMAL_TAG </th>
-                    </tr>
-                  </thead>
-                  <tbody id="newBornsListing">  </tbody>
-              </table>
-            </p>
-          </div>
-        </div>
-          `;
-          break;
+        // case 'new-born':
+        //   getNewBornAnimals();
+        //   getNotifications();
+        //   renderAnimals();
+        //   container.innerHTML = `
+        //   <div class="card ${param}" id="${param}ss">
+        //     <h5 class="card-header"> ${param.toUpperCase()}  TABLE </h5>
+        //     <div class="card-body">
+        //     <h5 class="card-title"> ${param} statistics </h5>
+        //       <p class="card-text">
+        //         <table id="generalTable" class="table table-bordered table-hover table-sm">
+        //           <thead class="table-dark">
+        //             <tr>
+        //               <th scope="col" class="text-center"> ID </th>
+        //               <th scope="col" class="text-center"> NEW BORN ANIMAL_TAG </th>
+        //               <th scope="col" class="text-center"> DATE OF BIRTH </th>
+        //               <th scope="col" class="text-center"> PARENT ANIMAL_TAG </th>
+        //             </tr>
+        //           </thead>
+        //           <tbody id="newBornsListing">  </tbody>
+        //       </table>
+        //     </p>
+        //   </div>
+        // </div>
+        //   `;
+        //   break;
 
         default:
           console.log(`Sorry`);
@@ -297,12 +287,6 @@ function clicked(param) {
       document.getElementById(element).style.backgroundColor = "WHITE";
     }
   });
-}
-
-
-// Rendering symptoms to frontend 
-function viewDiseases(params) {
-  console.log(params);
 }
 
 
@@ -369,36 +353,36 @@ async function getSickAnimals() {
 
 
 // [x]  WORKS - Get Pregant animals listing
-async function getExpectingAnimals() {
-  let heavyAnimals = await getListing("expectingAnimals");
-  console.log(heavyAnimals);
+// async function getExpectingAnimals() {
+//   let heavyAnimals = await getListing("expectingAnimals");
+//   console.log(heavyAnimals);
 
-  let html = '';
-  let htmlSegment = '';
+//   let html = '';
+//   let htmlSegment = '';
 
-  const con = document.getElementById('heavyAnimalsListing');
+//   const con = document.getElementById('heavyAnimalsListing');
 
-  heavyAnimals.listing.forEach(heavy => {
+//   heavyAnimals.listing.forEach(heavy => {
 
-    console.log(heavy);
+//     console.log(heavy);
 
-    htmlSegment = `
-        <tr class="justify-content-center" id="${heavy.id}">
-          <th scope="row" class="text-center"> ${heavy.id} </th>
-          <td class="text-center"> ${heavy.animal_tag} </td>
-          <td class="text-center"> ${dateFrontend(heavy.breeding_date)} </td>
-          <td class="text-center"> ${dateFrontend(heavy.expected_due_date)} </td>
-          <td class="text-center"> ${heavy.DAYS + 'Days(s)'} </td>
-        </tr>
-      `;
+//     htmlSegment = `
+//         <tr class="justify-content-center" id="${heavy.id}">
+//           <th scope="row" class="text-center"> ${heavy.id} </th>
+//           <td class="text-center"> ${heavy.animal_tag} </td>
+//           <td class="text-center"> ${dateFrontend(heavy.breeding_date)} </td>
+//           <td class="text-center"> ${dateFrontend(heavy.expected_due_date)} </td>
+//           <td class="text-center"> ${heavy.DAYS + 'Days(s)'} </td>
+//         </tr>
+//       `;
 
-    html += htmlSegment;
+//     html += htmlSegment;
 
-  });
+//   });
 
-  con.innerHTML = html;
+//   con.innerHTML = html;
 
-}
+// }
 
 
 // this function - Animal products listing
@@ -462,35 +446,35 @@ async function getAnimalFeeds() {
 
 
 // TODO implement this function - New borns listing
-async function getNewBornAnimals() {
-  let babies = await getListing("babies");
+// async function getNewBornAnimals() {
+//   let babies = await getListing("babies");
 
-  let html = '';
-  let htmlSegment = '';
+//   let html = '';
+//   let htmlSegment = '';
 
-  const con = document.getElementById('newBornsListing');
+//   const con = document.getElementById('newBornsListing');
 
-  babies.listing.forEach(baby => {
+//   babies.listing.forEach(baby => {
 
-    const dobYear = new Date(Date.parse(baby.dob));
+//     const dobYear = new Date(Date.parse(baby.dob));
 
-    htmlSegment = `
-        <tr class="justify-content-center" id="${baby.id}">
-          <td scope="col" class="text-center"> ${baby.id} </td>
-          <td scope="col" class="text-center"> ${baby.animal_tag} </td>
-          <td scope="col" class="text-center"> ${dobYear.toLocaleDateString()} </td>
-          <td scope="col" class="text-center"> ${baby.parent_tag} </td>
-        </tr>
-      `;
+//     htmlSegment = `
+//         <tr class="justify-content-center" id="${baby.id}">
+//           <td scope="col" class="text-center"> ${baby.id} </td>
+//           <td scope="col" class="text-center"> ${baby.animal_tag} </td>
+//           <td scope="col" class="text-center"> ${dobYear.toLocaleDateString()} </td>
+//           <td scope="col" class="text-center"> ${baby.parent_tag} </td>
+//         </tr>
+//       `;
 
-    html += htmlSegment;
+//     html += htmlSegment;
 
-  });
+//   });
 
-  con.innerHTML = html;
+//   con.innerHTML = html;
 
 
-}
+// }
 
 
 // Table data for vaccines

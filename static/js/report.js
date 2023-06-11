@@ -129,12 +129,13 @@ const populateReport = (headers, param2, count) => {
     effective_dates.push(dateFrontend(data.effective_dt));
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${data.id}">
-          <td class="text-center"> ${data.id} </td>
-          <td class="text-center"> ${data.animal_tag} </td>
-          <td class="text-center"> ${data.gender} </td>
-          <td class="text-center"> ${data.dob} </td>
-          <td class="text-center"> ${dateFrontend(data.effective_dt)} </td>
+        <tr class="justify-content-center" id="${data.ID}">
+          <td class="text-center"> ${data.ID} </td>
+          <td class="text-center"> ${data.ANIMAL_TAG} </td>
+          <td class="text-center"> ${data.GENDER} </td>
+          <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
+          <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
+          <td class="text-center"> ${data.AGE} </td>
         </tr> `;
 
     html += htmlSegment;
