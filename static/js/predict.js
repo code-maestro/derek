@@ -33,7 +33,6 @@ async function getPredictions() {
         let htmlSegment = "";
         const con = document.getElementById('chat_bot_convo');
 
-
         (data.data).forEach(data => {
           htmlSegment = `
             <span class="list-group-item list-group-item-action">
