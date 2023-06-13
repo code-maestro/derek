@@ -1,10 +1,10 @@
 // Function Adding new Feed
-async function getPredictions() {
+async function getPredictions(param1, param2) {
 
   try {
 
     // Prompt Text
-    const prompt_text = document.getElementById('prompt_text').value;
+    const prompt_text = document.getElementById(`${param1}`).value;
 
     console.log(prompt_text);
 
@@ -31,21 +31,53 @@ async function getPredictions() {
 
         let html = "";
         let htmlSegment = "";
-        const con = document.getElementById('chat_bot_convo');
 
-        (data.data).forEach(data => {
-          htmlSegment = `
-            <span class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1"> ${data.expiry_timestamp} </h5>
-              <small class="text-body-secondary"> x </small>
-            </div>
-            <p class="mb-1"> ${data.otp}  </p>
-          </span>`;
+        const con = document.getElementById(`${param2}`);
 
-          html += htmlSegment;
+        if (param1 === 'ssText') {
 
-        });
+          let htmlSegment2 = "";
+          let html2 = "";
+          const conn = document.getElementById(`predicted_symptoms`);
+
+          (data.data).forEach(data => {
+
+            htmlSegment2 = `${data.DESCRIPTION} `;
+
+            html2 += htmlSegment2;
+
+          });
+
+          conn.innerHTML = html2;
+
+          console.log(html2);
+
+          (data.data).forEach(data => {
+            
+            htmlSegment = `${data.DISEASE_NAME}`;
+
+            html += htmlSegment;
+
+          });
+
+          con.value = html;
+
+        } else {
+
+          (data.data).forEach(data => {
+            htmlSegment = `
+              <span class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"> ${data.DISEASE_NAME} </h5>
+              </div>
+              <p class="mb-1"> ${data.DESCRIPTION}  </p>
+            </span>`;
+
+            html += htmlSegment;
+
+          });
+
+        }
 
         con.innerHTML = html;
 
@@ -71,7 +103,7 @@ async function getPredictions() {
 
 const predictionForm = document.forms.namedItem("getPredictionForm");
 predictionForm.addEventListener("submit", (event) => {
-  getPredictions();
+  getPredictions("prompt_text", "getPredictionForm");
   event.preventDefault();
 },
   false

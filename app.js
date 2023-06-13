@@ -442,25 +442,6 @@ app.get('/getFarma', function (request, response) {
 });
 
 
-// Function to retrieve animal data for table
-app.get('/success', function (request, response) {
-    const sql_query = `SHOW VARIABLES LIKE 'max_connections';`;
-
-    connection.query(sql_query, function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) {
-
-            console.log(error);
-
-        };
-
-        response.send({ farma: results });
-
-    })
-
-});
-
-
 //  LISTING END POINTS
 // Cleaned
 app.get('/getListing/:param', function (request, response) {
@@ -959,37 +940,31 @@ app.get('/rpt_data', async (request, response) => {
 // Report data from new views
 app.get('/predict_disease', async (request, response) => {
 
-    const farma_id = storage('farma_id');
+    try {
 
-    if (farma_id) {
+        const prompt = request.query.prompt;
 
-        try {
+        console.log(prompt);
 
-            const prompt = request.query.prompt;
+        connection.query(`SELECT B.disease_name DISEASE_NAME, A.description DESCRIPTION FROM symptom A, disease B WHERE MATCH (A.description) AGAINST (?) AND A.disease_id  IN (B.id);`, prompt, function (err, res) {
 
-            // query to return the tokens
-            // connection.query(`SELECT * FROM otp WHERE pending_id = '${farma_id}';`, function (err, res) {
-            connection.query(`SELECT * FROM otp `, function (err, res) {
+            if (err) {
 
-                if (err) {
+                console.log(err);
+                response.send({ status: 500, message: err.message });
 
-                    console.log(err);
-                    response.send({ status: 500, message: err.message });
+            } else {
 
-                } else {
+                response.json({ status: 201, message: `SUCCESSFUL`, data: res });
 
-                    response.json({ status: 201, message: `SUCCESSFUL`, data: res });
+            }
 
-                }
+        });
 
-            });
+    } catch (error) {
 
-        } catch (error) {
-
-            console.log(`${error}`);
-            response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
-
-        }
+        console.log(error);
+        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
 
     }
 
@@ -2043,29 +2018,75 @@ app.post('/delete', function (request, response) {
 
 
 // Function to delete data from animal
-app.post('/testtest', function (request, response) {
+app.post('/tits', function (request, response) {
 
-    var myArray = [{ "name": "John", "age": 30, "city": "New York" }, { "name": "Mary", "age": 25, "city": "Los Angeles" }];
-    var jsonString = JSON.stringify(myArray);
+    var myArray = ["John", "age", 30, "New York"];
+    // var jsonString = JSON.stringify(myArray);
 
-    connection.query(`INSERT INTO test_dbo (name) VALUES ('${jsonString}');`, function (error, results, fields) {
+    const theString = myArray.toString();
 
+    console.log(theString);
 
-        // If there is an issue with the query, output the error
+    connection.query(`INSERT INTO tess (list_of_animals) VALUES ('${theString}');`, 
+
+    function (error, results, fields) {
+
         if (error) {
 
-            console.log("error");
             logger.error(error.errno + error.message);
+
+            return response.json({ status: 500, message: error.sqlMessage });
 
         } else {
 
             console.log(results);
 
-            results.affectedRows >= 1 ? response.send({ message: "GOOD" }) : response.send({ message: "BAD" });
+            if (results.affectedRows > 0) {
+
+                return response.json({ status: 200, data: theString});
+
+            } else {
+
+                return response.json({ status: 400, data: theString});
+
+            }
 
         }
 
     })
+
+});
+
+
+// Get
+app.get('/tits', async (request, response) => {
+
+    try {
+
+        // query to return the tokens
+        connection.query(`SELECT list_of_animals FROM tess;`, function (err, result) {
+
+            if (err) {
+
+                console.log(err);
+
+                response.send({ status: 500, message: err.message });
+
+            } else {
+
+                response.json({ status: 200, message: `SUCCESSFUL`, data: result });
+
+            }
+
+        });
+
+    } catch (error) {
+
+        console.log(`${error}`);
+
+        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
+
+    }
 
 });
 

@@ -2861,6 +2861,11 @@
                             <div class="row ">
                                 <div class="col">
                                     <div class="card">
+
+                                        <div class="card-header">
+                                            <span id="err-msg"> er </span>
+                                        </div>
+
                                         <div class="card-body">
                                             <!-- Add Sick Form -->
 
@@ -2868,7 +2873,7 @@
                                                 id="sickAnimalForm" name="recordSick">
 
                                                 <!-- HEALTHY ANIMALS -->
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <label for="healthyList" class="form-label fw-bold"> Choose
                                                         Animal TAG
                                                     </label>
@@ -2876,38 +2881,53 @@
                                                         required> </select>
                                                 </div>
 
-                                                <div class="col-md-4">
-                                                    <label for="feedingFirstDate" class="form-label fw-bold">
-                                                        First
-                                                        Signs
-                                                        Date </label>
+                                                <div class="col-md-6">
+                                                    <label for="feedingFirstDate" class="form-label fw-bold"> First Signs Date </label>
                                                     <input onchange="validateDate('reportedDate')" id="reportedDate"
                                                         type="date" class="form-control" name="reportedDate"
                                                         spellcheck="false" required>
                                                 </div>
 
+                                                <!-- enter signs to predict -->
+                                                <div class="col-md-6">
+                                                    <label for="signs_and_symptoms" class="form-label fw-bold">
+                                                        Signs and Symptoms </label>
+                                                    <textarea class="form-control" name="ssText" id="ssText" rows="3"
+                                                        required onchange="getPredictions('ssText', 'predicted_disease')"></textarea>
+                                                </div>
+
+                                                <!-- Predicted related symptoms -->
+                                                <div class="col-md-6">
+                                                    <label for="predicted_symptoms" class="form-label fw-bold">
+                                                        Predicted Signs and Symptoms </label>
+                                                    <textarea class="form-control" name="predicted_symptoms"
+                                                        id="predicted_symptoms" rows="3" readonly></textarea>
+                                                </div>
+
+                                                <!-- Predicted Disease(s) -->
                                                 <div class="col-md-4">
-                                                    <label for="feedsName" class="form-label fw-bold"> Suspected
-                                                        Disease
+                                                    <label for="predicted_disease" class="form-label fw-bold"> Predicted
+                                                        Disease(s) </label>
+                                                    <input type="text" id="predicted_disease" class="form-control"
+                                                        name="predicted_disease" readonly>
+                                                </div>
+
+
+                                                <!--  Suspected Disease -->
+                                                <div class="col-md-4">
+                                                    <label for="feedsName" class="form-label fw-bold"> Suspected Disease
                                                     </label>
                                                     <select id="disease_suspected" class="form-select"
                                                         name="suspected_disease" required> </select>
                                                 </div>
 
-                                                <div class="col-md-8">
-                                                    <label for="signs_and_symptoms" class="form-label fw-bold">
-                                                        Signs and Symptoms </label>
-                                                    <textarea class="form-control" name="ssText" id="ssText" rows="3"
-                                                        required></textarea>
-                                                </div>
 
                                                 <!-- Vaccine attached to a disease -->
                                                 <div class="col-md-4">
-                                                    <label for="vaccineNamen" class="form-label fw-bold">
-                                                        Proposed
+                                                    <label for="vaccineNamen" class="form-label fw-bold"> Proposed
                                                         Vaccine </label>
                                                     <input id="vaccine-namen" type="text" class="form-control"
-                                                        name="vaccineNamen" spellcheck="false" readonly>
+                                                        name="vaccineNamen" readonly>
                                                 </div>
 
                                                 <!-- SCHEDULE A TREATMENT APPOINTMENT -->
@@ -3958,15 +3978,25 @@
                                         </div>
 
 
-                                        <form class="row g-3 align-items-end" enctype="multipart/form-data" method="post" id="getPredictionForm" name="getPredictionForm">
+                                        <form class="row g-3 align-items-end" enctype="multipart/form-data" method="post" id="getPredictionForms" name="getPredictionForm">
                                             <div class="col-md-12">
-                                                <div class="input-group">
+                                                
+                                                <div id="getPredictionForm">
 
-                                                    <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="basic-addon1" id="prompt_text">
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Input group example"
+                                                        aria-label="Input group example" aria-describedby="basic-addon1"
+                                                        id="prompt_text">
 
                                                     <button class="input-group-text" id="basic-addon1" type="submit">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                                                            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            fill="currentColor" class="bi bi-arrow-right-short"
+                                                            viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd"
+                                                                d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z">
                                                             </path>
                                                         </svg>
                                                     </button>

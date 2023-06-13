@@ -1,5 +1,5 @@
 
-// import { Configuration, OpenAIApi } from "openai";
+import { Configuration, OpenAIApi } from "openai";
 // import readline from "readline";
 
 // const configuration = new Configuration({
@@ -45,43 +45,43 @@
 // console.log(completion.data.choices[0].message);
 
 
-// const configuration = new Configuration({
-//   organization: "org-CjoTlbO9bvCo707NB8arW3qP",
-//   apiKey: "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",
-// });
+const configuration = new Configuration({
+  organization: "org-Xw5Q9C5Gm64kveYuaPVvqybZ",
+  apiKey: "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",
+});
 
-// const openai = new OpenAIApi(configuration);
-// const response = await openai.createCompletion({
-//   model: "text-davinci-003",
-//   prompt: "Say this is a test",
-//   max_tokens: 7,
-//   temperature: 0,
-// });
-
-
-// console.log(response.data);
+const openai = new OpenAIApi(configuration);
+const response = await openai.createCompletion({
+  model: "text-davinci-003",
+  prompt: "Say this is a test",
+  max_tokens: 7,
+  temperature: 0,
+});
 
 
-const { BardAPI } = require('bard-api-node');
+console.log(response.data);
 
-async function testAssistant() {
-  try {
 
-    const assistant = new BardAPI();
+// const { BardAPI } = require('bard-api-node');
 
-    // Set session information for authentication
-    await assistant.setSession('__Secure-1PSID', 'XQhk1CwSqdl4KV4t1bCFntzyy7TNtrhoDzlCeRHGQehKDCc6ai3jGGZ2NTMq1RisZ5M2sQ.'); // or '__Secure-3PSID'
+// async function testAssistant() {
+//   try {
 
-    // Send a query to Bard
-    const response = await assistant.getBardResponse('Hello, how are you?');
-    console.log('Bard:', response.content);
+//     const assistant = new BardAPI();
 
-  } catch (error) {
+//     // Set session information for authentication
+//     await assistant.setSession('__Secure-1PSID', 'XQhk1CwSqdl4KV4t1bCFntzyy7TNtrhoDzlCeRHGQehKDCc6ai3jGGZ2NTMq1RisZ5M2sQ.'); // or '__Secure-3PSID'
 
-    console.log(error);
+//     // Send a query to Bard
+//     const response = await assistant.getBardResponse('Hello, how are you?');
+//     console.log('Bard:', response.content);
 
-  }
-}
+//   } catch (error) {
 
-testAssistant();
+//     console.log(error);
+
+//   }
+// }
+
+// testAssistant();
 
