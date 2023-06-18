@@ -61,7 +61,7 @@ async function getReportData() {
 
           if (data.status == 200) {
 
-            populateReport(headers.daa, data.data, data.dates);
+            populateReport(headers.daa, data.data, data.dates, rpt_type);
 
           } else {
 
@@ -100,7 +100,9 @@ rpt.addEventListener("submit", (event) => {
 
 
 // GETTING REPORT
-const populateReport = (headers, param2, count) => {
+const populateReport = (headers, param2, count, type) => {
+
+  console.log("type : " + type);
 
   const effective_dates = [];
   const counted = [];
@@ -124,19 +126,97 @@ const populateReport = (headers, param2, count) => {
   let htmlSegment = "";
   const con = document.getElementById('reportListing');
 
+
   param2.forEach(data => {
 
     effective_dates.push(dateFrontend(data.effective_dt));
 
-    htmlSegment = `
-        <tr class="justify-content-center" id="${data.ID}">
-          <td class="text-center"> ${data.ID} </td>
+    // CHECK RPT TYPE
+    switch (type) {
+      // all animals report
+      case 'rpt_animal':
+        htmlSegment = `
+          <tr class="justify-content-center" id="${data.ID}">
+            <td class="text-center"> ${data.ID} </td>
+            <td class="text-center"> ${data.ANIMAL_TAG} </td>
+            <td class="text-center"> ${data.GENDER} </td>
+            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
+            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
+            <td class="text-center"> ${data.AGE} </td>
+          </tr> `;
+        break;
+
+      // sick animals report
+      case 'rpt_sick_animals':
+        htmlSegment = `
+          <tr class="justify-content-center" id="${data.ID}">
+          <td class="text-center"> ${data.ID} </td>  
           <td class="text-center"> ${data.ANIMAL_TAG} </td>
-          <td class="text-center"> ${data.GENDER} </td>
-          <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
-          <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
-          <td class="text-center"> ${data.AGE} </td>
-        </tr> `;
+            <td class="text-center"> ${data.DISEASE} </td>
+            <td class="text-center"> ${data.VET_NAME} </td>
+            <td class="text-center"> ${dateFrontend(data.REPORTED_DATE)} </td>
+            <td class="text-center"> ${dateFrontend(data.APPOINTMENT_DATE)} </td>
+            <td class="text-center"> ${data.CONFIRMED} </td>
+          </tr> `;
+        break;
+
+      // expecting animals report
+      case 'rpt_expecting':
+        htmlSegment = `
+          <tr class="justify-content-center" id="${data.ID}">
+            <td class="text-center"> ${data.ID} </td>
+            <td class="text-center"> ${data.ANIMAL_TAG} </td>
+            <td class="text-center"> ${data.GENDER} </td>
+            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
+            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
+            <td class="text-center"> ${data.AGE} </td>
+          </tr> `;
+        break;
+
+      // meat products report
+      case 'rpt_meat':
+        htmlSegment = `
+          <tr class="justify-content-center" id="${data.ID}">
+            <td class="text-center"> ${data.ID} </td>
+            <td class="text-center"> ${data.ANIMAL_TAG} </td>
+            <td class="text-center"> ${data.GENDER} </td>
+            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
+            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
+            <td class="text-center"> ${data.AGE} </td>
+          </tr> `;
+        break;
+
+      // dairy product report
+      case 'rpt_dairy':
+        htmlSegment = `
+          <tr class="justify-content-center" id="${data.ID}">
+            <td class="text-center"> ${data.ID} </td>
+            <td class="text-center"> ${data.ANIMAL_TAG} </td>
+            <td class="text-center"> ${data.GENDER} </td>
+            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
+            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
+            <td class="text-center"> ${data.AGE} </td>
+          </tr> `;
+        break;
+
+        
+      // skins_hydes product report
+      case 'rpt_skins_hides':
+        htmlSegment = `
+          <tr class="justify-content-center" id="${data.ID}">
+            <td class="text-center"> ${data.ID} </td>
+            <td class="text-center"> ${data.ANIMAL_TAG} </td>
+            <td class="text-center"> ${data.GENDER} </td>
+            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
+            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
+            <td class="text-center"> ${data.AGE} </td>
+          </tr> `;
+        break;
+
+      default:
+
+        console.log(` SORRY LOL `);
+    }
 
     html += htmlSegment;
 
@@ -167,20 +247,20 @@ const graph = (dates, sumation) => {
     name: 'Actual',
     type: 'bar'
   };
-  
+
   var trace2 = {
     x: dates,
     y: sumation,
     name: 'expected',
     type: 'bar'
   };
-  
+
   var data = [trace1, trace2];
 
   console.log(data);
-  
-  var layout = {barmode: 'group'};
-  
+
+  var layout = { barmode: 'group' };
+
   Plotly.newPlot('charted', data, layout);
 
 }

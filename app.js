@@ -937,7 +937,7 @@ app.get('/rpt_data', async (request, response) => {
 });
 
 
-// Report data from new views
+// Predicted Disease 
 app.get('/predict_disease', async (request, response) => {
 
     try {
@@ -946,7 +946,7 @@ app.get('/predict_disease', async (request, response) => {
 
         console.log(prompt);
 
-        connection.query(`SELECT B.disease_name DISEASE_NAME, A.description DESCRIPTION FROM symptom A, disease B WHERE MATCH (A.description) AGAINST (?) AND A.disease_id  IN (B.id);`, prompt, function (err, res) {
+        connection.query(`SELECT A.id, B.animal_type, B.disease_name DISEASE_NAME, A.description DESCRIPTION FROM symptom A, disease B WHERE MATCH (A.description) AGAINST (?) AND A.disease_id  IN (B.id);`, prompt, function (err, res) {
 
             if (err) {
 
@@ -954,6 +954,42 @@ app.get('/predict_disease', async (request, response) => {
                 response.send({ status: 500, message: err.message });
 
             } else {
+
+                response.json({ status: 201, message: `SUCCESSFUL`, data: res });
+
+            }
+
+        });
+
+    } catch (error) {
+
+        console.log(error);
+        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
+
+    }
+
+});
+
+
+// Predicted Disease Vaccine 
+app.get('/predict_vaccine', async (request, response) => {
+
+    try {
+
+        const prompt = request.query.prompt;
+
+        console.log(prompt);
+
+        connection.query(`SELECT description DESCRIPTION FROM vaccines WHERE disease_id = ?;`, prompt, function (err, res) {
+
+            if (err) {
+
+                console.log(err);
+                response.send({ status: 500, message: err.message });
+
+            } else {
+
+                console.log(res);
 
                 response.json({ status: 201, message: `SUCCESSFUL`, data: res });
 
@@ -2056,7 +2092,6 @@ app.post('/tits', function (request, response) {
     })
 
 });
-
 
 // Get
 app.get('/tits', async (request, response) => {

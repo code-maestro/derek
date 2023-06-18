@@ -131,16 +131,11 @@ const getRequiredData = async () => {
   
   const animals = await getListing('healthyAnimals');
   const vets = await getListing('vets');
-  const diseases = await getListing('allDiseases');
 
-  console.log(animals);
-
-  let diseaseListed, tagListed, vetListed = '';
+  let tagListed, vetListed = '';
   let tagList = `<option selected disabled> Choose an Animal Tag ... </option>`;
   let vetList = `<option selected disabled id="update-vet-name" value=0> Choose an Vet ... </option>`;
-  let diseaseList = `<option selected disabled id='default-sick' value=0 > Select suspected Disease ... </option>`;
-
-  const disease_lstd = document.getElementById('disease_suspected');
+  
   const tag_lstd = document.getElementById('healthyList');
   const vet_lstd = document.getElementById('vets-named');
 
@@ -154,12 +149,6 @@ const getRequiredData = async () => {
     vetList += vetListed;
   });
 
-  diseases.listing.forEach(disease => {
-    diseaseListed = ` <option id="${disease.id}" value="${disease.id}">  ${disease.disease_name} </option> `;
-    diseaseList += diseaseListed;
-  });
-
-  disease_lstd.innerHTML = diseaseList;
   tag_lstd.innerHTML = tagList;
   vet_lstd.innerHTML = vetList;
 

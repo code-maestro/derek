@@ -21,6 +21,14 @@
         <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css"
+            integrity="sha512-SgaqKKxJDQ/tAUAAXzvxZz33rmn7leYDYfBP+YoMRSENhf3zJyx3SBASt/OfeQwBHA1nxMis7mM3EV/oYT6Fdw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+
         <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css" type="text/css" />
@@ -239,7 +247,7 @@
                 <li class="nav-item font-weight-bold">
                     <span class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#products"
                         aria-controls="products">
-                        <i class="fas fa-flag"></i>
+                        <i class="fa-thin fa-folder-open"></i>
                         <span> Products </span>
                     </span>
 
@@ -2882,22 +2890,24 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label for="feedingFirstDate" class="form-label fw-bold"> First Signs Date </label>
+                                                    <label for="feedingFirstDate" class="form-label fw-bold"> First
+                                                        Signs Date </label>
                                                     <input onchange="validateDate('reportedDate')" id="reportedDate"
                                                         type="date" class="form-control" name="reportedDate"
                                                         spellcheck="false" required>
                                                 </div>
 
                                                 <!-- enter signs to predict -->
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <label for="signs_and_symptoms" class="form-label fw-bold">
                                                         Signs and Symptoms </label>
                                                     <textarea class="form-control" name="ssText" id="ssText" rows="3"
-                                                        required onchange="getPredictions('ssText', 'predicted_disease')"></textarea>
+                                                        required
+                                                        onchange="getPredictions('ssText', 'predicted_disease')"></textarea>
                                                 </div>
 
                                                 <!-- Predicted related symptoms -->
-                                                <div class="col-md-6">
+                                                <div class="col-md-5">
                                                     <label for="predicted_symptoms" class="form-label fw-bold">
                                                         Predicted Signs and Symptoms </label>
                                                     <textarea class="form-control" name="predicted_symptoms"
@@ -2905,7 +2915,7 @@
                                                 </div>
 
                                                 <!-- Predicted Disease(s) -->
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <label for="predicted_disease" class="form-label fw-bold"> Predicted
                                                         Disease(s) </label>
                                                     <input type="text" id="predicted_disease" class="form-control"
@@ -2918,7 +2928,8 @@
                                                     <label for="feedsName" class="form-label fw-bold"> Suspected Disease
                                                     </label>
                                                     <select id="disease_suspected" class="form-select"
-                                                        name="suspected_disease" required> </select>
+                                                        name="suspected_disease" required
+                                                        onchange="getPredictedVaccine()"> </select>
                                                 </div>
 
 
@@ -3701,7 +3712,6 @@
                             </div>
                         </form>
 
-
                     </div>
                 </div>
             </div>
@@ -3954,63 +3964,27 @@
             aria-labelledby="chatBotModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
-                    <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form class="row g-3 align-items-end" enctype="multipart/form-data" method="post" id="getPredictionForm" name="getPredictionForm">
 
-                        <div class="row">
-                            <div class="col">
-                                <div class="card bg-gradient-primary">
-                                    <div class="mx-auto">
-                                        <h4 class="font-monospace font-weight-bold mx-2"
-                                            id="registerFeedStockModalLabel"> INTERACT WITH A CHAT BOT TO PREDICT
-                                            DISEASES </h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row pt-4">
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-body">
-
-                                        <div id="chat_bot_convo">
-
+                                <div class="ai-card">
+                                    <div class="chat-header"> Disease Prediction Chat Bot </div>
+                                    <div class="chat-window">
+                                        <div class="message-list" >
+                                            <ul id="chat_bot_convo"></ul>
                                         </div>
-
-
-                                        <form class="row g-3 align-items-end" enctype="multipart/form-data" method="post" id="getPredictionForms" name="getPredictionForm">
-                                            <div class="col-md-12">
-                                                
-                                                <div id="getPredictionForm">
-
-                                                </div>
-
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Input group example"
-                                                        aria-label="Input group example" aria-describedby="basic-addon1"
-                                                        id="prompt_text">
-
-                                                    <button class="input-group-text" id="basic-addon1" type="submit">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor" class="bi bi-arrow-right-short"
-                                                            viewBox="0 0 16 16">
-                                                            <path fill-rule="evenodd"
-                                                                d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-
-                                            </div>
-
-
-                                        </form>
+                                    </div>
+                                    <div class="chat-input">
+                                        <input type="text" id="prompt_text" name="prompt_text" class="message-input"
+                                            placeholder=" Enter Signs the sick animal is showing to get a prediction ">
+                                        <button class="send-button" type="submit"> Send </button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
+                            </form>
+
+                        </div>
                     </div>
                 </div>
             </div>
