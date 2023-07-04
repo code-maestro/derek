@@ -537,7 +537,9 @@ app.get('/getListing/:param', function (request, response) {
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
+
                 response.send({ listing: error });
+
             } else {
 
                 response.send({ listing: results });
@@ -950,8 +952,7 @@ app.get('/predict_disease', async (request, response) => {
 
             if (err) {
 
-                console.log(err);
-                response.send({ status: 500, message: err.message });
+                response.send({ status: 400, message: err.message });
 
             } else {
 
@@ -963,7 +964,6 @@ app.get('/predict_disease', async (request, response) => {
 
     } catch (error) {
 
-        console.log(error);
         response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
 
     }
@@ -2099,25 +2099,22 @@ app.get('/tits', async (request, response) => {
     try {
 
         // query to return the tokens
-        connection.query(`SELECT list_of_animals FROM tess;`, function (err, result) {
-
+        // connection.query(`SELECT list_of_animals FROM tess;`, function (err, result) {
+            connection.query(`SELECT Leveled(200000) AS GRADE;`, function (err, result) {
+            
             if (err) {
 
-                console.log(err);
-
-                response.send({ status: 500, message: err.message });
+                response.send({ status: 400, message: err.message });
 
             } else {
 
-                response.json({ status: 200, message: `SUCCESSFUL`, data: result });
+                response.json({ status: 201, message: `SUCCESSFUL`, data: result[0].GRADE });
 
             }
 
         });
 
     } catch (error) {
-
-        console.log(`${error}`);
 
         response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
 

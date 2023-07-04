@@ -20,7 +20,7 @@ const viewSchedule = async (type, id) => {
     schedules.listing.forEach(schedule => {
 
       htmlSegment = `
-        <tr class="justify-content-center" id="${schedule.id}">
+        <tr class="justify-content-center" data-bs-toggle="tooltip" data-bs-title="Disabled tooltip" id="${schedule.id}">
           <td class="text-center"> ${schedule.id} </td>   
           <td class="text-center"> ${dateFrontend(schedule.effective_date)} </td> 
           <td class="text-center"> ${dateFrontend(schedule.next_date)} </td> 
@@ -41,7 +41,7 @@ const viewSchedule = async (type, id) => {
     schedules.listing.forEach(schedule => {
 
       htmlSegment = `
-        <tr class="justify-content-center" id="${schedule.id}">
+        <tr class="justify-content-center"  data-bs-toggle="tooltip" data-bs-title="Disabled tooltip" id="${schedule.id}">
           <td class="text-center"> ${schedule.id} </td>   
           <td class="text-center"> ${dateFrontend(schedule.effective_date)} </td> 
           <td class="text-center"> ${dateFrontend(schedule.next_date)} </td> 
@@ -58,18 +58,6 @@ const viewSchedule = async (type, id) => {
   }
 
   con.innerHTML = html;
-
-}
-
-
-// VALIDATION OF WEIG QNTY
-const validateQuantity = async (param) => {
-
-  console.log(param);
-
-  const plannedQnty = document.getElementById('plannedQnty');
-  const ogFeedsQnty = document.getElementById('feeds-quantity');
-
 
 }
 

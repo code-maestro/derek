@@ -30,7 +30,7 @@ const getProductTypes = async (param) => {
       console.log(product);
 
       htmlSegment = `
-        <tr onclick="viewProductType('${product.type_id}', '${product.name}','${product.currency_code}','${product.price}', '${product.price_qty}', '${product.price_qnty}')" class="justify-content-center" id="${product.type_id}">
+        <tr data-bs-toggle="tooltip" data-bs-title="Disabled tooltip" onclick="viewProductType('${product.type_id}', '${product.name}','${product.currency_code}','${product.price}', '${product.price_qty}', '${product.price_qnty}')" class="justify-content-center" id="${product.type_id}">
           <td class="text-center"> ${product.type_id} </td>   
           <td class="text-center"> ${product.name} </td> 
           <td class="text-center"> ${product.currency_code + ' ' + product.price + '/' + product.price_qty} </td> 
@@ -308,7 +308,9 @@ const getProjections = async () => {
     }
 
     htmlSegment = `
-    <tr class="justify-content-center" onclick="viewProjection(${viewProj})" id="${projection.projection_id}">
+    <tr class="justify-content-center"  data-bs-toggle="tooltip" data-bs-placement="top"
+    data-bs-custom-class="custom-tooltip"
+    data-bs-title="This top tooltip is themed via CSS variables." onclick="viewProjection(${viewProj})" id="${projection.projection_id}">
       <td class="text-center"> ${projection.id} </td>   
       <td class="text-center"> ${projection.title} </td> 
       <td class="text-center"> ${projection.description} </td> 
@@ -330,8 +332,6 @@ const getProjections = async () => {
 
 // VIEW PRJECTION SCHEDULES.
 const viewProjection = async (param) => {
-
-  console.log(param);
 
   document.getElementById("projectionsModalLabel").innerText = param.name;
 

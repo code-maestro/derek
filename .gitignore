@@ -1,15 +1,5 @@
 node_modules
-login_templates
-logs
-
-test_dir
-
 .env
-
-equiweb.sql
-
-test.js
-
+README.md
 logs
-
 server.log
