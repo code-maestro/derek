@@ -7,3 +7,79 @@ info: Jun-25-2023 11:34:29: 	SUCCESSFULLY AUTHENTICATED
 info: Jun-25-2023 12:13:07: 	SUCCESSFULLY AUTHENTICATED
 info: Jun-28-2023 16:14:31: 	SUCCESSFULLY AUTHENTICATED
 info: Jul-04-2023 12:36:36: 	SUCCESSFULLY AUTHENTICATED
+info: Jul-04-2023 13:52:40: 	SUCCESSFULLY AUTHENTICATED
+info: Jul-05-2023 19:08:28: 	SUCCESSFULLY AUTHENTICATED
+info: Jul-05-2023 19:23:39: 	SUCCESSFULLY AUTHENTICATED
+info: Jul-07-2023 19:34:38: 	SUCCESSFULLY AUTHENTICATED
+info: Jul-10-2023 13:28:24: 	SUCCESSFULLY AUTHENTICATED
+info: Jul-11-2023 08:10:02: 	SUCCESSFULLY AUTHENTICATED
+info: Jul-11-2023 21:00:07: 	SUCCESSFULLY AUTHENTICATED
+info: Jul-21-2023 21:29:29: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-21-2023 21:29:53: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 09:03:27: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 09:04:00: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-22-2023 09:16:47: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 09:18:17: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 09:18:19: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-22-2023 09:30:32: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 09:33:08: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 09:33:14: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 11:33:56: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 11:35:49: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 11:37:27: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 11:37:41: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 11:38:42: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 11:38:47: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 11:40:18: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 11:40:28: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 11:41:07: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 11:41:13: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 11:53:08: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 11:53:14: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 12:00:24: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 12:00:30: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 12:05:35: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 12:06:58: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 12:09:22: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 12:09:36: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 12:13:06: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 12:13:24: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 12:25:18: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 12:25:29: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-22-2023 13:14:41: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 13:15:52: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:16:01: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 13:18:43: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:18:52: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-22-2023 13:20:05: 	1054Unknown column 'undefined' in 'field list'
+error: Jul-22-2023 13:23:04: 	1054Unknown column 'undefined' in 'field list'
+error: Jul-22-2023 13:23:35: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 13:32:29: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:33:31: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-22-2023 13:34:04: 	1054Unknown column 'undefined' in 'field list'
+info: Jul-22-2023 13:39:09: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:39:19: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-22-2023 13:39:55: 	1054Unknown column 'undefined' in 'field list'
+info: Jul-22-2023 13:42:39: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:42:49: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 13:47:27: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:47:38: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 13:49:21: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:49:31: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 13:51:19: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:51:28: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 13:53:12: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:53:21: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 13:56:24: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:56:37: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 13:58:55: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 13:59:06: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-22-2023 15:13:02: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-22-2023 15:14:50: 	1054Unknown column 'undefined' in 'field list'
+info: Jul-22-2023 15:26:21: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 15:28:20: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 15:49:02: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 15:49:12: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-22-2023 17:53:44: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-22-2023 17:53:53: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-22-2023 18:04:25: 	1054Unknown column 'D.id' in 'where clause'

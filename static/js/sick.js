@@ -128,14 +128,14 @@ const formatTime = (param) => {
 
 // Function to get Required data to report a sick animal
 const getRequiredData = async () => {
-  
+
   const animals = await getListing('healthyAnimals');
   const vets = await getListing('vets');
 
   let tagListed, vetListed = '';
   let tagList = `<option selected disabled> Choose an Animal Tag ... </option>`;
   let vetList = `<option selected disabled id="update-vet-name" value=0> Choose an Vet ... </option>`;
-  
+
   const tag_lstd = document.getElementById('healthyList');
   const vet_lstd = document.getElementById('vets-named');
 
@@ -159,6 +159,8 @@ const getRequiredData = async () => {
 const getMoreVetData = async () => {
   // VET DOCTORS NAMES
   const vets = await getListing('vets');
+  const animals = await getListing('healthyAnimals');
+
   const vetName = document.getElementById('vets-named');
 
   const vetNames = [];
@@ -191,14 +193,35 @@ const getMoreVetData = async () => {
 
 }
 
+const getAnimalID = async () => {
+  // VET DOCTORS NAMES
+  const animals = await getListing('healthyAnimals');
+  const animalTAG = [];
+  const animalID = [];
+
+  const animalTag = document.getElementById('healthyList');
+
+  animals.listing.forEach(animal => {
+    animalID.push(animal.animal_id);
+    animalTAG.push(animal.id);
+  });
+
+  if (animalTAG.includes(Number(animalTag.value))) {
+    let getIndex = animalTAG.indexOf(animalTag.value);
+    document.getElementById('animal-id').value = animalID.at(getIndex);
+  } else {
+    console.log('ETF');
+  }
+}
+
 
 // GLOBAL DATES VALIDATION
 const validateDate = (parameter) => {
-  
+
   // VALIDATIG DATES
   const currentDate = new Date().toJSON().slice(0, 10);
   const enteredDateFeild = document.getElementById(`${parameter}`);
-  
+
   // SHOWS TOAST 
   const showClear = (param) => {
 
@@ -236,6 +259,7 @@ async function recordSick() {
       ssText: document.getElementById('ssText').value
     };
 
+    console.log(document.getElementById('disease_suspected'));
     console.log(sickData);
 
     // request options
@@ -263,7 +287,7 @@ async function recordSick() {
 
         $('#addSickModalToggle').modal('hide');
         document.getElementById("sickAnimalForm").reset();
-        
+
         $('#successModalToggle').modal('show');
         document.getElementById('success-msg').innerText = data.message;
 

@@ -21,6 +21,8 @@ async function renderAnimals() {
 
     const animalCount = await getCount(number);
 
+    console.log(animalCount);
+
     animalCount.count.forEach(count => {
       document.getElementById(number).innerText = count.COUNT || 0;
     });

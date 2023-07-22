@@ -4,6 +4,7 @@ async function getPredictions(param1, param2) {
   try {
     // Prompt Text
     const prompt_text = document.getElementById(`${param1}`).value;
+    const prompt_animal_id = document.getElementById(`animal-id`).value;
 
     // request options
     const options = {
@@ -13,7 +14,7 @@ async function getPredictions(param1, param2) {
       }
     }
 
-    const response = await fetch(`/predict_disease?prompt=${prompt_text}`, options);
+    const response = await fetch(`/predict_disease?prompt=${prompt_text}&animal_id=${prompt_animal_id}`, options);
 
     if (!response.ok) {
 
@@ -22,6 +23,8 @@ async function getPredictions(param1, param2) {
     } else {
 
       const data = await response.json();
+
+      console.log(data.data);
 
       if (data.status == 201) {
 
@@ -34,21 +37,24 @@ async function getPredictions(param1, param2) {
 
         if (param1 === 'ssText') {
 
-          let htmlSegment2, diseaseListed, html2 = "";
-          const conn = document.getElementById(`predicted_symptoms`);
+          let diseaseListed = "";
+          // let htmlSegment2, diseaseListed, html2 = "";
+          // const conn = document.getElementById(`predicted_symptoms`);
 
           // const diseases = await getListing('allDiseases');
           const disease_lstd = document.getElementById('disease_suspected');
 
-          (data.data).forEach(data => {
-            htmlSegment2 = `${data.DESCRIPTION} `;
-            html2 += htmlSegment2;
-          });
+          // (data.data).forEach(data => {
+          //   htmlSegment2 = `${data.DESCRIPTION} `;
+          //   html2 += htmlSegment2;
+          // });
 
-          conn.innerHTML = html2;
-
+          // conn.innerHTML = html2;
+          
           (data.data).forEach(disease => {
-            diseaseListed = ` <option id="${disease.id}" value="${disease.id}">  ${disease.DISEASE_NAME} </option> `;
+            console.log(disease);
+
+            diseaseListed = ` <option id="${disease.disease_id}" value="${disease.disease_id}">  ${disease.DISEASE_NAME} </option> `;
             diseaseList += diseaseListed;
             htmlSegment = `${disease.DISEASE_NAME}`;
             html += htmlSegment;
@@ -100,7 +106,7 @@ async function getPredictions(param1, param2) {
 
 const predictionForm = document.forms.namedItem("getPredictionForm");
 predictionForm.addEventListener("submit", (event) => {
-  
+
   // document.getElementById('prompts').innerText = document.getElementById('prompt_text').value;
 
   getPredictions("prompt_text", "chat_bot_convo");

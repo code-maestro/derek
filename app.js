@@ -473,7 +473,7 @@ app.get('/getListing/:param', function (request, response) {
 
         expectingAnimals: `SELECT A.id, A.animal_tag, B.breeding_date, B.expected_due_date, TIMESTAMPDIFF(DAY, CURDATE(), B.expected_due_date) AS DAYS FROM animal A, breeding B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}' AND B.expected_due_date >= CURDATE();`,
 
-        sickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.vet_id, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
+        sickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE disease_id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.vet_id, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
 
         editSickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT symptom_name FROM symptom WHERE disease = (SELECT id FROM disease WHERE id = SA.disease_id))AS SS, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, (SELECT email FROM vets WHERE vet_id = SA.vet_id) AS VET_MAIL, SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id, SA.vet_id FROM sick_animals SA, animal A WHERE A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
 
@@ -506,7 +506,7 @@ app.get('/getListing/:param', function (request, response) {
 
         systemAudit: `SELECT action, action_date FROM audit_trail WHERE user_id = '${farma_id}' ORDER BY id DESC;`,
 
-        healthyAnimals: `SELECT id, animal_tag, gender FROM animal WHERE id NOT IN (SELECT animal_id FROM sick_animals) AND farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
+        healthyAnimals: `SELECT id, animal_tag, gender, animal_id FROM animal WHERE id NOT IN (SELECT animal_id FROM sick_animals) AND farma_id = '${farma_id}' AND animal_type = '${animal_type}';`,
 
         allProducts: `SELECT B.id, A.animal_tag, B.name, B.quantity, C.expected_qnty, IF(B.quantity_measure >= 1000, 'kg', 'g') AS measure FROM animal A, products B, product_schedule C WHERE B.animal_id = A.id AND B.animal_id = C.animal_id AND A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}';`,
 
@@ -753,8 +753,6 @@ app.get('/confirm/:param', function (request, response) {
 
     const param = request.params.param === 'vaccination' ? 'vaccination_details' : 'sick_animals';
 
-    console.log(param);
-
     // query to return the tokens
     connection.query(`SELECT * FROM triggered_emails WHERE confirmation_id = ${request.query.token}`, function (err, result) {
 
@@ -945,12 +943,13 @@ app.get('/predict_disease', async (request, response) => {
     try {
 
         const prompt = request.query.prompt;
+        const animal_id = request.query.animal_id;
 
-        console.log(prompt);
-
-        connection.query(`SELECT A.id, B.animal_type, B.disease_name DISEASE_NAME, A.description DESCRIPTION FROM symptom A, disease B WHERE MATCH (A.description) AGAINST (?) AND A.disease_id  IN (B.id);`, prompt, function (err, res) {
+        connection.query(`SELECT A.symptom_id, A.disease_id, B.disease_name DISEASE_NAME, A.symptom_name DESCRIPTION FROM symptom A, disease B WHERE MATCH (A.symptom_name) AGAINST ('${prompt}') AND A.disease_id  IN (B.disease_id) AND B.animal_id = ${animal_id};`, function (err, res) {
 
             if (err) {
+
+                console.log(err);
 
                 response.send({ status: 400, message: err.message });
 
@@ -1751,16 +1750,21 @@ app.post('/addSick', function (request, response) {
 
     const disease_id = request.body.suspected_disease === undefined ? 0 : request.body.suspected_disease;
 
+    console.log(disease_id);
+    console.log(request.body.suspected_disease)
+
     if (animal) {
 
         // Execute SQL query that'll insert into the vaccines table
-        connection.query(`CALL recordSick(${request.body.healthyAnimals}, '${request.body.reportedDate}', '${request.body.vets_id}', '${request.body.appointment_date}', ${disease_id}, '${request.body.ssText}');`,
+        connection.query(`CALL recordSick(${request.body.healthyAnimals}, '${request.body.reportedDate}', '${request.body.vets_id}', '${request.body.appointment_date}', ${disease_id});`,
 
             function (error, results, fields) {
 
                 if (error) {
 
                     logger.error(error.errno + error.message);
+
+                    console.log(error);
 
                     return response.json({ status: 500, message: error.sqlMessage });
 
