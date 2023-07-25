@@ -251,7 +251,10 @@ const getAllDiseases = async () => {
   const disease_lstd = document.getElementById('disease-name');
 
   diseases.listing.forEach(disease => {
-    diseaseListed = ` <option id="${disease.id}" value="${disease.id}">  ${disease.disease_name} </option> `;
+    
+    console.log(disease);
+
+    diseaseListed = ` <option id="${disease.disease_id}" value="${disease.disease_id}">  ${disease.disease_name} </option> `;
     diseaseList += diseaseListed;
   });
 

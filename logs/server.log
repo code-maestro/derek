@@ -89,3 +89,12 @@ info: Jul-25-2023 09:02:35: 	SUCCESSFULLY AUTHENTICATED
 error: Jul-25-2023 09:02:41: 	1054Unknown column 'D.id' in 'where clause'
 info: Jul-25-2023 09:03:57: 	SUCCESSFULLY AUTHENTICATED
 error: Jul-25-2023 09:04:02: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-25-2023 09:06:41: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-25-2023 09:06:45: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-25-2023 09:07:02: 	1366Incorrect integer value: 'undefined' for column 'disease_id' at row 1
+error: Jul-25-2023 09:11:37: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-25-2023 09:12:42: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-25-2023 09:12:47: 	1054Unknown column 'D.id' in 'where clause'
+error: Jul-25-2023 09:13:29: 	1366Incorrect integer value: 'undefined' for column 'disease_id' at row 1
+info: Jul-25-2023 09:14:52: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-25-2023 09:14:57: 	1054Unknown column 'D.id' in 'where clause'
