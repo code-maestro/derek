@@ -52,40 +52,74 @@ async function viewSickDetails(param) {
   const appointment_time = document.getElementById("edit-appointment_time");
   const confirm_btn = document.getElementById("confirm_btn");
 
-  let the_sick = await getListing('editSickAnimals');
+  let url = `/getSickAnimal?sick_id=${param}`;
 
-  the_sick.listing.every(sick => {
+  try {
 
-    if (sick.id == param) {
-      animal_tag.setAttribute("value", sick.ANIMAL_TAG);
-      animal_id.setAttribute("value", sick.id);
-      report_date.setAttribute("value", formatDate(sick.reported_date));
-      document.getElementById("edit-disease-suspected").innerText = sick.DISEASE;
-      document.getElementById("edit-disease-suspected").setAttribute("value", sick.disease_id);
-      signss.innerText = sick.SS;
-      document.getElementById("edit-vets").innerText = sick.VET_NAME;
-      document.getElementById("edit-vets").setAttribute("value", sick.VET_NAME);
-      document.getElementById("update-vet-name").setAttribute("value", sick.VET_NAME);
-      document.getElementById("update-vet-mail").setAttribute("value", sick.VET_MAIL);
-      appointment_date.setAttribute('value', formatDate(sick.appointment_date));
-      appointment_time.setAttribute('value', formatTime(sick.appointment_date));
+    let res = await fetch(url);
+    let the_sick = await res.json();
 
-      if (sick.confirmed == 'Y') {
-        // ✅ Set the disabled attribute
-        confirm_btn.setAttribute('disabled', "");
-      } else {
-        confirm_btn.removeAttribute('disabled', "");
-      }
 
-      return false;
+    if (the_sick.status = 201) {
+
+      the_sick.data.every(async sick => {
+
+        let url = `/getSymptoms?disease_id=${sick.disease_id}`;
+
+        try {
+
+          let res = await fetch(url);
+          let symptoms = await res.json();
+
+          console.log(symptoms);
+          console.log(symptoms.toString);
+          console.log(toString(symptoms));
+
+          if (symptoms.status = 201) {
+            
+            animal_tag.setAttribute("value", sick.ANIMAL_TAG);
+            animal_id.setAttribute("value", sick.id);
+            report_date.setAttribute("value", formatDate(sick.reported_date));
+            document.getElementById("edit-disease-suspected").innerText = sick.DISEASE;
+            document.getElementById("edit-disease-suspected").setAttribute("value", sick.disease_id);
+            signss.innerText = sick.SS;
+            document.getElementById("edit-vets").innerText = sick.VET_NAME;
+            document.getElementById("edit-vets").setAttribute("value", sick.VET_NAME);
+            document.getElementById("update-vet-name").setAttribute("value", sick.VET_NAME);
+            document.getElementById("update-vet-mail").setAttribute("value", sick.VET_MAIL);
+            appointment_date.setAttribute('value', formatDate(sick.appointment_date));
+            appointment_time.setAttribute('value', formatTime(sick.appointment_date));
+
+            if (sick.confirmed == 'Y') {
+              // ✅ Set the disabled attribute
+              confirm_btn.setAttribute('disabled', "");
+            } else {
+              confirm_btn.removeAttribute('disabled', "");
+            }
+
+          } else {
+
+            console.log("NO SYMPTOMS");
+
+          }
+
+        } catch (error) {
+
+          console.log(error);
+        }
+
+      });
 
     } else {
-      console.log("💐💐💐💐💐");
+
+      console.log("PJKDOGFKJHGKJ");
+
     }
 
-    return true;
+  } catch (error) {
 
-  });
+    console.log(error);
+  }
 
 }
 

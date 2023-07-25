@@ -93,9 +93,6 @@ async function getAnimalTableData(inputID) {
 
   let list = await getListing('allAnimals');
 
-  let html = "";
-  let htmlSegment = "";
-
   const con = document.getElementById('animalListing');
 
   list.listing.forEach(animal => {
@@ -146,9 +143,6 @@ async function getAnimalTableData(inputID) {
 const getFeedsTableData = async () => {
 
   const feedsData = await getListing('feeds');
-
-  let html = "";
-  let htmlSegment = "";
 
   const con = document.getElementById('feedsListing');
 
@@ -241,24 +235,52 @@ const getOtherData = async () => {
 
 
 // Function to get All Diseases
-const getAllDiseases = async () => {
+const getAllDiseases = async (param) => {
 
   const diseases = await getListing('allDiseases');
 
-  let diseaseListed = '';
-  let diseaseList = `<option id="0" selected disabled value=0> Choose a disease ...</option>`;
+  if (param === 'listing') {
 
-  const disease_lstd = document.getElementById('disease-name');
+    // GLOBAL VARIABLES
+    let html = '';
+    let htmlSegment = '';
 
-  diseases.listing.forEach(disease => {
-    
-    console.log(disease);
+    const con = document.getElementById('diseaseListing');
 
-    diseaseListed = ` <option id="${disease.disease_id}" value="${disease.disease_id}">  ${disease.disease_name} </option> `;
-    diseaseList += diseaseListed;
-  });
+    diseases.listing.forEach(d => {
+      htmlSegment = `
+        <tr class="justify-content-center" id="${d.disease_id}">
+          <td class="text-center"> ${d.disease_id} </td>   
+          <td class="text-center"> ${d.disease_name} </td> 
+          <td class="text-center"> ${d.disease_name} </td> 
+          <td class="text-center"> ${d.disease_name} </td>
+        </tr>
 
-  disease_lstd.innerHTML = diseaseList;
+      `;
+
+      html += htmlSegment;
+
+    });
+
+    con.innerHTML = html;
+
+  } else {
+
+    let diseaseListed = '';
+    let diseaseList = `<option id="0" selected disabled value=0> Choose a disease ...</option>`;
+
+    const disease_lstd = document.getElementById('disease-name');
+
+    diseases.listing.forEach(disease => {
+
+      console.log(disease);
+
+      diseaseListed = ` <option id="${disease.disease_id}" value="${disease.disease_id}">  ${disease.disease_name} </option> `;
+      diseaseList += diseaseListed;
+    });
+
+    disease_lstd.innerHTML = diseaseList;
+  }
 
 }
 
@@ -453,6 +475,8 @@ const getAvailableVaccines = async () => {
 const getPendingVaccinations = async () => {
 
   const vaccinated = await getListing('pendingAnimals');
+
+  console.log(vaccinated);
 
   let html = '';
   let htmlSegment = '';
@@ -1253,3 +1277,11 @@ updateVaccineForm.addEventListener("submit", (event) => {
   false
 );
 
+
+// CLOSE MODAK
+const closeModal = (param) => {
+  console.log(param);
+
+  $(`#${param}`).modal('hide');
+
+}

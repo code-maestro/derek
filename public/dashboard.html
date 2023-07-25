@@ -210,7 +210,7 @@
 
                 <!-- TODO implement function - viewDiseases() to handle the click event -->
                 <!-- Nav Item - Diseases -->
-                <li class="nav-item font-weight-bold">
+                <li class="nav-item font-weight-bold" onclick="getAllDiseases('listing')">
                     <span class="nav-link" data-toggle="modal" data-target="#diseaseModalToggle">
                         <i class="fas fa-disease"></i>
                         <span> Disease Control </span>
@@ -2871,7 +2871,7 @@
                                     <div class="card">
 
                                         <div class="card-header">
-                                            <span id="err-msg"> er </span>
+                                            <span id="err-msg"> </span>
                                         </div>
 
                                         <div class="card-body">
@@ -2882,22 +2882,19 @@
 
                                                 <!-- HEALTHY ANIMALS -->
                                                 <div class="col-md-6">
-                                                    <label for="healthyList" class="form-label fw-bold"> Choose
-                                                        Animal TAG
-                                                    </label>
+                                                    <label for="healthyList" class="form-label fw-bold"> Choose Animal TAG </label>
                                                     <select id="healthyList" class="form-select" name="healthyAnimals" onChange="getAnimalID()" required> </select>
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label for="feedingFirstDate" class="form-label fw-bold"> First
-                                                        Signs Date </label>
+                                                    <label for="feedingFirstDate" class="form-label fw-bold"> First Signs Date </label>
                                                     <input onchange="validateDate('reportedDate')" id="reportedDate"
                                                         type="date" class="form-control" name="reportedDate"
                                                         spellcheck="false" required>
                                                 </div>
 
                                                 <!-- enter signs to predict -->
-                                                <div class="col-md-4">
+                                                <div class="col-md-12">
                                                     <label for="signs_and_symptoms" class="form-label fw-bold">
                                                         Signs and Symptoms </label>
                                                     <textarea class="form-control" name="ssText" id="ssText" rows="3"
@@ -2914,7 +2911,7 @@
                                                 </div> -->
 
                                                 <!-- Predicted Disease(s) -->
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <label for="predicted_disease" class="form-label fw-bold"> Predicted
                                                         Disease(s) </label>
                                                     <input type="text" id="predicted_disease" class="form-control"
@@ -3087,24 +3084,25 @@
 
         <!--Animal Diseases listing modal -->
         <div class="modal fade" id="diseaseModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="diseaseModalLabel" aria-hidden="true">
+            aria-labelledby="diseaseModalToggleLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-body">
-
                         <div class="container">
-                            <div class="row p-2 mx-auto">
+
+                            <div class="row px-2">
                                 <div class="mx-auto" style="width: auto;">
-                                    <h5 class="font-monospace" id="diseaseModalToggleLabel"> ANIMAL DISEASES </h5>
+                                    <h4 class="font-monospace" id="diseaseModalToggleLabel"> ANIMALS' DISEASES LISTING
+                                    </h4>
                                 </div>
                             </div>
 
                             <div class="row mt-2">
                                 <div class="col">
-                                    <div class="row px-4">
-                                        <!-- Sick Animals Table -->
+                                    <div class="row px-2">
+                                        <!-- Vaccination Form -->
                                         <table id="diseaseTable" class="table table-bordered table-hover table-sm">
-                                            <thead>
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col" class="text-center font-monospace"> ID </th>
                                                     <th scope="col" class="text-center font-monospace"> DISEASE NAME
@@ -3112,14 +3110,14 @@
                                                     <th scope="col" class="text-center font-monospace"> SIGNS AND
                                                         SYMPTOMS </th>
                                                     <th scope="col" class="text-center font-monospace"> RECOMMENDED
-                                                        VACCINE </th>
+                                                        VACCINE(s) </th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="diseaseListing"> </tbody>
+                                            <tbody id="diseaseListing"></tbody>
                                         </table>
                                     </div>
 
-                                    <div class="row px-4 py-2">
+                                    <div class="row px-4 py-4">
                                         <div class="col-auto me-auto">
                                             <!-- <h6 class="fw-bold"> Export/Download your data to </h6> -->
                                         </div>
@@ -3136,11 +3134,10 @@
                                                 onclick="printReport('dieaseTable')"> PRINT </button>
                                         </div>
                                         <div class="col-auto">
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">
-                                                CLOSE </button>
+                                            <button type="button" onclick="closeModal('diseaseModalToggle')" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                                aria-label="Close"> CLOSE </button>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -3148,10 +3145,11 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
 
-        <!-- Edt Vet Modal -->
+        <!-- EDIT ANIMAL -->
         <div class="modal fade" id="editVetToggle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="editVetToggleLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -3221,7 +3219,8 @@
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button"> cancel </button>
-                                                    <button class="btn btn-primary font-monospace" type="submit"> submit
+                                                    <button class="btn btn-primary font-monospace" type="submit">
+                                                        submit
                                                         form </button>
                                                 </div>
 
@@ -3268,7 +3267,8 @@
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="new-born-parent-tag" class="form-label fw-bold"> Parent
+                                                    <label for="new-born-parent-tag" class="form-label fw-bold">
+                                                        Parent
                                                         Tag </label>
                                                     <input id="new-born-parent-tag" type="text" class="form-control"
                                                         name="newBornParentTag" spellcheck="false" readonly>
@@ -3279,7 +3279,8 @@
                                                         Gender </label>
                                                     <select class="form-select" id="new-born-animal-gender"
                                                         name="newBornAnimalGender" required>
-                                                        <option selected="" disabled="" value=""> Choose a gender ...
+                                                        <option selected="" disabled="" value=""> Choose a gender
+                                                            ...
                                                         </option>
                                                         <option value="Male"> Male </option>
                                                         <option value="Female"> Female </option>
@@ -3294,7 +3295,8 @@
                                                 </div>
 
                                                 <div class="col-md-4">
-                                                    <label for="new-born-animal-dob" class="form-label fw-bold"> Date of
+                                                    <label for="new-born-animal-dob" class="form-label fw-bold">
+                                                        Date of
                                                         Birth </label>
                                                     <input id="new-born-animal-dob" type="date" class="form-control"
                                                         name="newBornAnimalDOB" readonly>
@@ -3346,10 +3348,10 @@
                                 </div>
                             </div>
 
+                            <form class="row g-3 " enctype="multipart/form-data" method="post" id="editAnimalForm"
+                                name="editAnimalForm">
 
-                            <div class="row pt-2">
-                                <form class="row g-3 " enctype="multipart/form-data" method="post" id="editAnimalForm"
-                                    name="editAnimalForm">
+                                <div class="row pt-2">
                                     <div class="col-md-6">
                                         <label for="edit-animal-tag" class="form-label fw-bold"> Animal Tag </label>
                                         <input id="edit-animal-tag" type="text" placeholder="Disabled input"
@@ -3385,14 +3387,14 @@
                                         <input type="number" class="form-control" name="editid" id="editid"
                                             aria-describedby="inputGroupPrepend" hidden>
                                     </div>
-                            </div>
+                                </div>
 
-                            <div class="d-grid gap-2 d-md-flex px-2 pb-4 justify-content-md-end">
-                                <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
-                                    type="button">
-                                    cancel </button>
-                                <button class="btn btn-primary font-monospace" type="submit"> update </button>
-                            </div>
+                                <div class="d-grid gap-2 d-md-flex px-2 pb-4 justify-content-md-end">
+                                    <button class="btn btn-light me-md-2 font-monospace" data-bs-dismiss="modal"
+                                        type="button">
+                                        cancel </button>
+                                    <button class="btn btn-primary font-monospace" type="submit"> update </button>
+                                </div>
 
                             </form>
 
@@ -3727,7 +3729,8 @@
                         <div>
                             <div class="row p-2 mx-auto">
                                 <div class="mx-auto" style="width: auto;">
-                                    <h4 class="font-monospace" id="editFeedModalToggleLabel"> UDPATE FEEDS STOCK </h4>
+                                    <h4 class="font-monospace" id="editFeedModalToggleLabel"> UDPATE FEEDS STOCK
+                                    </h4>
                                 </div>
                             </div>
 
@@ -3739,7 +3742,8 @@
                                             <form id="registerForm" class="row g-3 " novalidate method="POST"
                                                 action="/updateFeed">
                                                 <div class="col-md-6">
-                                                    <label for="edit-feeds_name" class="form-label fw-bold"> FEED NAME
+                                                    <label for="edit-feeds_name" class="form-label fw-bold"> FEED
+                                                        NAME
                                                     </label>
                                                     <input id="edit_feeds_name" type="text" class="form-control"
                                                         name="edit_feeds_name" required>
@@ -3749,14 +3753,16 @@
                                                     name="edit_feeds_id" hidden>
 
                                                 <div class="col-md-6">
-                                                    <label for="edit_feeds_stock_date" class="form-label fw-bold"> STOCK
+                                                    <label for="edit_feeds_stock_date" class="form-label fw-bold">
+                                                        STOCK
                                                         DATE </label>
                                                     <input id="edit_feeds_stock_date" type="date" class="form-control"
                                                         name="edit_feeds_stock_date">
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label for="edit_feeds_qnty" class="form-label fw-bold"> QUANTITY
+                                                    <label for="edit_feeds_qnty" class="form-label fw-bold">
+                                                        QUANTITY
                                                     </label>
                                                     <input id="edit_feeds_qnty" type="number" class="form-control"
                                                         name="edit_feeds_qnty">
@@ -3775,7 +3781,8 @@
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button"> cancel </button>
-                                                    <button class="btn btn-primary font-monospace" type="submit"> udpate
+                                                    <button class="btn btn-primary font-monospace" type="submit">
+                                                        udpate
                                                     </button>
                                                 </div>
 
@@ -3966,12 +3973,13 @@
                 <div class="modal-content">
                     <div class="row">
                         <div class="col-md-12">
-                            <form class="row g-3 align-items-end" enctype="multipart/form-data" method="post" id="getPredictionForm" name="getPredictionForm">
+                            <form class="row g-3 align-items-end" enctype="multipart/form-data" method="post"
+                                id="getPredictionForm" name="getPredictionForm">
 
                                 <div class="ai-card">
                                     <div class="chat-header"> Disease Prediction Chat Bot </div>
                                     <div class="chat-window">
-                                        <div class="message-list" >
+                                        <div class="message-list">
                                             <ul id="chat_bot_convo"></ul>
                                         </div>
                                     </div>
@@ -4046,7 +4054,8 @@
 
                             <h5 class="card-title my-2" id="success-msg"> </h5>
 
-                            <button type="button" class="btn btn-secondary my-2 font-monospace" data-bs-dismiss="modal"> OK </button>
+                            <button type="button" class="btn btn-secondary my-2 font-monospace" data-bs-dismiss="modal">
+                                OK </button>
 
                         </div>
 
@@ -4088,14 +4097,15 @@
         <!-- Bootstrap core JavaScript-->
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 
         <!-- Core plugin JavaScript-->
         <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
         <!-- Page level plugins -->
         <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
-        
+
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
 
     </body>

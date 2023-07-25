@@ -4,7 +4,6 @@ async function getPredictions(param1, param2) {
   try {
     // Prompt Text
     const prompt_text = document.getElementById(`${param1}`).value;
-    const prompt_animal_id = document.getElementById(`animal-id`).value;
 
     // request options
     const options = {
@@ -14,7 +13,7 @@ async function getPredictions(param1, param2) {
       }
     }
 
-    const response = await fetch(`/predict_disease?prompt=${prompt_text}&animal_id=${prompt_animal_id}`, options);
+    const response = await fetch(`/predict_disease?prompt=${prompt_text}`, options);
 
     if (!response.ok) {
 

@@ -392,7 +392,7 @@ app.get('/getCount/:param', function (request, response) {
 
         babies: `SELECT COUNT(id) as COUNT FROM animal WHERE farma_id = '${farma_id}' AND animal_type='${animal_type}' AND parent_tag IS NOT NULL AND confirmed = 'N';`,
 
-        vaccinatedAnimals: `SELECT COUNT(VD.id) AS COUNT FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
+        vaccinatedAnimals: `SELECT COUNT(VD.id) AS COUNT FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.disease_id = V.disease_id;`,
 
         heavyAnimals: `SELECT COUNT(A.id) AS COUNT FROM animal A, breeding B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}' AND B.expected_due_date >= CURDATE();`,
 
@@ -454,6 +454,7 @@ app.get('/getListing/:param', function (request, response) {
 
         farma_data: `SELECT * FROM farma WHERE farma_id = '${farma_id}';`,
 
+        // TODO PENDING TESTS ON ALL SYMPTOMS ATTACHED TO A DISEASE PLUS THE VACCINE (sql query)
         allDiseases: `SELECT * FROM disease WHERE animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}');`,
 
         symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.disease_id AND D.animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}');`,
@@ -475,7 +476,7 @@ app.get('/getListing/:param', function (request, response) {
 
         sickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE disease_id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, SA.vet_id, SA.reported_date, SA.appointment_date, SA.confirmed FROM sick_animals SA, animal A WHERE A.farma_id='${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
 
-        editSickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE id = SA.disease_id) AS DISEASE, (SELECT symptom_name FROM symptom WHERE disease = (SELECT id FROM disease WHERE id = SA.disease_id))AS SS, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, (SELECT email FROM vets WHERE vet_id = SA.vet_id) AS VET_MAIL, SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id, SA.vet_id FROM sick_animals SA, animal A WHERE A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
+        editSickAnimals: `SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE disease_id = SA.disease_id) AS DISEASE, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, (SELECT email FROM vets WHERE vet_id = SA.vet_id) AS VET_MAIL, SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id, SA.vet_id FROM sick_animals SA, animal A WHERE A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id;`,
 
         babies: `SELECT id, animal_tag, dob, parent_tag, created_date FROM animal WHERE farma_id = '${farma_id}' AND animal_type='${animal_type}' AND parent_tag IS NOT NULL AND confirmed = 'N';`,
 
@@ -484,12 +485,12 @@ app.get('/getListing/:param', function (request, response) {
         vaccinatedAnimals: `SELECT * FROM animal A, due_dates B WHERE A.id = B.animal_id AND A.animal_type = '${animal_type}' AND A.farma_id = '${farma_id}' AND B.vaccination_date IS NOT NULL AND B.vaccination_date < CURRENT_DATE();`,
 
         pendingAnimals: ` SELECT A.id, C.animal_tag, A.first_date, (SELECT name FROM vaccines WHERE id = A.vaccine_id) AS vaccine_name, 
-                          (SELECT disease_name FROM disease WHERE id = (SELECT disease_id FROM vaccines WHERE id = A.vaccine_id)) AS disease_name,
+                          (SELECT disease_name FROM disease WHERE disease_id = (SELECT disease_id FROM vaccines WHERE id = A.vaccine_id)) AS disease_name,
                           (SELECT (cycle*period) FROM vaccines WHERE id = A.vaccine_id) AS no_of_vaccinations
                           FROM vaccination_details A, animal C WHERE A.animal_id = C.id AND C.animal_type = '${animal_type}' 
                           AND C.farma_id = '${farma_id}' AND C.confirmed = 'Y';`,
 
-        availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, CONCAT(cycle,' ',(CASE WHEN period = 1 THEN 'time(s) a Day' WHEN period = 7 THEN 'time(s) a Week' WHEN period = 30 THEN 'time(s) a Month' ELSE 'time(s) a Year' END)) as frequency, cycle, period, injection_area, qnty_per_cycle, IF(qnty_measure_per_cycle >= 1000, 'millilitres', 'litres') as measure_per_cycle, (SELECT disease_name FROM disease WHERE id = vaccines.disease_id) AS disease_name FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
+        availableVaccines: `SELECT id, name, quantity, IF(quantity_measure >= 1000, 'millilitres', 'litres') AS measure, description, CONCAT(cycle,' ',(CASE WHEN period = 1 THEN 'time(s) a Day' WHEN period = 7 THEN 'time(s) a Week' WHEN period = 30 THEN 'time(s) a Month' ELSE 'time(s) a Year' END)) as frequency, cycle, period, injection_area, qnty_per_cycle, IF(qnty_measure_per_cycle >= 1000, 'millilitres', 'litres') as measure_per_cycle, (SELECT disease_name FROM disease WHERE disease_id = vaccines.disease_id) AS disease_name FROM vaccines WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
 
         feeds: `SELECT id, name, description, quantity, quantity_measure, IF(quantity_measure >= 1000, 'kg', 'g') AS measure, stock_date, expected_restock_date FROM feeds WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}' AND quantity > 0;`,
 
@@ -500,7 +501,7 @@ app.get('/getListing/:param', function (request, response) {
                     WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${farma_id}')
                     AND animal_type = '${animal_type}';`,
 
-        fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.id = V.disease_id;`,
+        fullyVaxedAnimals: `SELECT VD.id, A.animal_tag, V.name, D.disease_name, VD.first_date, VD.last_date FROM vaccination_details VD, vaccines V, animal A, disease D WHERE A.id = VD.animal_id AND V.id = VD.vaccine_id AND V.farma_id = A.farma_id AND A.farma_id = '${farma_id}' AND VD.last_date < CURDATE() AND VD.last_date IS NOT NULL AND D.disease_id = V.disease_id;`,
 
         vets: `SELECT * FROM vets;`,
 
@@ -542,6 +543,8 @@ app.get('/getListing/:param', function (request, response) {
 
             } else {
 
+                console.log(results);
+
                 response.send({ listing: results });
 
             }
@@ -555,6 +558,93 @@ app.get('/getListing/:param', function (request, response) {
     }
 
 });
+
+
+// Predicted Disease 
+app.get('/getSickAnimal', async (request, response) => {
+
+    try {
+
+        const animal_type = storage('animal');
+        const farma_id = storage('farma_id');
+        const sick_id = request.query.sick_id;
+
+        // (SELECT symptom_name FROM symptom WHERE disease = (SELECT disease_id FROM disease WHERE disease_id = SA.disease_id))AS SS
+
+        const query = `
+        SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE disease_id = SA.disease_id) AS DISEASE, 
+        (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, 
+        (SELECT email FROM vets WHERE vet_id = SA.vet_id) AS VET_MAIL,
+         SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id, SA.vet_id 
+         FROM sick_animals SA, animal A 
+         WHERE A.farma_id = '${farma_id}' 
+         AND A.animal_type='${animal_type}' 
+         AND SA.animal_id = A.id
+         AND SA.id = '${sick_id}';
+        `;
+
+        connection.query(`${query}`, function (err, res) {
+
+            if (err) {
+
+                console.log(err);
+
+                response.send({ status: 400, message: err.message });
+
+            } else {
+
+                response.json({ status: 201, message: `SUCCESSFUL`, data: res });
+
+            }
+
+        });
+
+    } catch (error) {
+
+        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
+
+    }
+
+});
+
+
+
+// GET SYMPTOMS
+app.get('/getSymptoms', async (request, response) => {
+
+    try {
+
+        const animal_type = storage('animal');
+        const disease_id = request.query.disease_id;
+
+        const query = ` SELECT * FROM symptom WHERE disease_id = '${disease_id}' AND disease_id IN (SELECT disease_id FROM disease WHERE animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}';`;
+
+        // const test_query = ` SELECT * FROM symptom WHERE disease_id = '2' AND disease_id IN (SELECT disease_id FROM disease WHERE animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = 'cow'))`;
+
+        connection.query(`${query}`, function (err, res) {
+
+            if (err) {
+
+                console.log(err);
+
+                response.send({ status: 400, message: err.message });
+
+            } else {
+
+                response.json({ status: 201, message: `SUCCESSFUL`, data: res });
+
+            }
+
+        });
+
+    } catch (error) {
+
+        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
+
+    }
+
+});
+
 
 
 // Cleaned
@@ -940,12 +1030,13 @@ app.get('/rpt_data', async (request, response) => {
 // Predicted Disease 
 app.get('/predict_disease', async (request, response) => {
 
+    const animal_type = storage('animal');
+
     try {
 
         const prompt = request.query.prompt;
-        const animal_id = request.query.animal_id;
 
-        connection.query(`SELECT A.symptom_id, A.disease_id, B.disease_name DISEASE_NAME, A.symptom_name DESCRIPTION FROM symptom A, disease B WHERE MATCH (A.symptom_name) AGAINST ('${prompt}') AND A.disease_id  IN (B.disease_id) AND B.animal_id = ${animal_id};`, function (err, res) {
+        connection.query(`SELECT A.symptom_id, A.disease_id, B.disease_name DISEASE_NAME, A.symptom_name DESCRIPTION FROM symptom A, disease B WHERE MATCH (A.symptom_name) AGAINST ('${prompt}') AND A.disease_id  IN (B.disease_id) AND B.animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}' );`, function (err, res) {
 
             if (err) {
 
@@ -1009,7 +1100,6 @@ app.get('/predict_vaccine', async (request, response) => {
 /*
     
     ENDPOINTS THAT WRITE TO DATABASE 
-
 */
 
 
@@ -2054,76 +2144,6 @@ app.post('/delete', function (request, response) {
         console.log(" trying to delete with no farma_id  ");
         response.redirect('/');
     }
-});
-
-
-// Function to delete data from animal
-app.post('/tits', function (request, response) {
-
-    var myArray = ["John", "age", 30, "New York"];
-    // var jsonString = JSON.stringify(myArray);
-
-    const theString = myArray.toString();
-
-    console.log(theString);
-
-    connection.query(`INSERT INTO tess (list_of_animals) VALUES ('${theString}');`, 
-
-    function (error, results, fields) {
-
-        if (error) {
-
-            logger.error(error.errno + error.message);
-
-            return response.json({ status: 500, message: error.sqlMessage });
-
-        } else {
-
-            console.log(results);
-
-            if (results.affectedRows > 0) {
-
-                return response.json({ status: 200, data: theString});
-
-            } else {
-
-                return response.json({ status: 400, data: theString});
-
-            }
-
-        }
-
-    })
-
-});
-
-// Get
-app.get('/tits', async (request, response) => {
-
-    try {
-
-        // query to return the tokens
-        // connection.query(`SELECT list_of_animals FROM tess;`, function (err, result) {
-            connection.query(`SELECT Leveled(200000) AS GRADE;`, function (err, result) {
-            
-            if (err) {
-
-                response.send({ status: 400, message: err.message });
-
-            } else {
-
-                response.json({ status: 201, message: `SUCCESSFUL`, data: result[0].GRADE });
-
-            }
-
-        });
-
-    } catch (error) {
-
-        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
-
-    }
-
 });
 
 
