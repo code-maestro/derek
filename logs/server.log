@@ -83,3 +83,9 @@ error: Jul-22-2023 15:49:12: 	1054Unknown column 'D.id' in 'where clause'
 info: Jul-22-2023 17:53:44: 	SUCCESSFULLY AUTHENTICATED
 error: Jul-22-2023 17:53:53: 	1054Unknown column 'D.id' in 'where clause'
 error: Jul-22-2023 18:04:25: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-25-2023 08:36:38: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-25-2023 08:36:42: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-25-2023 09:02:35: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-25-2023 09:02:41: 	1054Unknown column 'D.id' in 'where clause'
+info: Jul-25-2023 09:03:57: 	SUCCESSFULLY AUTHENTICATED
+error: Jul-25-2023 09:04:02: 	1054Unknown column 'D.id' in 'where clause'

@@ -454,7 +454,7 @@ app.get('/getListing/:param', function (request, response) {
 
         farma_data: `SELECT * FROM farma WHERE farma_id = '${farma_id}';`,
 
-        allDiseases: `SELECT * FROM disease WHERE animal_type = '${animal_type}';`,
+        allDiseases: `SELECT * FROM disease WHERE animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}');`,
 
         symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${animal_type}';`,
 
