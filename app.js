@@ -456,7 +456,7 @@ app.get('/getListing/:param', function (request, response) {
 
         allDiseases: `SELECT * FROM disease WHERE animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}');`,
 
-        symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.id AND D.animal_type = '${animal_type}';`,
+        symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.disease_id AND D.animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}');`,
 
         allAnimals: `SELECT id, animal_tag, gender,  dob, reg_date, TIMESTAMPDIFF(YEAR, dob, CURDATE()) AS YEARS, TIMESTAMPDIFF(MONTH, dob, CURDATE()) AS MONTHS, TIMESTAMPDIFF(DAY, dob, CURDATE()) AS DAYS FROM animal WHERE farma_id='${farma_id}' AND animal_type = '${animal_type}' AND confirmed = 'Y';`,
 
