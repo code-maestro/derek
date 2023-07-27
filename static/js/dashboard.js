@@ -238,6 +238,7 @@ const getOtherData = async () => {
 const getAllDiseases = async (param) => {
 
   const diseases = await getListing('allDiseases');
+  console.log(diseases);
 
   if (param === 'listing') {
 
@@ -252,8 +253,8 @@ const getAllDiseases = async (param) => {
         <tr class="justify-content-center" id="${d.disease_id}">
           <td class="text-center"> ${d.disease_id} </td>   
           <td class="text-center"> ${d.disease_name} </td> 
-          <td class="text-center"> ${d.disease_name} </td> 
-          <td class="text-center"> ${d.disease_name} </td>
+          <td class="text-center"> ${d.disease_symptoms} </td> 
+          <td class="text-center"> ${d.vaccine_name} </td>
         </tr>
 
       `;
@@ -1280,8 +1281,11 @@ updateVaccineForm.addEventListener("submit", (event) => {
 
 // CLOSE MODAK
 const closeModal = (param) => {
-  console.log(param);
 
-  $(`#${param}`).modal('hide');
+  console.log($(`#${param}`));
+
+  $('#diseaseModalToggle').modal('hide');
+
+  // $(`#${param}`).modal('hide');
 
 }

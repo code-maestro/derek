@@ -59,53 +59,26 @@ async function viewSickDetails(param) {
     let res = await fetch(url);
     let the_sick = await res.json();
 
-
     if (the_sick.status = 201) {
+      the_sick.data.every(sick => {
+        animal_tag.setAttribute("value", sick.ANIMAL_TAG);
+        animal_id.setAttribute("value", sick.id);
+        report_date.setAttribute("value", formatDate(sick.reported_date));
+        document.getElementById("edit-disease-suspected").innerText = sick.DISEASE;
+        document.getElementById("edit-disease-suspected").setAttribute("value", sick.disease_id);
+        signss.innerText = sick.SYMPTOM;
+        document.getElementById("edit-vets").innerText = sick.VET_NAME;
+        document.getElementById("edit-vets").setAttribute("value", sick.VET_NAME);
+        document.getElementById("update-vet-name").setAttribute("value", sick.VET_NAME);
+        document.getElementById("update-vet-mail").setAttribute("value", sick.VET_MAIL);
+        appointment_date.setAttribute('value', formatDate(sick.appointment_date));
+        appointment_time.setAttribute('value', formatTime(sick.appointment_date));
 
-      the_sick.data.every(async sick => {
-
-        let url = `/getSymptoms?disease_id=${sick.disease_id}`;
-
-        try {
-
-          let res = await fetch(url);
-          let symptoms = await res.json();
-
-          console.log(symptoms);
-          console.log(symptoms.toString);
-          console.log(toString(symptoms));
-
-          if (symptoms.status = 201) {
-            
-            animal_tag.setAttribute("value", sick.ANIMAL_TAG);
-            animal_id.setAttribute("value", sick.id);
-            report_date.setAttribute("value", formatDate(sick.reported_date));
-            document.getElementById("edit-disease-suspected").innerText = sick.DISEASE;
-            document.getElementById("edit-disease-suspected").setAttribute("value", sick.disease_id);
-            signss.innerText = sick.SS;
-            document.getElementById("edit-vets").innerText = sick.VET_NAME;
-            document.getElementById("edit-vets").setAttribute("value", sick.VET_NAME);
-            document.getElementById("update-vet-name").setAttribute("value", sick.VET_NAME);
-            document.getElementById("update-vet-mail").setAttribute("value", sick.VET_MAIL);
-            appointment_date.setAttribute('value', formatDate(sick.appointment_date));
-            appointment_time.setAttribute('value', formatTime(sick.appointment_date));
-
-            if (sick.confirmed == 'Y') {
-              // ✅ Set the disabled attribute
-              confirm_btn.setAttribute('disabled', "");
-            } else {
-              confirm_btn.removeAttribute('disabled', "");
-            }
-
-          } else {
-
-            console.log("NO SYMPTOMS");
-
-          }
-
-        } catch (error) {
-
-          console.log(error);
+        if (sick.confirmed == 'Y') {
+          // ✅ Set the disabled attribute
+          confirm_btn.setAttribute('disabled', "");
+        } else {
+          confirm_btn.removeAttribute('disabled', "");
         }
 
       });

@@ -455,7 +455,7 @@ app.get('/getListing/:param', function (request, response) {
         farma_data: `SELECT * FROM farma WHERE farma_id = '${farma_id}';`,
 
         // TODO PENDING TESTS ON ALL SYMPTOMS ATTACHED TO A DISEASE PLUS THE VACCINE (sql query)
-        allDiseases: `SELECT * FROM disease WHERE animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}');`,
+        allDiseases: `SELECT D.disease_id, D.disease_name, (SELECT group_concat(S.symptom_name) FROM symptom S WHERE S.disease_id = D.disease_id) as disease_symptoms, IFNULL((SELECT group_concat(V.name) FROM vaccines V WHERE V.disease_id = D.disease_id AND V.animal_type = '${animal_type}'),'') vaccine_name  FROM disease D WHERE D.animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}');`,
 
         symptoms: `SELECT * FROM symptoms S, disease D WHERE S.disease_id = D.disease_id AND D.animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}');`,
 
@@ -539,6 +539,8 @@ app.get('/getListing/:param', function (request, response) {
             // If there is an issue with the query, output the error
             if (error) {
 
+                console.log(error);
+
                 response.send({ listing: error });
 
             } else {
@@ -569,19 +571,7 @@ app.get('/getSickAnimal', async (request, response) => {
         const farma_id = storage('farma_id');
         const sick_id = request.query.sick_id;
 
-        // (SELECT symptom_name FROM symptom WHERE disease = (SELECT disease_id FROM disease WHERE disease_id = SA.disease_id))AS SS
-
-        const query = `
-        SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE disease_id = SA.disease_id) AS DISEASE, 
-        (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, 
-        (SELECT email FROM vets WHERE vet_id = SA.vet_id) AS VET_MAIL,
-         SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id, SA.vet_id 
-         FROM sick_animals SA, animal A 
-         WHERE A.farma_id = '${farma_id}' 
-         AND A.animal_type='${animal_type}' 
-         AND SA.animal_id = A.id
-         AND SA.id = '${sick_id}';
-        `;
+        const query = ` SELECT SA.id, A.animal_tag as ANIMAL_TAG, (SELECT disease_name FROM disease WHERE disease_id = SA.disease_id) AS DISEASE, (SELECT group_concat(S.symptom_name) FROM symptom S WHERE S.disease_id = SA.disease_id ORDER BY S.disease_id) AS SYMPTOM, (SELECT CONCAT(fname, ' ', lname) FROM vets WHERE vet_id = SA.vet_id) AS VET_NAME, (SELECT email FROM vets WHERE vet_id = SA.vet_id) AS VET_MAIL, SA.reported_date, SA.appointment_date, SA.confirmed, SA.disease_id, SA.vet_id FROM sick_animals SA, animal A WHERE A.farma_id = '${farma_id}' AND A.animal_type='${animal_type}' AND SA.animal_id = A.id AND SA.id = '${sick_id}';`;
 
         connection.query(`${query}`, function (err, res) {
 
@@ -617,9 +607,8 @@ app.get('/getSymptoms', async (request, response) => {
         const animal_type = storage('animal');
         const disease_id = request.query.disease_id;
 
-        const query = ` SELECT * FROM symptom WHERE disease_id = '${disease_id}' AND disease_id IN (SELECT disease_id FROM disease WHERE animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}';`;
-
-        // const test_query = ` SELECT * FROM symptom WHERE disease_id = '2' AND disease_id IN (SELECT disease_id FROM disease WHERE animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = 'cow'))`;
+        const query = `SELECT (SELECT group_concat(S.symptom_name) FROM symptom S WHERE S.disease_id = D.disease_id ORDER BY S.disease_id) AS symptom_name, D.disease_name, D.disease_id FROM disease D WHERE D.disease_id = '${disease_id}' AND D.animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name ='${animal_type}')`;
+        // const test_query = `SELECT (SELECT group_concat(S.symptom_name) FROM symptom S WHERE S.disease_id = D.disease_id ORDER BY S.disease_id) AS disease_name, D.disease_name, D.disease_id FROM disease D WHERE D.animal_id = 1 AND D.animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = 'cow')`;
 
         connection.query(`${query}`, function (err, res) {
 
@@ -639,7 +628,7 @@ app.get('/getSymptoms', async (request, response) => {
 
     } catch (error) {
 
-        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
+        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` }); 
 
     }
 
