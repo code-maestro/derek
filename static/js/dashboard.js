@@ -4,7 +4,11 @@ const today = new Date(Date.now());
 const form = document.getElementById('registrationForm');
 const container = document.querySelector('#dynamic');
 
-// GOHOME
+// GLOBAL VARIABLES
+let html = '';
+let htmlSegment = '';
+
+// GO HOME
 const gohome = async () => {
   window.location.replace(" http://localhost:4200/home");
 }
@@ -86,6 +90,9 @@ async function getMaxId(param) {
 // FOR REGISTERED ANIMALS MODAL
 // Table data for all animals
 async function getAnimalTableData(inputID) {
+  // GLOBAL VARIABLES
+  let html = '';
+  let htmlSegment = '';
 
   let last = await getMaxId('animal_id');
 
@@ -141,6 +148,10 @@ async function getAnimalTableData(inputID) {
 
 // Function to get All feeds
 const getFeedsTableData = async () => {
+
+  // GLOBAL VARIABLES
+  let html = '';
+  let htmlSegment = '';
 
   const feedsData = await getListing('feeds');
 
@@ -603,8 +614,6 @@ const deleteFromList = async (param1, param2) => {
     id: param2
   }
 
-  console.log(item);
-
   localStorage.setItem('delete', JSON.stringify(item));
 
   // request options
@@ -619,13 +628,9 @@ const deleteFromList = async (param1, param2) => {
   fetch(`/delete`, options)
     .then(function (response) {
       if (!response.ok) {
-
         throw Error(response.statusText);
-
       } else {
-
         console.log(response);
-
       }
 
       return response;
@@ -1278,14 +1283,3 @@ updateVaccineForm.addEventListener("submit", (event) => {
   false
 );
 
-
-// CLOSE MODAK
-const closeModal = (param) => {
-
-  console.log($(`#${param}`));
-
-  $('#diseaseModalToggle').modal('hide');
-
-  // $(`#${param}`).modal('hide');
-
-}

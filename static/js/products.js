@@ -54,36 +54,13 @@ const getAnimalList = async () => {
 
   const selectedProductType = document.getElementById('product_type').value;
 
+  console.log(selectedProductType);
+
   let products = '';
   let tagListed = '';
   let tagList = `<option selected disabled> Choose an animal(s)...</option>`;
 
-  switch (selectedProductType) {
-    // [x] animals listing fixed  
-    case 'milk':
-      products = await getListing(`${selectedProductType}`);
-      break;
-
-    // meat
-    case 'meat':
-      products = await getListing(`${selectedProductType}`);
-      break;
-
-    //Hide
-    case 'skin':
-      products = await getListing(`${selectedProductType}`);
-
-    //Hide
-    case 'eggs':
-      products = await getListing(`${selectedProductType}`);
-
-    //Hide
-    case 'hooves':
-      products = await getListing(`${selectedProductType}`);
-
-    default:
-      console.log(`Sorry`);
-  }
+  products = await getListing(`${selectedProductType}`);
 
   const tag_lstd = document.getElementById('target_animals');
 
@@ -98,6 +75,8 @@ const getAnimalList = async () => {
 
 }
 
+
+// PRODUCT QUANTITY
 const calculateTotal = () => {
   const freq = document.getElementById("production_frequency").value;
   const qnty = document.getElementById("production_qnty").value;
@@ -164,9 +143,11 @@ async function recordProductType() {
       type_title: document.getElementById('type_title').value,
       type_price: document.getElementById('type_price').value,
       currency: document.getElementById('currency').value,
-      price_qnty: document.getElementById('type_qnty').value
-
+      price_qnty: document.getElementById('type_qnty').value,
+      production_age: document.getElementById('production_age').value * document.getElementById('age_in').value
     };
+
+    console.log(productTypeData);
 
     // request options
     const options = {
@@ -302,15 +283,10 @@ const getProjections = async () => {
 
   projections.listing.forEach(projection => {
 
-    const viewProj = {
-      id: projection.projection_id,
-      name: projection.title
-    }
-
     htmlSegment = `
     <tr class="justify-content-center"  data-bs-toggle="tooltip" data-bs-placement="top"
     data-bs-custom-class="custom-tooltip"
-    data-bs-title="This top tooltip is themed via CSS variables." onclick="viewProjection(${viewProj})" id="${projection.projection_id}">
+    data-bs-title="This top tooltip is themed via CSS variables." onclick="viewProjection('${projection.projection_id}', '${projection.title}')" id="${projection.projection_id}">
       <td class="text-center"> ${projection.id} </td>   
       <td class="text-center"> ${projection.title} </td> 
       <td class="text-center"> ${projection.description} </td> 
@@ -331,11 +307,13 @@ const getProjections = async () => {
 
 
 // VIEW PRJECTION SCHEDULES.
-const viewProjection = async (param) => {
+const viewProjection = async (param1, param2) => {
 
-  document.getElementById("projectionsModalLabel").innerText = param.name;
+  document.getElementById("projectionsModalLabel").innerText = param2;
+  // document.getElementById("projectionsModalLabel").innerText = param.name;
 
-  const projectedData = await getScheduleListing("product", `${param.id}`);
+  const projectedData = await getScheduleListing("product", `${param1}`);
+  // const projectedData = await getScheduleListing("product", `${param.id}`);
 
   $('#productGraphModalToggle').modal('show');
 
@@ -348,22 +326,22 @@ const viewProjection = async (param) => {
 
   projectedData.listing.forEach(projection => {
 
-    const read = today.getTime() > new Date(projection.effective_dt).getTime() ? "readonly" : "";
+    const read = dateFrontend(new Date(projection.effective_dt)) == dateFrontend(new Date()) ? "" : "readonly";
 
     htmlSegment = `
-        <tr class="justify-content-center" id="${projection.id}">
+        <tr class="justify-content-center" id="${projection.schedule_id}">
           <td class="text-center"> ${projection.id} </td>
           <td class="text-center dated"> ${dateFrontend(projection.effective_dt)}</td>
           <td class="text-center"> ${projection.product_qnty} </td>
-          <td class="text-center"> ${projection.actual_qnty === null || projection.actual_qnty === undefined
-        ? `
-          <input type="number" id="${projection.schedule_id}" class="form-control" ${read}>
-      
-        `
-        : projection.actual_qnty}
-           </td>
 
-           <td class="text-center"> ${projection.measure} </td>
+          <td class="text-center"> ${projection.actual_qnty == 0 ? ` <input type="number" id="${projection.schedule_id}_actual_qnty" class="form-control" ${read}> ` : projection.actual_qnty} </td>
+
+          <td class="text-center"> 
+            <select class="form-select" id="${projection.schedule_id}_actual_measure" required>
+              <option value="${projection.actual_measure == 'kg' ? 1000 : 1}" selected> ${projection.actual_measure} </option>
+              <option value="${projection.actual_measure == 'kg' ? 1 : 1000}"> ${projection.actual_measure == 'kg' ? 'g' : 'kg'} </option>
+            </select>
+          </td>
           
           <td class="text-center">
             <button type="button" onclick="saveProduction('${projection.schedule_id}')" class="btn btn-sm btn-primary">
@@ -477,12 +455,9 @@ async function saveProduction(param) {
   try {
     // post body data 
     const prdtData = {
-      product_quantity: document.getElementById(`${param}`).value,
+      product_quantity: document.getElementById(`${param}_actual_qnty`).value,
       product_id: param
     };
-
-    console.log(prdtData);
-
 
     // request options
     const options = {

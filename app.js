@@ -513,17 +513,15 @@ app.get('/getListing/:param', function (request, response) {
 
         product_types: `SELECT type_id, name, price, price_qnty, IF(price_qnty >= 1000, 'kg', 'g') as price_qty, currency_code FROM product_types WHERE animal_type = '${animal_type}' AND farma_id = '${farma_id}';`,
 
-        milk: `SELECT * FROM V_DAIRY_${animal_type} WHERE farma_id = '${farma_id}';`,
+        milk: `SELECT * FROM v_milk_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        meat: `SELECT * FROM V_MEAT_${animal_type} WHERE farma_id = '${farma_id}';`,
+        meat: `SELECT * FROM v_meat_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        skin: `SELECT * FROM V_SKIN_${animal_type} WHERE farma_id = '${farma_id}';`,
+        skin: `SELECT * FROM v_skin_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        eggs: `SELECT * FROM V_EGGS_${animal_type} WHERE farma_id = '${farma_id}';`,
+        eggs: `SELECT * FROM v_eggs_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        hooves: `SELECT * FROM V_HOOVES_${animal_type} WHERE farma_id = '${farma_id}';`,
-
-        horns: `SELECT * FROM V_HORNS_${animal_type} WHERE farma_id = '${farma_id}';`,
+        waste: `SELECT * FROM v_waste_${animal_type} WHERE farma_id = '${farma_id}';`,
 
         projections: `SELECT id, projection_id, title, description, product_type, production_qnty, IF(production_measure >= 1000, 'kg', 'g') AS measure, product_start_date, product_end_date, animal_list FROM product_projections WHERE farma_id = '${farma_id}';`,
 
@@ -544,8 +542,6 @@ app.get('/getListing/:param', function (request, response) {
                 response.send({ listing: error });
 
             } else {
-
-                console.log(results);
 
                 response.send({ listing: results });
 
@@ -628,7 +624,7 @@ app.get('/getSymptoms', async (request, response) => {
 
     } catch (error) {
 
-        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` }); 
+        response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
 
     }
 
@@ -672,7 +668,7 @@ app.get('/getScheduleListing', function (request, response) {
         //product
         case 'product':
             query = `SELECT id,projection_id,effective_dt,nxt_dt,FORMAT(((quantity * qnty_measure)/qnty_measure), 2) as product_qnty,
-                        IF(qnty_measure >= 1000, 'kg', 'g') as measure,FORMAT(((actual_qnty * actual_qnty_measure)/actual_qnty_measure), 2) as actual_qnty,schedule_id
+                        IF(qnty_measure >= 1000, 'kg', 'g') as measure, FORMAT(((actual_qnty * actual_qnty_measure)/actual_qnty_measure), 2) as actual_qnty, IF(actual_qnty_measure >= 1000, 'kg', 'g') as actual_measure, schedule_id
                         FROM product_schedules WHERE projection_id = '${id}';`
             break;
 
@@ -1483,36 +1479,56 @@ app.post('/newProductType', function (request, response) {
     const farma_id = storage('farma_id');
     const animal = storage('animal');
 
+    const NEW_PRODUCT_INSERT_QUERY = `INSERT INTO product_types (name,animal_type,farma_id,price,price_qnty,currency_code,production_age) VALUES ('${request.body.type_title}','${animal}','${farma_id}','${request.body.type_price}','${request.body.price_qnty}','${request.body.currency}',${request.body.production_age});`;
+
+    const VIEW_DDL_QUERY = `CREATE VIEW v_${request.body.type_title}_${animal} AS SELECT id, animal_tag, animal_type, farma_id FROM animal WHERE animal_type = '${animal}' AND confirmed = 'Y' AND farma_id = '${farma_id}' AND datediff(NOW(), dob) >= ${request.body.production_age}`;
+
+
     // Execute SQL query that'll insert into the vaccines table
-    connection.query(`INSERT INTO product_types (name,animal_type,farma_id,price,price_qnty,currency_code) VALUES ('${request.body.type_title}','${animal}','${farma_id}','${request.body.type_price}','${request.body.price_qnty}','${request.body.currency}');`,
+    connection.query(NEW_PRODUCT_INSERT_QUERY, function (error, results, fields) {
 
-        function (error, results, fields) {
+        if (error) {
 
-            if (error) {
+            console.log(error);
 
-                console.log(error);
+            logger.error(error.errno + error.message);
 
-                logger.error(error.errno + error.message);
+            return response.json({ status: 500, message: error.message });
 
-                return response.json({ status: 500, message: error.sqlMessage });
+        } else {
+
+            console.log(results);
+
+            if (results.affectedRows > 0) {
+
+                connection.query(VIEW_DDL_QUERY, function (error, results, fields) {
+
+                    if (error) {
+
+                        console.log(error);
+
+                        logger.error(error.errno + error.message);
+
+                        return response.json({ status: 500, message: error.message });
+
+                    } else {
+
+                        return response.json({ status: 200, message: `${request.body.type_title} Added Successfuly.` });
+
+                    }
+
+                })
+
 
             } else {
 
-                console.log(results);
-
-                if (results.affectedRows > 0) {
-
-                    return response.json({ status: 200, message: `${request.body.type_title} Added Successfuly.` });
-
-                } else {
-
-                    return response.json({ status: 400, message: `Adding ${request.body.type_title} Failed` });
-
-                }
+                return response.json({ status: 400, message: `Adding ${request.body.type_title} Failed` });
 
             }
 
         }
+
+    }
 
     );
 
@@ -1538,9 +1554,6 @@ app.post('/newProductProjection', function (request, response) {
                 return response.json({ status: 500, message: error.sqlMessage });
 
             } else {
-
-                console.log("results");
-                console.log(results);
 
                 if (results.affectedRows > 0) {
 
@@ -2068,11 +2081,11 @@ app.post('/recordProduction', function (request, response) {
 
                 if (results.affectedRows > 0) {
 
-                    return response.json({ status: 200, message: `${request.body.product_id} has recorded Successfuly.` });
+                    return response.json({ status: 200, message: `${request.body.product_quantity} has been recorded Successfully.` });
 
                 } else {
 
-                    return response.json({ status: 400, message: `Reporting ${request.body.product_id}'s Sickness Failed` });
+                    return response.json({ status: 400, message: ` ${request.body.product_quantity} Recording Failed` });
 
                 }
 

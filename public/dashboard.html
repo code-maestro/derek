@@ -2288,6 +2288,24 @@
                                                     </select>
                                                 </div>
 
+                                                <div class="col-md-8">
+                                                    <label for="production_age" class="form-label fw-bold">APPROPRIATE PRODUCTION AGE </label>
+                                                    <input type="number" class="form-control" id="production_age"
+                                                        placeholder="Enter Age" name="production_age" required />
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="age_in" class="form-label fw-bold"> IN
+                                                    </label>
+                                                    <select class="form-select" id="age_in" name="age_in" required>
+                                                        <option selected> Choose ... </option>
+                                                        <option value="1"> DAY(s) </option>
+                                                        <option value="30"> MONTH(s) </option>
+                                                        <option value="360"> YEAR(s) </option>
+                                                    </select>
+                                                </div>
+
+
                                                 <div class="d-grid gap-2 d-md-flex px-2 py-3 justify-content-md-end">
                                                     <button class="btn btn-light me-md-2 font-monospace"
                                                         data-bs-dismiss="modal" type="button"> cancel </button>
@@ -2712,13 +2730,10 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col" class="text-center font-monospace"> ID </th>
-                                                    <th scope="col" class="text-center font-monospace"> EFFECTIVE DATE
-                                                    </th>
-                                                    <th scope="col" class="text-center font-monospace"> QUANTITY </th>
-                                                    <th scope="col" class="text-center font-monospace"> EXPECTED
-                                                        QUANTITY </th>
-                                                    <th scope="col" class="text-center font-monospace"> QUANTITY UNIT
-                                                    </th>
+                                                    <th scope="col" class="text-center font-monospace"> EFFECTIVE DATE </th>
+                                                    <th scope="col" class="text-center font-monospace"> EXPECTED QUANTITY </th>
+                                                    <th scope="col" class="text-center font-monospace"> ACTUAL QUANTITY </th>
+                                                    <th scope="col" class="text-center font-monospace"> QUANTITY UNIT </th>
                                                     <th scope="col" class="text-center font-monospace"> ACTIONS </th>
                                                 </tr>
                                             </thead>
@@ -2882,12 +2897,15 @@
 
                                                 <!-- HEALTHY ANIMALS -->
                                                 <div class="col-md-6">
-                                                    <label for="healthyList" class="form-label fw-bold"> Choose Animal TAG </label>
-                                                    <select id="healthyList" class="form-select" name="healthyAnimals" onChange="getAnimalID()" required> </select>
+                                                    <label for="healthyList" class="form-label fw-bold"> Choose Animal
+                                                        TAG </label>
+                                                    <select id="healthyList" class="form-select" name="healthyAnimals"
+                                                        onChange="getAnimalID()" required> </select>
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label for="feedingFirstDate" class="form-label fw-bold"> First Signs Date </label>
+                                                    <label for="feedingFirstDate" class="form-label fw-bold"> First
+                                                        Signs Date </label>
                                                     <input onchange="validateDate('reportedDate')" id="reportedDate"
                                                         type="date" class="form-control" name="reportedDate"
                                                         spellcheck="false" required>
@@ -3134,7 +3152,8 @@
                                                 onclick="printReport('dieaseTable')"> PRINT </button>
                                         </div>
                                         <div class="col-auto">
-                                            <button type="button" onclick="closeModal('diseaseModalToggle')" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                            <button type="button" onclick="closeModal('diseaseModalToggle')"
+                                                class="btn btn-sm btn-danger" data-bs-dismiss="modal"
                                                 aria-label="Close"> CLOSE </button>
                                         </div>
                                     </div>
@@ -3348,7 +3367,7 @@
                                 </div>
                             </div>
 
-                            <form class="row g-3 " enctype="multipart/form-data" method="post" id="editAnimalForm"
+                            <form class="row g-3 mt-2" enctype="multipart/form-data" method="post" id="editAnimalForm"
                                 name="editAnimalForm">
 
                                 <div class="row pt-2">
