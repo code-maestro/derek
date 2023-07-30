@@ -18,15 +18,10 @@ async function renderAnimals() {
   // const cardsCount = ['allAnimals', 'sickAnimals', 'heavyAnimals', 'babies', 'vaccinatedAnimals', 'pendingAnimals', 'allFeeds', 'allProducts'];
 
   for (const number of cardsCount) {
-
     const animalCount = await getCount(number);
-
-    console.log(animalCount);
-
     animalCount.count.forEach(count => {
       document.getElementById(number).innerText = count.COUNT || 0;
     });
-
   }
 
   // Get Notifications Count

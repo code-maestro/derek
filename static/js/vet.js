@@ -4,10 +4,14 @@ async function recordVet() {
         const vetData = {
             vetFname: document.getElementById('vet-fname').value,
             vetLname: document.getElementById('vet-lname').value,
-            vetPhone: document.getElementById('vet-phone').value,
+            vetPhone: document.getElementById('vet-phone-no').value,
             vetEmail: document.getElementById('vet-mail').value,
             vetStation: document.getElementById('vet-station').value
         };
+
+        console.log(vetData);
+        console.log(document.getElementById('vet-phone-no'));
+        console.log(document.getElementById('vet-phone-no').value);
 
         // request options
         const options = {

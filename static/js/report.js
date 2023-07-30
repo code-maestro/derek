@@ -124,8 +124,8 @@ const populateReport = (headers, param2, count, type) => {
 
   let html = "";
   let htmlSegment = "";
-  const con = document.getElementById('reportListing');
 
+  const con = document.getElementById('reportListing');
 
   param2.forEach(data => {
 
@@ -134,7 +134,7 @@ const populateReport = (headers, param2, count, type) => {
     // CHECK RPT TYPE
     switch (type) {
       // all animals report
-      case 'rpt_animal':
+      case 'rpt_animals':
         htmlSegment = `
           <tr class="justify-content-center" id="${data.ID}">
             <td class="text-center"> ${data.ID} </td>
