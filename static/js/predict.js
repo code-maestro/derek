@@ -115,7 +115,6 @@ predictionForm.addEventListener("submit", (event) => {
 );
 
 async function getPredictedVaccine() {
-
   // Predicted Disease
   const predicted_disease = document.getElementById(`disease_suspected`).value;
 

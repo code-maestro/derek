@@ -8,19 +8,12 @@ const validateQnty = (param1, param2, param3) => {
     const dbQnty = document.getElementById(`${param3}`).value;
     const plannedQnty = document.getElementById(`${param1}`).value * document.getElementById(`${param2}`).value;
 
-    console.log("dbQnty");
-    console.log(dbQnty);
-
-    console.log("plannedQnty");
-    console.log(plannedQnty);
     // SHOWS TOAST 
     const showClear = (param) => {
         const toastLiveExample = document.getElementById('ttoast');
         const toast = new bootstrap.Toast(toastLiveExample, { delay: 3500 });
 
         toast.show();
-
-        console.log(param);
 
         document.getElementById(`${param1}`).value = '';
         document.getElementById(`${param2}`).value = '';

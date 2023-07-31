@@ -26,12 +26,8 @@ const getProductTypes = async (param) => {
     const con = document.getElementById('productTypesListing');
 
     products.listing.forEach(product => {
-
-      console.log(product);
-
       htmlSegment = `
-        <tr data-bs-toggle="tooltip" data-bs-title="Disabled tooltip" onclick="viewProductType('${product.type_id}', '${product.name}','${product.currency_code}','${product.price}', '${product.price_qty}', '${product.price_qnty}')" class="justify-content-center" id="${product.type_id}">
-          <td class="text-center"> ${product.type_id} </td>   
+        <tr data-bs-toggle="tooltip" data-bs-title="Disabled tooltip" onclick="viewProductType('${product.type_id}', '${product.name}','${product.currency_code}','${product.price}', '${product.price_qty}', '${product.price_qnty}')" class="justify-content-center" id="${product.type_id}"> 
           <td class="text-center"> ${product.name} </td> 
           <td class="text-center"> ${product.currency_code + ' ' + product.price + '/' + product.price_qty} </td> 
         </tr>
