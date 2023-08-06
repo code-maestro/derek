@@ -76,10 +76,15 @@ const getAnimalList = async () => {
 const calculateTotal = () => {
   const freq = document.getElementById("production_frequency").value;
   const qnty = document.getElementById("production_qnty").value;
+  const product_days = new Date(document.getElementById("product_end_date").value).getTime() - new Date(document.getElementById("product_start_date").value).getTime();
   const qnty_unit = document.getElementById("production_measure").value;
-  console.log(freq * qnty * qnty_unit);
 
-  document.getElementById('all_production_qnty').setAttribute("value", (freq * qnty * qnty_unit));
+  // To calculate the no. of days between two dates
+  var Difference_In_Days = (product_days / (1000 * 3600 * 24)) + 1;
+  var total = ((freq * qnty * qnty_unit * Difference_In_Days) / qnty_unit);
+  console.log(total);
+
+  document.getElementById('all_production_qnty').setAttribute("value", ((freq * qnty * qnty_unit * Difference_In_Days) / qnty_unit));
 
 }
 
