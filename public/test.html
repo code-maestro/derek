@@ -40,15 +40,9 @@
         async function getTableData() {
             let list = await getListing();
 
-            console.log('list');
-            console.log(JSON.parse(JSON.stringify(list)));
-
             let container = document.querySelector('#content');
 
             const animals = JSON.parse(JSON.stringify(list));
-
-            console.log('animals[2]');
-            console.log(animals[2]);
 
             container.innerHTML = `<p> ${animals[1]} </p>`;
 

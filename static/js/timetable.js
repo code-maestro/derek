@@ -2,16 +2,11 @@
 // viewing THE SCHEDULE
 const viewSchedule = async (type, id) => {
 
-  console.log('TYPE : ' + type);
-  console.log("ID : " + id);
-
   const schedules = await getScheduleListing(`${type}`, `${id}`);
 
   let html = "";
   let htmlSegment = "";
   let con = "";
-
-  console.log(schedules);
 
   if (type === "feeding") {
 
@@ -94,8 +89,6 @@ async function recordSchedule() {
 
       const data = await response.json();
 
-      console.log(data);
-
       if (data.status == 200) {
 
         $('#successModalToggle').modal('show');
@@ -150,9 +143,6 @@ async function recordFeedingSchedule() {
       feedsID: document.getElementById('feeds_id').value
     }
 
-
-    console.log(ttData);
-
     // request options
     const options = {
       method: 'POST',
@@ -171,8 +161,6 @@ async function recordFeedingSchedule() {
     } else {
 
       const data = await response.json();
-
-      console.log(data);
 
       if (data.status == 200) {
 

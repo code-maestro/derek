@@ -210,8 +210,6 @@ const getFeedsListData = async () => {
 
   lstd.innerHTML = forlist;
 
-  console.log(lstd.value);
-
 }
 
 
@@ -235,7 +233,6 @@ const getOtherData = async () => {
   const lstd = document.getElementById('feedList');
 
   if (names.includes(lstd.value)) {
-    console.log(lstd.value);
     let getIndex = names.indexOf(lstd.value);
     document.getElementById('feeds-description').value = desc.at(getIndex);
     document.getElementById('feeds-quantity').value = numbers.at(getIndex);
@@ -249,7 +246,6 @@ const getOtherData = async () => {
 const getAllDiseases = async (param) => {
 
   const diseases = await getListing('allDiseases');
-  console.log(diseases);
 
   if (param === 'listing') {
 
@@ -284,9 +280,6 @@ const getAllDiseases = async (param) => {
     const disease_lstd = document.getElementById('disease-name');
 
     diseases.listing.forEach(disease => {
-
-      console.log(disease);
-
       diseaseListed = ` <option id="${disease.disease_id}" value="${disease.disease_id}">  ${disease.disease_name} </option> `;
       diseaseList += diseaseListed;
     });
@@ -402,9 +395,6 @@ const getTimetables = async () => {
 
   const timetables = await getListing('timetables');
 
-  console.log("timetables");
-  console.log(timetables);
-
   let html = '';
   let htmlSegment = '';
 
@@ -487,9 +477,6 @@ const getAvailableVaccines = async () => {
 const getPendingVaccinations = async () => {
 
   const vaccinated = await getListing('pendingAnimals');
-
-  console.log(vaccinated);
-
   let html = '';
   let htmlSegment = '';
 
@@ -743,9 +730,6 @@ function deleteFromDom(param) {
 // Function to print report
 function printReport(param) {
   const hideElements = document.getElementsByClassName('nopnt');
-
-  console.log(hideElements);
-
   const arr = Array.prototype.slice.call(hideElements);
 
   arr.map(val => {
@@ -820,8 +804,6 @@ async function editAnimal(param) {
 
   let list = await getListing('allAnimals');
   list.listing.every(v => {
-    // const ddate = v.dob;
-    // console.log(ddate.toDateString());
     if (v.id == param) {
       editid.setAttribute("value", param)
       tag.setAttribute('value', v.animal_tag);
@@ -866,8 +848,6 @@ async function scheduleConfirm(param) {
 
   const isCon = await isConfirmed(param);
 
-  console.log(isCon);
-
   if (isCon.status === 400) {
 
     $('#editPendingModalToggle').modal('show');
@@ -895,8 +875,6 @@ async function editVaccine(param) {
 
   let list = await getListing('allAnimals');
   list.listing.every(v => {
-    // const ddate = v.dob;
-    // console.log(ddate.toDateString());
     if (v.id == param) {
       editid.setAttribute("value", param)
       tag.setAttribute('value', v.animal_tag);
@@ -1023,8 +1001,6 @@ async function recordVaccine() {
       injectionArea: document.getElementById('injection-area').value
     };
 
-    console.log(userCredentials);
-
     // request options
     const options = {
       method: 'POST',
@@ -1044,7 +1020,7 @@ async function recordVaccine() {
 
       const data = await response.json();
 
-      console.log(data);
+     
 
       if (data.status == 200) {
 
@@ -1091,8 +1067,6 @@ async function recordFeed() {
       feeds_stock_date: document.getElementById('feeds_stock_date').value
     };
 
-    console.log(feedData);
-
     // request options
     const options = {
       method: 'POST',
@@ -1112,7 +1086,7 @@ async function recordFeed() {
 
       const data = await response.json();
 
-      console.log(data);
+     
 
       if (data.status == 200) {
 
@@ -1160,8 +1134,6 @@ async function recordEditAnimal() {
       editid: document.getElementById('editid').value
     };
 
-    console.log(editAnimalData);
-
     // request options
     const options = {
       method: 'POST',
@@ -1180,8 +1152,6 @@ async function recordEditAnimal() {
     } else {
 
       const data = await response.json();
-
-      console.log(data);
 
       if (data.status == 200) {
 
@@ -1227,9 +1197,6 @@ async function recordEditVaccine() {
       editRegDate: document.getElementById('edit-registration-date').value,
       editid: document.getElementById('editid').value
     };
-
-    console.log(editAnimalData);
-
     // request options
     const options = {
       method: 'POST',
@@ -1249,7 +1216,7 @@ async function recordEditVaccine() {
 
       const data = await response.json();
 
-      console.log(data);
+     
 
       if (data.status == 200) {
 

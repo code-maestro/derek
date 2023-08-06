@@ -41,9 +41,7 @@ function validateForm() {
     }
 
   }
-
-  console.log(success);
-
+  
   success ? registerFarma() : console.log("FALSE");
 
 }
@@ -105,7 +103,6 @@ async function registerFarma() {
           <strong> ${data.message}!</strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`;
-        console.log(data);
       } else {
 
         document.getElementById("err").innerHTML = `
@@ -113,7 +110,6 @@ async function registerFarma() {
           <strong> ${data.message}!</strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`;
-        console.log(data);
       }
 
     }

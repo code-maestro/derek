@@ -26,8 +26,6 @@ async function authenticateUser() {
 
       const data = await response.json();
 
-      console.log(data);
-
       setTimeout(lala(data.url), 3000);
 
       function lala(param) {
@@ -62,8 +60,6 @@ async function sendOTP() {
       mail: document.getElementById('reset-email').value
     };
 
-    console.log(resetData);
-
     // request options
     const options = {
       method: 'POST',
@@ -85,15 +81,6 @@ async function sendOTP() {
 
       if (data.status == 200) {
 
-        console.log(data.message);
-        console.log(data.user_id);
-
-        // document.getElementById("errOTP").innerHTML = `
-        // <div class="alert alert-success alert-dismissible fade show" role="alert">
-        //   <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-        //   <strong> ${data.message}!</strong>
-        //   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        // </div>`;
         $('#pwdResetModalToggle').modal('hide');
 
         document.getElementById("login-form").reset();
@@ -108,23 +95,9 @@ async function sendOTP() {
 
         console.log(data.message);
 
-        // document.getElementById("errOTP").innerHTML = `
-        // <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        //   <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-        //   <strong> ${data.message}!</strong>
-        //   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        // </div>`;
-
       } else {
 
         console.log(data.message);
-
-        // document.getElementById("errOTP").innerHTML = `
-        // <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        //   <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-        //   <strong> ${data.message}!</strong>
-        //   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        // </div>`;
 
       }
 
@@ -141,8 +114,6 @@ async function sendOTP() {
 
 async function recordPassword() {
 
-  console.log(" T A R G E T T E D " + document.getElementById('thee_user_id').value);
-
   try {
 
     // post body data 
@@ -150,8 +121,6 @@ async function recordPassword() {
       USER_ID: document.getElementById('thee_user_id').value,
       NEW_PASSWORD: document.getElementById('reset-pass2').value
     };
-
-    console.log(newPasswords);
 
     // request options
     const options = {
@@ -171,8 +140,6 @@ async function recordPassword() {
     } else {
 
       const data = await response.json();
-
-      console.log(data);
 
       if (data.status == 200) {
 

@@ -56,7 +56,6 @@ app.use(express.static(path.join(__dirname, 'static')));
 const upload = multer.diskStorage({
     destination: 'static/images/',
     filename: function (request, file, cb) {
-        console.log(Date.now() + path.extname(file.originalname));
         storage('img_url', Date.now() + path.extname(file.originalname));
         cb(null, Date.now() + path.extname(file.originalname));
     }
@@ -80,11 +79,6 @@ function checkFileType(file, cb) {
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     // Check mime
     const mimetype = filetypes.test(file.mimetype);
-
-    console.log('file');
-    console.log(file);
-    console.log('cb');
-    console.log(file);
 
     storage('img_name', `http://localhost:4200/images/${file.originalname}`);
 
@@ -202,7 +196,7 @@ function sendEmail(email) {
 
                 } else {
 
-                    console.log(results);
+    
 
                 }
 
@@ -303,7 +297,6 @@ app.get('/logout', (request, response) => {
     storage.remove('farma_id');
     storage.clear();
     storage.clearAll();
-    console.log(storage.get('farma_id'));
     response.redirect('/');
 });
 
@@ -339,8 +332,6 @@ app.get('/before-home', function (request, response) {
 
                     if (element.list_of_animals == null) {
 
-                        console.log("😒😒😒😒😒");
-
                         response.send({ status: 400, message: "NOT ANIMALS AT THE FARM" });
 
                     } else {
@@ -362,8 +353,6 @@ app.get('/before-home', function (request, response) {
         })
 
     } else {
-
-        console.log("BEFORE-HOME animals listing retrieval nicht arbeitet viel  du hat keine farma_id ");
 
         response.redirect('/');
 
@@ -415,7 +404,6 @@ app.get('/getCount/:param', function (request, response) {
             response.send({ count: results });
         })
     } else {
-        console.log(" trying to delete with no farma_id 🤣😂 ");
         response.redirect('/');
     }
 
@@ -435,7 +423,6 @@ app.get('/getFarma', function (request, response) {
             response.send({ farma: results });
         })
     } else {
-        console.log(" trying to delete with no farma_id 🤣😂 ");
         response.redirect('/');
     }
 
@@ -515,19 +502,19 @@ app.get('/getListing/:param', function (request, response) {
 
         milk: `SELECT * FROM v_milk_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        meat: `SELECT * FROM v_meat_${animal_type} WHERE farma_id = '${farma_id}';`,
-
-        skin: `SELECT * FROM v_skin_${animal_type} WHERE farma_id = '${farma_id}';`,
+        beef: `SELECT * FROM v_beef_${animal_type} WHERE farma_id = '${farma_id}';`,
 
         eggs: `SELECT * FROM v_eggs_${animal_type} WHERE farma_id = '${farma_id}';`,
 
-        waste: `SELECT * FROM v_waste_${animal_type} WHERE farma_id = '${farma_id}';`,
+        goat_meat: `SELECT * FROM v_goat_meat_${animal_type} WHERE farma_id = '${farma_id}';`,
+
+        chicken: `SELECT * FROM v_chicken_${animal_type} WHERE farma_id = '${farma_id}';`,
 
         projections: `SELECT id, projection_id, title, description, product_type, production_qnty, IF(production_measure >= 1000, 'kg', 'g') AS measure, product_start_date, product_end_date, animal_list FROM product_projections WHERE farma_id = '${farma_id}';`,
 
         notifications: `SELECT B.id, CONCAT(A.first_name, ' ', A.last_name) AS names, B.action, B.action_date FROM farma A, audit_trail B WHERE B.user_id = A.farma_id AND A.farma_id = '${farma_id}' AND B.animal_type='${animal_type}' ORDER BY id DESC LIMIT 12;`,
 
-        report_types: `SELECT table_name as name FROM information_schema.views WHERE table_schema = 'farma' AND table_name LIKE '%rpt%';`,
+        report_types: `SELECT TABLE_NAME as name FROM rpt_types WHERE ANIMAL_TYPE = '${animal_type}';`,
 
     }
 
@@ -537,14 +524,13 @@ app.get('/getListing/:param', function (request, response) {
             // If there is an issue with the query, output the error
             if (error) {
 
-                console.log(error);
+               
 
                 response.send({ listing: error });
 
             } else {
 
                 response.send({ listing: results });
-                console.log(results);
 
             }
 
@@ -574,7 +560,7 @@ app.get('/getSickAnimal', async (request, response) => {
 
             if (err) {
 
-                console.log(err);
+               
 
                 response.send({ status: 400, message: err.message });
 
@@ -611,7 +597,7 @@ app.get('/getSymptoms', async (request, response) => {
 
             if (err) {
 
-                console.log(err);
+               
 
                 response.send({ status: 400, message: err.message });
 
@@ -714,8 +700,6 @@ app.get('/isConfirmed', function (request, response) {
 
     const param = request.query.id;
 
-    console.log(param);
-
     const queries = `SELECT confirmed FROM vaccination_details WHERE id = '${param}';`
 
     if (user_id) {
@@ -727,8 +711,6 @@ app.get('/isConfirmed', function (request, response) {
                 response.send({ status: 500, error_message: "an error happened" + error });
 
             } else {
-
-                console.log(results[0].confirmed);
 
                 if (results[0].confirmed === 'Y') {
 
@@ -759,8 +741,6 @@ app.get('/verifyAnimal/:param', function (request, response) {
     const user_id = storage('farma_id');
 
     const param = request.params.param;
-
-    console.log(user_id + ' ' + param);
 
     const queries = `SELECT animal_tag, parent_tag, reg_date, dob, (DATEDIFF(CURDATE(), dob)) as age FROM animal WHERE farma_id = '${user_id}' AND animal_tag = '${param}' AND confirmed = 'N';`
 
@@ -798,8 +778,6 @@ app.get('/getMaxId/:param', function (request, response) {
     const animal = storage('animal');
     const param = request.params.param;
 
-    console.log(user_id + "  " + animal);
-
     const queries = {
         animal_id: `SELECT COUNT(id) AS LAST, animal_type FROM animal  WHERE animal_type='${animal}' AND farma_id = '${user_id}';`,
         timetable_id: `SELECT COUNT(id) AS LAST, animal_type FROM feeding_timetable WHERE feeds_id IN (SELECT id FROM feeds WHERE farma_id = '${user_id}') AND animal_type = '${animal}';`
@@ -809,12 +787,9 @@ app.get('/getMaxId/:param', function (request, response) {
         connection.query(queries[param], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) throw error;
-
-            // console.log(results[0]);
             response.send({ last_id: results[0].LAST != null ? results[0].LAST + 1 : 0001, animalType: results[0].animal_type != null ? results[0].animal_type : animal });
         })
     } else {
-        console.log(" trying to delete with no farma_id 🤣😂 ");
         response.redirect('/');
     }
 
@@ -825,31 +800,24 @@ app.get('/getMaxId/:param', function (request, response) {
 /* send verification link */
 app.get('/confirm/:param', function (request, response) {
 
-    console.log(request.params.param);
-
     const param = request.params.param === 'vaccination' ? 'vaccination_details' : 'sick_animals';
 
     // query to return the tokens
     connection.query(`SELECT * FROM triggered_emails WHERE confirmation_id = ${request.query.token}`, function (err, result) {
 
         if (err) {
-            console.log(err);
+           
             response.send({ message: " NOOOO LOL " });
-        } else {
 
-            console.log(result[0]);
+        } else {
 
             if (result[0].confirmation_id !== null) {
 
                 connection.query(`UPDATE ${param} SET confirmed = 'Y' WHERE confirmed_id = '${result[0].confirmation_id}'`, function (err, result) {
                     if (err) {
-                        console.log(err)
                         response.send({ message: "UPDATE FAILED/CONFIRMATOIN" });
                     } else {
-
                         response.sendFile(path.join(__dirname + '/public/views/sucess.html'));
-
-                        // response.send({ message: "UPDATE SUCCESSFULLY" });
                     }
 
                 });
@@ -877,11 +845,9 @@ app.get('/verify-otp', async (request, response) => {
         // query to return the tokens
         connection.query(`CALL verify_otp ('${userId}', '${code}', @user_id);`, function (err, result) {
             if (err) {
-                console.log(err);
+               
                 response.send({ status: 500, message: err.sqlMessage });
             } else {
-
-                console.log(result[0][0].VERIFIED);
 
                 if (result[0][0].VERIFIED === 'FAILED') {
 
@@ -909,7 +875,7 @@ app.get('/verify-otp', async (request, response) => {
 
     } catch (error) {
 
-        console.log(`${error}`);
+       
 
         response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
 
@@ -930,7 +896,7 @@ app.get('/rpt_headers', async (request, response) => {
 
             if (err) {
 
-                console.log(err);
+               
 
                 response.send({ status: 500, message: err.message });
 
@@ -943,8 +909,6 @@ app.get('/rpt_headers', async (request, response) => {
         });
 
     } catch (error) {
-
-        console.log(`${error}`);
 
         response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
 
@@ -966,13 +930,13 @@ app.get('/rpt_data', async (request, response) => {
         const rpt_type = request.query.type;
 
         // query to return the tokens
-        connection.query(`SELECT * FROM ${rpt_type} WHERE effective_dt BETWEEN ${from_dt} AND ${to_dt} AND farma_id = '${farma_id}' AND animal_type = '${animal_type}' ORDER BY effective_dt;`, function (err, res) {
+        connection.query(`SELECT * FROM ${rpt_type} WHERE farma_id = '${farma_id}' AND animal_type = '${animal_type}' AND effective_dt BETWEEN ${from_dt} AND ${to_dt} ORDER BY effective_dt  COLLATE utf8mb4_0900_ai_ci;`, function (err, res) {
 
             if (err) {
 
-                console.log(err);
+               
 
-                response.send({ status: 500, message: err.message });
+                response.send({ status: 500, message: err.sqlMessage });
 
             } else {
 
@@ -981,16 +945,11 @@ app.get('/rpt_data', async (request, response) => {
 
                     if (err) {
 
-                        console.log(err);
+                       
 
                         response.send({ status: 500, message: err.message });
 
                     } else {
-
-                        console.log("res");
-                        console.log(res);
-                        console.log("result");
-                        console.log(result);
 
                         response.json({ status: 200, message: `SUCCESSFUL`, data: res, dates: result });
 
@@ -1004,7 +963,7 @@ app.get('/rpt_data', async (request, response) => {
 
     } catch (error) {
 
-        console.log(`${error}`);
+       
 
         response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
 
@@ -1025,8 +984,6 @@ app.get('/predict_disease', async (request, response) => {
         connection.query(`SELECT A.symptom_id, A.disease_id, B.disease_name DISEASE_NAME, A.symptom_name DESCRIPTION FROM symptom A, disease B WHERE MATCH (A.symptom_name) AGAINST ('${prompt}') AND A.disease_id  IN (B.disease_id) AND B.animal_id = (SELECT animal_id FROM farm_animal WHERE animal_name = '${animal_type}' );`, function (err, res) {
 
             if (err) {
-
-                console.log(err);
 
                 response.send({ status: 400, message: err.message });
 
@@ -1054,18 +1011,13 @@ app.get('/predict_vaccine', async (request, response) => {
 
         const prompt = request.query.prompt;
 
-        console.log(prompt);
-
         connection.query(`SELECT name NAME FROM vaccines WHERE disease_id = ?;`, prompt, function (err, res) {
 
             if (err) {
 
-                console.log(err);
                 response.send({ status: 500, message: err.message });
 
             } else {
-
-                console.log(res);
 
                 response.json({ status: 201, message: `SUCCESSFUL`, data: res });
 
@@ -1074,8 +1026,7 @@ app.get('/predict_vaccine', async (request, response) => {
         });
 
     } catch (error) {
-
-        console.log(error);
+       
         response.json({ status: 500, message: `INTERNAL SERVER ERROR ${error}` });
 
     }
@@ -1104,7 +1055,7 @@ app.post('/register-farma', function (request, response) {
         connection.query(`CALL pending_farma_registration('${f_id}', '${fname}', '${lname}' , '${mail}', '${phone}', '${password2}')`, function (error, results, fields) {
 
             if (error) {
-                console.log(error)
+
                 return response.json({ status: 500, message: error.sqlMessage });
 
             } else {
@@ -1196,7 +1147,7 @@ app.post('/newAnimal', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -1223,8 +1174,6 @@ app.post('/newTimeTable', function (request, response) {
     const animal = storage('animal');
     const rand_id = uuidv4();
 
-    console.log(request.body);
-
     // Execute SQL query that'll insert into the feeding_timetable table
     connection.query(
         `INSERT INTO feeding_timetable ( tt_name,animal_type,cycle,period,quantity_per_cycle,quantity_per_cycle_unit,quantity,quantity_unit,first_feed_date,feeds_id,tt_id )
@@ -1233,7 +1182,7 @@ app.post('/newTimeTable', function (request, response) {
         function (error, results, fields) {
             if (error) {
 
-                console.log(error);
+               
 
                 logger.error(error.errno + error.message);
 
@@ -1241,7 +1190,7 @@ app.post('/newTimeTable', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -1279,7 +1228,7 @@ app.post('/updateAnimalData', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -1337,7 +1286,7 @@ app.post('/newVaccine', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -1376,8 +1325,6 @@ app.post('/newFeed', function (request, response) {
 
             } else {
 
-                console.log(results);
-
                 if (results.affectedRows > 0) {
 
                     return response.json({ status: 200, message: `${request.body.feeds_name} Feed Added Successfuly.` });
@@ -1415,7 +1362,7 @@ app.post('/newBred', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -1453,7 +1400,7 @@ app.post('/newVet', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -1490,15 +1437,13 @@ app.post('/newProductType', function (request, response) {
 
         if (error) {
 
-            console.log(error);
+           
 
             logger.error(error.errno + error.message);
 
             return response.json({ status: 500, message: error.message });
 
-        } else {
-
-            console.log(results);
+        } else {;
 
             if (results.affectedRows > 0) {
 
@@ -1506,7 +1451,7 @@ app.post('/newProductType', function (request, response) {
 
                     if (error) {
 
-                        console.log(error);
+                       
 
                         logger.error(error.errno + error.message);
 
@@ -1547,9 +1492,6 @@ app.post('/newProductProjection', function (request, response) {
 
             if (error) {
 
-                console.log("error");
-                console.log(error);
-
                 logger.error(error.errno + error.message);
 
                 return response.json({ status: 500, message: error.sqlMessage });
@@ -1589,7 +1531,7 @@ app.post('/editProductType', function (request, response) {
 
                 if (error) {
 
-                    console.log(error);
+                   
 
                     logger.error(error.errno + error.message);
 
@@ -1597,7 +1539,7 @@ app.post('/editProductType', function (request, response) {
 
                 } else {
 
-                    console.log(results);
+    
 
                     if (results.affectedRows > 0) {
 
@@ -1636,7 +1578,7 @@ app.post('/updateVet', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -1675,7 +1617,7 @@ app.post('/confirmation', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -1687,8 +1629,6 @@ app.post('/confirmation', function (request, response) {
                         farma_name: `${storage('farma_name')}`,
                         vet_mail: `${request.body.update_vet_mail}`
                     };
-
-                    console.log(params);
 
                     sendEmail(params);
 
@@ -1730,7 +1670,7 @@ app.post('/verifyNewBorn', function (request, response) {
 
                 } else {
 
-                    console.log(results);
+    
 
                     if (results.affectedRows > 0) {
 
@@ -1775,7 +1715,7 @@ app.post('/scheduleVaccination', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -1815,7 +1755,7 @@ app.post('/updateFarma', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -1843,9 +1783,6 @@ app.post('/addSick', function (request, response) {
 
     const disease_id = request.body.suspected_disease === undefined ? 0 : request.body.suspected_disease;
 
-    console.log(disease_id);
-    console.log(request.body.suspected_disease)
-
     if (animal) {
 
         // Execute SQL query that'll insert into the vaccines table
@@ -1855,15 +1792,11 @@ app.post('/addSick', function (request, response) {
 
                 if (error) {
 
-                    logger.error(error.errno + error.message);
-
-                    console.log(error);
+                    logger.error(error.errno + error.message);                 
 
                     return response.json({ status: 500, message: error.sqlMessage });
 
                 } else {
-
-                    console.log(results);
 
                     if (results.affectedRows > 0) {
 
@@ -1956,12 +1889,7 @@ app.post('/recordNewPassword', async (request, response) => {
 app.post('/save', async (request, response) => {
     const getDetails = JSON.parse(JSON.stringify(request.body))
 
-    console.log("NAME FROM FRONTEND  " + getDetails.name);
-    console.log(" URL " + getDetails.image_url);
-
     const f_id = storage('farma_id');
-
-    console.log(f_id);
 
     connection.query(`SELECT list_of_animals FROM animals_at_farm WHERE farma_id = '${f_id}';`,
         function (error, results, fields) {
@@ -1970,10 +1898,6 @@ app.post('/save', async (request, response) => {
                 logger.error(error.errno + error.message);
             } else {
 
-                console.log(results);
-
-                // If the account exists
-
                 results.forEach(element => {
                     if (element.list_of_animals == null) {
                         // Query to update the list of animals for the farmer with no animals
@@ -1981,7 +1905,7 @@ app.post('/save', async (request, response) => {
                             function (error, results, fields) {
                                 // If there is an issue with the query, output the error
                                 if (error) {
-                                    console.log(error);
+                                   
                                     logger.error(error.errno + error.message);
                                 };
                                 // If the account exists
@@ -1994,7 +1918,7 @@ app.post('/save', async (request, response) => {
                             function (error, results, fields) {
                                 // If there is an issue with the query, output the error
                                 if (error) {
-                                    console.log(error);
+                                   
                                     logger.error(error.errno + error.message);
                                 };
                                 // If the account exists
@@ -2078,7 +2002,7 @@ app.post('/recordProduction', function (request, response) {
 
             } else {
 
-                console.log(results);
+
 
                 if (results.affectedRows > 0) {
 
@@ -2105,8 +2029,6 @@ app.post('/delete', function (request, response) {
     const param_id = request.body.id;
     const par = request.body.type;
 
-    console.log(param_id);
-
     const user_id = storage('farma_id');
     const animal = storage('animal');
 
@@ -2121,20 +2043,16 @@ app.post('/delete', function (request, response) {
         feed: `DELETE FROM feeds WHERE id = '${param_id}';`
     }
 
-    console.log(queries[par]);
-
     if (user_id) {
 
         connection.query(queries[par], function (error, results, fields) {
             // If there is an issue with the query, output the error
             if (error) {
 
-                console.log(error);
+               
                 logger.error(error.errno + error.message);
 
             } else {
-
-                console.log(results);
 
                 results.affectedRows >= 1 ? response.send({ message: "GOOD" }) : response.send({ message: "BAD" });
 
@@ -2144,7 +2062,6 @@ app.post('/delete', function (request, response) {
 
     } else {
 
-        console.log(" trying to delete with no farma_id  ");
         response.redirect('/');
     }
 });

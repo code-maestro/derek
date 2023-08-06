@@ -261,16 +261,12 @@
 
             const animal_img = document.getElementById(`${params}` + "-img").src;
 
-            console.log(params + "animal_img " + animal_img);
-
             const animal_at_farm_details = [{
               name: params,
               image_url: animal_img
             }];
 
             const toDB = JSON.stringify(animal_at_farm_details);
-
-            console.log(toDB);
 
             // POST request using fetch()
             fetch("/save", {

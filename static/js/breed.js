@@ -8,8 +8,6 @@ const getBreedAnimals = async () => {
 
   const tag_lstd = document.getElementById('breeding_animal');
 
-  console.log(animals);
-
   animals.listing.forEach(animal => {
     tagListed = ` <option id="${animal.id}" value="${animal.animal_tag}">  ${animal.animal_tag} </option> `;
     tagList += tagListed;
@@ -68,11 +66,7 @@ const getExpectedNewBorns = async () => {
 // CREATING THE SCHEDULE
 const verifyAnimal = async (param) => {
 
-  console.log(param);
-
   const newAnimals = await verifiedAnimal(`${param}`);
-
-  console.log(newAnimals);
 
   const new_born_tag = document.getElementById("new-born-animal-tag");
   const parent_tag = document.getElementById("new-born-parent-tag");
@@ -82,8 +76,6 @@ const verifyAnimal = async (param) => {
 
   newAnimals.listing.forEach(animal => {
 
-    console.log(animal);
-
     if (animal.animal_tag == param) {
 
       new_born_tag.setAttribute('value', animal.animal_tag)
@@ -92,7 +84,6 @@ const verifyAnimal = async (param) => {
       dob.setAttribute('value', new Date(animal.dob).toISOString().slice(0, 10));
       age.setAttribute('value', animal.age);
 
-      console.log(new_born_tag.value);
       return false;
 
     }
@@ -118,22 +109,15 @@ const getGender = async () => {
   // PUSHING TO VACCINES ARRAY
   notHeavyAnimals.listing.forEach(notheavy => {
 
-    console.log(notheavy);
     gestationP.push(notheavy.period)
     animalID.push(notheavy.id)
     the_genders.push(notheavy.gender);
     the_tags.push(notheavy.animal_tag);
   });
 
-  console.log(the_animal.value);
-
   if (the_tags.includes(the_animal.value)) {
 
     let getIndex = the_tags.indexOf(the_animal.value);
-
-    console.log(getIndex);
-
-    console.log(the_genders.at(getIndex));
 
     document.getElementById('breeding_gender').setAttribute('value', the_genders.at(getIndex));
     document.getElementById('breeding_animal_id').setAttribute('value', animalID.at(getIndex));
@@ -166,8 +150,6 @@ const calcDueDate = () => {
 function addDgays(date, days) {
   var result = new Date(date);
   result.setDate(result.getDate() + days);
-
-  console.log(result + "RESULT");
   return result;
 }
 
@@ -182,9 +164,6 @@ async function confirmNewborn() {
       newBornGender: document.getElementById('new-born-animal-gender').value,
       newBornRegDate: document.getElementById('new-born-animal-reg').value
     };
-
-    console.log(newborn);
-
     // request options
     const options = {
       method: 'POST',
@@ -204,11 +183,7 @@ async function confirmNewborn() {
 
       const data = await response.json();
 
-      console.log(data);
-
       if (data.status == 200) {
-
-        console.log(document.getElementById('successModalToggle'));
 
         $('#successModalToggle').modal('show');
         document.getElementById('success-msg').innerText = data.message;
@@ -254,8 +229,6 @@ async function recordBreed() {
       breeding_date: document.getElementById('breeding_date').value
     };
 
-    console.log(newBreed);
-
     // request options
     const options = {
       method: 'POST',
@@ -274,8 +247,6 @@ async function recordBreed() {
     } else {
 
       const data = await response.json();
-
-      console.log(data);
 
       if (data.status == 200) {
 

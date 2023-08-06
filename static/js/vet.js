@@ -9,10 +9,6 @@ async function recordVet() {
             vetStation: document.getElementById('vet-station').value
         };
 
-        console.log(vetData);
-        console.log(document.getElementById('vet-phone-no'));
-        console.log(document.getElementById('vet-phone-no').value);
-
         // request options
         const options = {
             method: 'POST',

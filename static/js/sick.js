@@ -189,8 +189,6 @@ const getMoreVetData = async () => {
     let getIndex = vetNames.indexOf(vetName.value);
     document.getElementById('vets-id').value = vetIDS.at(getIndex);
 
-    console.log(vetIDS.at(getIndex));
-
     document.getElementById('vets-hospital').value = vetStations.at(getIndex);
     document.getElementById('vets-email').value = vetEmails.at(getIndex);
     document.getElementById('vets-phone').value = vetPhones.at(getIndex);
@@ -266,9 +264,6 @@ async function recordSick() {
       ssText: document.getElementById('ssText').value
     };
 
-    console.log(document.getElementById('disease_suspected'));
-    console.log(sickData);
-
     // request options
     const options = {
       method: 'POST',
@@ -288,7 +283,7 @@ async function recordSick() {
 
       const data = await response.json();
 
-      console.log(data);
+     
 
       if (data.status == 200) {
 

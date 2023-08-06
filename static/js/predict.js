@@ -23,8 +23,6 @@ async function getPredictions(param1, param2) {
 
       const data = await response.json();
 
-      console.log(data.data);
-
       if (data.status == 201) {
 
         let html = "";
@@ -51,7 +49,6 @@ async function getPredictions(param1, param2) {
           // conn.innerHTML = html2;
           
           (data.data).forEach(disease => {
-            console.log(disease);
 
             diseaseListed = ` <option id="${disease.disease_id}" value="${disease.disease_id}">  ${disease.DISEASE_NAME} </option> `;
             diseaseList += diseaseListed;
@@ -139,7 +136,7 @@ async function getPredictedVaccine() {
 
       if (data.status == 201) {
 
-        console.log(data);
+       
 
         (data.data).forEach(vax => {
           document.getElementById(`vaccine-namen`).value = vax.NAME;

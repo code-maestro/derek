@@ -143,9 +143,6 @@
       const registration_date = e.target.value
       const dateofbirth = dob.value
 
-      console.log(e.target.value);
-      console.log(dob.value);
-
       const oneDay = 1000 * 60 * 60 * 24;
 
       var day1 = new Date(dateofbirth);
@@ -160,11 +157,9 @@
           console.log(days / 30 + ' MONTHS');
         } else {
           age.value = days + ' DAYS';
-          console.log(days + ' DAYS');
         }
       } else {
         age.value = Math.round(days / 365) + ' YEARS';
-        console.log(days / 365 + ' YEARS');
       }
 
     })

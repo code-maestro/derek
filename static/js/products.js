@@ -78,7 +78,6 @@ const calculateTotal = () => {
   // To calculate the no. of days between two dates
   var Difference_In_Days = (product_days / (1000 * 3600 * 24)) + 1;
   var total = ((freq * qnty * qnty_unit * Difference_In_Days) / qnty_unit);
-  console.log(total);
 
   document.getElementById('all_production_qnty').setAttribute("value", ((freq * qnty * qnty_unit * Difference_In_Days) / qnty_unit));
 
@@ -387,8 +386,6 @@ async function editProductType() {
       product_type_id: document.getElementById('product_type_id').value
     };
 
-    console.log(typeData);
-
     // request options
     const options = {
       method: 'POST',
@@ -408,7 +405,7 @@ async function editProductType() {
 
       const data = await response.json();
 
-      console.log(data);
+     
 
       if (data.status == 200) {
 
@@ -472,7 +469,7 @@ async function saveProduction(param) {
 
       const data = await response.json();
 
-      console.log(data);
+     
 
       if (data.status == 200) {
 

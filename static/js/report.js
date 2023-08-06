@@ -102,8 +102,6 @@ rpt.addEventListener("submit", (event) => {
 // GETTING REPORT
 const populateReport = (headers, param2, count, type) => {
 
-  console.log("type : " + type);
-
   const effective_dates = [];
   const counted = [];
 
@@ -160,29 +158,28 @@ const populateReport = (headers, param2, count, type) => {
           </tr> `;
         break;
 
-      // expecting animals report
-      case 'rpt_expecting':
-        htmlSegment = `
-          <tr class="justify-content-center" id="${data.ID}">
-            <td class="text-center"> ${data.ID} </td>
-            <td class="text-center"> ${data.ANIMAL_TAG} </td>
-            <td class="text-center"> ${data.GENDER} </td>
-            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
-            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
-            <td class="text-center"> ${data.AGE} </td>
-          </tr> `;
-        break;
-
       // meat products report
       case 'rpt_beef':
         htmlSegment = `
           <tr class="justify-content-center" id="${data.ID}">
             <td class="text-center"> ${data.ID} </td>
-            <td class="text-center"> ${data.ANIMAL_TAG} </td>
-            <td class="text-center"> ${data.GENDER} </td>
-            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
-            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
-            <td class="text-center"> ${data.AGE} </td>
+            <td class="text-center"> ${data.TITLE} </td>
+            <td class="text-center"> ${data.DESCRIPTION} </td>
+            <td class="text-center"> ${data.QUANTITY} </td>
+            <td class="text-center"> ${data.ACTUAL_QUANTITY} </td>
+            <td class="text-center"> ${data.ANIMALS} </td>
+          </tr> `;
+        break;
+
+      // eggs products report
+      case 'rpt_chicken':
+        htmlSegment = `
+          <tr class="justify-content-center" id="${data.ID}">
+          <td class="text-center"> ${data.ID} </td>
+          <td class="text-center"> ${data.TITLE} </td>
+          <td class="text-center"> ${data.DESCRIPTION} </td>
+          <td class="text-center"> ${data.QUANTITY} </td>
+          <td class="text-center"> ${data.ACTUAL_QUANTITY} </td>
           </tr> `;
         break;
 
@@ -190,24 +187,12 @@ const populateReport = (headers, param2, count, type) => {
       case 'rpt_eggs':
         htmlSegment = `
           <tr class="justify-content-center" id="${data.ID}">
-            <td class="text-center"> ${data.ID} </td>
-            <td class="text-center"> ${data.ANIMAL_TAG} </td>
-            <td class="text-center"> ${data.GENDER} </td>
-            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
-            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
-            <td class="text-center"> ${data.AGE} </td>
-          </tr> `;
-        break;
-
-      // eggs products report
-      case 'rpt_eggs':
-        htmlSegment = `
-          <tr class="justify-content-center" id="${data.ID}">
-            <td class="text-center"> ${data.ID} </td>
-            <td class="text-center"> ${data.GENDER} </td>
-            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
-            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
-            <td class="text-center"> ${data.AGE} </td>
+          <td class="text-center"> ${data.ID} </td>
+          <td class="text-center"> ${data.TITLE} </td>
+          <td class="text-center"> ${data.DESCRIPTION} </td>
+          <td class="text-center"> ${data.QUANTITY} </td>
+          <td class="text-center"> ${data.ACTUAL_QUANTITY} </td>
+          <td class="text-center"> ${data.ANIMALS} </td>
           </tr> `;
         break;
 
@@ -216,24 +201,11 @@ const populateReport = (headers, param2, count, type) => {
         htmlSegment = `
           <tr class="justify-content-center" id="${data.ID}">
             <td class="text-center"> ${data.ID} </td>
-            <td class="text-center"> ${data.ANIMAL_TAG} </td>
-            <td class="text-center"> ${data.GENDER} </td>
-            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
-            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
-            <td class="text-center"> ${data.AGE} </td>
-          </tr> `;
-        break;
-
-      // dairy product report
-      case 'rpt_milk':
-        htmlSegment = `
-          <tr class="justify-content-center" id="${data.ID}">
-            <td class="text-center"> ${data.ID} </td>
-            <td class="text-center"> ${data.ANIMAL_TAG} </td>
-            <td class="text-center"> ${data.GENDER} </td>
-            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
-            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
-            <td class="text-center"> ${data.AGE} </td>
+            <td class="text-center"> ${data.TITLE} </td>
+            <td class="text-center"> ${data.DESCRIPTION} </td>
+            <td class="text-center"> ${data.QUANTITY} </td>
+            <td class="text-center"> ${data.ACTUAL_QUANTITY} </td>
+            <td class="text-center"> ${data.ANIMALS} </td>
           </tr> `;
         break;
 
@@ -243,11 +215,10 @@ const populateReport = (headers, param2, count, type) => {
           <tr class="justify-content-center" id="${data.ID}">
             <td class="text-center"> ${data.ID} </td>
             <td class="text-center"> ${data.TITLE} </td>
+            <td class="text-center"> ${data.DESCRIPTION} </td>
             <td class="text-center"> ${data.QUANTITY} </td>
             <td class="text-center"> ${data.ACTUAL_QUANTITY} </td>
-            <td class="text-center"> ${dateFrontend(data.REGISTRATION_DATE)} </td>
-            <td class="text-center"> ${dateFrontend(data.DATE_OF_BIRTH)} </td>
-            <td class="text-center"> ${data.AGE} </td>
+            <td class="text-center"> ${data.ANIMALS} </td>
           </tr> `;
         break;
 
@@ -266,8 +237,6 @@ const populateReport = (headers, param2, count, type) => {
 
   con.innerHTML = html;
 
-  console.log(counted);
-
   graph(effective_dates, counted);
 
 }
@@ -275,9 +244,6 @@ const populateReport = (headers, param2, count, type) => {
 
 // Plot graph
 const graph = (dates, sumation) => {
-
-  console.log(dates);
-  console.log(sumation);
 
   var trace1 = {
     x: dates,
@@ -294,8 +260,6 @@ const graph = (dates, sumation) => {
   };
 
   var data = [trace1, trace2];
-
-  console.log(data);
 
   var layout = { barmode: 'group' };
 

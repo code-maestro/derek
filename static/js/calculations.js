@@ -28,7 +28,6 @@ const validateQnty = (param1, param2, param3) => {
         document.getElementById(`${param2}`).value = '';
 
     } else {
-        console.log("🤣🤣🤣🤣🤣🤣🤣🤣🤣");
         document.getElementById(`plannedQntyReal`).value = document.getElementById(`${param1}`).value * document.getElementById(`${param2}`).value;
     }
 
