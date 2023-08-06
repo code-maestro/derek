@@ -50,8 +50,6 @@ const getAnimalList = async () => {
 
   const selectedProductType = document.getElementById('product_type').value;
 
-  console.log(selectedProductType);
-
   let products = '';
   let tagListed = '';
   let tagList = `<option selected disabled> Choose an animal(s)...</option>`;
@@ -59,8 +57,6 @@ const getAnimalList = async () => {
   products = await getListing(`${selectedProductType}`);
 
   const tag_lstd = document.getElementById('target_animals');
-
-  console.log(products);
 
   products.listing.forEach(product => {
     tagListed = ` <option id="${product.id}" value="${product.animal_tag}">  ${product.animal_tag} </option> `;
@@ -201,7 +197,6 @@ productTypeForm.addEventListener("submit", (event) => {
 );
 
 
-
 // Function Adding new Feed
 async function recordProjection() {
   try {
@@ -294,9 +289,7 @@ const getProjections = async () => {
       <td class="text-center"> ${projection.product_type} </td> 
       <td class="text-center"> ${projection.production_qnty + ' ' + projection.measure} </td>
       <td class="text-center"> ${dateFrontend(projection.product_start_date)} </td>
-    </tr>
-
-  `;
+    </tr> `;
 
     html += htmlSegment;
 

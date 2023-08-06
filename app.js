@@ -97,7 +97,7 @@ function checkFileType(file, cb) {
 
 
 // Schedule tasks to be run on the server.
-cron.schedule('*/30 * * * * *', function () {
+cron.schedule('*/5 * * * * *', function () {
     getTriggeredEmails();
 });
 
@@ -141,7 +141,7 @@ async function getTriggeredEmails() {
 }
 
 
-//sFUNCTION TO SEND EMAILS 
+//FUNCTION TO SEND EMAILS 
 function sendEmail(email) {
 
     var mail = nodemailer.createTransport({

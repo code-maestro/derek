@@ -1,5 +1,5 @@
 const toExcel = (param, name) => {
-   
+
     var table = $(`#${param}`);
 
     if (table && table.length) {
