@@ -544,6 +544,7 @@ app.get('/getListing/:param', function (request, response) {
             } else {
 
                 response.send({ listing: results });
+                console.log(results);
 
             }
 
@@ -1055,7 +1056,7 @@ app.get('/predict_vaccine', async (request, response) => {
 
         console.log(prompt);
 
-        connection.query(`SELECT description DESCRIPTION FROM vaccines WHERE disease_id = ?;`, prompt, function (err, res) {
+        connection.query(`SELECT name NAME FROM vaccines WHERE disease_id = ?;`, prompt, function (err, res) {
 
             if (err) {
 

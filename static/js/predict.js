@@ -142,7 +142,7 @@ async function getPredictedVaccine() {
         console.log(data);
 
         (data.data).forEach(vax => {
-          document.getElementById(`vaccine-namen`).value = vax.DESCRIPTION;
+          document.getElementById(`vaccine-namen`).value = vax.NAME;
         });
 
       } else {
