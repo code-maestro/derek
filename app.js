@@ -74,7 +74,7 @@ const uploadImage = multer({
 // Check File Type
 function checkFileType(file, cb) {
     // Allowed ext
-    const filetypes = /jpeg|jpg|png|gif/;
+    const filetypes = /jpeg|jpg|png/;
     // Check ext
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     // Check mime
@@ -385,7 +385,7 @@ app.get('/getCount/:param', function (request, response) {
 
         heavyAnimals: `SELECT COUNT(A.id) AS COUNT FROM animal A, breeding B WHERE A.id = B.animal_id AND A.animal_type='${animal_type}' AND A.farma_id='${farma_id}' AND B.expected_due_date >= CURDATE();`,
 
-        pendingAnimals: `SELECT COUNT(A.id) AS COUNT FROM vaccination_details A, animal C WHERE A.animal_id = C.id AND C.animal_type = '${animal_type}' AND C.farma_id = '${farma_id}' AND C.confirmed = 'Y' AND A.confirmed = 'Y';`,
+        pendingAnimals: `SELECT COUNT(A.id) AS COUNT FROM vaccination_details A, animal C WHERE A.animal_id = C.id AND C.animal_type = '${animal_type}' AND C.farma_id = '${farma_id}' AND C.confirmed = 'Y';`,
 
         allFeeds: `SELECT COUNT(*) as COUNT FROM feeds WHERE animal_type='${animal_type}' AND farma_id='${farma_id}' AND quantity > 0;`,
 
